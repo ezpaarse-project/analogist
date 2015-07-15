@@ -4,14 +4,19 @@
       <label>Search</label>
       <input ng-model="search">
     </md-input-container>
+
+    <md-button class="md-icon-button" aria-label="Actualiser la liste" ng-click="platforms.refresh()">
+      <md-tooltip>Actualiser la liste</md-tooltip>
+      <md-icon md-svg-icon="navigation:refresh"></md-icon>
+    </md-button>
   </div>
 
-  <div ng-if="loadingPlatforms" class="md-padding" layout="row" layout-fill layout-align="center center">
+  <div ng-if="platforms.loading" class="md-padding" layout="row" layout-fill layout-align="center center">
     <md-progress-circular md-mode="indeterminate"></md-progress-circular>
   </div>
 
   <div class="tiles">
-    <a class="fade tile md-whiteframe-z1" ng-click="goto('/analysis/' + p.card.id)" ng-repeat="p in platforms|filter:search" layout="row">
+    <a class="fade tile md-whiteframe-z1" ng-click="goto('/analysis/' + p.card.id)" ng-repeat="p in platforms.list|filter:search" layout="row">
       {{ p.platformName }}
     </a>
   </div>
