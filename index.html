@@ -1,6 +1,6 @@
 <html lang="en" ng-app="WebApp">
   <head>
-    <base href="/analogist/">
+    <!-- <base href="/analogist/"> -->
     <meta charset="UTF-8">
     <meta name="viewport" content="initial-scale=1" />
 
@@ -15,53 +15,27 @@
       </header>
 
       <md-list>
-        <md-list-item ng-click="toggleSidenav('left')">Accueil</md-list-item>
-        <md-list-item ng-click="toggleSidenav('left')">Analyses</md-list-item>
+        <md-list-item ng-click="goto('/')">Accueil</md-list-item>
+        <md-list-item ng-click="goto('/list')">Analyses</md-list-item>
       </md-list>
     </md-sidenav>
 
-    <md-content layout-fill>
+    <div flex layout="column">
       <md-toolbar layout="row">
         <div class="md-toolbar-tools">
           <md-button ng-click="toggleSidenav('left')" hide-gt-sm class="md-icon-button">
             <md-icon aria-label="Menu" md-svg-icon="navigation:menu"></md-icon>
           </md-button>
           <h1>Analyses</h1>
-
-          <span flex></span>
-
-          <md-input-container hide-sm>
-            <label>Search</label>
-            <input ng-model="search">
-          </md-input-container>
         </div>
       </md-toolbar>
 
-      <div hide-gt-sm>
-        <md-input-container>
-          <label>Search</label>
-          <input ng-model="search">
-        </md-input-container>
-      </div>
-
-      <div ng-if="loadingPlatforms" class="md-padding" layout="row" layout-fill layout-align="center center">
-        <md-progress-circular md-mode="indeterminate"></md-progress-circular>
-      </div>
-
-      <div class="tiles">
-        <div class="fade tile md-whiteframe-z1" ng-click="showGridBottomSheet($event, p)" ng-repeat="p in platforms|filter:search">
-          {{ p.platformName }}
-        </md-grid-tile>
-      </div>
-
-    </md-content>
-
-    <md-button class="md-fab md-fab-bottom-right" aria-label="Add" ng-click="showAdd($event)">
-      <md-icon md-svg-icon="content:add"></md-icon>
-    </md-button>
+      <md-content flex layout-padding ng-view></md-content>
+    </div>
 
     <!-- Angular Material Dependencies -->
     <script src="./bower_components/angular/angular.min.js"></script>
+    <script src="./bower_components/angular-route/angular-route.min.js"></script>
     <script src="./bower_components/angular-messages/angular-messages.min.js"></script>
     <script src="./bower_components/angular-animate/angular-animate.min.js"></script>
     <script src="./bower_components/angular-aria/angular-aria.min.js"></script>

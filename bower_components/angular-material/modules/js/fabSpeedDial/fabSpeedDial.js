@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-rc1-master-3aab9e4
+ * v0.10.0
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -11,23 +11,14 @@
   'use strict';
 
   angular
-    // Declare our module
     .module('material.components.fabSpeedDial', [
       'material.core',
       'material.components.fabTrigger',
       'material.components.fabActions'
     ])
-
-    // Register our directive
     .directive('mdFabSpeedDial', MdFabSpeedDialDirective)
-
-    // Register our custom animations
     .animation('.md-fling', MdFabSpeedDialFlingAnimation)
-    .animation('.md-scale', MdFabSpeedDialScaleAnimation)
-
-    // Register a service for each animation so that we can easily inject them into unit tests
-    .service('mdFabSpeedDialFlingAnimation', MdFabSpeedDialFlingAnimation)
-    .service('mdFabSpeedDialScaleAnimation', MdFabSpeedDialScaleAnimation);
+    .animation('.md-scale', MdFabSpeedDialScaleAnimation);
 
   /**
    * @ngdoc directive
@@ -71,7 +62,7 @@
    * @param {expression=} md-open Programmatically control whether or not the speed-dial is visible.
    */
   function MdFabSpeedDialDirective() {
-    FabSpeedDialController.$inject = ["$scope", "$element", "$animate", "$timeout"];
+    FabSpeedDialController.$inject = ["$scope", "$element", "$animate"];
     return {
       restrict: 'E',
 
@@ -92,40 +83,22 @@
       element.prepend('<div class="md-css-variables"></div>');
     }
 
-    function FabSpeedDialController($scope, $element, $animate, $timeout) {
+    function FabSpeedDialController($scope, $element, $animate) {
       var vm = this;
 
       // Define our open/close functions
       // Note: Used by fabTrigger and fabActions directives
       vm.open = function() {
-        // Async eval to avoid conflicts with existing digest loops
-        $scope.$evalAsync("vm.isOpen = true");
+        $scope.$apply('vm.isOpen = true');
       };
 
       vm.close = function() {
-        // Async eval to avoid conflicts with existing digest loops
-        // Only close if we do not currently have mouse focus (since child elements can call this)
-        !vm.moused && $scope.$evalAsync("vm.isOpen = false");
-      };
-
-      vm.mouseenter = function() {
-        vm.moused = true;
-        vm.open();
-      };
-
-      vm.mouseleave = function() {
-        vm.moused = false;
-        vm.close();
+        $scope.$apply('vm.isOpen = false');
       };
 
       setupDefaults();
       setupListeners();
       setupWatchers();
-
-      // Fire the animations once in a separate digest loop to initialize them
-      $timeout(function() {
-        $animate.addClass($element, 'md-noop');
-      }, 0);
 
       // Set our default variables
       function setupDefaults() {
@@ -138,8 +111,8 @@
 
       // Setup our event listeners
       function setupListeners() {
-        $element.on('mouseenter', vm.mouseenter);
-        $element.on('mouseleave', vm.mouseleave);
+        $element.on('mouseenter', vm.open);
+        $element.on('mouseleave', vm.close);
       }
 
       // Setup our watchers
@@ -179,19 +152,18 @@
       angular.forEach(items, function(item, index) {
         var styles = item.style;
 
-        styles.transform = styles.webkitTransform = '';
+        styles.transform = '';
         styles.transitionDelay = '';
         styles.opacity = 1;
 
         // Make the items closest to the trigger have the highest z-index
-        styles.zIndex = (items.length - index) + startZIndex;
+        item.style.zIndex = (items.length - index) + startZIndex;
       });
 
       // If the control is closed, hide the items behind the trigger
       if (!ctrl.isOpen) {
         angular.forEach(items, function(item, index) {
           var newPosition, axis;
-          var styles = item.style;
 
           switch (ctrl.direction) {
             case 'up':
@@ -212,9 +184,7 @@
               break;
           }
 
-          var newTranslate = 'translate' + axis + '(' + newPosition + 'px)';
-
-          styles.transform = styles.webkitTransform = newTranslate;
+          item.style.transform = 'translate' + axis + '(' + newPosition + 'px)';
         });
       }
     }
@@ -223,12 +193,10 @@
       addClass: function(element, className, done) {
         if (element.hasClass('md-fling')) {
           runAnimation(element);
-          done();
         }
       },
       removeClass: function(element, className, done) {
         runAnimation(element);
-        done();
       }
     }
   }
@@ -247,7 +215,7 @@
           offsetDelay = index * delay;
 
         styles.opacity = ctrl.isOpen ? 1 : 0;
-        styles.transform = styles.webkitTransform = ctrl.isOpen ? 'scale(1)' : 'scale(0)';
+        styles.transform = ctrl.isOpen ? 'scale(1)' : 'scale(0)';
         styles.transitionDelay = (ctrl.isOpen ?  offsetDelay : (items.length - offsetDelay)) + 'ms';
       });
     }
@@ -255,12 +223,10 @@
     return {
       addClass: function(element, className, done) {
         runAnimation(element);
-        done();
       },
 
       removeClass: function(element, className, done) {
         runAnimation(element);
-        done();
       }
     }
   }

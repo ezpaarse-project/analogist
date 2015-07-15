@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1-rc1-master-3aab9e4
+ * v0.10.0
  */
 goog.provide('ng.material.components.autocomplete');
 goog.require('ng.material.components.icon');
@@ -28,7 +28,7 @@ var ITEM_HEIGHT = 41,
     MENU_PADDING = 8;
 
 function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $timeout, $mdTheming, $window,
-                             $animate, $rootElement, $attrs, $q) {
+                             $animate, $rootElement, $attrs) {
   //-- private variables
   var ctrl      = this,
       itemParts = $scope.itemsExpr.split(/ in /i),
@@ -219,13 +219,11 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $timeout, $
    * @param oldHidden
    */
   function handleHiddenChange (hidden, oldHidden) {
-    if (!hidden && oldHidden) {
-      positionDropdown();
+    if (!hidden && oldHidden) positionDropdown();
+    if (!hidden) {
       if (elements) $timeout(function () { $mdUtil.disableScrollAround(elements.ul); }, 0, false);
-    } else if (hidden && !oldHidden) {
-      $timeout(function() {
-        $mdUtil.enableScrolling();
-      }, 0, false);
+    } else {
+      $mdUtil.enableScrolling();
     }
   }
 
@@ -258,23 +256,10 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $timeout, $
    */
   function selectedItemChange (selectedItem, previousSelectedItem) {
     if (selectedItem) {
-      getDisplayValue(selectedItem).then(function(val) {
-        $scope.searchText = val;
-      });
+      $scope.searchText = getDisplayValue(selectedItem);
     }
-
-    if (selectedItem !== previousSelectedItem) announceItemChange(selectedItem);
-  }
-
-  /**
-   * Use the user-defined expression to announce changes each time a new item is selected
-   */
-  function announceItemChange( current ) {
-    angular.isFunction($scope.itemChange) &&  $scope.itemChange( getItemAsNameVal(current) );
-  }
-
-  function announceTextChange( value ) {
-    angular.isFunction($scope.textChange) && $scope.textChange(value);
+    if ($scope.itemChange && selectedItem !== previousSelectedItem)
+      $scope.itemChange(getItemScope(selectedItem));
   }
 
   /**
@@ -317,30 +302,23 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $timeout, $
    */
   function handleSearchText (searchText, previousSearchText) {
     ctrl.index = getDefaultIndex();
-    // do nothing on init
+    //-- do nothing on init
     if (searchText === previousSearchText) return;
-
-    getDisplayValue($scope.selectedItem).then(function(val) {
-      // clear selected item if search text no longer matches it
-      if (searchText !== val)
-      {
-        $scope.selectedItem = null;
-
-        // trigger change event if available
-        if ( searchText !== previousSearchText ) announceTextChange(searchText);
-
-        // cancel results if search text is not long enough
-        if (!isMinLengthMet()) {
-          ctrl.loading = false;
-          ctrl.matches = [];
-          ctrl.hidden = shouldHide();
-          updateMessages();
-        } else {
-          handleQuery();
-        }
-      }
-    });
-   
+    //-- clear selected item if search text no longer matches it
+    if (searchText !== getDisplayValue($scope.selectedItem)) $scope.selectedItem = null;
+    else return;
+    //-- trigger change event if available
+    if ($scope.textChange && searchText !== previousSearchText)
+      $scope.textChange(getItemScope($scope.selectedItem));
+    //-- cancel results if search text is not long enough
+    if (!isMinLengthMet()) {
+      ctrl.loading = false;
+      ctrl.matches = [];
+      ctrl.hidden = shouldHide();
+      updateMessages();
+    } else {
+      handleQuery();
+    }
   }
 
   /**
@@ -414,15 +392,7 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $timeout, $
    * @returns {*}
    */
   function getDisplayValue (item) {
-    return $q.when( getItemText(item) || item );
-
-    /**
-     * Getter function to invoke user-defined expression (in the directive)
-     * to convert your object to a single string.
-     */
-    function getItemText(item) {
-      return (item && $scope.itemText) ? $scope.itemText(getItemAsNameVal(item)) : null;
-    }
+    return (item && $scope.itemText) ? $scope.itemText(getItemScope(item)) : item;
   }
 
   /**
@@ -430,17 +400,12 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $timeout, $
    * @param item
    * @returns {{}}
    */
-  function getItemAsNameVal (item) {
-    if (!item) return undefined;
-
+  function getItemScope (item) {
+    if (!item) return;
     var locals = {};
     if (ctrl.itemName) locals[ctrl.itemName] = item;
-
     return locals;
   }
-
-
-
 
   /**
    * Returns the default index based on whether or not autoselect is enabled.
@@ -463,7 +428,7 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $timeout, $
    * @returns {*}
    */
   function getCurrentDisplayValue () {
-    return getDisplayValue( ctrl.matches[ctrl.index] );
+    return getDisplayValue(ctrl.matches[ctrl.index]);
   }
 
   /**
@@ -497,23 +462,18 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $timeout, $
    * Selects the item at the given index.
    * @param index
    */
-  function select(index) {
+  function select (index) {
+    $scope.selectedItem = ctrl.matches[index];
+    ctrl.hidden = true;
+    ctrl.index = 0;
+    ctrl.matches = [];
     //-- force form to update state for validation
-    $timeout(function() {
-      getDisplayValue(ctrl.matches[index]).then(function(val) {
-        var ngModel = elements.$.input.controller('ngModel');
-        ngModel.$setViewValue(val);
-        ngModel.$render();
-      }).finally(function() {
-        $scope.selectedItem = ctrl.matches[index];
-        ctrl.loading = false;
-        ctrl.hidden = true;
-        ctrl.index = 0;
-        ctrl.matches = [];
-      });
+    $timeout(function () {
+      elements.$.input.controller('ngModel').$setViewValue(getDisplayValue($scope.selectedItem) ||
+          $scope.searchText);
+      ctrl.hidden = true;
     });
   }
-
 
   /**
    * Clears the searchText value and selected item.
@@ -561,9 +521,7 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $timeout, $
    * Updates the ARIA messages
    */
   function updateMessages () {
-    getCurrentDisplayValue().then(function(msg) {
-      ctrl.messages = [ getCountMessage(), msg ];
-    });
+    ctrl.messages = [ getCountMessage(), getCurrentDisplayValue() ];
   }
 
   /**
@@ -619,7 +577,7 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $timeout, $
   }
 
 }
-MdAutocompleteCtrl.$inject = ["$scope", "$element", "$mdUtil", "$mdConstant", "$timeout", "$mdTheming", "$window", "$animate", "$rootElement", "$attrs", "$q"];
+MdAutocompleteCtrl.$inject = ["$scope", "$element", "$mdUtil", "$mdConstant", "$timeout", "$mdTheming", "$window", "$animate", "$rootElement", "$attrs"];
 
 angular
     .module('material.components.autocomplete')
@@ -755,11 +713,11 @@ function MdAutocomplete ($mdTheming, $mdUtil) {
       return '\
         <md-autocomplete-wrap\
             layout="row"\
-            ng-class="{ \'md-whiteframe-z1\': !floatingLabel, \'md-menu-showing\': !$mdAutocompleteCtrl.hidden }"\
+            ng-class="{ \'md-whiteframe-z1\': !floatingLabel }"\
             role="listbox">\
           ' + getInputElement() + '\
           <md-progress-linear\
-              ng-if="$mdAutocompleteCtrl.loading && !$mdAutocompleteCtrl.hidden"\
+              ng-if="$mdAutocompleteCtrl.loading"\
               md-mode="indeterminate"></md-progress-linear>\
           <ul role="presentation"\
               class="md-autocomplete-suggestions md-whiteframe-z1 {{menuClass || \'\'}}"\
@@ -781,7 +739,7 @@ function MdAutocomplete ($mdTheming, $mdUtil) {
             class="md-visually-hidden"\
             role="status"\
             aria-live="assertive">\
-          <p ng-repeat="message in $mdAutocompleteCtrl.messages track by $index" ng-if="message">{{message}}</p>\
+          <p ng-repeat="message in $mdAutocompleteCtrl.messages" ng-if="message">{{message}}</p>\
         </aria-status>';
 
       function getItemTemplate() {
@@ -812,7 +770,7 @@ function MdAutocomplete ($mdTheming, $mdUtil) {
                   id="fl-input-{{$mdAutocompleteCtrl.id}}"\
                   name="{{inputName}}"\
                   autocomplete="off"\
-                  ng-required="$mdAutocompleteCtrl.isRequired"\
+                  ng-required="isRequired"\
                   ng-minlength="inputMinlength"\
                   ng-maxlength="inputMaxlength"\
                   ng-disabled="$mdAutocompleteCtrl.isDisabled"\
@@ -835,7 +793,7 @@ function MdAutocomplete ($mdTheming, $mdUtil) {
                 name="{{inputName}}"\
                 ng-if="!floatingLabel"\
                 autocomplete="off"\
-                ng-required="$mdAutocompleteCtrl.isRequired"\
+                ng-required="isRequired"\
                 ng-disabled="$mdAutocompleteCtrl.isDisabled"\
                 ng-model="$mdAutocompleteCtrl.scope.searchText"\
                 ng-keydown="$mdAutocompleteCtrl.keydown($event)"\

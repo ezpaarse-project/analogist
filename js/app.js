@@ -1,4 +1,4 @@
-var app = angular.module('WebApp', ['ngMaterial', 'ngMessages', 'ngAnimate']);
+var app = angular.module('WebApp', ['ngMaterial', 'ngMessages', 'ngAnimate', 'ngRoute']);
 
 app.config(['$mdIconProvider', function($mdIconProvider) {
   $mdIconProvider
@@ -21,11 +21,32 @@ app.config(['$mdIconProvider', function($mdIconProvider) {
     // .iconSet('toggle',        '/img/icons/toggle-icons.svg', 24)
 }]);
 
-app.controller('AppCtrl', ['$scope', '$mdSidenav', '$mdDialog', '$mdToast', '$mdBottomSheet', function($scope, $mdSidenav, $mdDialog, $mdToast, $mdBottomSheet){
+app.config(['$routeProvider', function($routeProvider) {
+  $routeProvider.
+    when('/', {
+      templateUrl: 'views/home.html'
+    }).
+    when('/list', {
+      templateUrl: 'views/list.html',
+      controller: 'ListCtrl'
+    }).
+    when('/analysis/:id', {
+      templateUrl: 'views/analysis.html'
+    });
+}]);
+
+app.controller('AppCtrl', ['$scope', '$mdSidenav', '$location', function($scope, $mdSidenav, $location) {
   $scope.toggleSidenav = function(menuId) {
     $mdSidenav(menuId).toggle();
   };
 
+  $scope.goto = function(path) {
+    $location.path(path || '/');
+    $mdSidenav('left').toggle();
+  };
+}]);
+
+app.controller('ListCtrl', ['$scope', '$mdDialog', '$mdToast', '$mdBottomSheet', function($scope, $mdDialog, $mdToast, $mdBottomSheet){
   $scope.loadingPlatforms = true;
 
   getTrelloPlatformsList(function displayPlatformsTable(err, platforms) {
@@ -35,29 +56,6 @@ app.controller('AppCtrl', ['$scope', '$mdSidenav', '$mdDialog', '$mdToast', '$md
     $scope.platforms = platforms;
     $scope.$apply();
   });
-
-  $scope.showGridBottomSheet = function($event, platform) {
-    $mdBottomSheet.show({
-      templateUrl: './views/actions.html',
-      targetEvent: $event,
-      controller: function($scope, $mdBottomSheet) {
-        $scope.platform = platform;
-        $scope.validate = function(ev) {
-          $mdToast.show({
-            template: '<md-toast>' +
-                        '<span flex>Analyse validée</span>' +
-                      '</md-toast>',
-            hideDelay: 3000,
-            position: 'top right'
-          });
-        };
-        $scope.listItemClick = function($index) {
-          $mdBottomSheet.hide();
-        };
-      }
-    });
-  };
-
 
   $scope.showAdd = function(ev) {
     $mdDialog.show({
@@ -80,4 +78,26 @@ app.controller('AppCtrl', ['$scope', '$mdSidenav', '$mdDialog', '$mdToast', '$md
       targetEvent: ev
     });
   };
+
+  // $scope.showGridBottomSheet = function($event, platform) {
+  //   $mdBottomSheet.show({
+  //     templateUrl: './views/actions.html',
+  //     targetEvent: $event,
+  //     controller: function($scope, $mdBottomSheet) {
+  //       $scope.platform = platform;
+  //       $scope.validate = function(ev) {
+  //         $mdToast.show({
+  //           template: '<md-toast>' +
+  //                       '<span flex>Analyse validée</span>' +
+  //                     '</md-toast>',
+  //           hideDelay: 3000,
+  //           position: 'top right'
+  //         });
+  //       };
+  //       $scope.listItemClick = function($index) {
+  //         $mdBottomSheet.hide();
+  //       };
+  //     }
+  //   });
+  // };
 }]);

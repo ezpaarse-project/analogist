@@ -6,6 +6,10 @@
 .fade.ng-enter { animation: fadeInDown 0.5s; }
 .fade.ng-leave { animation: fadeOutUp 0.5s; }
 
+.fixed.md-fab {
+  position: fixed !important;
+}
+
 .tile {
   position: relative;
   display: inline-block;
@@ -17,20 +21,20 @@
   text-overflow: ellipsis;
   cursor: pointer;
 
-  width: calc(100% - 20px);
+  width: calc(100% - 10px);
 }
 @media (min-width: 900px) {
-  .tile { width: calc(50% - 20px); }
+  .tile { width: calc(50% - 10px); }
 }
 @media (min-width: 1100px) {
-  .tile { width: calc(33.3333% - 20px); }
+  .tile { width: calc(33.3333% - 10px); }
 }
 @media (min-width: 1500px) {
-  .tile { width: calc(25% - 20px); }
+  .tile { width: calc(25% - 10px); }
 }
 @media (min-width: 1850px) {
-  .tile { width: calc(20% - 20px); }
+  .tile { width: calc(20% - 10px); }
 }
 @media (min-width: 2100px) {
-  .tile { width: calc(16.6666% - 20px); }
+  .tile { width: calc(16.6666% - 10px); }
 }
