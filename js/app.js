@@ -24,21 +24,34 @@ app.config(['$mdIconProvider', function($mdIconProvider) {
 app.config(['$routeProvider', function($routeProvider) {
   $routeProvider.
     when('/', {
+      title: 'Accueil',
       templateUrl: 'views/home.html'
     }).
     when('/list', {
+      title: 'Analyses',
       templateUrl: 'views/list.html',
       controller: 'ListCtrl'
     }).
     when('/analysis/:id', {
+      title: 'Analyse',
       templateUrl: 'views/analysis.html'
     });
 }]);
 
-app.controller('AppCtrl', ['$scope', '$mdSidenav', '$location', function($scope, $mdSidenav, $location) {
+app.controller('AppCtrl', [
+  '$scope',
+  '$mdSidenav',
+  '$location',
+  '$rootScope',
+  '$route',
+  function($scope, $mdSidenav, $location, $rootScope, $route) {
   $scope.toggleSidenav = function(menuId) {
     $mdSidenav(menuId).toggle();
   };
+
+  $rootScope.$on('$routeChangeSuccess', function() {
+    $rootScope.title = $route.current.title;
+  });
 
   $scope.goto = function(path) {
     $location.path(path || '/');
