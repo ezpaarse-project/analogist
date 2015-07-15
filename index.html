@@ -1,0 +1,75 @@
+<html lang="en" ng-app="WebApp">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1" />
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="/bower_components/animate.css/animate.min.css">
+    <link rel="stylesheet" href="/bower_components/angular-material/angular-material.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+  </head>
+  <body layout="row" ng-controller="AppCtrl">
+    <md-sidenav layout="column" class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-sm')">
+      <header class="nav-header md-padding" layout="column">
+        <img src="./img/analogist-logo2.svg" alt="logo" class="logo" flex>
+      </header>
+
+      <md-list>
+        <md-list-item ng-click="toggleSidenav('left')">Accueil</md-list-item>
+        <md-list-item ng-click="toggleSidenav('left')">Analyses</md-list-item>
+      </md-list>
+    </md-sidenav>
+
+    <md-content layout-fill>
+      <md-toolbar layout="row">
+        <div class="md-toolbar-tools">
+          <md-button ng-click="toggleSidenav('left')" hide-gt-sm class="md-icon-button">
+            <md-icon aria-label="Menu" md-svg-icon="navigation:menu"></md-icon>
+          </md-button>
+          <h1>Analyses</h1>
+
+          <span flex></span>
+
+          <md-input-container hide-sm>
+            <label>Search</label>
+            <input ng-model="search">
+          </md-input-container>
+        </div>
+      </md-toolbar>
+
+      <div hide-gt-sm>
+        <md-input-container>
+          <label>Search</label>
+          <input ng-model="search">
+        </md-input-container>
+      </div>
+
+      <div ng-if="loadingPlatforms" class="md-padding" layout="row" layout-fill layout-align="center center">
+        <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+      </div>
+
+      <div class="tiles">
+        <div class="fade tile md-whiteframe-z1" ng-click="showGridBottomSheet($event, p)" ng-repeat="p in platforms|filter:search">
+          {{ p.platformName }}
+        </md-grid-tile>
+      </div>
+
+    </md-content>
+
+    <md-button class="md-fab md-fab-bottom-right" aria-label="Add" ng-click="showAdd($event)">
+      <md-icon md-svg-icon="content:add"></md-icon>
+    </md-button>
+
+    <!-- Angular Material Dependencies -->
+    <script src="./bower_components/angular/angular.min.js"></script>
+    <script src="./bower_components/angular-messages/angular-messages.min.js"></script>
+    <script src="./bower_components/angular-animate/angular-animate.min.js"></script>
+    <script src="./bower_components/angular-aria/angular-aria.min.js"></script>
+    <script src="./bower_components/angular-material/angular-material.min.js"></script>
+
+    <script src="https://cdn.rawgit.com/ezpaarse-project/ezpaarse/0d6e754bd2e0f0f0e9b5a5f10dc041d826076fe6/public/js/trello-ezpaarse.js"></script>
+
+    <script src="./bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="./js/app.js"></script>
+  </body>
+</html>
