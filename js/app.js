@@ -2,10 +2,10 @@ var app = angular.module('WebApp', ['ngMaterial', 'ngMessages', 'ngAnimate']);
 
 app.config(['$mdIconProvider', function($mdIconProvider) {
   $mdIconProvider
-    .iconSet('action',     '/img/icons/action-icons.svg', 24)
-    .iconSet('content',    '/img/icons/content-icons.svg', 24)
-    .iconSet('navigation', '/img/icons/navigation-icons.svg', 24)
-    .iconSet('mdi',        '/img/icons/mdi-icons.svg', 24);
+    .iconSet('action',     './img/icons/action-icons.svg', 24)
+    .iconSet('content',    './img/icons/content-icons.svg', 24)
+    .iconSet('navigation', './img/icons/navigation-icons.svg', 24)
+    .iconSet('mdi',        './img/icons/mdi-icons.svg', 24);
     // .iconSet('alert',         '/img/icons/alert-icons.svg', 24)
     // .iconSet('av',            '/img/icons/av-icons.svg', 24)
     // .iconSet('communication', '/img/icons/communication-icons.svg', 24)
@@ -38,7 +38,7 @@ app.controller('AppCtrl', ['$scope', '$mdSidenav', '$mdDialog', '$mdToast', '$md
 
   $scope.showGridBottomSheet = function($event, platform) {
     $mdBottomSheet.show({
-      templateUrl: '/views/actions.html',
+      templateUrl: './views/actions.html',
       targetEvent: $event,
       controller: function($scope, $mdBottomSheet) {
         $scope.platform = platform;
@@ -76,7 +76,7 @@ app.controller('AppCtrl', ['$scope', '$mdSidenav', '$mdDialog', '$mdToast', '$md
           });
         };
       },
-      templateUrl: '/views/form-add.html',
+      templateUrl: './views/form-add.html',
       targetEvent: ev
     });
   };
