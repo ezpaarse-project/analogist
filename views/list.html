@@ -6,7 +6,7 @@
     </md-input-container>
 
     <md-button class="md-icon-button" aria-label="Actualiser la liste" ng-click="platforms.refresh()">
-      <md-tooltip>Actualiser la liste</md-tooltip>
+      <md-tooltip md-direction="bottom" md-autohide>Actualiser la liste</md-tooltip>
       <md-icon md-svg-icon="navigation:refresh"></md-icon>
     </md-button>
   </div>
@@ -23,6 +23,6 @@
 </md-content>
 
 <md-button class="fixed md-fab md-fab-bottom-right" aria-label="Nouvelle analyse" ng-click="showAdd($event)">
-  <md-tooltip>Nouvelle analyse</md-tooltip>
+  <md-tooltip md-direction="top" md-autohide>Nouvelle analyse</md-tooltip>
   <md-icon md-svg-icon="content:add"></md-icon>
 </md-button>
