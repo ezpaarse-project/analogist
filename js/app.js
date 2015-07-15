@@ -55,7 +55,7 @@ app.controller('AppCtrl', [
 
   $scope.goto = function(path) {
     $location.path(path || '/');
-    $mdSidenav('left').toggle();
+    $mdSidenav('left').close();
   };
 }]);
 
