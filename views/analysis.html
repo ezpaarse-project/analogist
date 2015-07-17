@@ -1,2 +1,11 @@
-<h2 class="md-headline">TODO</h2>
-<p>Page d'analyse</p>
+<div ng-if="loading" class="md-padding" layout="row" layout-align="center center">
+  <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+</div>
+
+<div class="md-padding" ng-show="platform">
+  <h2 class="md-headline" ng-bind="platform.platformName"></h2>
+
+  <div>Date: {{ platform.platformDate }}</div>
+  <div>Statut: {{ platform.platformStatus }}</div>
+  <div>Contact: {{ platform.platformContact || 'aucun' }}</div>
+</div>

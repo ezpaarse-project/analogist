@@ -9,16 +9,34 @@ angular.module('WebApp')
     );
   }
 }])
-.factory('platforms', ['$rootScope', 'ezAlert', function($rootScope, ezAlert) {
+.factory('platforms', ['$rootScope', 'ezAlert', '$q', function($rootScope, ezAlert, $q) {
   var service = {};
+  var promise;
 
-  service.refresh = function () {
+  service.get = function () {
+    var deferred = $q.defer();
+    if (service.list) {
+      deferred.resolve(service.list);
+    } else {
+      service.reload().then(deferred.resolve);
+    }
+    return deferred.promise;
+  }
+
+  service.reload = function () {
+    if (promise) { return promise; }
+
+    var deferred = $q.defer();
+    promise = deferred.promise;
+
     service.loading = true;
-    $rootScope.$apply();
+    service.list    = null;
 
     getTrelloPlatformsList(function displayPlatformsTable(err, platforms) {
       service.loading = false;
+
       if (err) {
+        deferred.reject(err);
         return ezAlert({
           title: "Erreur",
           content: "Une erreur est survenue lors de la récupération de la liste des plateformes.",
@@ -27,11 +45,15 @@ angular.module('WebApp')
       }
 
       service.list = platforms;
+      deferred.resolve(service.list);
+      promise = null;
       $rootScope.$apply();
     });
+
+    return promise;
   };
 
-  service.refresh();
+  service.reload();
 
   return service;
 }]);

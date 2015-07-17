@@ -34,6 +34,7 @@ app.config(['$routeProvider', function($routeProvider) {
     }).
     when('/analysis/:id', {
       title: 'Analyse',
-      templateUrl: 'views/analysis.html'
+      templateUrl: 'views/analysis.html',
+      controller: 'AnalysisCtrl'
     });
 }]);
