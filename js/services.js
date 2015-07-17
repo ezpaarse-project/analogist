@@ -21,7 +21,7 @@ angular.module('WebApp')
       service.reload().then(deferred.resolve);
     }
     return deferred.promise;
-  }
+  };
 
   service.reload = function () {
     if (promise) { return promise; }
@@ -45,6 +45,7 @@ angular.module('WebApp')
       }
 
       service.list = platforms;
+
       deferred.resolve(service.list);
       promise = null;
       $rootScope.$apply();

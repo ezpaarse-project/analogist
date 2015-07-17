@@ -18,6 +18,10 @@ md-sidenav.sidemenu .logo {
   position: fixed !important;
 }
 
+.tiles {
+  padding: 0;
+  margin: 0;
+}
 .tile {
   position: relative;
   display: inline-block;
@@ -29,20 +33,20 @@ md-sidenav.sidemenu .logo {
   text-overflow: ellipsis;
   cursor: pointer;
 
-  width: calc(100% - 10px);
+  width: calc(100% - 20px);
 }
 @media (min-width: 900px) {
-  .tile { width: calc(50% - 10px); }
+  .tile { width: calc(50% - 20px); }
 }
 @media (min-width: 1100px) {
-  .tile { width: calc(33.3333% - 10px); }
+  .tile { width: calc(33.3333% - 20px); }
 }
 @media (min-width: 1500px) {
-  .tile { width: calc(25% - 10px); }
+  .tile { width: calc(25% - 20px); }
 }
 @media (min-width: 1850px) {
-  .tile { width: calc(20% - 10px); }
+  .tile { width: calc(20% - 20px); }
 }
 @media (min-width: 2100px) {
-  .tile { width: calc(16.6666% - 10px); }
+  .tile { width: calc(16.6666% - 20px); }
 }

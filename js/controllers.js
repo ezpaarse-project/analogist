@@ -24,7 +24,6 @@ angular.module('WebApp')
   var cardID = $routeParams.id;
 
   platforms.get().then(function (list) {
-    $scope.loading = false;
     for (var i = list.length - 1; i >= 0; i--) {
       if (list[i].card.id == cardID) { $scope.platform = list[i]; return; }
     };
@@ -34,7 +33,9 @@ angular.module('WebApp')
       content: "La plateforme d'identifiant " + cardID + " n'existe pas.",
       ariaLabel: "Erreur plateforme introuvable"
     });
-  });
+  }).finally(function () {
+    $scope.loading = false;
+  });;
   // $scope.showGridBottomSheet = function($event, platform) {
   //   $mdBottomSheet.show({
   //     templateUrl: './views/actions.html',
@@ -59,6 +60,53 @@ angular.module('WebApp')
 }])
 .controller('ListCtrl', ['$scope', '$mdDialog', '$mdToast', '$mdBottomSheet', 'platforms', function($scope, $mdDialog, $mdToast, $mdBottomSheet, platforms) {
   $scope.platforms = platforms;
+  $scope.groupby   = 'letter';
+
+  $scope.buildList = function () {
+    if (!platforms.list) { return $scope.list = null; }
+
+    var groups  = {};
+    $scope.list = [];
+
+    platforms.list.forEach(function (el) {
+      var group = '#';
+
+      switch ($scope.groupby) {
+      case 'letter':
+        if (typeof el.platformName === 'string' && /^[a-z]/i.test(el.platformName)) {
+          group = el.platformName.charAt(0).toUpperCase();
+        }
+        break;
+      case 'status':
+        if (typeof el.platformStatus === 'string') {
+          group = el.platformStatus;
+        }
+        break;
+      }
+
+      if (!groups[group]) {
+        $scope.list.push({ name: group, list: groups[group] = [] });
+      }
+      groups[group].push(el);
+    });
+  };
+
+  function getPlatforms() {
+    $scope.loading = true;
+
+    platforms.get().then(function () {
+      $scope.buildList();
+    }).finally(function () {
+      $scope.loading = false;
+    });
+  }
+
+  getPlatforms();
+
+  $scope.reload = function () {
+    platforms.reload();
+    getPlatforms();
+  };
 
   $scope.showAdd = function(ev) {
     $mdDialog.show({
