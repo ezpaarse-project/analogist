@@ -21,7 +21,50 @@ angular.module('WebApp')
 }])
 .controller('AnalysisCtrl', ['$scope', '$mdToast', '$routeParams', '$mdBottomSheet', 'platforms', 'ezAlert', function($scope, $mdToast, $routeParams, $mdBottomSheet, platforms, ezAlert) {
   $scope.loading = true;
-  var cardID = $routeParams.id;
+  var cardID = $scope.cardID = $routeParams.id;
+  $scope.index = -1;
+
+  $scope.newAnalysis = function () {
+    $scope.index = $scope.analysis.push({ identifiers: [] }) - 1;
+  };
+
+  $scope.back = function () { $scope.index = -1; };
+  $scope.select = function (i) {
+    $scope.index = i || 0;
+
+    if ($scope.index < 0) {
+      $scope.index = 0;
+    } else if ($scope.index >= $scope.analysis.length) {
+      $scope.index = $scope.analysis.length - 1;
+    }
+  };
+
+  $scope.analysis = [
+    {
+      id: 1,
+      title: "Consultation d'un article PDF",
+      url: 'http://www.google.fr?id=1234&issn=1234-5678',
+      mime: 'pdf',
+      rtype: 'article',
+      identifiers: ['title_id => 1234', 'online_identifier => 1234-5678']
+    },
+    {
+      id: 2,
+      title: "Consultation d'un article HTML",
+      url: 'http://www.google.fr/article-abcd',
+      mime: 'html',
+      rtype: 'article',
+      identifiers: ['title_id => abcd']
+    },
+    {
+      id: 3,
+      title: "Consultation d'un résumé",
+      url: 'http://www.google.fr',
+      mime: 'html',
+      rtype: 'abstract',
+      identifiers: []
+    }
+  ];
 
   platforms.get().then(function (list) {
     for (var i = list.length - 1; i >= 0; i--) {

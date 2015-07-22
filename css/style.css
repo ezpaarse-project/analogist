@@ -1,3 +1,5 @@
+.center-aligned { text-align: center; }
+
 md-sidenav.sidemenu {
   min-width: 250px;
   width: 250px;

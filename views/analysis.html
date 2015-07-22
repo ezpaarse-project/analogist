@@ -1,11 +1,96 @@
 <div ng-if="loading" class="md-padding" layout="row" layout-align="center center">
-  <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+  <md-progress-circular md-mode="indeterminate" md-layout-sm="row"></md-progress-circular>
 </div>
 
 <div class="md-padding" ng-show="platform">
-  <h2 class="md-headline" ng-bind="platform.platformName"></h2>
+  <h2 class="center-aligned md-display-1" ng-bind="platform.platformName"></h2>
 
-  <div>Date: {{ platform.platformDate }}</div>
-  <div>Statut: {{ platform.platformStatus }}</div>
-  <div>Contact: {{ platform.platformContact || 'aucun' }}</div>
+  <div layout="row" class="center-aligned">
+    <div layout="column" flex="33">
+      <div class="md-headline">Date</div>
+      <div ng-bind="platform.platformDate"></div>
+    </div>
+    <div layout="column" flex="33">
+      <div class="md-headline">Statut</div>
+      <div ng-bind="platform.platformStatus"></div>
+    </div>
+    <div layout="column" flex="33">
+      <div class="md-headline">Contact</div>
+      <div ng-bind="platform.platformContact"></div>
+    </div>
+  </div>
+
+  <md-divider class="md-margin"></md-divider>
+
+  <div ng-hide="analysis[index]">
+    <md-list>
+      <md-list-item ng-repeat="a in analysis track by $index">
+        <button class="md-no-style md-button md-default-theme" ng-click="select($index)">
+          <div class="md-list-item-text" ng-bind="a.title"></div>
+        </button>
+      </md-list-item>
+    </md-list>
+  </div>
+
+  <div ng-if="analysis[index]" md-swipe-right="select(index - 1)" md-swipe-left="select(index + 1)">
+    <div class="navigation" layout="row">
+      <div flex="33" class="center-aligned">
+        <md-button class="md-icon-button" aria-label="Previous analysis" ng-click="select(index - 1)" ng-show="analysis[index - 1]"><md-icon md-svg-icon="navigation:arrow_back"></md-icon></md-button>
+      </div>
+
+      <div flex="33" class="center-aligned">
+        <md-button class="md-icon-button" aria-label="Back to list" ng-click="back()"><md-icon md-svg-icon="action:list"></md-icon></md-button>
+      </div>
+
+      <div flex="33" class="center-aligned">
+        <md-button class="md-icon-button" aria-label="Next analysis" ng-click="select(index + 1)" ng-show="analysis[index + 1]"><md-icon md-svg-icon="navigation:arrow_forward"></md-icon></md-button>
+      </div>
+    </div>
+
+    <div class="md-margin md-padding md-whiteframe-z1">
+      <md-input-container>
+        <label>Titre</label>
+        <input type="text" ng-model="analysis[index].title">
+      </md-input-container>
+
+      <md-input-container>
+        <label>URL</label>
+        <input type="text" ng-model="analysis[index].url">
+      </md-input-container>
+
+      <div layout="row">
+        <md-input-container flex="50">
+          <label>Type</label>
+          <md-select ng-model="analysis[index].rtype">
+            <md-option></md-option>
+            <md-option value="article">Article</md-option>
+            <md-option value="book">Book</md-option>
+            <md-option value="book_section">Book section</md-option>
+          </md-select>
+        </md-input-container>
+
+        <md-input-container flex="50">
+          <label>Mime</label>
+          <md-select ng-model="analysis[index].mime">
+            <md-option></md-option>
+            <md-option value="pdf">PDF</md-option>
+            <md-option value="html">HTML</md-option>
+            <md-option value="misc">MISC</md-option>
+          </md-select>
+        </md-input-container>
+      </div>
+
+      <md-chips ng-model="analysis[index].identifiers" placeholder="Entrer un identifiant" delete-button-label="Supprimer l'identifiant" secondary-placeholder="Identifiants"></md-chips>
+
+      <md-input-container>
+        <label>UnitID</label>
+        <input type="text" ng-model="analysis[index].unitid">
+      </md-input-container>
+    </div>
+  </div>
+
+  <md-button class="fixed md-fab md-fab-bottom-right" aria-label="Nouvelle analyse" ng-click="newAnalysis()">
+    <md-tooltip md-direction="top" md-autohide>Nouvelle analyse</md-tooltip>
+    <md-icon md-svg-icon="content:add"></md-icon>
+  </md-button>
 </div>
