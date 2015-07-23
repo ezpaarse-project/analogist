@@ -2,7 +2,7 @@
   <md-progress-circular md-mode="indeterminate" md-layout-sm="row"></md-progress-circular>
 </div>
 
-<div class="md-padding" ng-show="platform">
+<div ng-show="platform">
   <h2 class="center-aligned md-display-1" ng-bind="platform.platformName"></h2>
 
   <div layout="row" class="center-aligned">
@@ -22,75 +22,92 @@
 
   <md-divider class="md-margin"></md-divider>
 
-  <div ng-hide="analysis[index]">
-    <md-list>
-      <md-list-item ng-repeat="a in analysis track by $index">
-        <button class="md-no-style md-button md-default-theme" ng-click="select($index)">
-          <div class="md-list-item-text" ng-bind="a.title"></div>
-        </button>
-      </md-list-item>
-    </md-list>
-  </div>
+  <div md-swipe-right="prev()" md-swipe-left="next()">
 
-  <div ng-if="analysis[index]" md-swipe-right="select(index - 1)" md-swipe-left="select(index + 1)">
-    <div class="navigation" layout="row">
-      <div flex="33" class="center-aligned">
-        <md-button class="md-icon-button" aria-label="Previous analysis" ng-click="select(index - 1)" ng-show="analysis[index - 1]"><md-icon md-svg-icon="navigation:arrow_back"></md-icon></md-button>
-      </div>
+    <div class="md-margin md-whiteframe-z1">
+      <md-toolbar>
+        <div class="md-toolbar-tools">
+          <md-button class="md-icon-button" aria-label="Analyse précédente" ng-click="prev()" ng-disabled="!hasPrev()">
+            <md-icon md-svg-icon="navigation:arrow_back"></md-icon>
+          </md-button>
 
-      <div flex="33" class="center-aligned">
-        <md-button class="md-icon-button" aria-label="Back to list" ng-click="back()"><md-icon md-svg-icon="action:list"></md-icon></md-button>
-      </div>
+          <md-button ng-disabled="!analysis[index]" class="md-icon-button" aria-label="Liste des analyses" ng-click="back()">
+            <md-icon md-svg-icon="action:list"></md-icon>
+          </md-button>
 
-      <div flex="33" class="center-aligned">
-        <md-button class="md-icon-button" aria-label="Next analysis" ng-click="select(index + 1)" ng-show="analysis[index + 1]"><md-icon md-svg-icon="navigation:arrow_forward"></md-icon></md-button>
-      </div>
-    </div>
+          <md-button class="md-icon-button" aria-label="Analyse suivante" ng-click="next()" ng-disabled="!hasNext()">
+            <md-icon md-svg-icon="navigation:arrow_forward"></md-icon>
+          </md-button>
 
-    <div class="md-margin md-padding md-whiteframe-z1">
-      <md-input-container>
-        <label>Titre</label>
-        <input type="text" ng-model="analysis[index].title">
-      </md-input-container>
+          <span flex></span>
 
-      <md-input-container>
-        <label>URL</label>
-        <input type="text" ng-model="analysis[index].url">
-      </md-input-container>
+          <md-button ng-disabled="!analysis[index].dirty" class="md-fab md-mini" aria-label="Sauvegarder l'analyse" ng-click="save(analysis[index])">
+            <md-tooltip md-direction="bottom" md-autohide>Sauvegarder l'analyse</md-tooltip>
+            <md-icon md-svg-icon="content:save"></md-icon>
+          </md-button>
 
-      <div layout="row">
-        <md-input-container flex="50">
-          <label>Type</label>
-          <md-select ng-model="analysis[index].rtype">
-            <md-option></md-option>
-            <md-option value="article">Article</md-option>
-            <md-option value="book">Book</md-option>
-            <md-option value="book_section">Book section</md-option>
-          </md-select>
+          <md-button ng-disabled="!analysis[index]" class="md-fab md-mini" aria-label="Supprimer l'analyse" ng-click="remove(analysis[index].id)">
+            <md-tooltip md-direction="bottom" md-autohide>Supprimer l'analyse</md-tooltip>
+            <md-icon md-svg-icon="action:delete"></md-icon>
+          </md-button>
+
+          <md-button class="md-fab md-mini" aria-label="Nouvelle analyse" ng-click="newAnalysis()">
+            <md-tooltip md-direction="bottom" md-autohide>Nouvelle analyse</md-tooltip>
+            <md-icon md-svg-icon="content:add"></md-icon>
+          </md-button>
+        </div>
+      </md-toolbar>
+
+      <md-content ng-hide="analysis[index]" class="whitesmoke md-padding">
+        <md-list>
+          <md-list-item ng-repeat="a in analysis track by $index">
+            <button class="md-no-style md-button md-default-theme" ng-click="select($index)">
+              <div class="md-list-item-text" ng-bind="a.title"></div>
+            </button>
+          </md-list-item>
+        </md-list>
+      </md-content>
+
+      <md-content ng-if="analysis[index]" class="whitesmoke md-padding">
+        <md-input-container>
+          <label>Titre</label>
+          <input type="text" ng-model="analysis[index].title" ng-change="setDirty(analysis[index].id)">
         </md-input-container>
 
-        <md-input-container flex="50">
-          <label>Mime</label>
-          <md-select ng-model="analysis[index].mime">
-            <md-option></md-option>
-            <md-option value="pdf">PDF</md-option>
-            <md-option value="html">HTML</md-option>
-            <md-option value="misc">MISC</md-option>
-          </md-select>
+        <md-input-container>
+          <label>URL</label>
+          <input type="text" ng-model="analysis[index].url" ng-change="setDirty(analysis[index].id)">
         </md-input-container>
-      </div>
 
-      <md-chips ng-model="analysis[index].identifiers" placeholder="Entrer un identifiant" delete-button-label="Supprimer l'identifiant" secondary-placeholder="Identifiants"></md-chips>
+        <div layout="row">
+          <md-input-container flex="50">
+            <label>Type</label>
+            <md-select ng-model="analysis[index].rtype" ng-change="setDirty(analysis[index].id)">
+              <md-option></md-option>
+              <md-option value="article">Article</md-option>
+              <md-option value="book">Book</md-option>
+              <md-option value="book_section">Book section</md-option>
+            </md-select>
+          </md-input-container>
 
-      <md-input-container>
-        <label>UnitID</label>
-        <input type="text" ng-model="analysis[index].unitid">
-      </md-input-container>
+          <md-input-container flex="50">
+            <label>Mime</label>
+            <md-select ng-model="analysis[index].mime" ng-change="setDirty(analysis[index].id)">
+              <md-option></md-option>
+              <md-option value="pdf">PDF</md-option>
+              <md-option value="html">HTML</md-option>
+              <md-option value="misc">MISC</md-option>
+            </md-select>
+          </md-input-container>
+        </div>
+
+        <md-chips ng-model="analysis[index].identifiers" placeholder="Entrer un identifiant" delete-button-label="Supprimer l'identifiant" secondary-placeholder="Identifiants" ng-change="setDirty(analysis[index].id)"></md-chips>
+
+        <md-input-container>
+          <label>UnitID</label>
+          <input type="text" ng-model="analysis[index].unitid" ng-change="setDirty(analysis[index].id)">
+        </md-input-container>
+      </md-content>
     </div>
   </div>
-
-  <md-button class="fixed md-fab md-fab-bottom-right" aria-label="Nouvelle analyse" ng-click="newAnalysis()">
-    <md-tooltip md-direction="top" md-autohide>Nouvelle analyse</md-tooltip>
-    <md-icon md-svg-icon="content:add"></md-icon>
-  </md-button>
 </div>

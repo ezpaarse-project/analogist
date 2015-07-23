@@ -24,6 +24,24 @@ angular.module('WebApp')
   var cardID = $scope.cardID = $routeParams.id;
   $scope.index = -1;
 
+  function getAnalysis(id) {
+    if (!angular.isArray($scope.analysis)) { return null; }
+
+    for (var i = $scope.analysis.length - 1; i >= 0; i--) {
+      if ($scope.analysis[i].id == id) { return $scope.analysis[i]; }
+    };
+  }
+
+  function removeAnalysis(id) {
+    if (!angular.isArray($scope.analysis)) { return null; }
+
+    for (var i = $scope.analysis.length - 1; i >= 0; i--) {
+      if ($scope.analysis[i].id == id) {
+        return $scope.analysis.splice(i, 1);
+      }
+    };
+  }
+
   $scope.newAnalysis = function () {
     $scope.index = $scope.analysis.push({ identifiers: [] }) - 1;
   };
@@ -37,6 +55,36 @@ angular.module('WebApp')
     } else if ($scope.index >= $scope.analysis.length) {
       $scope.index = $scope.analysis.length - 1;
     }
+  };
+  $scope.prev = function () { $scope.select($scope.index - 1); };
+  $scope.next = function () { $scope.select($scope.index + 1); };
+  $scope.hasNext = function () {
+    return ($scope.index >= 0 && $scope.index + 1 < $scope.analysis.length);
+  };
+  $scope.hasPrev = function () {
+    return ($scope.index - 1 >= 0);
+  };
+
+  $scope.remove = function (id) {
+    removeAnalysis(id);
+    $mdToast.show({
+      template: '<md-toast><span flex>Analyse supprimée</span></md-toast>',
+      hideDelay: 2000,
+      position: 'top right'
+    });
+  };
+  $scope.setDirty = function (id) {
+    var analysis = getAnalysis(id);
+    if (analysis) { analysis.dirty = true; }
+  };
+  $scope.save = function (analysis) {
+    if (!analysis) { return; }
+    analysis.dirty = false;
+    $mdToast.show({
+      template: '<md-toast><span flex>Analyse sauvegardée</span></md-toast>',
+      hideDelay: 2000,
+      position: 'top right'
+    });
   };
 
   $scope.analysis = [
@@ -160,9 +208,7 @@ angular.module('WebApp')
           $mdDialog.hide();
 
           $mdToast.show({
-            template: '<md-toast>' +
-                        '<span flex>Platforme sauvegardée</span>' +
-                      '</md-toast>',
+            template: '<md-toast><span flex>Platforme sauvegardée</span></md-toast>',
             hideDelay: 3000,
             position: 'top right'
           });
