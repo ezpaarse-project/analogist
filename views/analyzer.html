@@ -60,8 +60,8 @@
       </md-button>
     </div>
 
-    <div layout="row">
-      <md-input-container flex="50">
+    <div layout="row" layout-wrap>
+      <md-input-container flex-sm="50">
         <label>Type</label>
         <md-select ng-model="analysis[index].rtype" ng-change="setDirty(analysis[index].id)">
           <md-option></md-option>
@@ -71,7 +71,7 @@
         </md-select>
       </md-input-container>
 
-      <md-input-container flex="50">
+      <md-input-container flex-sm="50">
         <label>Mime</label>
         <md-select ng-model="analysis[index].mime" ng-change="setDirty(analysis[index].id)">
           <md-option></md-option>
@@ -80,14 +80,14 @@
           <md-option value="misc">MISC</md-option>
         </md-select>
       </md-input-container>
+
+      <md-input-container flex>
+        <label>UnitID</label>
+        <input type="text" ng-model="analysis[index].unitid" ng-change="setDirty(analysis[index].id)">
+      </md-input-container>
     </div>
 
     <md-chips ng-model="analysis[index].identifiers" placeholder="Entrer un identifiant" delete-button-label="Supprimer l'identifiant" secondary-placeholder="Identifiants" ng-change="setDirty(analysis[index].id)"></md-chips>
-
-    <md-input-container flex="50">
-      <label>UnitID</label>
-      <input type="text" ng-model="analysis[index].unitid" ng-change="setDirty(analysis[index].id)">
-    </md-input-container>
 
     <md-input-container>
       <label>Remarques</label>
