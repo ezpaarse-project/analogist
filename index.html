@@ -28,7 +28,10 @@
           <md-button ng-click="toggleSidenav('left')" hide-gt-sm class="md-icon-button">
             <md-icon aria-label="Menu" md-svg-icon="navigation:menu"></md-icon>
           </md-button>
-          <h1 ng-bind="title"></h1>
+          <h1 class="ellipsis" ng-bind="title" ng-hide="subtitle"></h1>
+          <h1 class="ellipsis" ng-show="subtitle">
+            <span hide show-gt-md ng-bind="title"></span><md-icon hide show-gt-md md-svg-icon="navigation:chevron_right"></md-icon><span title="{{ subtitle }}" ng-bind="subtitle"></span>
+          </h1>
         </div>
       </md-toolbar>
 

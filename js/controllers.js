@@ -11,8 +11,13 @@ angular.module('WebApp')
   };
 
   $rootScope.$on('$routeChangeSuccess', function() {
-    $rootScope.title = $route.current.title;
+    $scope.title = $route.current.title;
+    $scope.subtitle = null;
   });
+
+  $scope.setSubtitle = function (str) {
+    $scope.subtitle = str;
+  };
 
   $scope.goto = function(path) {
     $location.path(path || '/');
@@ -57,6 +62,8 @@ angular.module('WebApp')
         ariaLabel: "Erreur plateforme introuvable"
       });
     }
+
+    $scope.setSubtitle($scope.platform.platformName);
 
     $scope.analysis = [
       {
