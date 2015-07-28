@@ -3,35 +3,11 @@
 </div>
 
 <div ng-show="platform">
-  <div layout="row" class="md-whiteframe-z1 md-margin md-padding center-aligned">
-    <div layout="column" flex="33">
-      <div class="md-headline">Date</div>
-      <div ng-bind="platform.platformDate"></div>
-    </div>
-    <div layout="column" flex="33">
-      <div class="md-headline">Statut</div>
-      <div ng-bind="platform.platformStatus"></div>
-    </div>
-    <div layout="column" flex="33">
-      <div class="md-headline">Contact</div>
-      <div ng-bind="platform.platformContact"></div>
-    </div>
+  <div class="md-whiteframe-z1 md-margin md-padding center-">
+    <div><md-icon md-svg-icon="action:event"></md-icon> <span ng-bind="platform.platformDate"></span></div>
+    <div><md-icon md-svg-icon="action:bookmark"></md-icon> <span ng-bind="platform.platformStatus"></span></div>
+    <div><md-icon md-svg-icon="action:assignment_ind"></md-icon> <span ng-bind="platform.platformContact"></span></div>
   </div>
-
-  <!-- <div layout="row" class="center-aligned">
-    <div layout="column" flex="33">
-      <div class="md-headline">Date</div>
-      <div ng-bind="platform.platformDate"></div>
-    </div>
-    <div layout="column" flex="33">
-      <div class="md-headline">Statut</div>
-      <div ng-bind="platform.platformStatus"></div>
-    </div>
-    <div layout="column" flex="33">
-      <div class="md-headline">Contact</div>
-      <div ng-bind="platform.platformContact"></div>
-    </div>
-  </div> -->
 
   <ez-analyzer analysis="analysis" ng-repeat="n in range(nbViews)"></ez-analyzer>
 

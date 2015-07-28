@@ -54,9 +54,9 @@
         <input type="text" ng-model="analysis[index].url" ng-change="setDirty(analysis[index].id)">
       </md-input-container>
 
-      <md-button class="md-icon-button" aria-label="Accéder à l'URL" ng-href="{{ analysis[index].url }}" ng-disabled="!analysis[index].url" target="_blank">
+      <md-button aria-label="Accéder à l'URL" ng-href="{{ analysis[index].url }}" ng-disabled="!analysis[index].url" target="_blank">
         <md-tooltip md-direction="bottom" md-autohide>Accéder à l'URL</md-tooltip>
-        <md-icon md-svg-icon="action:launch"></md-icon>
+        Visiter
       </md-button>
     </div>
 
