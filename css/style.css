@@ -53,3 +53,10 @@ md-sidenav.sidemenu .logo {
 @media (min-width: 2100px) {
   .tile { width: calc(16.6666% - 20px); }
 }
+
+/**
+ * Fix icon alignment for icon-buttons with href
+ */
+.md-icon-button[ng-href] {
+  display: inline-flex;
+}
