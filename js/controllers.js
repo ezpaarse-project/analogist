@@ -69,12 +69,19 @@ angular.module('WebApp')
       {
         "id": 1,
         "title": "Consultation d'un article PDF",
-        "url": "http://www.google.fr?id=1234&issn=1234-5678",
+        "url": "http://www.google.fr/somewhere?id=1234&issn=1234-5678",
         "mime": "pdf",
         "rtype": "article",
         "identifiers": [
           "title_id => 1234",
           "online_identifier => 1234-5678"
+        ],
+        "pathParams": [
+          { value: 'somewhere', comment: 'ce commentaire est plutôt long et surtout parfaitement inutile...\n...et il comporte des sauts de lignes !' },
+        ],
+        "queryParams": [
+          { name: 'id', value: '1234', comment: '' },
+          { name: 'issn', value: '1234-5678', comment: '' }
         ]
       },
       {
@@ -85,15 +92,27 @@ angular.module('WebApp')
         "rtype": "article",
         "identifiers": [
           "title_id => abcd"
-        ]
+        ],
+        "pathParams": [
+          { value: 'article-abcd', comment: 'indique un article dont l\'identifiant est abcd' }
+        ],
+        "queryParams": []
       },
       {
         "id": 3,
         "title": "Consultation d'un résumé",
-        "url": "http://www.google.fr",
+        "url": "http://www.google.fr/some/thing?foo=bar",
         "mime": "html",
         "rtype": "abstract",
-        "identifiers": []
+        "comment": "A quoi bon analyser ça ? Cette URL ne correspond à rien !\nC'est pas demain qu'on va pouvoir intégrer google...",
+        "identifiers": [],
+        "pathParams": [
+          { value: 'some', comment: '' },
+          { value: 'thing', comment: '' }
+        ],
+        "queryParams": [
+          { name: 'foo', value: 'bar', comment: 'ce truc ne sert à rien' }
+        ]
       }
     ];
   }).finally(function () {

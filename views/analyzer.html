@@ -42,58 +42,121 @@
     </md-list>
   </md-content>
 
-  <md-content ng-if="analysis[index]" class="whitesmoke md-padding">
-    <md-input-container>
-      <label>Titre</label>
-      <input type="text" ng-model="analysis[index].title" ng-change="setDirty(analysis[index].id)">
-    </md-input-container>
+  <div ng-if="analysis[index]">
+    <md-tabs md-dynamic-height md-stretch-tabs="always" md-border-bottom>
+      <md-tab label="General">
+        <md-content class="whitesmoke md-padding">
+          <md-input-container>
+            <label>Titre</label>
+            <input type="text" ng-model="analysis[index].title" ng-change="setDirty(analysis[index].id)">
+          </md-input-container>
 
-    <div layout="row" layout-align="start center">
-      <md-input-container flex>
-        <label>URL</label>
-        <input type="text" ng-model="analysis[index].url" ng-change="setDirty(analysis[index].id)">
-      </md-input-container>
+          <div layout="row" layout-align="start center">
+            <md-input-container flex>
+              <label>URL</label>
+              <input type="text" ng-model="analysis[index].url" ng-change="setDirty(analysis[index].id)">
+            </md-input-container>
 
-      <md-button aria-label="Accéder à l'URL" ng-href="{{ analysis[index].url }}" ng-disabled="!analysis[index].url" target="_blank">
-        <md-tooltip md-direction="bottom" md-autohide>Accéder à l'URL</md-tooltip>
-        Visiter
-      </md-button>
-    </div>
+            <md-button aria-label="Accéder à l'URL" ng-href="{{ analysis[index].url }}" ng-disabled="!analysis[index].url" target="_blank">
+              <md-tooltip md-direction="bottom" md-autohide>Accéder à l'URL</md-tooltip>
+              Visiter
+            </md-button>
+          </div>
 
-    <div layout="row" layout-wrap>
-      <md-input-container flex-sm="50">
-        <label>Type</label>
-        <md-select ng-model="analysis[index].rtype" ng-change="setDirty(analysis[index].id)">
-          <md-option></md-option>
-          <md-option value="article">Article</md-option>
-          <md-option value="book">Book</md-option>
-          <md-option value="book_section">Book section</md-option>
-        </md-select>
-      </md-input-container>
+          <div layout="row" layout-wrap>
+            <md-input-container flex-sm="50">
+              <label>Type</label>
+              <md-select ng-model="analysis[index].rtype" ng-change="setDirty(analysis[index].id)">
+                <md-option></md-option>
+                <md-option value="abstract">Résumé</md-option>
+                <md-option value="article">Article</md-option>
+                <md-option value="book">Book</md-option>
+                <md-option value="book_section">Book section</md-option>
+              </md-select>
+            </md-input-container>
 
-      <md-input-container flex-sm="50">
-        <label>Mime</label>
-        <md-select ng-model="analysis[index].mime" ng-change="setDirty(analysis[index].id)">
-          <md-option></md-option>
-          <md-option value="pdf">PDF</md-option>
-          <md-option value="html">HTML</md-option>
-          <md-option value="misc">MISC</md-option>
-        </md-select>
-      </md-input-container>
+            <md-input-container flex-sm="50">
+              <label>Mime</label>
+              <md-select ng-model="analysis[index].mime" ng-change="setDirty(analysis[index].id)">
+                <md-option></md-option>
+                <md-option value="pdf">PDF</md-option>
+                <md-option value="html">HTML</md-option>
+                <md-option value="misc">MISC</md-option>
+              </md-select>
+            </md-input-container>
 
-      <md-input-container flex>
-        <label>UnitID</label>
-        <input type="text" ng-model="analysis[index].unitid" ng-change="setDirty(analysis[index].id)">
-      </md-input-container>
-    </div>
+            <md-input-container flex>
+              <label>UnitID</label>
+              <input type="text" ng-model="analysis[index].unitid" ng-change="setDirty(analysis[index].id)">
+            </md-input-container>
+          </div>
 
-    <md-chips ng-model="analysis[index].identifiers" placeholder="Entrer un identifiant" delete-button-label="Supprimer l'identifiant" secondary-placeholder="Identifiants" ng-change="setDirty(analysis[index].id)"></md-chips>
+          <md-chips ng-model="analysis[index].identifiers" placeholder="Entrer un identifiant" delete-button-label="Supprimer l'identifiant" secondary-placeholder="Identifiants" ng-change="setDirty(analysis[index].id)"></md-chips>
+        </md-content>
+      </md-tab>
 
-    <md-input-container>
-      <label>Remarques</label>
-      <textarea ng-model="analysis[index].comment" ng-change="setDirty(analysis[index].id)"></textarea>
-    </md-input-container>
-  </md-content>
+      <md-tab label="URL en détail">
+        <md-content class="whitesmoke md-padding">
+          <div layout="row" layout-align="start center">
+            <md-input-container flex>
+              <label>URL</label>
+              <input type="text" ng-model="analysis[index].url" ng-change="setDirty(analysis[index].id)">
+            </md-input-container>
+
+            <md-button aria-label="Accéder à l'URL" ng-href="{{ analysis[index].url }}" ng-disabled="!analysis[index].url" target="_blank">
+              <md-tooltip md-direction="bottom" md-autohide>Accéder à l'URL</md-tooltip>
+              Visiter
+            </md-button>
+          </div>
+
+          <h2 class="md-headline">Paramètres du path</h2>
+          <div layout="row" layout-wrap ng-repeat="path in analysis[index].pathParams">
+            <md-input-container flex="25" flex-sm="50">
+              <label>Path</label>
+              <input type="text" ng-model="path.value" ng-change="setDirty(analysis[index].id)">
+            </md-input-container>
+
+            <md-input-container flex="75" flex-sm="50">
+              <label>Commentaire</label>
+              <textarea ng-model="path.comment" ng-change="setDirty(analysis[index].id)"></textarea>
+            </md-input-container>
+
+            <md-divider></md-divider>
+          </div>
+
+          <h2 class="md-headline">Paramètres de la query</h2>
+          <div layout="row" layout-wrap ng-repeat="query in analysis[index].queryParams">
+            <md-input-container flex="25" flex-sm="50">
+              <label>Nom</label>
+              <input type="text" ng-model="query.name" ng-change="setDirty(analysis[index].id)">
+            </md-input-container>
+
+            <md-input-container flex="25" flex-sm="50">
+              <label>Valeur</label>
+              <input type="text" ng-model="query.value" ng-change="setDirty(analysis[index].id)">
+            </md-input-container>
+
+            <md-input-container flex="50" flex-sm="100">
+              <label>Commentaire</label>
+              <textarea ng-model="query.comment" ng-change="setDirty(analysis[index].id)"></textarea>
+            </md-input-container>
+          </div>
+        </md-content>
+      </md-tab>
+
+      <md-tab>
+        <md-tab-label>
+          Remarques <md-icon ng-show="analysis[index].comment" md-svg-icon="communication:comment"></md-icon>
+        </md-tab-label>
+        <md-content class="whitesmoke md-padding">
+          <md-input-container>
+            <label>Remarques</label>
+            <textarea ng-model="analysis[index].comment" ng-change="setDirty(analysis[index].id)"></textarea>
+          </md-input-container>
+        </md-content>
+      </md-tab>
+    </md-tabs>
+  </div>
 </div>
 
 <div layout="row" layout-align="center center" layout-wrap>
