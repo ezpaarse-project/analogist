@@ -110,7 +110,7 @@
           </div>
 
           <h2 class="md-headline">Paramètres du path</h2>
-          <div layout="row" class="md-whiteframe-z1 md-padding md-margin" layout-wrap ng-repeat="path in analysis[index].pathParams">
+          <div layout="row" class="white md-whiteframe-z1 md-padding md-margin" layout-wrap ng-repeat="path in analysis[index].pathParams">
             <md-input-container flex="25" flex-sm="50">
               <label>Path</label>
               <input type="text" ng-model="path.value" ng-change="setDirty(analysis[index].id)">
@@ -125,7 +125,7 @@
           </div>
 
           <h2 class="md-headline">Paramètres de la query</h2>
-          <div layout="row" class="md-whiteframe-z1 md-padding md-margin" layout-wrap ng-repeat="query in analysis[index].queryParams">
+          <div layout="row" class="white md-whiteframe-z1 md-padding md-margin" layout-wrap ng-repeat="query in analysis[index].queryParams">
             <md-input-container flex="25" flex-sm="50">
               <label>Nom</label>
               <input type="text" ng-model="query.name" ng-change="setDirty(analysis[index].id)">
