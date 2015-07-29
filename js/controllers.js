@@ -116,7 +116,11 @@ angular.module('WebApp')
 
     for (var i = $scope.analysis.length - 1; i >= 0; i--) {
       if ($scope.analysis[i].id == id) {
-        return $scope.analysis.splice(i, 1);
+        $scope.analysis.splice(i, 1);
+        if ($scope.index >= $scope.analysis.length) {
+          $scope.index = $scope.analysis.length - 1;
+        }
+        return;
       }
     };
   }

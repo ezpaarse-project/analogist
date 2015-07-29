@@ -95,3 +95,9 @@
     </md-input-container>
   </md-content>
 </div>
+
+<div layout="row" layout-align="center center" layout-wrap>
+  <a href="javascript:void(0)" title="{{ a.title }}" ng-click="select($index)" ng-repeat="a in analysis track by $index">
+    <md-icon md-svg-icon="image:{{ index == $index ? 'lens' : 'panorama_fish_eye' }}"></md-icon>
+  </a>
+</div>
