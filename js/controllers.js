@@ -144,6 +144,25 @@ angular.module('WebApp')
     };
   }
 
+  $scope.addParam = function (analysis, type) {
+    var field = (type || '') + 'Params';
+    if (!analysis) { return; }
+    if (type != 'query' && type != 'path') { return; }
+
+    if (!angular.isArray(analysis[field])) { analysis[field] = []; }
+    analysis[field].push({});
+    analysis.dirty = true;
+  };
+  $scope.removeParam = function (analysis, type, i) {
+    var field = (type || '') + 'Params';
+    if (!analysis) { return; }
+    if (type != 'query' && type != 'path') { return; }
+    if (!angular.isArray(analysis[field])) { return; }
+
+    analysis[field].splice(i, 1);
+    analysis.dirty = true;
+  };
+
   $scope.remove = function (id) {
     removeAnalysis(id);
     $mdToast.show({

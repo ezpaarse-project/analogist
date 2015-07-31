@@ -22,6 +22,8 @@ md-sidenav.sidemenu .logo {
 
 .fade.ng-enter { animation: fadeInDown 0.5s; }
 .fade.ng-leave { animation: fadeOutUp 0.5s; }
+.fade-left.ng-enter { animation: fadeInLeft 0.5s; }
+.fade-left.ng-leave { animation: fadeOutLeft 0.5s; }
 
 .fixed.md-fab {
   position: fixed !important;
