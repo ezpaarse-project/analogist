@@ -144,6 +144,36 @@ angular.module('WebApp')
     };
   }
 
+  $scope.parseUrl = function (id, url) {
+    if (!url) { return; }
+
+    var analysis = getAnalysis(id);
+    if (!analysis) { return; }
+
+    analysis.pathParams  = [];
+    analysis.queryParams = [];
+
+    var link = document.createElement('a');
+    link.href = url;
+
+    link.pathname.split('/').forEach(function (param) {
+      if (param) { analysis.pathParams.push({ value: param }); }
+    });
+
+    link.search.substring(1).split('&').forEach(function (param) {
+      if (!param) { return; }
+
+      var parts = param.split('=');
+
+      analysis.queryParams.push({
+        name: decodeURIComponent(parts[0] || ''),
+        value: decodeURIComponent(parts[1] || '')
+      });
+    });
+
+    analysis.dirty = true;
+  }
+
   $scope.addParam = function (analysis, type) {
     var field = (type || '') + 'Params';
     if (!analysis) { return; }

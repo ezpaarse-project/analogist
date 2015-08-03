@@ -1,4 +1,4 @@
-<div class="md-margin md-whiteframe-z1" md-swipe-right="prev()" md-swipe-left="next()">
+<div class="md-margin md-whiteframe-z1">
   <md-toolbar class="md-hue-1">
     <div class="md-toolbar-tools">
       <md-button class="md-icon-button" aria-label="Analyse précédente" ng-click="prev()" ng-disabled="!hasPrev()">
@@ -31,6 +31,7 @@
       </md-button>
     </div>
   </md-toolbar>
+
 
   <md-content ng-hide="analysis[index]" class="whitesmoke md-padding">
     <md-list>
@@ -97,16 +98,23 @@
 
       <md-tab label="URL en détail">
         <md-content class="whitesmoke md-padding">
-          <div layout="row" layout-align="start center">
+          <div layout="row" layout-sm="column">
             <md-input-container flex>
               <label>URL</label>
               <input type="text" ng-model="analysis[index].url" ng-change="setDirty(analysis[index].id)">
             </md-input-container>
 
-            <md-button aria-label="Accéder à l'URL" ng-href="{{ analysis[index].url }}" ng-disabled="!analysis[index].url" target="_blank">
-              <md-tooltip md-direction="bottom" md-autohide>Accéder à l'URL</md-tooltip>
-              Visiter
-            </md-button>
+            <div layout="row" layout-align="center center">
+              <md-button aria-label="Démembrer l'URL" ng-click="parseUrl(analysis[index].id, analysis[index].url)" ng-disabled="!analysis[index].url">
+                <md-tooltip md-direction="bottom" md-autohide>Démembrer l'url</md-tooltip>
+                Démembrer
+              </md-button>
+
+              <md-button aria-label="Accéder à l'URL" ng-href="{{ analysis[index].url }}" ng-disabled="!analysis[index].url" target="_blank">
+                <md-tooltip md-direction="bottom" md-autohide>Accéder à l'URL</md-tooltip>
+                Visiter
+              </md-button>
+            </div>
           </div>
 
           <h2 class="md-headline">Paramètres du path</h2>
