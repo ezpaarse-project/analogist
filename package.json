@@ -1,6 +1,9 @@
 {
   "name": "analogist",
-  "version": "0.0.0",
+  "description": "Analogist",
+  "version": "0.0.1",
+  "author": "ezPAARSE Team",
+  "license": "CeCILL",
   "private": true,
   "scripts": {
     "start": "node ./bin/www"
@@ -14,5 +17,18 @@
     "mongodb": "^2.0.36",
     "morgan": "~1.6.1",
     "serve-favicon": "~2.3.0"
-  }
+  },
+  "devDependencies": {
+    "chai": "^3.2.0",
+    "mocha": "^2.2.5",
+    "supertest": "^1.0.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ezpaarse-project/analogist.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ezpaarse-project/analogist/issues"
+  },
+  "homepage": "https://github.com/ezpaarse-project/analogist#readme"
 }

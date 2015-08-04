@@ -4,10 +4,11 @@
  * Module dependencies.
  */
 
-var mongo = require('../lib/mongo.js');
-var app = require('../app');
-var debug = require('debug')('analogist:server');
-var http = require('http');
+var mongo  = require('../lib/mongo.js');
+var config = require('../config.json');
+var app    = require('../app');
+var debug  = require('debug')('analogist:server');
+var http   = require('http');
 
 /**
  * Get port from environment and store in Express.
@@ -26,7 +27,7 @@ var server = http.createServer(app);
  * Listen on provided port, on all network interfaces.
  */
 
-mongo.connect(function (err) {
+mongo.connect(config.MONGO_URL, function (err) {
   if (err) { throw err; }
 
   server.listen(port);
