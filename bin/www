@@ -94,3 +94,10 @@ function onListening() {
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
 }
+
+function shutdown() {
+  console.log('\nGot a signal, shutting down...');
+  process.exit(1);
+}
+process.on('SIGTERM', shutdown);
+process.on('SIGINT', shutdown);
