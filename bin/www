@@ -31,9 +31,9 @@ var i = 1;
 (function start() {
   mongo.connect(config.MONGO_URL, function (err) {
     if (err) {
-      console.error('Failed to connect to mongo (attempt %d/10)', i);
+      console.error('Failed to connect to mongo (attempt %d/20)', i);
 
-      if (i++ < 10) { return setTimeout(start, 3000); }
+      if (i++ < 20) { return setTimeout(start, 5000); }
 
       console.error('Can not connect to %s, aborting...', config.MONGO_URL);
       process.exit(1);
