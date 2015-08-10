@@ -34,9 +34,9 @@ describe("Routes", function () {
     .end(done);
   });
 
-  it("POST /platforms/" + cardID + "/analysis", function (done) {
+  it("POST /platforms/" + cardID + "/analyses", function (done) {
     request(app)
-    .post('/platforms/' + cardID + '/analysis')
+    .post('/platforms/' + cardID + '/analyses')
     .send({ foo: 'bar' })
     .expect('Content-Type', /json/)
     .expect(200)
@@ -45,9 +45,9 @@ describe("Routes", function () {
 
       expect(body).to.be.an('object');
       expect(body).to.have.property('cardID', cardID);
-      expect(body).to.have.property('analysis').that.is.an('array').with.length(1);
+      expect(body).to.have.property('analyses').that.is.an('array').with.length(1);
 
-      var analysis = body.analysis[0];
+      var analysis = body.analyses[0];
       expect(analysis).to.have.property('id').that.is.a('string');
       expect(analysis).to.have.property('foo', 'bar');
 
@@ -61,9 +61,9 @@ describe("Routes", function () {
 
         expect(doc).to.exist;
         expect(doc).to.have.property('cardID', cardID);
-        expect(doc).to.have.property('analysis').that.is.an('array').with.length(1);
+        expect(doc).to.have.property('analyses').that.is.an('array').with.length(1);
 
-        var analysis = doc.analysis[0];
+        var analysis = doc.analyses[0];
         expect(analysis).to.have.property('foo', 'bar');
         expect(analysis).to.have.property('id').that.is.an('object');
         expect(analysis.id.toString()).to.equal(analysisID);
@@ -73,11 +73,11 @@ describe("Routes", function () {
     });
   });
 
-  it("POST /platforms/" + cardID + "/analysis/:id", function (done) {
+  it("POST /platforms/" + cardID + "/analyses/:id", function (done) {
     expect(analysisID).to.exist;
 
     request(app)
-    .post('/platforms/' + cardID + '/analysis/' + analysisID)
+    .post('/platforms/' + cardID + '/analyses/' + analysisID)
     .send({ bar: 'foo' })
     .expect('Content-Type', /json/)
     .expect(200)
@@ -86,9 +86,9 @@ describe("Routes", function () {
 
       expect(body).to.be.an('object');
       expect(body).to.have.property('cardID', cardID);
-      expect(body).to.have.property('analysis').that.is.an('array').with.length(1);
+      expect(body).to.have.property('analyses').that.is.an('array').with.length(1);
 
-      var analysis = body.analysis[0];
+      var analysis = body.analyses[0];
       expect(analysis).to.have.property('id', analysisID);
       expect(analysis).to.have.property('bar', 'foo');
     })
@@ -100,9 +100,9 @@ describe("Routes", function () {
 
         expect(doc).to.exist;
         expect(doc.cardID).to.equal(cardID);
-        expect(doc).to.have.property('analysis').that.is.an('array').with.length(1);
+        expect(doc).to.have.property('analyses').that.is.an('array').with.length(1);
 
-        var analysis = doc.analysis[0];
+        var analysis = doc.analyses[0];
         expect(analysis).to.have.property('bar', 'foo');
         expect(analysis).to.have.property('id').that.is.an('object');
         expect(analysis.id.toString()).to.equal(analysisID);
@@ -112,18 +112,18 @@ describe("Routes", function () {
     });
   });
 
-  it("DELETE /platforms/" + cardID + "/analysis/:id", function (done) {
+  it("DELETE /platforms/" + cardID + "/analyses/:id", function (done) {
     expect(analysisID).to.exist;
 
     request(app)
-    .delete('/platforms/' + cardID + '/analysis/' + analysisID)
+    .delete('/platforms/' + cardID + '/analyses/' + analysisID)
     .expect('Content-Type', /json/)
     .expect(200)
     .expect(function (res) {
       var body = res.body;
 
       expect(body).to.be.an('object');
-      expect(body).to.have.property('analysis').that.is.an('array').with.length(0);
+      expect(body).to.have.property('analyses').that.is.an('array').with.length(0);
     })
     .end(function (error) {
       expect(error).to.not.exist;
@@ -132,7 +132,7 @@ describe("Routes", function () {
         expect(err).to.not.exist;
 
         expect(doc).to.exist;
-        expect(doc).to.have.property('analysis').that.is.an('array').with.length(0);
+        expect(doc).to.have.property('analyses').that.is.an('array').with.length(0);
 
         done();
       });
@@ -149,7 +149,7 @@ describe("Routes", function () {
 
       expect(body).to.be.an('object');
       expect(body).to.have.property('cardID', cardID);
-      expect(body).to.have.property('analysis').that.is.an('array').with.length(0);
+      expect(body).to.have.property('analyses').that.is.an('array').with.length(0);
     })
     .end(done);
   });

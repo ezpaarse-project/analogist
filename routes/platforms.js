@@ -13,14 +13,14 @@ router.get('/:cid', function(req, res, next) {
 });
 
 /* POST new analysis. */
-router.post('/:cid/analysis', function(req, res, next) {
+router.post('/:cid/analyses', function(req, res, next) {
   if (typeof req.body !== 'object') { return res.status(400).end(); }
 
   req.body.id = new ObjectID();
 
   mongo.get('platforms').findOneAndUpdate(
     { cardID: req.params.cid },
-    { $push: { analysis: req.body } },
+    { $push: { analyses: req.body } },
     { returnOriginal: false, upsert: true }, function (err, result) {
 
     if (err) { return next(err); }
@@ -37,15 +37,15 @@ router.delete('/:cid', function(req, res, next) {
 });
 
 /* POST an existing analysis */
-router.post('/:cid/analysis/:aid', function(req, res, next) {
+router.post('/:cid/analyses/:aid', function(req, res, next) {
   if (typeof req.body !== 'object') { return res.status(400).end(); }
   if (!ObjectID.isValid(req.params.aid)) { return res.status(400).end(); }
 
   req.body.id = new ObjectID(req.params.aid);
 
   mongo.get('platforms').findOneAndUpdate(
-    { cardID: req.params.cid, 'analysis.id': req.body.id },
-    { $set: { 'analysis.$': req.body } },
+    { cardID: req.params.cid, 'analyses.id': req.body.id },
+    { $set: { 'analyses.$': req.body } },
     { returnOriginal: false }, function (err, result) {
 
     if (err) { return next(err); }
@@ -54,12 +54,12 @@ router.post('/:cid/analysis/:aid', function(req, res, next) {
 });
 
 /* DELETE an analysis */
-router.delete('/:cid/analysis/:aid', function(req, res, next) {
+router.delete('/:cid/analyses/:aid', function(req, res, next) {
   if (!ObjectID.isValid(req.params.aid)) { return res.status(400).end(); }
 
   mongo.get('platforms').findOneAndUpdate(
     { cardID: req.params.cid },
-    { $pull: { analysis: { id: new ObjectID(req.params.aid) } } },
+    { $pull: { analyses: { id: new ObjectID(req.params.aid) } } },
     { returnOriginal: false }, function (err, result) {
 
     if (err) { return next(err); }
