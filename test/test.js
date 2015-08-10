@@ -21,7 +21,7 @@ var analysisID;
 describe("Routes", function () {
   before(function (done) {
     mongo.connect(mongoUrl, function (err) {
-      expect(err).to.not.exist;
+      if (err) { throw err; }
 
       mongo.db.dropDatabase(done);
     });
@@ -57,7 +57,7 @@ describe("Routes", function () {
       expect(error).to.not.exist;
 
       mongo.get('platforms').findOne({ cardID: cardID }, function (err, doc) {
-        expect(err).to.not.exist;
+        if (err) { throw err; }
 
         expect(doc).to.exist;
         expect(doc).to.have.property('cardID', cardID);
@@ -96,7 +96,7 @@ describe("Routes", function () {
       expect(error).to.not.exist;
 
       mongo.get('platforms').findOne({ cardID: cardID }, function (err, doc) {
-        expect(err).to.not.exist;
+        if (err) { throw err; }
 
         expect(doc).to.exist;
         expect(doc.cardID).to.equal(cardID);
@@ -129,7 +129,7 @@ describe("Routes", function () {
       expect(error).to.not.exist;
 
       mongo.get('platforms').findOne({ cardID: cardID }, function (err, doc) {
-        expect(err).to.not.exist;
+        if (err) { throw err; }
 
         expect(doc).to.exist;
         expect(doc).to.have.property('analyses').that.is.an('array').with.length(0);
@@ -162,9 +162,9 @@ describe("Routes", function () {
       expect(error).to.not.exist;
 
       mongo.get('platforms').findOne({ cardID: cardID }, function (err, doc) {
-        expect(err).to.not.exist;
-        expect(doc).to.not.exist;
+        if (err) { throw err; }
 
+        expect(doc).to.not.exist;
         done();
       });
     });
