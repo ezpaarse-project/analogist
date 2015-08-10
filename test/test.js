@@ -10,6 +10,8 @@ var config  = require('../config.json');
 var mongo   = require('../lib/mongo.js');
 var app     = require('../app.js');
 
+var mongoUrl = 'mongodb://' + config.MONGO.ADDRESS + ':' + config.MONGO.PORT + '/test';
+
 var cardID = 'sd123';
 var analysisID;
 
@@ -18,7 +20,7 @@ var analysisID;
  */
 describe("Routes", function () {
   before(function (done) {
-    mongo.connect(config.MONGO_TEST_URL, function (err) {
+    mongo.connect(mongoUrl, function (err) {
       expect(err).to.not.exist;
 
       mongo.db.dropDatabase(done);

@@ -18,6 +18,15 @@ var port = normalizePort(process.env.PORT || config.PORT || '3000');
 app.set('port', port);
 
 /**
+ * Build mongo URL from config or env and store in Express
+ */
+
+var mongoAddress = process.env.MONGODB_PORT_27017_TCP_ADDR || config.MONGO.ADDRESS;
+var mongoPort    = process.env.MONGODB_PORT_27017_TCP_PORT || config.MONGO.PORT;
+
+app.locals.mongoUrl = 'mongodb://' + mongoAddress + ':' + mongoPort + '/' + config.MONGO.DB;
+
+/**
  * Create HTTP server.
  */
 
@@ -29,7 +38,7 @@ var server = http.createServer(app);
 
 var i = 1;
 (function start() {
-  mongo.connect(config.MONGO_URL, function (err) {
+  mongo.connect(app.locals.mongoUrl, function (err) {
     if (err) {
       console.error('Failed to connect to mongo (attempt %d/20)', i);
 

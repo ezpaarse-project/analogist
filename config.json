@@ -1,5 +1,8 @@
 {
   "PORT": "3000",
-  "MONGO_URL": "mongodb://localhost:27017/analogist",
-  "MONGO_TEST_URL": "mongodb://localhost:27017/test"
+  "MONGO": {
+    "ADDRESS": "localhost",
+    "PORT": "27017",
+    "DB": "analogist"
+  }
 }
