@@ -1,0 +1,11 @@
+analogist:
+  image: analogist
+  links:
+   - anadb:mongodb
+  ports:
+   - 3000:3000
+
+anadb:
+  image: mongo:latest
+  volumes:
+    - ./data/db:/data/db
