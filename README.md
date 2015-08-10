@@ -2,6 +2,7 @@
 AnalogIST is the platform that gathers all analyses made for ezPAARSE.
 
 ## Install
+We assume that a mongo database is up and running.
 ```
   git clone https://github.com/ezpaarse-project/analogist.git analogist
   cd analogist
@@ -16,8 +17,8 @@ AnalogIST is the platform that gathers all analyses made for ezPAARSE.
 ## Use with docker
 ```
   # Run
-  docker run --name anadb mongo
-  docker run --name analogist --link anadb:mongodb -p 3000:3000 ezpaarseproject/analogist
+  docker run -d --name anadb mongo
+  docker run -d --name analogist --link anadb:mongodb -p 3000:3000 ezpaarseproject/analogist
 
   # Stop
   docker stop anadb analogist
