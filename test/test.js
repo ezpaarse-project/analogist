@@ -27,16 +27,16 @@ describe("Routes", function () {
     });
   });
 
-  it("GET /platforms/" + cardID, function (done) {
+  it("GET /api/platforms/" + cardID, function (done) {
     request(app)
-    .get('/platforms/' + cardID)
+    .get('/api/platforms/' + cardID)
     .expect(404)
     .end(done);
   });
 
-  it("POST /platforms/" + cardID + "/analyses", function (done) {
+  it("POST /api/platforms/" + cardID + "/analyses", function (done) {
     request(app)
-    .post('/platforms/' + cardID + '/analyses')
+    .post('/api/platforms/' + cardID + '/analyses')
     .send({ foo: 'bar' })
     .expect('Content-Type', /json/)
     .expect(200)
@@ -73,11 +73,11 @@ describe("Routes", function () {
     });
   });
 
-  it("POST /platforms/" + cardID + "/analyses/:id", function (done) {
+  it("POST /api/platforms/" + cardID + "/analyses/:id", function (done) {
     expect(analysisID).to.exist;
 
     request(app)
-    .post('/platforms/' + cardID + '/analyses/' + analysisID)
+    .post('/api/platforms/' + cardID + '/analyses/' + analysisID)
     .send({ bar: 'foo' })
     .expect('Content-Type', /json/)
     .expect(200)
@@ -112,11 +112,11 @@ describe("Routes", function () {
     });
   });
 
-  it("DELETE /platforms/" + cardID + "/analyses/:id", function (done) {
+  it("DELETE /api/platforms/" + cardID + "/analyses/:id", function (done) {
     expect(analysisID).to.exist;
 
     request(app)
-    .delete('/platforms/' + cardID + '/analyses/' + analysisID)
+    .delete('/api/platforms/' + cardID + '/analyses/' + analysisID)
     .expect('Content-Type', /json/)
     .expect(200)
     .expect(function (res) {
@@ -139,9 +139,9 @@ describe("Routes", function () {
     });
   });
 
-  it("GET /platforms/" + cardID, function (done) {
+  it("GET /api/platforms/" + cardID, function (done) {
     request(app)
-    .get('/platforms/' + cardID)
+    .get('/api/platforms/' + cardID)
     .expect('Content-Type', /json/)
     .expect(200)
     .expect(function (res) {
@@ -154,9 +154,9 @@ describe("Routes", function () {
     .end(done);
   });
 
-  it("DELETE /platforms/" + cardID, function (done) {
+  it("DELETE /api/platforms/" + cardID, function (done) {
     request(app)
-    .delete('/platforms/' + cardID)
+    .delete('/api/platforms/' + cardID)
     .expect(204)
     .end(function (error) {
       expect(error).to.not.exist;
