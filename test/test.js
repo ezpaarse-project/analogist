@@ -27,14 +27,21 @@ describe("Routes", function () {
     });
   });
 
-  it("GET /api/platforms/" + cardID, function (done) {
+  it('GET /api/platforms/' + cardID, function (done) {
     request(app)
     .get('/api/platforms/' + cardID)
     .expect(404)
     .end(done);
   });
 
-  it("POST /api/platforms/" + cardID + "/analyses", function (done) {
+  it('GET /api/platforms/' + cardID + '/analyses', function (done) {
+    request(app)
+    .get('/api/platforms/' + cardID + '/analyses')
+    .expect(404)
+    .end(done);
+  });
+
+  it('POST /api/platforms/' + cardID + '/analyses', function (done) {
     request(app)
     .post('/api/platforms/' + cardID + '/analyses')
     .send({ foo: 'bar' })
@@ -112,6 +119,36 @@ describe("Routes", function () {
     });
   });
 
+  it("GET /api/platforms/" + cardID, function (done) {
+    request(app)
+    .get('/api/platforms/' + cardID)
+    .expect('Content-Type', /json/)
+    .expect(200)
+    .expect(function (res) {
+      var body = res.body;
+
+      expect(body).to.be.an('object');
+      expect(body).to.have.property('cardID', cardID);
+      expect(body).to.have.property('analyses').that.is.an('array').with.length(1);
+      expect(body.analyses[0]).to.have.property('bar', 'foo');
+    })
+    .end(done);
+  });
+
+  it('GET /api/platforms/' + cardID + '/analyses', function (done) {
+    request(app)
+    .get('/api/platforms/' + cardID + '/analyses')
+    .expect('Content-Type', /json/)
+    .expect(200)
+    .expect(function (res) {
+      var body = res.body;
+
+      expect(body).to.be.an('array').with.length(1);
+      expect(body[0]).to.have.property('bar', 'foo');
+    })
+    .end(done);
+  });
+
   it("DELETE /api/platforms/" + cardID + "/analyses/:id", function (done) {
     expect(analysisID).to.exist;
 
@@ -137,21 +174,6 @@ describe("Routes", function () {
         done();
       });
     });
-  });
-
-  it("GET /api/platforms/" + cardID, function (done) {
-    request(app)
-    .get('/api/platforms/' + cardID)
-    .expect('Content-Type', /json/)
-    .expect(200)
-    .expect(function (res) {
-      var body = res.body;
-
-      expect(body).to.be.an('object');
-      expect(body).to.have.property('cardID', cardID);
-      expect(body).to.have.property('analyses').that.is.an('array').with.length(0);
-    })
-    .end(done);
   });
 
   it("DELETE /api/platforms/" + cardID, function (done) {

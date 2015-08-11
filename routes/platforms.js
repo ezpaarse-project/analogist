@@ -12,6 +12,16 @@ router.get('/:cid', function(req, res, next) {
   });
 });
 
+/* GET the analyses of a platform. */
+router.get('/:cid/analyses', function(req, res, next) {
+  mongo.get('platforms').findOne({ cardID: req.params.cid }, { analyses: 1 }, function (err, doc) {
+    if (err)  { return next(err); }
+    if (!doc) { return res.status(404).end(); }
+
+    res.status(200).json(doc.analyses);
+  });
+});
+
 /* POST new analysis. */
 router.post('/:cid/analyses', function(req, res, next) {
   if (typeof req.body !== 'object') { return res.status(400).end(); }
