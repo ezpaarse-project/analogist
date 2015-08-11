@@ -1,0 +1,24 @@
+{
+  "name": "analogist",
+  "version": "0.1.0",
+  "homepage": "https://github.com/ezpaarse-project/analogist",
+  "license": "CeCILL",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "public/components"
+  ],
+  "authors": [
+    "ezPAARSE Team"
+  ],
+  "dependencies": {
+    "angular-material": "0.10.1-rc4",
+    "angular-messages": "~1.4.2",
+    "angular-route": "~1.4.3",
+    "animate.css": "~3.3.0",
+    "jquery": "~2.1.4"
+  }
+}

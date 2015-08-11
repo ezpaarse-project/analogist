@@ -1,8 +1,70 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+.center-aligned { text-align: center; }
+.whitesmoke { background-color: #F5F5F5; }
+.white { background-color: #FFFFFF; }
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-a {
-  color: #00B7FF;
+md-sidenav.sidemenu {
+  min-width: 250px;
+  width: 250px;
+}
+md-sidenav.sidemenu .logo {
+  width: 100%;
+}
+
+.md-toolbar-tools label,
+.md-toolbar-tools input {
+  color: inherit !important;
+}
+
+.fade.ng-enter { animation: fadeInDown 0.5s; }
+.fade.ng-leave { animation: fadeOutUp 0.5s; }
+.fade-left.ng-enter { animation: fadeInLeft 0.5s; }
+.fade-left.ng-leave { animation: fadeOutLeft 0.5s; }
+
+.fixed.md-fab {
+  position: fixed !important;
+}
+
+.tiles {
+  padding: 0;
+  margin: 0;
+}
+.tile {
+  position: relative;
+  display: inline-block;
+  padding: 5px;
+  margin: 5px;
+  height: 50px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+
+  width: calc(100% - 20px);
+}
+@media (min-width: 900px) {
+  .tile { width: calc(50% - 20px); }
+}
+@media (min-width: 1100px) {
+  .tile { width: calc(33.3333% - 20px); }
+}
+@media (min-width: 1500px) {
+  .tile { width: calc(25% - 20px); }
+}
+@media (min-width: 1850px) {
+  .tile { width: calc(20% - 20px); }
+}
+@media (min-width: 2100px) {
+  .tile { width: calc(16.6666% - 20px); }
+}
+
+/**
+ * Fix icon alignment for icon-buttons with href
+ */
+.md-icon-button[ng-href] {
+  display: inline-flex;
 }

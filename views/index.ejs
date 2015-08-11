@@ -1,13 +1,58 @@
-<html>
-<head>
-  <title>AnalogIST</title>
-  <link rel="stylesheet" href="/stylesheets/style.css">
-</head>
+<html lang="fr" ng-app="WebApp" ng-controller="AppCtrl">
+  <head>
+    <base href="/">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1" />
 
-<body>
-  <div class="content">
-    <h1>Hello world !</h1>
-    <p>Welcome to AnalogIST</p>
-  </div>
-</body>
+    <title ng-bind-template="AnalogIST - {{ title }}"></title>
+
+    <link rel="stylesheet" href="/assets/components/animate.css/animate.min.css">
+    <link rel="stylesheet" href="/assets/components/angular-material/angular-material.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+  </head>
+  <body layout="row">
+    <md-sidenav layout="column" class="sidemenu md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-sm')">
+      <header class="nav-header md-padding">
+        <img src="/img/analogist-logo2.svg" alt="logo" class="logo">
+      </header>
+
+      <md-list>
+        <md-list-item ng-click="goto('/')">Accueil</md-list-item>
+        <md-list-item ng-click="goto('/list')">Plateformes</md-list-item>
+      </md-list>
+    </md-sidenav>
+
+    <div flex layout="column">
+      <md-toolbar layout="row">
+        <div class="md-toolbar-tools">
+          <md-button ng-click="toggleSidenav('left')" hide-gt-sm class="md-icon-button">
+            <md-icon aria-label="Menu" md-svg-icon="navigation:menu"></md-icon>
+          </md-button>
+          <h1 class="ellipsis" ng-bind="title" ng-hide="subtitle"></h1>
+          <h1 class="ellipsis" ng-show="subtitle">
+            <span hide show-gt-md ng-bind="title"></span><md-icon hide show-gt-md md-svg-icon="navigation:chevron_right"></md-icon><span title="{{ subtitle }}" ng-bind="subtitle"></span>
+          </h1>
+        </div>
+      </md-toolbar>
+
+      <md-content flex layout-padding ng-view></md-content>
+    </div>
+
+    <!-- Angular Material Dependencies -->
+    <script src="/assets/components/angular/angular.min.js"></script>
+    <script src="/assets/components/angular-route/angular-route.min.js"></script>
+    <script src="/assets/components/angular-messages/angular-messages.min.js"></script>
+    <script src="/assets/components/angular-animate/angular-animate.min.js"></script>
+    <script src="/assets/components/angular-aria/angular-aria.min.js"></script>
+    <script src="/assets/components/angular-material/angular-material.min.js"></script>
+
+    <script src="https://cdn.rawgit.com/ezpaarse-project/ezpaarse/0d6e754bd2e0f0f0e9b5a5f10dc041d826076fe6/public/js/trello-ezpaarse.js"></script>
+
+    <script src="/assets/components/jquery/dist/jquery.min.js"></script>
+    <script src="/js/app.js"></script>
+    <script src="/js/controllers.js"></script>
+    <script src="/js/services.js"></script>
+    <script src="/js/directives.js"></script>
+    <script src="/js/filters.js"></script>
+  </body>
 </html>

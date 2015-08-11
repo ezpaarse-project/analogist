@@ -1,0 +1,36 @@
+<md-dialog aria-label="New platform form">
+  <md-content class="md-padding">
+    <form name="pForm" ng-submit="save()">
+      <div layout layout-sm="column">
+        <md-input-container flex="25">
+          <label>Nom court</label>
+          <input name="shortName" ng-model="platform.shortName" required>
+
+          <div ng-messages="pForm.shortName.$error" ng-show="pForm.shortName.$dirty">
+            <div ng-message="required">Obligatoire</div>
+          </div>
+        </md-input-container>
+
+        <md-input-container flex>
+          <label>Nom complet</label>
+          <input name="longName" ng-model="platform.longName" required>
+
+          <div ng-messages="pForm.longName.$error" ng-show="pForm.longName.$dirty">
+            <div ng-message="required">Obligatoire</div>
+          </div>
+        </md-input-container>
+      </div>
+      <md-input-container flex>
+        <label>Description</label>
+        <textarea ng-model="platform.description" md-maxlength="150"></textarea>
+      </md-input-container>
+      <button type="submit" style="display: none"></button>
+    </form>
+  </md-content>
+
+  <div class="md-actions" layout="row">
+    <span flex></span>
+    <md-button ng-click="cancel()"> Annuler </md-button>
+    <md-button ng-click="save()" class="md-primary"> Sauvegarder </md-button>
+  </div>
+</md-dialog>

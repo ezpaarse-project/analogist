@@ -20,7 +20,11 @@ USER analogist
 WORKDIR $ANALOGIST_DIR
 
 RUN git clone https://github.com/ezpaarse-project/analogist.git . \
-  && npm install --production && npm cache clean
+  && npm install --production \
+  && npm install -g bower \
+  && bower install \
+  && npm uninstall -g bower \
+  && npm cache clean
 
 expose 3000
 CMD ["npm", "start"]

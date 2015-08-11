@@ -1,0 +1,17 @@
+<md-bottom-sheet class="md-list">
+  <md-list>
+    <md-list-item ng-if="platform.platformGitHubUrl">
+      <md-button class="md-list-item-content" ng-href="{{ platform.platformGitHubUrl }}">
+        <md-icon md-svg-icon="mdi:github"></md-icon>
+        <span class="md-inline-list-icon-label">GitHub</span>
+      </md-button>
+    </md-list-item>
+
+    <md-list-item>
+      <md-button class="md-list-item-content" ng-click="listItemClick(); validate();">
+        <md-icon md-svg-icon="action:done"></md-icon>
+        <span class="md-inline-list-icon-label">Valider l'analyse</span>
+      </md-button>
+    </md-list-item>
+  </md-list>
+</md-bottom-sheet>

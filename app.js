@@ -18,19 +18,34 @@ if (app.get('env') === 'development') { app.use(logger('dev')); }
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
-
-app.use('/', require('./routes/index'));
-app.use('/platforms', require('./routes/platforms'));
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+function notFound(req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;
   next(err);
+}
+
+// Expose static files from the public directory
+app.use('/assets', express.static(path.join(__dirname, 'public')));
+app.use('/assets', notFound);
+app.use('/css', express.static(path.join(__dirname, 'public/stylesheets')));
+app.use('/css', notFound);
+app.use('/img', express.static(path.join(__dirname, 'public/images')));
+app.use('/img', notFound);
+app.use('/js', express.static(path.join(__dirname, 'public/javascripts')));
+app.use('/js', notFound);
+
+app.use('/', require('./routes/index'));
+app.use('/api/platforms', require('./routes/platforms'));
+
+// Catch-all for HTML5 mode
+app.get('*', function(req, res, next) {
+  console.log('CATCH');
+  res.render('index');
 });
 
-// error handlers
+app.use(notFound);
 
 // development error handler
 // will print stacktrace
