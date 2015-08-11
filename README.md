@@ -7,6 +7,8 @@ We assume that a mongo database is up and running.
   git clone https://github.com/ezpaarse-project/analogist.git analogist
   cd analogist
   npm install
+  npm install docker -g
+  docker install
 ```
 
 ## Run
