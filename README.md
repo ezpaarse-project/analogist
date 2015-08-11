@@ -7,8 +7,8 @@ We assume that node.js is installed and that a mongo database is up and running.
   git clone https://github.com/ezpaarse-project/analogist.git analogist
   cd analogist
   npm install
-  npm install docker -g
-  docker install
+  npm install bower -g
+  bower install
 ```
 
 ## Run
