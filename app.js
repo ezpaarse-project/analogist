@@ -41,7 +41,6 @@ app.use('/api/platforms', require('./routes/platforms'));
 
 // Catch-all for HTML5 mode
 app.get('*', function(req, res, next) {
-  console.log('CATCH');
   res.render('index');
 });
 
