@@ -108,7 +108,7 @@
             </md-input-container>
 
             <div layout="row" layout-align="center center">
-              <md-button aria-label="Démembrer l'URL" ng-click="parseUrl(analyses[index].id, analyses[index].url)" ng-disabled="!analyses[index].url">
+              <md-button aria-label="Démembrer l'URL" ng-click="analyses[index].parseUrl()" ng-disabled="!analyses[index].url">
                 <md-tooltip md-direction="bottom" md-autohide>Démembrer l'url</md-tooltip>
                 Démembrer
               </md-button>
