@@ -34,7 +34,7 @@ router.post('/:cid/analyses', function(req, res, next) {
     { returnOriginal: false, upsert: true }, function (err, result) {
 
     if (err) { return next(err); }
-    res.status(200).json(result.value);
+    res.status(201).json(req.body);
   });
 });
 

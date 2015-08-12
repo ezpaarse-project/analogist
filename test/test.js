@@ -46,19 +46,15 @@ describe("Routes", function () {
     .post('/api/platforms/' + cardID + '/analyses')
     .send({ foo: 'bar' })
     .expect('Content-Type', /json/)
-    .expect(200)
+    .expect(201)
     .expect(function (res) {
       var body = res.body;
 
       expect(body).to.be.an('object');
-      expect(body).to.have.property('cardID', cardID);
-      expect(body).to.have.property('analyses').that.is.an('array').with.length(1);
+      expect(body).to.have.property('id').that.is.a('string');
+      expect(body).to.have.property('foo', 'bar');
 
-      var analysis = body.analyses[0];
-      expect(analysis).to.have.property('id').that.is.a('string');
-      expect(analysis).to.have.property('foo', 'bar');
-
-      analysisID = analysis.id;
+      analysisID = body.id;
     })
     .end(function (error) {
       expect(error).to.not.exist;
