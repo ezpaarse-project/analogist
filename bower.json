@@ -15,7 +15,7 @@
     "ezPAARSE Team"
   ],
   "dependencies": {
-    "angular-material": "0.10.1-rc4",
+    "angular-material": "~0.10.1",
     "angular-messages": "~1.4.2",
     "angular-route": "~1.4.3",
     "animate.css": "~3.3.0",
