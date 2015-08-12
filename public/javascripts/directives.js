@@ -3,7 +3,6 @@ angular.module('WebApp')
   return {
     restrict: 'E',
     templateUrl: '/partials/analyzer',
-    scope: { analyses: '=' },
     controller: 'AnalyzerCtrl'
   };
 });

@@ -26,11 +26,12 @@ angular.module('WebApp')
 }])
 .controller('PlatformCtrl', [
   '$scope',
+  'analysesFactory',
   '$mdToast',
   '$routeParams',
   'platforms',
   'ezAlert',
-  function($scope, $mdToast, $routeParams, platforms, ezAlert) {
+  function($scope, analysesFactory, $mdToast, $routeParams, platforms, ezAlert) {
 
   $scope.loading = true;
   var cardID = $scope.cardID = $routeParams.id;
@@ -56,6 +57,8 @@ angular.module('WebApp')
     };
 
     if (!$scope.platform) {
+      $scope.loading = false;
+
       return ezAlert({
         title: "Introuvable",
         content: "La plateforme d'identifiant " + cardID + " n'existe pas.",
@@ -65,12 +68,26 @@ angular.module('WebApp')
 
     $scope.setSubtitle($scope.platform.platformName);
 
-    $scope.analyses = [];
-  }).finally(function () {
-    $scope.loading = false;
-  });;
+    analysesFactory.get($scope.platform.card.id)
+    .then(function success(analyses) {
+      $scope.loading  = false;
+      $scope.analyses = analyses;
+
+    }, function fail(response) {
+      $scope.loading  = false;
+      $scope.analyses = [];
+
+      if (response.status == 404) { return; }
+
+      ezAlert({
+        title: "Erreur",
+        content: "Une erreur est survenue pendant la récupération des analyses",
+        ariaLabel: "Erreur récupération des analyses"
+      });
+    });
+  });
 }])
-.controller('AnalyzerCtrl', ['$scope', '$mdToast', 'platforms', function($scope, $mdToast, platforms) {
+.controller('AnalyzerCtrl', ['$scope', '$mdToast', 'ezAlert', 'analysesFactory', function($scope, $mdToast, ezAlert, analysesFactory) {
   $scope.index = -1;
 
   function getAnalysis(id) {
@@ -82,7 +99,7 @@ angular.module('WebApp')
   }
 
   function removeAnalysis(id) {
-    if (!angular.isArray($scope.analyses)) { return null; }
+    if (!angular.isArray($scope.analyses)) { return; }
 
     for (var i = $scope.analyses.length - 1; i >= 0; i--) {
       if ($scope.analyses[i].id == id) {
@@ -95,6 +112,7 @@ angular.module('WebApp')
     };
   }
 
+  // TODO: PUT ME IN THE FACTORY
   $scope.parseUrl = function (id, url) {
     if (!url) { return; }
 
@@ -122,7 +140,7 @@ angular.module('WebApp')
       });
     });
 
-    analysis.dirty = true;
+    analysis.setDirty(true);
   }
 
   $scope.addParam = function (analysis, type) {
@@ -132,7 +150,7 @@ angular.module('WebApp')
 
     if (!angular.isArray(analysis[field])) { analysis[field] = []; }
     analysis[field].push({});
-    analysis.dirty = true;
+    analysis.setDirty(true);
   };
   $scope.removeParam = function (analysis, type, i) {
     var field = (type || '') + 'Params';
@@ -141,33 +159,51 @@ angular.module('WebApp')
     if (!angular.isArray(analysis[field])) { return; }
 
     analysis[field].splice(i, 1);
-    analysis.dirty = true;
+    analysis.setDirty(true);
   };
 
-  $scope.remove = function (id) {
-    removeAnalysis(id);
-    $mdToast.show({
-      template: '<md-toast><span flex>Analyse supprimée</span></md-toast>',
-      hideDelay: 2000,
-      position: 'top right'
+  $scope.remove = function (analysis) {
+    if (!analysis || analysis.isLoading()) { return; }
+
+    analysis.remove()
+    .then(function success() {
+      removeAnalysis(analysis.id);
+
+      $mdToast.show({
+        template: '<md-toast><span flex>Analyse supprimée</span></md-toast>',
+        hideDelay: 2000,
+        position: 'top right'
+      });
+    }, function fail() {
+      ezAlert({
+        title: "Erreur",
+        content: "Une erreur est survenue pendant la suppression",
+        ariaLabel: "Erreur suppression de l'analyse"
+      });
     });
   };
-  $scope.setDirty = function (id) {
-    var analysis = getAnalysis(id);
-    if (analysis) { analysis.dirty = true; }
-  };
+
   $scope.save = function (analysis) {
-    if (!analysis) { return; }
-    analysis.dirty = false;
-    $mdToast.show({
-      template: '<md-toast><span flex>Analyse sauvegardée</span></md-toast>',
-      hideDelay: 2000,
-      position: 'top right'
+    if (!analysis || analysis.isLoading()) { return; }
+
+    analysis.save()
+    .then(function success() {
+      $mdToast.show({
+        template: '<md-toast><span flex>Analyse sauvegardée</span></md-toast>',
+        hideDelay: 2000,
+        position: 'top right'
+      });
+    }, function fail() {
+      ezAlert({
+        title: "Erreur",
+        content: "Une erreur est survenue pendant la sauvegarde",
+        ariaLabel: "Erreur sauvegarde de l'analyse"
+      });
     });
   };
 
   $scope.newAnalysis = function () {
-    $scope.index = $scope.analyses.push({ identifiers: [] }) - 1;
+    $scope.index = $scope.analyses.push(analysesFactory.create($scope.cardID)) - 1;
   };
 
   $scope.back = function () { $scope.index = -1; };

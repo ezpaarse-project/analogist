@@ -32,6 +32,7 @@ angular.module('WebApp')
     service.loading = true;
     service.list    = null;
 
+    // FIXME implement the angular way
     getTrelloPlatformsList(function displayPlatformsTable(err, platforms) {
       service.loading = false;
 
@@ -57,4 +58,74 @@ angular.module('WebApp')
   service.reload();
 
   return service;
+}])
+.factory('analysesFactory', ['$http', 'ezAlert', '$q', function($http, ezAlert, $q) {
+  var factory = {};
+
+  factory.create = function (cardID, analysis) {
+    if (!angular.isString(cardID)) { return; }
+    if (!angular.isObject(analysis)) { analysis = {}; }
+
+    var baseUrl = '/api/platforms/' + cardID + '/analyses';
+
+    // workaround for chips, but chips should be replaced with something more convenient
+    analysis.identifiers = analysis.identifiers || [];
+
+    var state = {};
+
+    analysis.setDirty  = function (bool) { state.dirty = bool; };
+    analysis.isDirty   = function () { return state.dirty; };
+    analysis.isLoading = function () { return state.loading; };
+
+    var insert = function () {
+      state.loading = true;
+
+      return $http.post(baseUrl, analysis).then(function (response) {
+        if (!angular.isObject(response.data)) {
+          return $q.reject('got an invalid response');
+        }
+        analysis.id = response.data.id;
+        state.dirty = false;
+      }).finally(function () {
+        state.loading = false;
+      });
+    };
+
+    var update = function () {
+      state.loading = true;
+
+      return $http.post(baseUrl + '/' + analysis.id, analysis).then(function () {
+        state.dirty = false;
+      }).finally(function () {
+        state.loading = false;
+      });
+    };
+
+    analysis.save = function () {
+      return analysis.id ? update() : insert();
+    };
+    analysis.remove = function () {
+      state.loading = true;
+
+      return $http.delete(baseUrl + '/' + analysis.id).finally(function () {
+        state.loading = false;
+      });
+    };
+
+    return analysis;
+  };
+
+  factory.get = function (cardID) {
+    return $http.get('/api/platforms/' + cardID + '/analyses').then(function (response) {
+      if (!angular.isArray(response.data)) {
+        return $q.reject('could not get analyses');
+      }
+
+      return response.data.map(function (analysis) {
+        return factory.create(cardID, analysis);
+      });
+    });
+  };
+
+  return factory;
 }]);
