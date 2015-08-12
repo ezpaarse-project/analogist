@@ -6,10 +6,6 @@ ENV DEBIAN_FRONTEND noninteractive
 
 USER root
 
-RUN apt-get update \
-  && apt-get install -y --no-install-recommends git ca-certificates \
-  && rm -rf /var/lib/apt/lists/*
-
 RUN groupadd -r analogist \
   && useradd -r -m -s /bin/bash -g analogist analogist \
   && mkdir -p $ANALOGIST_DIR \
