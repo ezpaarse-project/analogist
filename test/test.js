@@ -6,7 +6,7 @@ process.env.NODE_ENV = 'production';
 var request = require('supertest');
 var expect  = require('chai').expect;
 
-var config  = require('../config.json');
+var config  = require('../lib/config.js');
 var mongo   = require('../lib/mongo.js');
 var app     = require('../app.js');
 

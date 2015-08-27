@@ -15,9 +15,9 @@ md-sidenav.sidemenu .logo {
   width: 100%;
 }
 
-.md-toolbar-tools label,
-.md-toolbar-tools input {
-  color: inherit !important;
+.site-toolbar {
+  background: #f6f6f6 !important;
+  color: #202020 !important;
 }
 
 .fade.ng-enter { animation: fadeInDown 0.5s; }

@@ -4,5 +4,10 @@
     "ADDRESS": "localhost",
     "PORT": "27017",
     "DB": "analogist"
+  },
+  "TRELLO": {
+    "KEY": "",
+    "SECRET": "",
+    "BOARDID": "53a87acb01c8331fb6fa9a62"
   }
 }

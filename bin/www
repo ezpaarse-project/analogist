@@ -5,10 +5,12 @@
  */
 
 var mongo  = require('../lib/mongo.js');
-var config = require('../config.json');
+var config = require('../lib/config.js');
 var app    = require('../app');
 var debug  = require('debug')('analogist:server');
 var http   = require('http');
+
+console.log(config.TRELLO);
 
 /**
  * Get port from environment and store in Express.

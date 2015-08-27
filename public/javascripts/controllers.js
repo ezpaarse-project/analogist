@@ -10,6 +10,8 @@ angular.module('WebApp')
     $mdSidenav(menuId).toggle();
   };
 
+  $scope.auth.checkSession();
+
   $rootScope.$on('$routeChangeSuccess', function() {
     $scope.title = $route.current.title;
     $scope.subtitle = null;
@@ -66,7 +68,7 @@ angular.module('WebApp')
       });
     }
 
-    $scope.setSubtitle($scope.platform.platformName);
+    $scope.setSubtitle($scope.platform.Name);
 
     analysesFactory.get($scope.platform.card.id)
     .then(function success(analyses) {

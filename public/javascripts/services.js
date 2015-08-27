@@ -1,4 +1,118 @@
 angular.module('WebApp')
+.service('Session', ['TRELLO', function (TRELLO) {
+  this.create = function (user) {
+    if (!angular.isObject(user)) { return this.destroy(); };
+
+    this.user = user;
+    this.isAuthorized = false;
+
+    if (angular.isArray(user.idBoards)) {
+      this.isAuthorized = user.idBoards.some(function (id) {
+        return (id == TRELLO.boardID);
+      });
+    }
+  };
+
+  this.destroy = function () {
+    this.user = null;
+    this.isAuthorized = false;
+  };
+}])
+.factory('AuthService', ['$http', 'Session', '$window', function ($http, Session, $window) {
+  var authService = {};
+
+  authService.checkSession = function () {
+    return $http.get('/api/loggedin').then(function (res) {
+      if (res.status == 200) {
+        Session.create(res.data);
+      } else {
+        Session.destroy();
+      }
+    });
+  };
+
+  authService.login = function () {
+    $window.location.href = '/connect/trello';
+  };
+
+  authService.logout = function () {
+    return $http.get('/api/logout').then(function (res) {
+      Session.destroy();
+    });
+  };
+
+  authService.isAuthenticated = function () {
+    return !!Session.user;
+  };
+
+  authService.isAuthorized = function () {
+    return Session.isAuthorized;
+  };
+
+  return authService;
+}])
+.factory('TrelloService', ['$http', '$q', 'TRELLO', function ($http, $q, TRELLO) {
+  var trelloService = {};
+  var baseUrl = 'https://api.trello.com';
+  var boardUrl = baseUrl + '/1/boards/' + TRELLO.boardID;
+
+  trelloService.getPlatforms = function () {
+    var listsURL   = boardUrl + '/lists?cards=open&key=' + TRELLO.apiKey;
+    var membersURL = boardUrl + '/members?key=' + TRELLO.apiKey;
+
+    var deferred = $q.defer();
+
+    $http.get(listsURL)
+    .catch(function (response) { deferred.reject(); })
+    .then(function (res1) {
+      var lists = res1.data;
+
+      $http.get(membersURL)
+      .catch(function (response) { deferred.reject(); })
+      .then(function (res2) {
+        var members = res2.data;
+        var indexedMembers = {};
+        members.forEach(function (m) { indexedMembers[m.id] = m.fullName; });
+
+        var platforms = [];
+
+        lists.forEach(function (list) {
+          list.cards.forEach(function (card) {
+            if (!angular.isArray(card.idMembers)) { card.idMembers = []; }
+
+            card.members = card.idMembers.map(function (member) {
+              return indexedMembers[member];
+            });
+
+            // Remove the example card
+            if (card.id === TRELLO.exampleCardID) { return; }
+
+            var platform = {
+              status:       list.name.replace(/\s*\([^\)]+\)/, ''),
+              lastActivity: new Date(card.dateLastActivity).toLocaleDateString(),
+              name:         card.name,
+              contacts:     card.members.join(', '),
+              card:         card
+            };
+
+            var regexpGitHubPlatform = new RegExp('(https://github.com/ezpaarse-project/ezpaarse-platforms/[^ $\n]+)');
+            if (match = card.desc.match(regexpGitHubPlatform)) {
+              platform.gitHubUrl = match[1];
+            }
+
+            platforms.push(platform);
+          });
+        });
+
+        deferred.resolve(platforms);
+      });
+    });
+
+    return deferred.promise;
+  };
+
+  return trelloService;
+}])
 .factory('ezAlert', ['$mdDialog', function ($mdDialog) {
   return function (opt) {
     opt    = opt || {};
@@ -9,7 +123,7 @@ angular.module('WebApp')
     );
   }
 }])
-.factory('platforms', ['$rootScope', 'ezAlert', '$q', function($rootScope, ezAlert, $q) {
+.factory('platforms', ['ezAlert', '$q', 'TrelloService', function(ezAlert, $q, TrelloService) {
   var service = {};
   var promise;
 
@@ -32,24 +146,22 @@ angular.module('WebApp')
     service.loading = true;
     service.list    = null;
 
-    // FIXME implement the angular way
-    getTrelloPlatformsList(function displayPlatformsTable(err, platforms) {
-      service.loading = false;
-
-      if (err) {
-        deferred.reject(err);
-        return ezAlert({
-          title: "Erreur",
-          content: "Une erreur est survenue lors de la récupération de la liste des plateformes.",
-          ariaLabel: "Erreur récupération des plateformes"
-        });
-      }
-
-      service.list = platforms;
-
-      deferred.resolve(service.list);
+    TrelloService.getPlatforms()
+    .finally(function () {
       promise = null;
-      $rootScope.$apply();
+      service.loading = false;
+    })
+    .then(function (platforms) {
+      service.list = platforms;
+      deferred.resolve(service.list);
+    })
+    .catch(function () {
+      deferred.reject(err);
+      return ezAlert({
+        title: "Erreur",
+        content: "Une erreur est survenue lors de la récupération de la liste des plateformes.",
+        ariaLabel: "Erreur récupération des plateformes"
+      });
     });
 
     return promise;

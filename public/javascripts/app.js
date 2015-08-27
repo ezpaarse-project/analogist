@@ -1,6 +1,11 @@
-var app = angular.module('WebApp', ['ngMaterial', 'ngMessages', 'ngAnimate', 'ngRoute']);
-
-app.config(['$mdIconProvider', function($mdIconProvider) {
+angular.module('WebApp', ['ngMaterial', 'ngMessages', 'ngAnimate', 'ngRoute'])
+.config(['$mdThemingProvider', function($mdThemingProvider) {
+  $mdThemingProvider.theme('default')
+  .primaryPalette('red')
+  .accentPalette('blue')
+  .warnPalette('orange');
+}])
+.config(['$mdIconProvider', function($mdIconProvider) {
   $mdIconProvider
     .iconSet('action',        '/img/icons/action-icons.svg', 24)
     .iconSet('content',       '/img/icons/content-icons.svg', 24)
@@ -19,9 +24,8 @@ app.config(['$mdIconProvider', function($mdIconProvider) {
     // .iconSet('notification',  '/img/icons/notification-icons.svg', 24)
     // .iconSet('social',        '/img/icons/social-icons.svg', 24)
     // .iconSet('toggle',        '/img/icons/toggle-icons.svg', 24)
-}]);
-
-app.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
+}])
+.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
   $locationProvider.html5Mode(true);
 
   $routeProvider.
@@ -39,4 +43,8 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
       templateUrl: '/partials/platform',
       controller: 'PlatformCtrl'
     });
+}])
+.run(['$rootScope', 'Session', 'AuthService', function ($rootScope, Session, AuthService) {
+  $rootScope.session = Session;
+  $rootScope.auth    = AuthService;
 }]);

@@ -12,18 +12,54 @@
   </head>
   <body layout="row">
     <md-sidenav layout="column" class="sidemenu md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-sm')">
-      <header class="nav-header md-padding">
-        <img src="/img/analogist-logo2.svg" alt="logo" class="logo">
-      </header>
+
+      <md-toolbar class="md-tall inset">
+        <img src="/img/analogist-logo-white.svg" alt="logo" class="logo">
+
+        <span flex></span>
+
+        <div class="md-body-1" ng-hide="auth.isAuthenticated()">
+          Non connecté
+        </div>
+
+        <div ng-show="auth.isAuthenticated()">
+          <div class="md-body-1" ng-bind="session.user.fullName"></div>
+          <div class="md-caption" ng-bind="auth.isAuthorized ? 'Membre' : 'Invité'"></div>
+        </div>
+      </md-toolbar>
 
       <md-list>
-        <md-list-item ng-click="goto('/')">Accueil</md-list-item>
-        <md-list-item ng-click="goto('/list')">Plateformes</md-list-item>
+        <md-list-item class="md-2-line" ng-click="goto('/')" role="link">
+          <md-icon md-svg-icon="action:home" aria-label="Accueil"></md-icon>
+          <div class="md-list-item-text">
+            <span class="md-body-2">Accueil</span>
+          </div>
+        </md-list-item>
+        <md-list-item class="md-2-line" ng-click="goto('/list')" role="link">
+          <md-icon md-svg-icon="action:dashboard" aria-label="Plateformes"></md-icon>
+          <div class="md-list-item-text">
+            <span class="md-body-2">Plateformes</span>
+          </div>
+        </md-list-item>
+
+        <md-list-item ng-hide="auth.isAuthenticated()" class="md-2-line" ng-click="auth.login()" role="link">
+          <md-icon md-svg-icon="mdi:login" aria-label="Connexion avec Trello"></md-icon>
+          <div class="md-list-item-text">
+            <span class="md-body-2">Connexion avec Trello</span>
+          </div>
+        </md-list-item>
+
+        <md-list-item ng-show="auth.isAuthenticated()" class="md-2-line" ng-click="auth.logout()" role="link">
+          <md-icon md-svg-icon="mdi:logout" aria-label="Déconnexion"></md-icon>
+          <div class="md-list-item-text">
+            <span class="md-body-2">Déconnexion</span>
+          </div>
+        </md-list-item>
       </md-list>
     </md-sidenav>
 
     <div flex layout="column">
-      <md-toolbar layout="row">
+      <md-toolbar layout="row" class="md-whiteframe-z1 site-toolbar">
         <div class="md-toolbar-tools">
           <md-button ng-click="toggleSidenav('left')" hide-gt-sm class="md-icon-button">
             <md-icon aria-label="Menu" md-svg-icon="navigation:menu"></md-icon>
@@ -54,5 +90,13 @@
     <script src="/js/services.js"></script>
     <script src="/js/directives.js"></script>
     <script src="/js/filters.js"></script>
+
+    <script>
+      angular.module('WebApp').constant('TRELLO', {
+        apiKey: '<%= apiKey %>',
+        boardID: '<%= boardID %>',
+        exampleCardID: '5587d3c76e1114036bb596a7'
+      });
+    </script>
   </body>
 </html>
