@@ -68,7 +68,7 @@ angular.module('WebApp')
       });
     }
 
-    $scope.setSubtitle($scope.platform.Name);
+    $scope.setSubtitle($scope.platform.name);
 
     analysesFactory.get($scope.platform.card.id)
     .then(function success(analyses) {
@@ -211,13 +211,13 @@ angular.module('WebApp')
 
       switch ($scope.groupby) {
       case 'letter':
-        if (typeof el.platformName === 'string' && /^[a-z]/i.test(el.platformName)) {
-          group = el.platformName.charAt(0).toUpperCase();
+        if (typeof el.name === 'string' && /^[a-z]/i.test(el.name)) {
+          group = el.name.charAt(0).toUpperCase();
         }
         break;
       case 'status':
-        if (typeof el.platformStatus === 'string') {
-          group = el.platformStatus;
+        if (typeof el.status === 'string') {
+          group = el.status;
         }
         break;
       }
