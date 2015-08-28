@@ -18,13 +18,19 @@
 
         <span flex></span>
 
-        <div class="md-body-1" ng-hide="auth.isAuthenticated()">
-          Non connecté
+        <div ng-if="auth.loadingSession" layout="row" layout-align="center center">
+          <md-progress-circular class="md-hue-3" md-mode="indeterminate"></md-progress-circular>
         </div>
 
-        <div ng-show="auth.isAuthenticated()">
-          <div class="md-body-1" ng-bind="session.user.fullName"></div>
-          <div class="md-caption" ng-bind="auth.isAuthorized ? 'Membre' : 'Invité'"></div>
+        <div ng-hide="auth.loadingSession">
+          <div class="md-body-1" ng-hide="auth.isAuthenticated()">
+            Non connecté
+          </div>
+
+          <div ng-show="auth.isAuthenticated()">
+            <div class="md-body-1" ng-bind="session.user.fullName"></div>
+            <div class="md-caption" ng-bind="auth.isAuthorized ? 'Membre' : 'Invité'"></div>
+          </div>
         </div>
       </md-toolbar>
 

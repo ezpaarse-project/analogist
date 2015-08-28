@@ -22,12 +22,16 @@ angular.module('WebApp')
   var authService = {};
 
   authService.checkSession = function () {
+    authService.loadingSession = true;
+
     return $http.get('/api/loggedin').then(function (res) {
       if (res.status == 200) {
         Session.create(res.data);
       } else {
         Session.destroy();
       }
+
+      authService.loadingSession = false;
     });
   };
 
