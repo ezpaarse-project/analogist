@@ -19,7 +19,8 @@ md-toolbar.site-toolbar {
   background: #f6f6f6 !important;
   color: #202020 !important;
 }
-md-toolbar.site-toolbar md-icon {
+md-toolbar.site-toolbar md-icon,
+md-toolbar.site-toolbar button {
   color: inherit;
 }
 
