@@ -11,12 +11,17 @@ npm install bower -g
 bower install
 ```
 
+Before running anything, create `config/config.json` and provide the trello board to use and your API credentials (see `default.json` for the syntax). This step may become unecessary in the future.
+
 ## Run
 ```
 npm start
 ```
 
 ## Use with docker
+
+When running a container, don't forget to set the environment variables `TRELLO__KEY`, `TRELLO__SECRET` and `TRELLO__BOARDID`. This step may become unecessary in the future.
+
 ```
 # Run
 docker run -d --name anadb mongo
