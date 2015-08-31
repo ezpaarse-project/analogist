@@ -16,10 +16,13 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+var oneMonth = 3600000 * 24 * 30;
+
 app.use(session({
     resave: false,
     saveUninitialized: false,
     secret: 'xJ87L71I3025O7812P4g36n39my6VnAH',
+    cookie: { maxAge: oneMonth },
     store: new MongoStore({
       url: 'mongodb://' + config.MONGO.ADDRESS + ':' + config.MONGO.PORT + '/' + config.MONGO.DB
     })
