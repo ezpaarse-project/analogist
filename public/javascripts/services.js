@@ -30,7 +30,7 @@ angular.module('WebApp')
       } else {
         Session.destroy();
       }
-
+    }).finally(function () {
       authService.loadingSession = false;
     });
   };
