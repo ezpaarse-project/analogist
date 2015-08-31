@@ -9,33 +9,26 @@ var config = require('../lib/config.js');
 var app    = require('../app');
 var debug  = require('debug')('analogist:server');
 var http   = require('http');
+var server;
 
 /**
  * Get port from environment and store in Express.
  */
-
 var port = normalizePort(process.env.PORT || config.PORT || '3000');
 app.set('port', port);
 
 /**
  * Build mongo URL from config or env and store in Express
  */
-
 var mongoAddress = process.env.MONGODB_PORT_27017_TCP_ADDR || config.MONGO.ADDRESS;
 var mongoPort    = process.env.MONGODB_PORT_27017_TCP_PORT || config.MONGO.PORT;
 
 app.locals.mongoUrl = 'mongodb://' + mongoAddress + ':' + mongoPort + '/' + config.MONGO.DB;
 
-/**
- * Create HTTP server.
- */
-
-var server = http.createServer(app);
 
 /**
- * Listen on provided port, on all network interfaces.
+ * Open a mongodb connection
  */
-
 var i = 1;
 (function start() {
   mongo.connect(app.locals.mongoUrl, function (err) {
@@ -48,6 +41,10 @@ var i = 1;
       process.exit(1);
     }
 
+    // Create HTTP server.
+    server = http.createServer(app);
+
+    // Listen on provided port, on all network interfaces.
     server.listen(port);
     server.on('error', onError);
     server.on('listening', onListening);
