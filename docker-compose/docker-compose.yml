@@ -1,5 +1,5 @@
 analogist:
-  image: analogist
+  image: ezpaarseproject/analogist
   links:
    - anadb:mongodb
   ports:
