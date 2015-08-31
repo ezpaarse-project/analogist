@@ -36,7 +36,7 @@ angular.module('WebApp')
   };
 
   authService.login = function () {
-    $window.location.href = '/connect/trello';
+    $window.location.href = '/connect/trello?host=' + $window.location.host;
   };
 
   authService.logout = function () {
