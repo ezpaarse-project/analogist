@@ -1,6 +1,14 @@
 var router   = require('express').Router();
 var mongo    = require('../lib/mongo.js');
+var mw       = require('../lib/middlewares.js');
 var ObjectID = require('mongodb').ObjectID;
+
+/**
+ * Require authorization for all post/put/delete routes
+ */
+router.post('*', mw.authorize);
+router.put('*', mw.authorize);
+router.delete('*', mw.authorize);
 
 /* GET a platform. */
 router.get('/:cid', function(req, res, next) {

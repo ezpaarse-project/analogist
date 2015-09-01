@@ -1,5 +1,6 @@
 var express      = require('express');
 var path         = require('path');
+var request      = require('request');
 var favicon      = require('serve-favicon');
 var logger       = require('morgan');
 var cookieParser = require('cookie-parser');
@@ -23,6 +24,7 @@ app.use(session({
     saveUninitialized: false,
     secret: 'xJ87L71I3025O7812P4g36n39my6VnAH',
     cookie: { maxAge: oneMonth },
+    unset: 'destroy',
     store: new MongoStore({
       url: 'mongodb://' + config.MONGO.ADDRESS + ':' + config.MONGO.PORT + '/' + config.MONGO.DB
     })
@@ -32,7 +34,7 @@ app.use(new Grant({
   server: {
     protocol: 'http',
     host: 'localhost:' + config.PORT,
-    callback: '/',
+    callback: '/callback',
     transport: 'session'
   },
   trello: {
@@ -45,20 +47,28 @@ app.use(new Grant({
   }
 }));
 
-app.use('/api/loggedin', function (req, res, next) {
-  var request = require('request');
+app.use('/callback', function (req, res, next) {
+  if (req.session.grant && req.session.grant.response) {
+    req.session.oauth = {
+      token: req.session.grant.response.access_token,
+      secret: req.session.grant.response.access_secret
+    };
+    delete req.session.grant;
+  }
+  res.redirect('/');
+});
 
-  if (req.session.grant) {
-    var response = req.session.grant.response;
-    if (response && response.access_token && response.access_secret) {
-      return trello.getTokenMember(response.access_token).pipe(res);
-    }
+app.use('/api/loggedin', function (req, res, next) {
+  var oauth = req.session.oauth;
+
+  if (oauth && oauth.token && oauth.secret) {
+    return trello.getTokenMember(oauth.token).pipe(res);
   }
   res.status(204).end();
 });
 
 app.use('/api/logout', function (req, res) {
-  delete req.session.grant;
+  req.session = null;
   res.status(204).end();
 });
 
