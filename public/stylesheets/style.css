@@ -33,6 +33,21 @@ md-toolbar.site-toolbar button {
   position: fixed !important;
 }
 
+.autocomplete li {
+  border-bottom: 1px solid #ccc;
+  height: auto;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+.autocomplete li:last-child {
+  border-bottom-width: 0;
+}
+.autocomplete .item-title,
+.autocomplete .item-metadata {
+  display: block;
+  line-height: 1.5;
+}
+
 .tiles {
   padding: 0;
   margin: 0;

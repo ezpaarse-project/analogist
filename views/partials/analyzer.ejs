@@ -70,26 +70,47 @@
           </div>
 
           <div layout="row" layout-wrap>
-            <md-input-container flex-sm="50">
-              <label>Type</label>
-              <md-select ng-model="analyses[index].rtype" ng-change="analyses[index].setDirty(true)">
-                <md-option></md-option>
-                <md-option value="abstract">Résumé</md-option>
-                <md-option value="article">Article</md-option>
-                <md-option value="book">Book</md-option>
-                <md-option value="book_section">Book section</md-option>
-              </md-select>
-            </md-input-container>
+            <md-autocomplete
+                md-selected-item-change="analyses[index].setDirty(true)"
+                md-search-text-change="analyses[index].setDirty(true)"
+                md-menu-class="autocomplete"
+                md-search-text="analyses[index].rtype"
+                md-min-length="0"
+                md-items="item in resourceTypes | filter:analyses[index].rtype"
+                md-item-text="item.code"
+                md-floating-label="Type">
 
-            <md-input-container flex-sm="50">
-              <label>Mime</label>
-              <md-select ng-model="analyses[index].mime" ng-change="analyses[index].setDirty(true)">
-                <md-option></md-option>
-                <md-option value="pdf">PDF</md-option>
-                <md-option value="html">HTML</md-option>
-                <md-option value="misc">MISC</md-option>
-              </md-select>
-            </md-input-container>
+              <md-item-template>
+                <span class="item-title">
+                  <md-icon md-svg-icon="mdi:tag-outline"></md-icon>
+                  <span md-highlight-text="analyses[index].rtype" md-highlight-flags="^i">{{ item.code }}</span>
+                </span>
+                <span md-highlight-text="analyses[index].rtype" md-highlight-flags="^i" class="item-metadata">
+                  {{ item.description }}
+                </span>
+              </md-item-template>
+            </md-autocomplete>
+
+            <md-autocomplete
+                md-selected-item-change="analyses[index].setDirty(true)"
+                md-search-text-change="analyses[index].setDirty(true)"
+                md-menu-class="autocomplete"
+                md-search-text="analyses[index].mime"
+                md-min-length="0"
+                md-items="item in mimeTypes | filter:analyses[index].mime"
+                md-item-text="item.code"
+                md-floating-label="Type">
+
+              <md-item-template>
+                <span class="item-title">
+                  <md-icon md-svg-icon="mdi:tag-outline"></md-icon>
+                  <span md-highlight-text="analyses[index].mime" md-highlight-flags="^i">{{ item.code }}</span>
+                </span>
+                <span md-highlight-text="analyses[index].mime" md-highlight-flags="^i" class="item-metadata">
+                  {{ item.description }}
+                </span>
+              </md-item-template>
+            </md-autocomplete>
 
             <md-input-container flex>
               <label>UnitID</label>

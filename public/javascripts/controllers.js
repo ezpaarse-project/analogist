@@ -89,8 +89,21 @@ angular.module('WebApp')
     });
   });
 }])
-.controller('AnalyzerCtrl', ['$scope', '$mdToast', 'ezAlert', 'analysesFactory', function($scope, $mdToast, ezAlert, analysesFactory) {
+.controller('AnalyzerCtrl', [
+  '$scope',
+  '$mdToast',
+  '$http',
+  'ezAlert',
+  'analysesFactory',
+  function($scope, $mdToast, $http, ezAlert, analysesFactory) {
   $scope.index = -1;
+
+  $http.get('https://raw.githubusercontent.com/ezpaarse-project/ezpaarse-platforms/master/rtype.json').then(function (response) {
+    if (angular.isArray(response.data)) { $scope.resourceTypes = response.data; }
+  });
+  $http.get('https://raw.githubusercontent.com/ezpaarse-project/ezpaarse-platforms/master/mime.json').then(function (response) {
+    if (angular.isArray(response.data)) { $scope.mimeTypes = response.data; }
+  });
 
   function getAnalysis(id) {
     if (!angular.isArray($scope.analyses)) { return null; }
