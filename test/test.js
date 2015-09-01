@@ -2,6 +2,7 @@
 "use strict";
 
 process.env.NODE_ENV = 'production';
+process.env.BYPASS   = 'true';
 
 var request = require('supertest');
 var expect  = require('chai').expect;
