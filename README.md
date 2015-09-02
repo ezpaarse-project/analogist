@@ -40,7 +40,9 @@ mkdir analogist && cd analogist
 # Grab the latest docker-compose file
 wget https://raw.githubusercontent.com/ezpaarse-project/analogist/master/docker-compose/docker-compose.yml
 
-# Run
+# Edit docker-compose.yml and define the trello variables under 'environment'
+  
+# Create or recreate
 docker-compose up
 # Stop
 docker-compose stop
