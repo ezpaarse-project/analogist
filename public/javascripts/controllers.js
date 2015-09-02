@@ -104,6 +104,9 @@ angular.module('WebApp')
   $http.get('https://raw.githubusercontent.com/ezpaarse-project/ezpaarse-platforms/master/mime.json').then(function (response) {
     if (angular.isArray(response.data)) { $scope.mimeTypes = response.data; }
   });
+  $http.get('https://raw.githubusercontent.com/ezpaarse-project/ezpaarse-platforms/master/rid.json').then(function (response) {
+    if (angular.isArray(response.data)) { $scope.resourceIDs = response.data; }
+  });
 
   function getAnalysis(id) {
     if (!angular.isArray($scope.analyses)) { return null; }
@@ -127,19 +130,22 @@ angular.module('WebApp')
     };
   }
 
-  $scope.addParam = function (analysis, type) {
-    var field = (type || '') + 'Params';
+  /**
+   * Add an element in an array
+   */
+  $scope.addElement = function (analysis, field) {
     if (!analysis) { return; }
-    if (type != 'query' && type != 'path') { return; }
-
     if (!angular.isArray(analysis[field])) { analysis[field] = []; }
+
     analysis[field].push({});
     analysis.setDirty(true);
   };
-  $scope.removeParam = function (analysis, type, i) {
-    var field = (type || '') + 'Params';
+
+  /**
+   * Remove an element from an array
+   */
+  $scope.removeElement = function (analysis, field, i) {
     if (!analysis) { return; }
-    if (type != 'query' && type != 'path') { return; }
     if (!angular.isArray(analysis[field])) { return; }
 
     analysis[field].splice(i, 1);
