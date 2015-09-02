@@ -1,11 +1,16 @@
 analogist:
   image: ezpaarseproject/analogist
   links:
-   - anadb:mongodb
+   - mongodb:mongodb
   ports:
-   - 3000:3000
-
-anadb:
+   - "3000:3000"
+  environment:
+   - TRELLO__KEY=xxx
+   - TRELLO__SECRET=xxx
+   - TRELLO__BOARDID=xxx
+   - http_proxy
+   - https_proxy
+mongodb:
   image: mongo:latest
   volumes:
     - ./data/db:/data/db
