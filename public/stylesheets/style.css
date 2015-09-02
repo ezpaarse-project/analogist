@@ -82,8 +82,8 @@ md-toolbar.site-toolbar button {
 }
 
 /**
- * Fix icon alignment for icon-buttons with href
+ * Fix autocomplete min width
  */
-.md-icon-button[ng-href] {
-  display: inline-flex;
+md-autocomplete {
+  min-width: 0;
 }
