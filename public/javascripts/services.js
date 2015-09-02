@@ -67,12 +67,10 @@ angular.module('WebApp')
     var deferred = $q.defer();
 
     $http.get(listsURL)
-    .catch(function (response) { deferred.reject(); })
     .then(function (res1) {
       var lists = res1.data;
 
       $http.get(membersURL)
-      .catch(function (response) { deferred.reject(); })
       .then(function (res2) {
         var members = res2.data;
         var indexedMembers = {};
@@ -109,8 +107,10 @@ angular.module('WebApp')
         });
 
         deferred.resolve(platforms);
-      });
-    });
+      })
+      .catch(function (response) { deferred.reject(); });
+    })
+    .catch(function (response) { deferred.reject(); });
 
     return deferred.promise;
   };
@@ -136,7 +136,7 @@ angular.module('WebApp')
     if (service.list) {
       deferred.resolve(service.list);
     } else {
-      service.reload().then(deferred.resolve);
+      service.reload().then(deferred.resolve).catch(deferred.reject);
     }
     return deferred.promise;
   };
@@ -160,7 +160,7 @@ angular.module('WebApp')
       deferred.resolve(service.list);
     })
     .catch(function () {
-      deferred.reject(err);
+      deferred.reject();
       return ezAlert({
         title: "Erreur",
         content: "Une erreur est survenue lors de la récupération de la liste des plateformes.",

@@ -71,11 +71,11 @@ angular.module('WebApp')
     $scope.setSubtitle($scope.platform.name);
 
     analysesFactory.get($scope.platform.card.id)
-    .then(function success(analyses) {
+    .then(function (analyses) {
       $scope.loading  = false;
       $scope.analyses = analyses;
-
-    }, function fail(response) {
+    })
+    .catch(function (response) {
       $scope.loading  = false;
       $scope.analyses = [];
 
@@ -87,6 +87,8 @@ angular.module('WebApp')
         ariaLabel: "Erreur récupération des analyses"
       });
     });
+  }).catch(function () {
+    $scope.loading = false;
   });
 }])
 .controller('AnalyzerCtrl', [
