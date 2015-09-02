@@ -39,7 +39,6 @@ var i = 1;
 
     var app = require('../app');
     app.set('port', port);
-    app.locals.mongoUrl = 'mongodb://' + mongoAddress + ':' + mongoPort + '/' + config.MONGO.DB;
 
     // Create HTTP server.
     server = http.createServer(app);

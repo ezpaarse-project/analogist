@@ -8,6 +8,7 @@ var bodyParser   = require('body-parser');
 var session      = require('express-session');
 var MongoStore   = require('connect-mongo')(session);
 var Grant        = require('grant-express');
+var mongo        = require('./lib/mongo.js');
 
 var trello = require('./lib/trello.js');
 var config = require('./lib/config.js');
@@ -25,9 +26,7 @@ app.use(session({
     secret: 'xJ87L71I3025O7812P4g36n39my6VnAH',
     cookie: { maxAge: oneMonth },
     unset: 'destroy',
-    store: new MongoStore({
-      url: 'mongodb://' + config.MONGO.ADDRESS + ':' + config.MONGO.PORT + '/' + config.MONGO.DB
-    })
+    store: new MongoStore({ db: mongo.db })
 }));
 
 app.use(new Grant({

@@ -9,7 +9,7 @@ var expect  = require('chai').expect;
 
 var config  = require('../lib/config.js');
 var mongo   = require('../lib/mongo.js');
-var app     = require('../app.js');
+var app;
 
 var mongoUrl = 'mongodb://' + config.MONGO.ADDRESS + ':' + config.MONGO.PORT + '/test';
 
@@ -24,6 +24,7 @@ describe("Routes", function () {
     mongo.connect(mongoUrl, function (err) {
       if (err) { throw err; }
 
+      app = require('../app.js');
       mongo.db.dropDatabase(done);
     });
   });
