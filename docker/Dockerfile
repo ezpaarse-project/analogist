@@ -3,6 +3,7 @@ MAINTAINER ezPAARSE Team <ezpaarse@couperin.org>
 
 ENV ANALOGIST_DIR /opt/analogist
 ENV DEBIAN_FRONTEND noninteractive
+ENV NODE_ENV production
 
 USER root
 
