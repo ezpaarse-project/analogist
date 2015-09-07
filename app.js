@@ -46,6 +46,10 @@ app.use(new Grant({
   }
 }));
 
+/**
+ * Callback for the Oauth authentication
+ * The request is then redirected to the path after /callback/
+ */
 app.use('/callback', function (req, res, next) {
   if (req.query.error) {
     delete req.session;
@@ -56,7 +60,7 @@ app.use('/callback', function (req, res, next) {
     };
     delete req.session.grant;
   }
-  res.redirect('/');
+  res.redirect(req.path);
 });
 
 app.use('/api/loggedin', function (req, res, next) {
