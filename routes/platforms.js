@@ -10,6 +10,16 @@ router.post('*', mw.authorize);
 router.put('*', mw.authorize);
 router.delete('*', mw.authorize);
 
+/* GET all platforms. */
+router.get('/', function(req, res, next) {
+  mongo.get('platforms').find().toArray(function (err, docs) {
+    if (err)  { return next(err); }
+    if (!docs) { return next(new Error('failed to find platforms')); }
+
+    res.status(200).json(docs);
+  });
+});
+
 /* GET a platform. */
 router.get('/:cid', function(req, res, next) {
   mongo.get('platforms').findOne({ cardID: req.params.cid }, function (err, doc) {
@@ -17,6 +27,14 @@ router.get('/:cid', function(req, res, next) {
     if (!doc) { return res.status(404).end(); }
 
     res.status(200).json(doc);
+  });
+});
+
+/* DELETE a platform */
+router.delete('/:cid', function(req, res, next) {
+  mongo.get('platforms').remove({ cardID: req.params.cid }, function (err, result) {
+    if (err) { return next(err); }
+    res.status(204).end();
   });
 });
 
@@ -43,14 +61,6 @@ router.post('/:cid/analyses', function(req, res, next) {
 
     if (err) { return next(err); }
     res.status(201).json(req.body);
-  });
-});
-
-/* DELETE a platform */
-router.delete('/:cid', function(req, res, next) {
-  mongo.get('platforms').remove({ cardID: req.params.cid }, function (err, result) {
-    if (err) { return next(err); }
-    res.status(204).end();
   });
 });
 
