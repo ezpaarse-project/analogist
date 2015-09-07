@@ -47,7 +47,9 @@ app.use(new Grant({
 }));
 
 app.use('/callback', function (req, res, next) {
-  if (req.session.grant && req.session.grant.response) {
+  if (req.query.error) {
+    delete req.session;
+  } else if (req.session.grant && req.session.grant.response) {
     req.session.oauth = {
       token: req.session.grant.response.access_token,
       secret: req.session.grant.response.access_secret
