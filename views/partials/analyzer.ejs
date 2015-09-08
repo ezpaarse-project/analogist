@@ -1,5 +1,5 @@
-<div ng-show="analyses[index].isLoading()" class="md-margin">
-  <md-progress-linear md-mode="indeterminate"></md-progress-linear>
+<div class="md-margin">
+  <md-progress-linear ng-if="analyses[index].isLoading()" md-mode="indeterminate"></md-progress-linear>
 </div>
 
 <div class="md-margin md-whiteframe-z1">
