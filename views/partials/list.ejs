@@ -1,34 +1,27 @@
-<md-content class="md-padding">
-  <div layout="row" layout-align="center center">
-    <md-input-container flex="50">
-      <label>Search</label>
-      <input ng-model="search.name">
-    </md-input-container>
+<div layout="row" layout-align="center center">
+  <md-input-container flex="50">
+    <label>Search</label>
+    <input ng-model="search.name">
+  </md-input-container>
+</div>
+<div layout="row" layout-sm="column" layout-align="center center">
+  <label>Grouper par</label>
+  <md-radio-group ng-model="groupby" ng-change="buildList()" layout="row">
+    <md-radio-button value="letter">première lettre</md-radio-button>
+    <md-radio-button value="status">statut</md-radio-button>
+  </md-radio-group>
+</div>
 
-    <md-button class="md-icon-button" aria-label="Actualiser la liste" ng-click="platforms.reload()">
-      <md-tooltip md-direction="bottom" md-autohide>Actualiser la liste</md-tooltip>
-      <md-icon md-svg-icon="navigation:refresh"></md-icon>
-    </md-button>
-  </div>
-  <div layout="row" layout-sm="column" layout-align="center center">
-    <label>Grouper par</label>
-    <md-radio-group ng-model="groupby" ng-change="buildList()" layout="row">
-      <md-radio-button value="letter">première lettre</md-radio-button>
-      <md-radio-button value="status">statut</md-radio-button>
-    </md-radio-group>
-  </div>
+<div ng-if="platforms.loading" class="md-padding" layout="row" layout-align="center center">
+  <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+</div>
 
-  <div ng-if="platforms.loading" class="md-padding" layout="row" layout-fill layout-align="center center">
-    <md-progress-circular md-mode="indeterminate"></md-progress-circular>
-  </div>
-
-  <div ng-hide="platforms.loading" class="tiles" ng-repeat="group in list | filter:{ list: search } | naturalSortBy:'name'">
-    <h3 class="md-headline" ng-bind="group.name"></h3>
-    <a class="fade tile md-whiteframe-z1" ng-click="goto('/platforms/' + p.card.id)" ng-repeat="p in group.list | filter:search">
-      {{ p.name }}
-    </a>
-  </div>
-</md-content>
+<div ng-hide="platforms.loading" class="tiles" ng-repeat="group in list | filter:{ list: search } | naturalSortBy:'name'">
+  <h3 class="md-headline" ng-bind="group.name"></h3>
+  <a class="fade tile md-whiteframe-z1" ng-click="goto('/platforms/' + p.card.id)" ng-repeat="p in group.list | filter:search">
+    {{ p.name }}
+  </a>
+</div>
 
 <md-button ng-if="auth.isAuthorized()" class="fixed md-fab md-fab-bottom-right" aria-label="Nouvelle plateforme" ng-click="showAdd($event)">
   <md-tooltip md-direction="top" md-autohide>Nouvelle plateforme</md-tooltip>

@@ -1,7 +1,11 @@
 angular.module('WebApp', ['ngMaterial', 'ngMessages', 'ngAnimate', 'ngRoute'])
 .config(['$mdThemingProvider', function($mdThemingProvider) {
+  $mdThemingProvider.definePalette('crimsonRed', $mdThemingProvider.extendPalette('red', {
+    '500': 'ED143D'
+  }));
+
   $mdThemingProvider.theme('default')
-  .primaryPalette('red')
+  .primaryPalette('crimsonRed')
   .accentPalette('blue')
   .warnPalette('orange');
 }])
@@ -29,10 +33,6 @@ angular.module('WebApp', ['ngMaterial', 'ngMessages', 'ngAnimate', 'ngRoute'])
   $locationProvider.html5Mode(true);
 
   $routeProvider.
-    when('/', {
-      title: 'Accueil',
-      templateUrl: '/partials/home'
-    }).
     when('/list', {
       title: 'Plateformes',
       templateUrl: '/partials/list',
@@ -44,7 +44,8 @@ angular.module('WebApp', ['ngMaterial', 'ngMessages', 'ngAnimate', 'ngRoute'])
       controller: 'PlatformCtrl'
     });
 }])
-.run(['$rootScope', 'Session', 'AuthService', function ($rootScope, Session, AuthService) {
-  $rootScope.session = Session;
-  $rootScope.auth    = AuthService;
+.run(['$rootScope', 'Session', 'AuthService', 'platforms', function ($rootScope, Session, AuthService, platforms) {
+  $rootScope.session   = Session;
+  $rootScope.auth      = AuthService;
+  $rootScope.platforms = platforms;
 }]);

@@ -3,6 +3,7 @@ angular.module('WebApp')
   return {
     restrict: 'E',
     templateUrl: '/partials/analyzer',
+    scope: { analyses: '=ezAnalyses', authorized: '=ezAuthorized' },
     controller: 'AnalyzerCtrl'
   };
 });

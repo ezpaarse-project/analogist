@@ -1,275 +1,210 @@
-<div class="md-margin">
-  <md-progress-linear ng-if="analyses[index].isLoading()" md-mode="indeterminate"></md-progress-linear>
-</div>
 
-<div class="md-margin md-whiteframe-z1">
-  <md-toolbar>
-    <div class="md-toolbar-tools">
-      <md-button class="md-icon-button" aria-label="Analyse précédente" ng-click="prev()" ng-disabled="!hasPrev()">
+<div class="white md-whiteframe-z1">
+  <md-progress-linear md-mode="{{ loading ? 'indeterminate' : '' }}"></md-progress-linear>
+
+  <md-list class="unpadded" ng-hide="analysis">
+    <md-list-item class="md-2-line" ng-repeat="a in analyses" ng-click="select(a)">
+      <div class="md-list-item-text">
+        <h3 ng-class="{ 'grayed-out': !a.title }">{{ a.title || 'Analyse sans titre'}}</h3>
+        <p>{{ a.rtype || '-' }} / {{ a.mime || '-' }}</p>
+      </div>
+       <md-divider ng-if="!$last"></md-divider>
+    </md-list-item>
+  </md-list>
+
+  <div class="md-padding" ng-if="analysis">
+    <div layout="row">
+      <md-button class="md-icon-button" aria-label="Revenir à la liste" ng-click="back()">
         <md-icon md-svg-icon="navigation:arrow_back"></md-icon>
-      </md-button>
-
-      <md-button ng-disabled="!analyses[index]" class="md-icon-button" aria-label="Liste des analyses" ng-click="back()">
-        <md-icon md-svg-icon="action:list"></md-icon>
-      </md-button>
-
-      <md-button class="md-icon-button" aria-label="Analyse suivante" ng-click="next()" ng-disabled="!hasNext()">
-        <md-icon md-svg-icon="navigation:arrow_forward"></md-icon>
       </md-button>
 
       <span flex></span>
 
-      <div ng-if="auth.isAuthorized()">
-        <md-button ng-disabled="!analyses[index].isDirty()" class="md-icon-button" aria-label="Sauvegarder l'analyse" ng-click="save(analyses[index])">
-          <md-tooltip md-direction="bottom" md-autohide>Sauvegarder l'analyse</md-tooltip>
-          <md-icon md-svg-icon="content:save"></md-icon>
+      <md-button class="md-icon-button" ng-if="authorized" aria-label="Supprimer l'analyse" ng-click="remove(analysis)">
+        <md-icon md-svg-icon="action:delete"></md-icon>
+      </md-button>
+    </div>
+
+    <md-input-container>
+      <label>Titre</label>
+      <input type="text" ng-readonly="!authorized" ng-model="analysis.title">
+    </md-input-container>
+
+    <div layout="row" layout-sm="column">
+      <md-input-container flex>
+        <label>URL</label>
+        <input type="text" ng-readonly="!authorized" ng-model="analysis.url">
+      </md-input-container>
+
+      <div layout="row" layout-align="center center">
+        <md-button ng-if="authorized" aria-label="Démembrer l'URL" ng-click="analysis.parseUrl()" ng-disabled="!analysis.url">
+          <md-tooltip md-direction="bottom" md-autohide>Démembrer l'url</md-tooltip>
+          Démembrer
         </md-button>
 
-        <md-button ng-disabled="!analyses[index]" class="md-icon-button" aria-label="Supprimer l'analyse" ng-click="remove(analyses[index])">
-          <md-tooltip md-direction="bottom" md-autohide>Supprimer l'analyse</md-tooltip>
-          <md-icon md-svg-icon="action:delete"></md-icon>
-        </md-button>
-
-        <md-button class="md-icon-button" aria-label="Nouvelle analyse" ng-click="newAnalysis()">
-          <md-tooltip md-direction="bottom" md-autohide>Nouvelle analyse</md-tooltip>
-          <md-icon md-svg-icon="content:add"></md-icon>
+        <md-button aria-label="Accéder à l'URL" ng-href="{{ analysis.url }}" ng-disabled="!analysis.url" target="_blank">
+          <md-tooltip md-direction="bottom" md-autohide>Accéder à l'URL</md-tooltip>
+          Visiter
         </md-button>
       </div>
     </div>
-  </md-toolbar>
 
-  <md-content ng-hide="analyses[index]" class="whitesmoke md-padding">
-    <md-list>
-      <md-list-item ng-repeat="a in analyses track by $index">
-        <button class="md-no-style md-button md-default-theme" ng-click="select($index)">
-          <div class="md-list-item-text" ng-bind="a.title"></div>
-        </button>
-      </md-list-item>
-    </md-list>
-  </md-content>
+    <div layout="row" layout-wrap>
+      <md-autocomplete flex="50" flex-gt-md="33"
+          ng-if="authorized"
+          md-menu-class="autocomplete"
+          md-search-text="analysis.rtype"
+          md-min-length="0"
+          md-items="item in resourceTypes | filter:analysis.rtype"
+          md-item-text="item.code"
+          md-floating-label="Type">
 
-  <div ng-if="analyses[index]">
-    <md-tabs md-dynamic-height md-stretch-tabs="always" md-swipe-content md-border-bottom>
-      <md-tab label="General">
-        <md-content class="whitesmoke md-padding">
-          <md-input-container>
-            <label>Titre</label>
-            <input type="text" ng-readonly="!auth.isAuthorized()" ng-model="analyses[index].title" ng-change="analyses[index].setDirty(true)">
-          </md-input-container>
+        <md-item-template>
+          <span class="item-title">
+            <md-icon md-svg-icon="mdi:tag-outline"></md-icon>
+            <span md-highlight-text="analysis.rtype" md-highlight-flags="^i">{{ item.code }}</span>
+          </span>
+          <span md-highlight-text="analysis.rtype" md-highlight-flags="^i" class="item-metadata">
+            {{ item.description }}
+          </span>
+        </md-item-template>
+      </md-autocomplete>
 
-          <div layout="row" layout-align="start center">
-            <md-input-container flex>
-              <label>URL</label>
-              <input type="text" ng-readonly="!auth.isAuthorized()" ng-model="analyses[index].url" ng-change="analyses[index].setDirty(true)">
-            </md-input-container>
+      <md-autocomplete flex="50" flex-gt-md="33"
+          ng-if="authorized"
+          md-menu-class="autocomplete"
+          md-search-text="analysis.mime"
+          md-min-length="0"
+          md-items="item in mimeTypes | filter:analysis.mime"
+          md-item-text="item.code"
+          md-floating-label="Format">
 
-            <md-button aria-label="Accéder à l'URL" ng-href="{{ analyses[index].url }}" ng-disabled="!analyses[index].url" target="_blank">
-              <md-tooltip md-direction="bottom" md-autohide>Accéder à l'URL</md-tooltip>
-              Visiter
-            </md-button>
-          </div>
+        <md-item-template>
+          <span class="item-title">
+            <md-icon md-svg-icon="mdi:tag-outline"></md-icon>
+            <span md-highlight-text="analysis.mime" md-highlight-flags="^i">{{ item.code }}</span>
+          </span>
+          <span md-highlight-text="analysis.mime" md-highlight-flags="^i" class="item-metadata">
+            {{ item.description }}
+          </span>
+        </md-item-template>
+      </md-autocomplete>
 
-          <div layout="row" layout-wrap>
-            <md-autocomplete flex="50" flex-gt-md="33"
-                ng-if="auth.isAuthorized()"
-                md-selected-item-change="analyses[index].setDirty(true)"
-                md-search-text-change="analyses[index].setDirty(true)"
-                md-menu-class="autocomplete"
-                md-search-text="analyses[index].rtype"
-                md-min-length="0"
-                md-items="item in resourceTypes | filter:analyses[index].rtype"
-                md-item-text="item.code"
-                md-floating-label="Type">
+      <md-input-container ng-if="!authorized" flex="50" flex-gt-md="33">
+        <label>Type</label>
+        <input type="text" ng-readonly="true" ng-model="analysis.rtype">
+      </md-input-container>
 
-              <md-item-template>
-                <span class="item-title">
-                  <md-icon md-svg-icon="mdi:tag-outline"></md-icon>
-                  <span md-highlight-text="analyses[index].rtype" md-highlight-flags="^i">{{ item.code }}</span>
-                </span>
-                <span md-highlight-text="analyses[index].rtype" md-highlight-flags="^i" class="item-metadata">
-                  {{ item.description }}
-                </span>
-              </md-item-template>
-            </md-autocomplete>
+      <md-input-container ng-if="!authorized" flex="50" flex-gt-md="33">
+        <label>Format</label>
+        <input type="text" ng-readonly="true" ng-model="analysis.mime">
+      </md-input-container>
 
-            <md-autocomplete flex="50" flex-gt-md="33"
-                ng-if="auth.isAuthorized()"
-                md-selected-item-change="analyses[index].setDirty(true)"
-                md-search-text-change="analyses[index].setDirty(true)"
-                md-menu-class="autocomplete"
-                md-search-text="analyses[index].mime"
-                md-min-length="0"
-                md-items="item in mimeTypes | filter:analyses[index].mime"
-                md-item-text="item.code"
-                md-floating-label="Format">
+      <md-input-container flex>
+        <label>UnitID</label>
+        <input type="text" ng-readonly="!authorized" ng-model="analysis.unitid">
+      </md-input-container>
+    </div>
 
-              <md-item-template>
-                <span class="item-title">
-                  <md-icon md-svg-icon="mdi:tag-outline"></md-icon>
-                  <span md-highlight-text="analyses[index].mime" md-highlight-flags="^i">{{ item.code }}</span>
-                </span>
-                <span md-highlight-text="analyses[index].mime" md-highlight-flags="^i" class="item-metadata">
-                  {{ item.description }}
-                </span>
-              </md-item-template>
-            </md-autocomplete>
+    <h2 class="md-headline">Identifiants</h2>
+    <div layout="row" layout-align="center center" class="fade-down white md-whiteframe-z1 inset md-margin" layout-wrap ng-repeat="identifier in analysis.identifiers">
 
-            <md-input-container ng-if="!auth.isAuthorized()" flex="50" flex-gt-md="33">
-              <label>Type</label>
-              <input type="text" ng-readonly="true" ng-model="analyses[index].rtype">
-            </md-input-container>
+      <md-autocomplete flex="50"
+          ng-if="authorized"
+          md-menu-class="autocomplete"
+          md-search-text="identifier.type"
+          md-min-length="0"
+          md-items="item in resourceIDs | filter:identifier.type"
+          md-item-text="item.code"
+          md-floating-label="Type">
 
-            <md-input-container ng-if="!auth.isAuthorized()" flex="50" flex-gt-md="33">
-              <label>Format</label>
-              <input type="text" ng-readonly="true" ng-model="analyses[index].mime">
-            </md-input-container>
+        <md-item-template>
+          <span class="item-title">
+            <md-icon md-svg-icon="mdi:tag-outline"></md-icon>
+            <span md-highlight-text="identifier.type" md-highlight-flags="^i">{{ item.code }}</span>
+          </span>
+          <span md-highlight-text="identifier.type" md-highlight-flags="^i" class="item-metadata">
+            {{ item.description }}
+          </span>
+        </md-item-template>
+      </md-autocomplete>
 
-            <md-input-container flex>
-              <label>UnitID</label>
-              <input type="text" ng-readonly="!auth.isAuthorized()" ng-model="analyses[index].unitid" ng-change="analyses[index].setDirty(true)">
-            </md-input-container>
-          </div>
+      <md-input-container ng-if="!authorized" flex="50" flex-gt-md="33">
+        <label>Type</label>
+        <input type="text" ng-readonly="true" ng-model="identifier.type">
+      </md-input-container>
 
-          <h2 class="md-headline">Identifiants</h2>
-          <div layout="row" layout-align="center center" class="fade-left white md-whiteframe-z1 inset md-margin" layout-wrap ng-repeat="identifier in analyses[index].identifiers">
+      <md-input-container flex>
+        <label>Valeur</label>
+        <input type="text" ng-readonly="!authorized" ng-model="identifier.value">
+      </md-input-container>
 
-            <md-autocomplete flex="50"
-                ng-if="auth.isAuthorized()"
-                md-selected-item-change="analyses[index].setDirty(true)"
-                md-search-text-change="analyses[index].setDirty(true)"
-                md-menu-class="autocomplete"
-                md-search-text="identifier.type"
-                md-min-length="0"
-                md-items="item in resourceIDs | filter:identifier.type"
-                md-item-text="item.code"
-                md-floating-label="Type">
+      <md-button ng-if="authorized" class="md-icon-button md-raised" aria-label="Supprimer un identifiant" ng-click="removeElement(analysis, 'identifiers', $index)">
+        <md-icon md-svg-icon="action:delete"></md-icon>
+      </md-button>
+    </div>
 
-              <md-item-template>
-                <span class="item-title">
-                  <md-icon md-svg-icon="mdi:tag-outline"></md-icon>
-                  <span md-highlight-text="identifier.type" md-highlight-flags="^i">{{ item.code }}</span>
-                </span>
-                <span md-highlight-text="identifier.type" md-highlight-flags="^i" class="item-metadata">
-                  {{ item.description }}
-                </span>
-              </md-item-template>
-            </md-autocomplete>
+    <div layout="row" ng-if="authorized" layout-align="center center">
+      <md-button class="md-fab md-mini" aria-label="Ajouter un identifiant" ng-click="addElement(analysis, 'identifiers')">
+        <md-icon md-svg-icon="content:add"></md-icon>
+      </md-button>
+    </div>
 
-            <md-input-container ng-if="!auth.isAuthorized()" flex="50" flex-gt-md="33">
-              <label>Type</label>
-              <input type="text" ng-readonly="true" ng-model="identifier.type">
-            </md-input-container>
+    <h2 class="md-headline">Paramètres du path</h2>
+    <div layout="row" layout-align="center start" class="fade-down parameter white md-whiteframe-z1 inset md-margin" layout-wrap ng-repeat="path in analysis.pathParams">
+      <md-input-container flex="50" flex-md="35" flex-gt-md="25">
+        <label>Path</label>
+        <input type="text" ng-readonly="!authorized" ng-model="path.value">
+      </md-input-container>
 
-            <md-input-container flex>
-              <label>Valeur</label>
-              <input type="text" ng-readonly="!auth.isAuthorized()" ng-model="identifier.value" ng-change="analyses[index].setDirty(true)">
-            </md-input-container>
+      <md-input-container flex>
+        <label>Commentaire</label>
+        <textarea ng-readonly="!authorized" ng-model="path.comment"></textarea>
+      </md-input-container>
 
-            <md-button ng-if="auth.isAuthorized()" class="md-icon-button md-raised" aria-label="Supprimer un identifiant" ng-click="removeElement(analyses[index], 'identifiers', $index)">
-              <md-icon md-svg-icon="action:delete"></md-icon>
-            </md-button>
-          </div>
+      <md-button ng-if="authorized" class="md-icon-button md-raised" aria-label="Supprimer un paramètre du path" ng-click="removeElement(analysis, 'pathParams', $index)">
+        <md-icon md-svg-icon="action:delete"></md-icon>
+      </md-button>
+    </div>
 
-          <div layout="row" ng-if="auth.isAuthorized()" layout-align="center center">
-            <md-button class="md-fab md-mini" aria-label="Ajouter un identifiant" ng-click="addElement(analyses[index], 'identifiers')">
-              <md-icon md-svg-icon="content:add"></md-icon>
-            </md-button>
-          </div>
-        </md-content>
-      </md-tab>
-
-      <md-tab label="URL en détail">
-        <md-content class="whitesmoke md-padding">
-          <div layout="row" layout-sm="column">
-            <md-input-container flex>
-              <label>URL</label>
-              <input type="text" ng-readonly="!auth.isAuthorized()" ng-model="analyses[index].url" ng-change="analyses[index].setDirty(true)">
-            </md-input-container>
-
-            <div layout="row" layout-align="center center">
-              <md-button ng-if="auth.isAuthorized()" aria-label="Démembrer l'URL" ng-click="analyses[index].parseUrl()" ng-disabled="!analyses[index].url">
-                <md-tooltip md-direction="bottom" md-autohide>Démembrer l'url</md-tooltip>
-                Démembrer
-              </md-button>
-
-              <md-button aria-label="Accéder à l'URL" ng-href="{{ analyses[index].url }}" ng-disabled="!analyses[index].url" target="_blank">
-                <md-tooltip md-direction="bottom" md-autohide>Accéder à l'URL</md-tooltip>
-                Visiter
-              </md-button>
-            </div>
-          </div>
-
-          <h2 class="md-headline">Paramètres du path</h2>
-          <div layout="row" layout-align="center start" class="fade-left parameter white md-whiteframe-z1 inset md-margin" layout-wrap ng-repeat="path in analyses[index].pathParams">
-            <md-input-container flex="50" flex-md="35" flex-gt-md="25">
-              <label>Path</label>
-              <input type="text" ng-readonly="!auth.isAuthorized()" ng-model="path.value" ng-change="analyses[index].setDirty(true)">
-            </md-input-container>
-
-            <md-input-container flex>
-              <label>Commentaire</label>
-              <textarea ng-readonly="!auth.isAuthorized()" ng-model="path.comment" ng-change="analyses[index].setDirty(true)"></textarea>
-            </md-input-container>
-
-            <md-button ng-if="auth.isAuthorized()" class="md-icon-button md-raised" aria-label="Supprimer un paramètre du path" ng-click="removeElement(analyses[index], 'pathParams', $index)">
-              <md-icon md-svg-icon="action:delete"></md-icon>
-            </md-button>
-          </div>
-
-          <div layout="row" ng-if="auth.isAuthorized()" layout-align="center center">
-            <md-button class="md-fab md-mini" aria-label="Ajouter un paramètre du path" ng-click="addElement(analyses[index], 'pathParams')">
-              <md-icon md-svg-icon="content:add"></md-icon>
-            </md-button>
-          </div>
+    <div layout="row" ng-if="authorized" layout-align="center center">
+      <md-button class="md-fab md-mini" aria-label="Ajouter un paramètre du path" ng-click="addElement(analysis, 'pathParams')">
+        <md-icon md-svg-icon="content:add"></md-icon>
+      </md-button>
+    </div>
 
 
-          <h2 class="md-headline">Paramètres de la query</h2>
-          <div layout="row" layout-align="center start" class="fade-left parameter white md-whiteframe-z1 inset md-margin" layout-wrap ng-repeat="query in analyses[index].queryParams">
-            <md-input-container flex="25" flex-sm="50">
-              <label>Nom</label>
-              <input type="text" ng-readonly="!auth.isAuthorized()" ng-model="query.name" ng-change="analyses[index].setDirty(true)">
-            </md-input-container>
+    <h2 class="md-headline">Paramètres de la query</h2>
+    <div layout="row" layout-align="center start" class="fade-down parameter white md-whiteframe-z1 inset md-margin" layout-wrap ng-repeat="query in analysis.queryParams">
+      <md-input-container flex="25" flex-sm="50">
+        <label>Nom</label>
+        <input type="text" ng-readonly="!authorized" ng-model="query.name">
+      </md-input-container>
 
-            <md-input-container flex="25" flex-sm="50">
-              <label>Valeur</label>
-              <input type="text" ng-readonly="!auth.isAuthorized()" ng-model="query.value" ng-change="analyses[index].setDirty(true)">
-            </md-input-container>
+      <md-input-container flex="25" flex-sm="50">
+        <label>Valeur</label>
+        <input type="text" ng-readonly="!authorized" ng-model="query.value">
+      </md-input-container>
 
-            <md-input-container flex>
-              <label>Commentaire</label>
-              <textarea ng-readonly="!auth.isAuthorized()" ng-model="query.comment" ng-change="analyses[index].setDirty(true)"></textarea>
-            </md-input-container>
+      <md-input-container flex>
+        <label>Commentaire</label>
+        <textarea ng-readonly="!authorized" ng-model="query.comment"></textarea>
+      </md-input-container>
 
-            <md-button ng-if="auth.isAuthorized()" class="md-icon-button md-raised" aria-label="Supprimer un paramètre de la query" ng-click="removeElement(analyses[index], 'queryParams', $index)">
-              <md-icon md-svg-icon="action:delete"></md-icon>
-            </md-button>
-          </div>
+      <md-button ng-if="authorized" class="md-icon-button md-raised" aria-label="Supprimer un paramètre de la query" ng-click="removeElement(analysis, 'queryParams', $index)">
+        <md-icon md-svg-icon="action:delete"></md-icon>
+      </md-button>
+    </div>
 
-          <div layout="row" ng-if="auth.isAuthorized()" layout-align="center center">
-            <md-button class="md-fab md-mini" aria-label="Ajouter un paramètre de la query" ng-click="addElement(analyses[index], 'queryParams')">
-              <md-icon md-svg-icon="content:add"></md-icon>
-            </md-button>
-          </div>
-        </md-content>
-      </md-tab>
+    <div layout="row" ng-if="authorized" layout-align="center center">
+      <md-button class="md-fab md-mini" aria-label="Ajouter un paramètre de la query" ng-click="addElement(analysis, 'queryParams')">
+        <md-icon md-svg-icon="content:add"></md-icon>
+      </md-button>
+    </div>
 
-      <md-tab>
-        <md-tab-label>
-          Remarques <md-icon ng-show="analyses[index].comment" md-svg-icon="communication:comment"></md-icon>
-        </md-tab-label>
-        <md-content class="whitesmoke md-padding">
-          <md-input-container>
-            <label>Remarques</label>
-            <textarea ng-readonly="!auth.isAuthorized()" ng-model="analyses[index].comment" ng-change="analyses[index].setDirty(true)"></textarea>
-          </md-input-container>
-        </md-content>
-      </md-tab>
-    </md-tabs>
+    <md-input-container>
+      <label>Remarques</label>
+      <textarea ng-readonly="!authorized" ng-model="analysis.comment"></textarea>
+    </md-input-container>
   </div>
-</div>
-
-<div layout="row" layout-align="center center" layout-wrap>
-  <a href="javascript:void(0)" title="{{ a.title }}" ng-click="select($index)" ng-repeat="a in analyses track by $index">
-    <md-icon md-svg-icon="image:{{ index == $index ? 'lens' : 'panorama_fish_eye' }}"></md-icon>
-  </a>
 </div>

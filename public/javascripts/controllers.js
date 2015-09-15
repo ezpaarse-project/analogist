@@ -6,24 +6,27 @@ angular.module('WebApp')
   '$rootScope',
   '$route',
   function($scope, $mdSidenav, $location, $rootScope, $route) {
-  $scope.toggleSidenav = function(menuId) {
-    $mdSidenav(menuId).toggle();
-  };
 
   $scope.auth.checkSession();
 
   $rootScope.$on('$routeChangeSuccess', function() {
-    $scope.title = $route.current.title;
-    $scope.subtitle = null;
+    $scope.subtitle     = null;
+    $scope.toolbarItems = null;
+    $scope.menuItems    = null;
   });
 
   $scope.setSubtitle = function (str) {
     $scope.subtitle = str;
   };
+  $scope.setToolbarItems = function (items) {
+    $scope.toolbarItems = items;
+  };
+  $scope.setMenuItems = function (items) {
+    $scope.menuItems = items;
+  };
 
   $scope.goto = function(path) {
     $location.path(path || '/');
-    $mdSidenav('left').close();
   };
 }])
 .controller('PlatformCtrl', [
@@ -35,61 +38,99 @@ angular.module('WebApp')
   'ezAlert',
   function($scope, analysesFactory, $mdToast, $routeParams, platforms, ezAlert) {
 
-  $scope.loading = true;
   var cardID = $scope.cardID = $routeParams.id;
 
-  $scope.nbViews = 1;
+  getPlatform();
 
-  $scope.range = function (n) {
-    var arr = [];
-    for (var i = 0; i < n; i++) { arr.push(i); };
-    return arr;
-  };
+  $scope.toggleSplitView = function () {
+    $scope.split = !$scope.split;
+  }
 
-  $scope.addView = function () {
-    $scope.nbViews++;
-  };
-  $scope.removeView = function () {
-    if ($scope.nbViews > 1) { $scope.nbViews--; }
-  };
+  function reload() {
+    platforms.reload();
+    getPlatform();
+  }
 
-  platforms.get().then(function (list) {
-    for (var i = list.length - 1; i >= 0; i--) {
-      if (list[i].card.id == cardID) { $scope.platform = list[i]; break; }
-    };
+  function getPlatform() {
+    $scope.loading = true;
 
-    if (!$scope.platform) {
-      $scope.loading = false;
+    platforms.get().then(function (list) {
+      for (var i = list.length - 1; i >= 0; i--) {
+        if (list[i].card.id == cardID) { $scope.platform = list[i]; break; }
+      };
 
-      return ezAlert({
-        title: "Introuvable",
-        content: "La plateforme d'identifiant " + cardID + " n'existe pas.",
-        ariaLabel: "Erreur plateforme introuvable"
+      if (!$scope.platform) {
+        $scope.loading = false;
+
+        return ezAlert({
+          title: "Introuvable",
+          content: "La plateforme d'identifiant " + cardID + " n'existe pas.",
+          ariaLabel: "Erreur plateforme introuvable"
+        });
+      }
+
+      $scope.setSubtitle($scope.platform.name);
+
+      analysesFactory.get($scope.platform.card.id)
+      .then(function (analyses) {
+        $scope.loading  = false;
+        $scope.analyses = analyses;
+
+        $scope.setToolbarItems([
+          { label: 'Sauvegarder', icon: 'content:save', action: save },
+          { label: 'Nouvelle analyse', icon: 'content:add', action: newAnalysis }
+        ]);
+
+        $scope.setMenuItems([
+          { label: 'Actualiser', icon: 'navigation:refresh', action: reload },
+          { label: 'Voir sur GitHub', icon: 'mdi:github', href: $scope.platform.githubUrl },
+          { label: 'Voir sur Trello', icon: 'mdi:trello', href: $scope.platform.card.url }
+        ]);
+      })
+      .catch(function (response) {
+        $scope.loading  = false;
+        $scope.analyses = [];
+
+        if (response.status == 404) { return; }
+
+        ezAlert({
+          title: "Erreur",
+          content: "Une erreur est survenue pendant la récupération des analyses",
+          ariaLabel: "Erreur récupération des analyses"
+        });
       });
-    }
+    }).catch(function () {
+      $scope.loading = false;
+    });
+  }
 
-    $scope.setSubtitle($scope.platform.name);
+  function newAnalysis() {
+    $scope.analyses.push(analysesFactory.wrapAnalysis($scope.cardID));
+  };
 
-    analysesFactory.get($scope.platform.card.id)
-    .then(function (analyses) {
-      $scope.loading  = false;
-      $scope.analyses = analyses;
-    })
-    .catch(function (response) {
-      $scope.loading  = false;
-      $scope.analyses = [];
+  function save() {
+    if (!$scope.analyses) { return; }
+    $scope.saving = true;
 
-      if (response.status == 404) { return; }
+    analysesFactory.save($scope.analyses)
+    .then(function success() {
+      $scope.saving = false;
+
+      $mdToast.show({
+        template: '<md-toast><span flex>Analyses sauvegardées</span></md-toast>',
+        hideDelay: 2000,
+        position: 'bottom right'
+      });
+    }, function fail() {
+      $scope.saving = false;
 
       ezAlert({
         title: "Erreur",
-        content: "Une erreur est survenue pendant la récupération des analyses",
-        ariaLabel: "Erreur récupération des analyses"
+        content: "Une erreur est survenue pendant la sauvegarde",
+        ariaLabel: "Erreur sauvegarde des analyses"
       });
     });
-  }).catch(function () {
-    $scope.loading = false;
-  });
+  };
 }])
 .controller('AnalyzerCtrl', [
   '$scope',
@@ -98,7 +139,6 @@ angular.module('WebApp')
   'ezAlert',
   'analysesFactory',
   function($scope, $mdToast, $http, ezAlert, analysesFactory) {
-  $scope.index = -1;
 
   $http.get('https://raw.githubusercontent.com/ezpaarse-project/ezpaarse-platforms/master/rtype.json').then(function (response) {
     if (angular.isArray(response.data)) { $scope.resourceTypes = response.data; }
@@ -110,27 +150,8 @@ angular.module('WebApp')
     if (angular.isArray(response.data)) { $scope.resourceIDs = response.data; }
   });
 
-  function getAnalysis(id) {
-    if (!angular.isArray($scope.analyses)) { return null; }
-
-    for (var i = $scope.analyses.length - 1; i >= 0; i--) {
-      if ($scope.analyses[i].id == id) { return $scope.analyses[i]; }
-    };
-  }
-
-  function removeAnalysis(id) {
-    if (!angular.isArray($scope.analyses)) { return; }
-
-    for (var i = $scope.analyses.length - 1; i >= 0; i--) {
-      if ($scope.analyses[i].id == id) {
-        $scope.analyses.splice(i, 1);
-        if ($scope.index >= $scope.analyses.length) {
-          $scope.index = $scope.analyses.length - 1;
-        }
-        return;
-      }
-    };
-  }
+  $scope.back = function () { $scope.analysis = null; };
+  $scope.select = function (analysis) { $scope.analysis = analysis; };
 
   /**
    * Add an element in an array
@@ -155,18 +176,31 @@ angular.module('WebApp')
   };
 
   $scope.remove = function (analysis) {
-    if (!analysis || analysis.isLoading()) { return; }
+    if (!analysis || $scope.loading) { return; }
+
+    $scope.loading = true;
 
     analysis.remove()
     .then(function success() {
-      removeAnalysis(analysis.id);
+      $scope.loading = false;
+
+      // Remove from local analyses
+      for (var i = $scope.analyses.length - 1; i >= 0; i--) {
+        if ($scope.analyses[i] === analysis) {
+          $scope.analyses.splice(i, 1);
+          break;
+        }
+      };
+
+      if ($scope.analysis === analysis) { $scope.analysis = null; }
 
       $mdToast.show({
         template: '<md-toast><span flex>Analyse supprimée</span></md-toast>',
         hideDelay: 2000,
-        position: 'top right'
+        position: 'bottom right'
       });
     }, function fail() {
+      $scope.loading = false;
       ezAlert({
         title: "Erreur",
         content: "Une erreur est survenue pendant la suppression",
@@ -174,54 +208,52 @@ angular.module('WebApp')
       });
     });
   };
+}])
+.controller('ListCtrl', ['$scope', '$mdDialog', '$mdToast', 'platforms', function($scope, $mdDialog, $mdToast, platforms) {
+  $scope.groupby = 'letter';
 
-  $scope.save = function (analysis) {
-    if (!analysis || analysis.isLoading()) { return; }
+  getPlatforms();
 
-    analysis.save()
-    .then(function success() {
-      $mdToast.show({
-        template: '<md-toast><span flex>Analyse sauvegardée</span></md-toast>',
-        hideDelay: 2000,
-        position: 'top right'
-      });
-    }, function fail() {
-      ezAlert({
-        title: "Erreur",
-        content: "Une erreur est survenue pendant la sauvegarde",
-        ariaLabel: "Erreur sauvegarde de l'analyse"
-      });
+  $scope.setMenuItems([
+    { label: 'Actualiser', icon: 'navigation:refresh', action: reload }
+  ]);
+
+  $scope.showAdd = function(ev) {
+    $mdDialog.show({
+      controller: function DialogController($scope, $mdDialog) {
+        $scope.hide   = function() { $mdDialog.hide(); };
+        $scope.cancel = function() { $mdDialog.cancel(); };
+        $scope.save   = function() {
+          $mdDialog.hide();
+
+          $mdToast.show({
+            template: '<md-toast><span flex>Plateforme sauvegardée</span></md-toast>',
+            hideDelay: 3000,
+            position: 'bottom right'
+          });
+        };
+      },
+      templateUrl: '/partials/form-add',
+      targetEvent: ev
     });
   };
 
-  $scope.newAnalysis = function () {
-    $scope.index = $scope.analyses.push(analysesFactory.create($scope.cardID)) - 1;
-  };
+  function getPlatforms() {
+    $scope.loading = true;
 
-  $scope.back = function () { $scope.index = -1; };
-  $scope.select = function (i) {
-    $scope.index = i || 0;
+    platforms.get().then(function () {
+      buildList();
+    }).finally(function () {
+      $scope.loading = false;
+    });
+  }
 
-    if ($scope.index < 0) {
-      $scope.index = 0;
-    } else if ($scope.index >= $scope.analyses.length) {
-      $scope.index = $scope.analyses.length - 1;
-    }
-  };
-  $scope.prev = function () { $scope.select($scope.index - 1); };
-  $scope.next = function () { $scope.select($scope.index + 1); };
-  $scope.hasNext = function () {
-    return ($scope.index >= 0 && $scope.index + 1 < $scope.analyses.length);
-  };
-  $scope.hasPrev = function () {
-    return ($scope.index - 1 >= 0);
-  };
-}])
-.controller('ListCtrl', ['$scope', '$mdDialog', '$mdToast', 'platforms', function($scope, $mdDialog, $mdToast, platforms) {
-  $scope.platforms = platforms;
-  $scope.groupby   = 'letter';
+  function reload() {
+    platforms.reload();
+    getPlatforms();
+  }
 
-  $scope.buildList = function () {
+  function buildList() {
     if (!platforms.list) { return $scope.list = null; }
 
     var groups  = {};
@@ -248,42 +280,5 @@ angular.module('WebApp')
       }
       groups[group].push(el);
     });
-  };
-
-  function getPlatforms() {
-    $scope.loading = true;
-
-    platforms.get().then(function () {
-      $scope.buildList();
-    }).finally(function () {
-      $scope.loading = false;
-    });
   }
-
-  getPlatforms();
-
-  $scope.reload = function () {
-    platforms.reload();
-    getPlatforms();
-  };
-
-  $scope.showAdd = function(ev) {
-    $mdDialog.show({
-      controller: function DialogController($scope, $mdDialog) {
-        $scope.hide   = function() { $mdDialog.hide(); };
-        $scope.cancel = function() { $mdDialog.cancel(); };
-        $scope.save   = function() {
-          $mdDialog.hide();
-
-          $mdToast.show({
-            template: '<md-toast><span flex>Plateforme sauvegardée</span></md-toast>',
-            hideDelay: 3000,
-            position: 'top right'
-          });
-        };
-      },
-      templateUrl: '/partials/form-add',
-      targetEvent: ev
-    });
-  };
 }]);

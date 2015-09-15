@@ -10,75 +10,93 @@
     <link rel="stylesheet" href="/assets/components/angular-material/angular-material.min.css">
     <link rel="stylesheet" href="/css/style.css">
   </head>
-  <body layout="row">
-    <md-sidenav layout="column" class="sidemenu md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-sm')">
-
-      <md-toolbar class="md-tall inset">
-        <img src="/img/analogist-logo-white.svg" alt="logo" class="logo">
+  <body layout="column">
+    <md-toolbar class="md-whiteframe-z1 md-tall">
+      <div class="md-toolbar-tools">
+        <md-button ng-click="goto('/list')" class="md-icon-button">
+          <md-icon aria-label="Retour à la liste" md-svg-icon="navigation:arrow_back"></md-icon>
+        </md-button>
 
         <span flex></span>
 
-        <div ng-if="auth.loadingSession" layout="row" layout-align="center center">
-          <md-progress-circular class="md-hue-3" md-mode="indeterminate"></md-progress-circular>
-        </div>
+        <md-button ng-show="auth.isAuthorized()" class="md-icon-button" aria-label="{{ ::item.label }}" ng-click="item.action()" ng-repeat="item in toolbarItems">
+          <md-icon md-menu-align-target md-svg-icon="{{ ::item.icon }}"></md-icon>
+        </md-button>
 
-        <div ng-hide="auth.loadingSession">
-          <div class="md-body-1" ng-hide="auth.isAuthenticated()">
-            Non connecté
-          </div>
-
-          <div ng-show="auth.isAuthenticated()">
-            <div class="md-body-1" ng-bind="session.user.fullName"></div>
-            <div class="md-caption" ng-bind="auth.isAuthorized ? 'Membre' : 'Invité'"></div>
-          </div>
-        </div>
-      </md-toolbar>
-
-      <md-list>
-        <md-list-item class="md-2-line" ng-click="goto('/')" role="link">
-          <md-icon md-svg-icon="action:home" aria-label="Accueil"></md-icon>
-          <div class="md-list-item-text">
-            <span class="md-body-2">Accueil</span>
-          </div>
-        </md-list-item>
-        <md-list-item class="md-2-line" ng-click="goto('/list')" role="link">
-          <md-icon md-svg-icon="action:dashboard" aria-label="Plateformes"></md-icon>
-          <div class="md-list-item-text">
-            <span class="md-body-2">Plateformes</span>
-          </div>
-        </md-list-item>
-
-        <md-list-item ng-hide="auth.isAuthenticated()" class="md-2-line" ng-click="auth.login()" role="link">
-          <md-icon md-svg-icon="mdi:login" aria-label="Connexion avec Trello"></md-icon>
-          <div class="md-list-item-text">
-            <span class="md-body-2">Connexion avec Trello</span>
-          </div>
-        </md-list-item>
-
-        <md-list-item ng-show="auth.isAuthenticated()" class="md-2-line" ng-click="auth.logout()" role="link">
-          <md-icon md-svg-icon="mdi:logout" aria-label="Déconnexion"></md-icon>
-          <div class="md-list-item-text">
-            <span class="md-body-2">Déconnexion</span>
-          </div>
-        </md-list-item>
-      </md-list>
-    </md-sidenav>
-
-    <div flex layout="column">
-      <md-toolbar layout="row" class="md-whiteframe-z1 site-toolbar">
-        <div class="md-toolbar-tools">
-          <md-button ng-click="toggleSidenav('left')" hide-gt-sm class="md-icon-button">
-            <md-icon aria-label="Menu" md-svg-icon="navigation:menu"></md-icon>
+        <md-menu md-position-mode="target-right target">
+          <md-button aria-label="Ouvrir le menu" class="md-icon-button" ng-click="$mdOpenMenu($event)">
+            <md-icon md-menu-origin md-svg-icon="navigation:more_vert"></md-icon>
           </md-button>
-          <h1 class="ellipsis" ng-bind="title" ng-hide="subtitle"></h1>
-          <h1 class="ellipsis" ng-show="subtitle">
-            <span hide show-gt-md ng-bind="title"></span><md-icon hide show-gt-md md-svg-icon="navigation:chevron_right"></md-icon><span title="{{ subtitle }}" ng-bind="subtitle"></span>
-          </h1>
-        </div>
-      </md-toolbar>
+          <md-menu-content width="4">
+            <md-menu-item>
+              <div class="md-body-1" ng-hide="auth.isAuthenticated()">
+                Non connecté
+              </div>
 
-      <md-content flex ng-view></md-content>
-    </div>
+              <div ng-show="auth.isAuthenticated()">
+                <div class="md-body-1" ng-bind="session.user.fullName"></div>
+                <div class="md-caption" ng-bind="auth.isAuthorized ? 'Membre' : 'Invité'"></div>
+              </div>
+            </md-menu-item>
+
+            <md-divider></md-divider>
+
+            <md-menu-item>
+              <md-button aria-label="Aller sur AnalogIST" href="http://analogist.couperin.org/">
+                <div layout="row" layout-fill>
+                  <p flex>AnalogIST</p>
+                </div>
+              </md-button>
+            </md-menu-item>
+
+            <md-menu-item ng-repeat="item in menuItems">
+              <md-button ng-if="::item.action" aria-label="{{ ::item.label }}" ng-click="item.action()">
+                <div layout="row">
+                  <p flex>{{ ::item.label }}</p>
+                  <md-icon md-menu-align-target md-svg-icon="{{ ::item.icon }}"></md-icon>
+                </div>
+              </md-button>
+
+              <md-button ng-if="::!item.action" ng-disabled="::!item.href" aria-label="{{ ::item.label }}" ng-href="{{ ::item.href }}">
+                <div layout="row" layout-fill>
+                  <p flex>{{ ::item.label }}</p>
+                  <md-icon md-menu-align-target md-svg-icon="{{ ::item.icon }}"></md-icon>
+                </div>
+              </md-button>
+            </md-menu-item>
+
+            <md-menu-item ng-hide="auth.isAuthenticated()">
+              <md-button aria-label="Connexion avec Trello" ng-click="auth.login()">
+                <div layout="row">
+                  <p flex>Se connecter avec Trello</p>
+                  <md-icon md-menu-align-target md-svg-icon="mdi:login"></md-icon>
+                </div>
+              </md-button>
+            </md-menu-item>
+
+            <md-menu-item ng-show="auth.isAuthenticated()">
+              <md-button aria-label="Déconnexion" ng-click="auth.logout()">
+                <div layout="row">
+                  <p flex>Se déconnecter</p>
+                  <md-icon md-menu-align-target md-svg-icon="mdi:logout" ></md-icon>
+                </div>
+              </md-button>
+            </md-menu-item>
+          </md-menu-content>
+        </md-menu>
+      </div>
+
+      <span flex></span>
+
+      <h1 class="md-toolbar-tools md-toolbar-tools-bottom">
+        <a href="/list">Plateformes</a>
+        <span><md-icon ng-show="subtitle" md-svg-icon="navigation:chevron_right"></md-icon></span>
+        <span title="{{ subtitle }}" class="ellipsis" ng-bind="subtitle"></span>
+        <span flex></span>
+      </h1>
+    </md-toolbar>
+
+    <md-content flex ng-view class="whitesmoke main-container"></md-content>
 
     <!-- Angular Material Dependencies -->
     <script src="/assets/components/angular/angular.min.js"></script>
@@ -88,7 +106,6 @@
     <script src="/assets/components/angular-aria/angular-aria.min.js"></script>
     <script src="/assets/components/angular-material/angular-material.min.js"></script>
 
-    <script src="/assets/components/jquery/dist/jquery.min.js"></script>
     <script src="/js/app.js"></script>
     <script src="/js/controllers.js"></script>
     <script src="/js/services.js"></script>

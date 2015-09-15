@@ -100,7 +100,7 @@ angular.module('WebApp')
 
             var regexpGitHubPlatform = new RegExp('(https://github.com/ezpaarse-project/ezpaarse-platforms/[^ $\n]+)');
             if (match = card.desc.match(regexpGitHubPlatform)) {
-              platform.gitHubUrl = match[1];
+              platform.githubUrl = match[1];
             }
 
             platforms.push(platform);
@@ -179,54 +179,46 @@ angular.module('WebApp')
 .factory('analysesFactory', ['$http', 'ezAlert', '$q', function($http, ezAlert, $q) {
   var factory = {};
 
-  factory.create = function (cardID, analysis) {
+  factory.wrapAnalysis = function (cardID, analysis) {
     if (!angular.isString(cardID)) { return; }
     if (!angular.isObject(analysis)) { analysis = {}; }
 
     var baseUrl = '/api/platforms/' + cardID + '/analyses';
-
-    // workaround for chips, but chips should be replaced with something more convenient
-    analysis.identifiers = analysis.identifiers || [];
-
-    var state = {};
-
-    analysis.setDirty  = function (bool) { state.dirty = bool; };
-    analysis.isDirty   = function () { return state.dirty; };
-    analysis.isLoading = function () { return state.loading; };
+    var saved   = angular.copy(analysis);
+    var loading = false;
 
     var insert = function () {
-      state.loading = true;
-
       return $http.post(baseUrl, analysis).then(function (response) {
         if (!angular.isObject(response.data)) {
           return $q.reject('got an invalid response');
         }
-        analysis.id = response.data.id;
-        state.dirty = false;
-      }).finally(function () {
-        state.loading = false;
+        analysis.id = saved.id = response.data.id;
       });
     };
 
     var update = function () {
-      state.loading = true;
-
       return $http.post(baseUrl + '/' + analysis.id, analysis).then(function () {
-        state.dirty = false;
-      }).finally(function () {
-        state.loading = false;
+        saved = angular.copy(analysis);
       });
     };
 
     analysis.save = function () {
-      return analysis.id ? update() : insert();
+      if (!angular.equals(saved, analysis)) {
+        return analysis.id ? update() : insert();
+      }
+
+      var deferred = $q.defer();
+      deferred.resolve();
+      return deferred.promise;
     };
     analysis.remove = function () {
-      state.loading = true;
+      if (analysis.id) {
+        return $http.delete(baseUrl + '/' + analysis.id);
+      }
 
-      return $http.delete(baseUrl + '/' + analysis.id).finally(function () {
-        state.loading = false;
-      });
+      var deferred = $q.defer();
+      deferred.resolve();
+      return deferred.promise;
     };
 
     analysis.parseUrl = function () {
@@ -252,11 +244,16 @@ angular.module('WebApp')
           value: decodeURIComponent(parts[1] || '')
         });
       });
-
-      analysis.setDirty(true);
     };
 
     return analysis;
+  };
+
+  /**
+   * Save a list of analyses
+   */
+  factory.save = function (analyses) {
+    return $q.all(analyses.map(function (analysis) { return analysis.save(); }));
   };
 
   factory.get = function (cardID) {
@@ -266,7 +263,7 @@ angular.module('WebApp')
       }
 
       return response.data.map(function (analysis) {
-        return factory.create(cardID, analysis);
+        return factory.wrapAnalysis(cardID, analysis);
       });
     });
   };

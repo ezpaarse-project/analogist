@@ -1,4 +1,5 @@
 .center-aligned { text-align: center; }
+.grayed-out { color: #808080 !important; }
 .whitesmoke { background-color: #F5F5F5; }
 .white { background-color: #FFFFFF; }
 .ellipsis {
@@ -6,6 +7,7 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+.unpadded { padding: 0; }
 
 md-sidenav.sidemenu {
   min-width: 250px;
@@ -19,15 +21,16 @@ md-toolbar.site-toolbar {
   background: #f6f6f6 !important;
   color: #202020 !important;
 }
-md-toolbar.site-toolbar md-icon,
-md-toolbar.site-toolbar button {
+md-toolbar.site-toolbar:not(.md-menu-toolbar) md-icon,
+md-toolbar.site-toolbar:not(.md-menu-toolbar) button {
   color: inherit;
 }
 
-.fade.ng-enter { animation: fadeInDown 0.5s; }
-.fade.ng-leave { animation: fadeOutUp 0.5s; }
-.fade-left.ng-enter { animation: fadeInLeft 0.5s; }
-.fade-left.ng-leave { animation: fadeOutLeft 0.5s; }
+.main-container { padding: 20px 5%; }
+md-toolbar > .md-toolbar-tools-bottom { padding-left: 5%; }
+
+.fade-down.ng-enter { animation: fadeInDown 0.5s; }
+.fade-down.ng-leave { animation: fadeOutUp 0.5s; }
 
 .fixed.md-fab {
   position: fixed !important;
@@ -48,6 +51,9 @@ md-toolbar.site-toolbar button {
   line-height: 1.5;
 }
 
+.splitted ez-analyzer:first-child { margin-right: 5px; }
+.splitted ez-analyzer:last-child { margin-left: 5px; }
+
 .tiles {
   padding: 0;
   margin: 0;
@@ -62,6 +68,7 @@ md-toolbar.site-toolbar button {
   overflow: hidden;
   text-overflow: ellipsis;
   cursor: pointer;
+  background-color: #FFFFFF;
 
   width: calc(100% - 20px);
 }
@@ -82,8 +89,12 @@ md-toolbar.site-toolbar button {
 }
 
 /**
- * Fix autocomplete min width
+ * Fixes
  */
-md-autocomplete {
-  min-width: 0;
-}
+
+/* Fix autocomplete min width */
+md-autocomplete { min-width: 0; }
+
+/* Fix menu icon alignment in small toolbar */
+md-toolbar .md-menu { padding: 0; }
+
