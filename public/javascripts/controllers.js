@@ -242,7 +242,7 @@ angular.module('WebApp')
     $scope.loading = true;
 
     platforms.get().then(function () {
-      buildList();
+      $scope.buildList();
     }).finally(function () {
       $scope.loading = false;
     });
@@ -253,7 +253,7 @@ angular.module('WebApp')
     getPlatforms();
   }
 
-  function buildList() {
+  $scope.buildList = function () {
     if (!platforms.list) { return $scope.list = null; }
 
     var groups  = {};

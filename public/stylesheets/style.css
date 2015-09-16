@@ -2,12 +2,13 @@
 .grayed-out { color: #808080 !important; }
 .whitesmoke { background-color: #F5F5F5; }
 .white { background-color: #FFFFFF; }
+.link { cursor: pointer; }
+.unpadded { padding: 0; }
 .ellipsis {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.unpadded { padding: 0; }
 
 md-sidenav.sidemenu {
   min-width: 250px;
@@ -53,40 +54,6 @@ md-toolbar > .md-toolbar-tools-bottom { padding-left: 5%; }
 
 .splitted ez-analyzer:first-child { margin-right: 5px; }
 .splitted ez-analyzer:last-child { margin-left: 5px; }
-
-.tiles {
-  padding: 0;
-  margin: 0;
-}
-.tile {
-  position: relative;
-  display: inline-block;
-  padding: 5px;
-  margin: 5px;
-  height: 50px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  cursor: pointer;
-  background-color: #FFFFFF;
-
-  width: calc(100% - 20px);
-}
-@media (min-width: 900px) {
-  .tile { width: calc(50% - 20px); }
-}
-@media (min-width: 1100px) {
-  .tile { width: calc(33.3333% - 20px); }
-}
-@media (min-width: 1500px) {
-  .tile { width: calc(25% - 20px); }
-}
-@media (min-width: 1850px) {
-  .tile { width: calc(20% - 20px); }
-}
-@media (min-width: 2100px) {
-  .tile { width: calc(16.6666% - 20px); }
-}
 
 /**
  * Fixes
