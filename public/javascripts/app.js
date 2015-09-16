@@ -32,17 +32,18 @@ angular.module('WebApp', ['ngMaterial', 'ngMessages', 'ngAnimate', 'ngRoute'])
 .config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
   $locationProvider.html5Mode(true);
 
-  $routeProvider.
-    when('/list', {
+  $routeProvider
+    .when('/list', {
       title: 'Plateformes',
       templateUrl: '/partials/list',
       controller: 'ListCtrl'
-    }).
-    when('/platforms/:id', {
+    })
+    .when('/platforms/:id', {
       title: 'Plateformes',
       templateUrl: '/partials/platform',
       controller: 'PlatformCtrl'
-    });
+    })
+    .otherwise('/list');
 }])
 .run(['$rootScope', 'Session', 'AuthService', 'platforms', function ($rootScope, Session, AuthService, platforms) {
   $rootScope.session   = Session;
