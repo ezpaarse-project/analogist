@@ -1,4 +1,5 @@
 var router   = require('express').Router();
+var trello   = require('../lib/trello.js');
 var mongo    = require('../lib/mongo.js');
 var mw       = require('../lib/middlewares.js');
 var ObjectID = require('mongodb').ObjectID;
@@ -28,6 +29,20 @@ router.get('/:cid', function(req, res, next) {
 
     res.status(200).json(doc);
   });
+});
+
+/* CREATE a platform (ie. card on Trello) */
+router.post('/', function(req, res, next) {
+  var card = req.body;
+
+  if (typeof card !== 'object') {
+    return next(new Error('no card given'));
+  } else if (!card.idList || !card.name) {
+    return next(new Error('missing mandatory field'));
+  }
+  card.due = card.due || null;
+
+  trello.createCard(card, req.session.oauth.token).pipe(res);
 });
 
 /* DELETE a platform */

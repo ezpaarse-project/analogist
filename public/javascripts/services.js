@@ -58,22 +58,28 @@ angular.module('WebApp')
 }])
 .factory('TrelloService', ['$http', '$q', 'TRELLO', function ($http, $q, TRELLO) {
   var trelloService = {};
-  var baseUrl = 'https://api.trello.com';
-  var boardUrl = baseUrl + '/1/boards/' + TRELLO.boardID;
+  var baseUrl    = 'https://api.trello.com';
+  var boardUrl   = baseUrl + '/1/boards/' + TRELLO.boardID;
+  var listsURL   = boardUrl + '/lists?cards=open';
+  var membersURL = boardUrl + '/members';
+
+  trelloService.getLists = function () {
+    return $http.get(listsURL).then(function (res) { return res.data; });
+  };
+
+  trelloService.getMembers = function () {
+    return $http.get(membersURL).then(function (res) { return res.data; });
+  };
 
   trelloService.getPlatforms = function () {
-    var listsURL   = boardUrl + '/lists?cards=open&key=' + TRELLO.apiKey;
-    var membersURL = boardUrl + '/members?key=' + TRELLO.apiKey;
 
     var deferred = $q.defer();
 
-    $http.get(listsURL)
-    .then(function (res1) {
-      var lists = res1.data;
+    trelloService.getLists()
+    .then(function (lists) {
 
-      $http.get(membersURL)
-      .then(function (res2) {
-        var members = res2.data;
+      trelloService.getMembers()
+      .then(function (members) {
         var indexedMembers = {};
         members.forEach(function (m) { indexedMembers[m.id] = m.fullName; });
 
@@ -117,6 +123,15 @@ angular.module('WebApp')
   };
 
   return trelloService;
+}])
+.factory('APIService', ['$http', function ($http) {
+  var apiService = {};
+
+  apiService.createCard = function (card) {
+    return $http.post('/api/platforms', card);
+  };
+
+  return apiService;
 }])
 .factory('ezAlert', ['$mdDialog', function ($mdDialog) {
   return function (opt) {
@@ -179,6 +194,9 @@ angular.module('WebApp')
 .factory('analysesFactory', ['$http', 'ezAlert', '$q', function($http, ezAlert, $q) {
   var factory = {};
 
+  /**
+   * Add some methods to a raw analysis object
+   */
   factory.wrapAnalysis = function (cardID, analysis) {
     if (!angular.isString(cardID)) { return; }
     if (!angular.isObject(analysis)) { analysis = {}; }

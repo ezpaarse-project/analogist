@@ -13,7 +13,7 @@
   <body layout="column">
     <md-toolbar class="md-whiteframe-z1 md-tall">
       <div class="md-toolbar-tools">
-        <md-button ng-click="goto('/list')" class="md-icon-button">
+        <md-button ng-hide="onRootPage" ng-click="goto('/list')" class="md-icon-button">
           <md-icon aria-label="Retour à la liste" md-svg-icon="navigation:arrow_back"></md-icon>
         </md-button>
 
@@ -114,7 +114,6 @@
 
     <script>
       angular.module('WebApp').constant('TRELLO', {
-        apiKey: '<%= apiKey %>',
         boardID: '<%= boardID %>',
         exampleCardID: '5587d3c76e1114036bb596a7'
       });

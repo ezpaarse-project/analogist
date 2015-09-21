@@ -13,6 +13,7 @@ angular.module('WebApp')
     $scope.subtitle     = null;
     $scope.toolbarItems = null;
     $scope.menuItems    = null;
+    $scope.onRootPage   = ($location.path() === '/list');
   });
 
   $scope.setSubtitle = function (str) {
@@ -209,7 +210,7 @@ angular.module('WebApp')
     });
   };
 }])
-.controller('ListCtrl', ['$scope', '$mdDialog', '$mdToast', 'platforms', function($scope, $mdDialog, $mdToast, platforms) {
+.controller('ListCtrl', ['$scope', '$mdDialog', 'platforms', function($scope, $mdDialog, platforms) {
   $scope.groupby = 'letter';
 
   getPlatforms();
@@ -220,19 +221,8 @@ angular.module('WebApp')
 
   $scope.showAdd = function(ev) {
     $mdDialog.show({
-      controller: function DialogController($scope, $mdDialog) {
-        $scope.hide   = function() { $mdDialog.hide(); };
-        $scope.cancel = function() { $mdDialog.cancel(); };
-        $scope.save   = function() {
-          $mdDialog.hide();
-
-          $mdToast.show({
-            template: '<md-toast><span flex>Plateforme sauvegardée</span></md-toast>',
-            hideDelay: 3000,
-            position: 'bottom right'
-          });
-        };
-      },
+      controller: 'NewPlatformCtrl as vm',
+      parent: angular.element(document.body),
       templateUrl: '/partials/form-add',
       targetEvent: ev
     });
@@ -281,4 +271,77 @@ angular.module('WebApp')
       groups[group].push(el);
     });
   }
+}])
+.controller('NewPlatformCtrl', [
+  '$mdDialog',
+  '$mdToast',
+  'ezAlert',
+  'TrelloService',
+  '$q',
+  'APIService',
+  function($mdDialog, $mdToast, ezAlert, TrelloService, $q, APIService) {
+  var vm = this;
+
+  vm.hide   = function() { $mdDialog.hide(); };
+  vm.cancel = function() { $mdDialog.cancel(); };
+  vm.submit = function(valid) {
+
+    if (!valid) { return; }
+
+    var descLines = [];
+
+    if (vm.platform.homeUrl) {
+      descLines.push('Url de la page d\'accueil de la plateforme :');
+      descLines.push(vm.platform.homeUrl);
+    }
+    if (vm.platform.githubUrl) {
+      descLines.push('Code source de la plateforme (PKB / scrapeur / parseur) :');
+      descLines.push(vm.platform.githubUrl);
+    }
+
+    var card = {
+      name: vm.platform.longName + ' [' + vm.platform.shortName + ']',
+      idList: vm.platform.list,
+      desc: descLines.join('\n')
+    };
+
+    vm.loading = true;
+
+    APIService.createCard(card)
+    .then(function (res) {
+      var card = res.data;
+
+      $mdDialog.hide();
+
+      $mdToast.show({
+        template: '<md-toast><span flex>Plateforme sauvegardée</span></md-toast>',
+        hideDelay: 3000,
+        position: 'bottom right'
+      });
+    })
+    .finally(function () { vm.loading = false; })
+    .catch(function (res) {
+      console.log(res);
+      ezAlert({
+        title: "Erreur",
+        content: "Une erreur est survenue pendant la création de la plateforme",
+        ariaLabel: "Erreur création de plateforme"
+      });
+    });
+  };
+
+  vm.getLists = function () {
+    var deferred = $q.defer();
+
+    if (vm.lists) {
+      deferred.resolve();
+    } else {
+      TrelloService.getLists().then(function (lists) {
+        vm.lists = lists;
+        deferred.resolve();
+      });
+    }
+
+    return deferred.promise;
+  };
 }]);
