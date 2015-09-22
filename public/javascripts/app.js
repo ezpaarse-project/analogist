@@ -41,7 +41,7 @@ angular.module('WebApp', ['ngMaterial', 'ngMessages', 'ngAnimate', 'ngRoute'])
     .when('/platforms/:id', {
       title: 'Plateformes',
       templateUrl: '/partials/platform',
-      controller: 'PlatformCtrl'
+      controller: 'PlatformCtrl as vm'
     })
     .otherwise('/list');
 }])

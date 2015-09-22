@@ -38,13 +38,13 @@ angular.module('WebApp')
   'platforms',
   'ezAlert',
   function($scope, analysesFactory, $mdToast, $routeParams, platforms, ezAlert) {
-
-  var cardID = $scope.cardID = $routeParams.id;
+  var vm = this;
+  var cardID = vm.cardID = $routeParams.id;
 
   getPlatform();
 
-  $scope.toggleSplitView = function () {
-    $scope.split = !$scope.split;
+  vm.toggleSplitView = function () {
+    vm.split = !vm.split;
   }
 
   function reload() {
@@ -53,15 +53,15 @@ angular.module('WebApp')
   }
 
   function getPlatform() {
-    $scope.loading = true;
+    vm.loading = true;
 
     platforms.get().then(function (list) {
       for (var i = list.length - 1; i >= 0; i--) {
-        if (list[i].card.id == cardID) { $scope.platform = list[i]; break; }
+        if (list[i].card.id == cardID) { vm.platform = list[i]; break; }
       };
 
-      if (!$scope.platform) {
-        $scope.loading = false;
+      if (!vm.platform) {
+        vm.loading = false;
 
         return ezAlert({
           title: "Introuvable",
@@ -70,26 +70,30 @@ angular.module('WebApp')
         });
       }
 
-      $scope.setSubtitle($scope.platform.name);
+      $scope.setSubtitle(vm.platform.name);
       $scope.setToolbarItems([
         { label: 'Sauvegarder', icon: 'content:save', action: save },
         { label: 'Nouvelle analyse', icon: 'content:add', action: newAnalysis }
       ]);
 
       $scope.setMenuItems([
-        { label: 'Actualiser', icon: 'navigation:refresh', action: reload },
-        { label: 'Voir sur GitHub', icon: 'mdi:github', href: $scope.platform.githubUrl },
-        { label: 'Voir sur Trello', icon: 'mdi:trello', href: $scope.platform.card.url }
+        { label: 'Actualiser', icon: 'navigation:refresh', action: reload }
       ]);
 
-      analysesFactory.get($scope.platform.card.id)
+      vm.links = [
+        { label: 'Page d\'accueil', icon: 'action:home', href: vm.platform.homeUrl },
+        { label: 'Code source', icon: 'mdi:github', href: vm.platform.githubUrl },
+        { label: 'Carte Trello', icon: 'mdi:trello', href: vm.platform.card.url }
+      ];
+
+      analysesFactory.get(vm.platform.card.id)
       .then(function (analyses) {
-        $scope.loading  = false;
-        $scope.analyses = analyses;
+        vm.loading  = false;
+        vm.analyses = analyses;
       })
       .catch(function (response) {
-        $scope.loading  = false;
-        $scope.analyses = [];
+        vm.loading  = false;
+        vm.analyses = [];
 
         if (response.status == 404) { return; }
 
@@ -100,22 +104,22 @@ angular.module('WebApp')
         });
       });
     }).catch(function () {
-      $scope.loading = false;
+      vm.loading = false;
     });
   }
 
   function newAnalysis() {
-    if (!$scope.analyses) { return; }
-    $scope.analyses.push(analysesFactory.wrapAnalysis($scope.cardID));
+    if (!vm.analyses) { return; }
+    vm.analyses.push(analysesFactory.wrapAnalysis(vm.cardID));
   };
 
   function save() {
-    if (!$scope.analyses) { return; }
-    $scope.saving = true;
+    if (!vm.analyses) { return; }
+    vm.saving = true;
 
-    analysesFactory.save($scope.analyses)
+    analysesFactory.save(vm.analyses)
     .then(function success() {
-      $scope.saving = false;
+      vm.saving = false;
 
       $mdToast.show({
         template: '<md-toast><span flex>Analyses sauvegardées</span></md-toast>',
@@ -123,7 +127,7 @@ angular.module('WebApp')
         position: 'bottom right'
       });
     }, function fail() {
-      $scope.saving = false;
+      vm.saving = false;
 
       ezAlert({
         title: "Erreur",

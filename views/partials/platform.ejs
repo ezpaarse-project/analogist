@@ -1,16 +1,34 @@
-<div ng-if="loading" class="md-padding" layout="row" layout-align="center center">
+<div ng-if="vm.loading" class="md-padding" layout="row" layout-align="center center">
   <md-progress-circular md-mode="indeterminate"></md-progress-circular>
 </div>
 
-<div ng-hide="loading">
-  <h2 class="md-headline">{{ platform.name }}</h2>
+<div ng-hide="vm.loading">
+  <div layout="row">
+    <h2 flex class="md-headline">{{ vm.platform.name }}</h2>
+
+    <md-menu md-position-mode="target-right target">
+      <md-button aria-label="Ouvrir le menu" class="md-fab md-mini" ng-click="$mdOpenMenu($event)">
+        <md-icon md-menu-origin md-svg-icon="navigation:more_horiz"></md-icon>
+      </md-button>
+      <md-menu-content width="4">
+        <md-menu-item ng-repeat="item in vm.links">
+          <md-button ng-disabled="::!item.href" aria-label="{{ ::item.label }}" ng-href="{{ ::item.href }}">
+            <div layout="row" layout-fill>
+              <p flex>{{ ::item.label }}</p>
+              <md-icon md-menu-align-target md-svg-icon="{{ ::item.icon }}"></md-icon>
+            </div>
+          </md-button>
+        </md-menu-item>
+      </md-menu-content>
+    </md-menu>
+  </div>
 
   <div class="white md-whiteframe-z1">
     <md-list class="unpadded">
       <md-list-item class="md-2-line">
         <md-icon md-svg-icon="action:event"></md-icon>
         <div class="md-list-item-text">
-          <p>Carte modifiée le {{ platform.lastActivity }}</p>
+          <p>Carte modifiée le {{ vm.platform.lastActivity }}</p>
         </div>
          <md-divider></md-divider>
       </md-list-item>
@@ -18,7 +36,7 @@
       <md-list-item class="md-2-line">
         <md-icon md-svg-icon="mdi:trello"></md-icon>
         <div class="md-list-item-text">
-          <p>{{ platform.status }}</p>
+          <p>{{ vm.platform.status }}</p>
         </div>
          <md-divider></md-divider>
       </md-list-item>
@@ -26,7 +44,7 @@
       <md-list-item class="md-2-line">
         <md-icon md-svg-icon="action:assignment_ind"></md-icon>
         <div class="md-list-item-text">
-          <p>{{ platform.contacts }}</p>
+          <p>{{ vm.platform.contacts }}</p>
         </div>
       </md-list-item>
     </md-list>
@@ -36,15 +54,15 @@
     <div flex>
       <h2 class="md-headline" flex>Analyses d'URLs</h2>
     </div>
-    <md-button ng-click="toggleSplitView()">{{ split ? 'Vue simple' : 'Scinder la vue' }}</md-button>
+    <md-button ng-click="vm.toggleSplitView()">{{ vm.split ? 'Vue simple' : 'Scinder la vue' }}</md-button>
   </div>
 
   <div class="md-margin">
-    <md-progress-linear md-mode="{{ saving ? 'indeterminate' : '' }}"></md-progress-linear>
+    <md-progress-linear md-mode="{{ vm.saving ? 'indeterminate' : '' }}"></md-progress-linear>
   </div>
 
-  <div layout="row" ng-show="analyses.length" ng-class="{ splitted: split }">
-    <ez-analyzer ez-analyses="analyses" ez-authorized="auth.isAuthorized()" flex></ez-analyzer>
-    <ez-analyzer ez-analyses="analyses" ez-authorized="auth.isAuthorized()" flex ng-if="split"></ez-analyzer>
+  <div layout="row" ng-show="vm.analyses.length" ng-class="{ splitted: vm.split }">
+    <ez-analyzer ez-analyses="vm.analyses" ez-authorized="auth.isAuthorized()" flex></ez-analyzer>
+    <ez-analyzer ez-analyses="vm.analyses" ez-authorized="auth.isAuthorized()" flex ng-if="split"></ez-analyzer>
   </div>
 </div>

@@ -104,9 +104,14 @@ angular.module('WebApp')
               card:         card
             };
 
-            var regexpGitHubPlatform = new RegExp('(https://github.com/ezpaarse-project/ezpaarse-platforms/[^ $\n]+)');
-            if (match = card.desc.match(regexpGitHubPlatform)) {
+            var regexGithub = new RegExp('(https://github.com/ezpaarse-project/ezpaarse-platforms/[^ $\n]+)', 'i');
+            if (match = card.desc.match(regexGithub)) {
               platform.githubUrl = match[1];
+            }
+
+            var regexHome = new RegExp('page[^\n]+accueil[^\n]+\n(https?://[^ $\n]+)', 'i');
+            if (match = card.desc.match(regexHome)) {
+              platform.homeUrl = match[1];
             }
 
             platforms.push(platform);

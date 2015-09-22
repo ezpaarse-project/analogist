@@ -33,9 +33,7 @@ md-toolbar > .md-toolbar-tools-bottom { padding-left: 5%; }
 .fade-down.ng-enter { animation: fadeInDown 0.5s; }
 .fade-down.ng-leave { animation: fadeOutUp 0.5s; }
 
-.fixed.md-fab {
-  position: fixed !important;
-}
+.fixed.md-fab { position: fixed !important; }
 
 .autocomplete li {
   border-bottom: 1px solid #ccc;
@@ -65,3 +63,5 @@ md-autocomplete { min-width: 0; }
 /* Fix menu icon alignment in small toolbar */
 md-toolbar .md-menu { padding: 0; }
 
+/* Fix icon alignment for icon-buttons with href */
+.md-icon-button[ng-href], .md-fab[ng-href] { display: inline-flex; }
