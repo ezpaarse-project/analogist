@@ -71,22 +71,21 @@ angular.module('WebApp')
       }
 
       $scope.setSubtitle($scope.platform.name);
+      $scope.setToolbarItems([
+        { label: 'Sauvegarder', icon: 'content:save', action: save },
+        { label: 'Nouvelle analyse', icon: 'content:add', action: newAnalysis }
+      ]);
+
+      $scope.setMenuItems([
+        { label: 'Actualiser', icon: 'navigation:refresh', action: reload },
+        { label: 'Voir sur GitHub', icon: 'mdi:github', href: $scope.platform.githubUrl },
+        { label: 'Voir sur Trello', icon: 'mdi:trello', href: $scope.platform.card.url }
+      ]);
 
       analysesFactory.get($scope.platform.card.id)
       .then(function (analyses) {
         $scope.loading  = false;
         $scope.analyses = analyses;
-
-        $scope.setToolbarItems([
-          { label: 'Sauvegarder', icon: 'content:save', action: save },
-          { label: 'Nouvelle analyse', icon: 'content:add', action: newAnalysis }
-        ]);
-
-        $scope.setMenuItems([
-          { label: 'Actualiser', icon: 'navigation:refresh', action: reload },
-          { label: 'Voir sur GitHub', icon: 'mdi:github', href: $scope.platform.githubUrl },
-          { label: 'Voir sur Trello', icon: 'mdi:trello', href: $scope.platform.card.url }
-        ]);
       })
       .catch(function (response) {
         $scope.loading  = false;
@@ -106,6 +105,7 @@ angular.module('WebApp')
   }
 
   function newAnalysis() {
+    if (!$scope.analyses) { return; }
     $scope.analyses.push(analysesFactory.wrapAnalysis($scope.cardID));
   };
 
