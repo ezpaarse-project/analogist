@@ -63,6 +63,6 @@
 
   <div layout="row" ng-show="vm.analyses.length" ng-class="{ splitted: vm.split }">
     <ez-analyzer ez-analyses="vm.analyses" ez-authorized="auth.isAuthorized()" flex></ez-analyzer>
-    <ez-analyzer ez-analyses="vm.analyses" ez-authorized="auth.isAuthorized()" flex ng-if="split"></ez-analyzer>
+    <ez-analyzer ez-analyses="vm.analyses" ez-authorized="auth.isAuthorized()" flex ng-if="vm.split"></ez-analyzer>
   </div>
 </div>
