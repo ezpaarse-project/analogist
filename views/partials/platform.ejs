@@ -23,32 +23,24 @@
     </md-menu>
   </div>
 
-  <div class="white md-whiteframe-z1">
-    <md-list class="unpadded">
-      <md-list-item class="md-2-line">
-        <md-icon md-svg-icon="action:event"></md-icon>
-        <div class="md-list-item-text">
-          <p>Carte modifiée le {{ vm.platform.lastActivity }}</p>
-        </div>
-         <md-divider></md-divider>
-      </md-list-item>
+  <md-list class="unpadded white md-whiteframe-z1">
+    <md-list-item>
+      <md-icon md-svg-icon="action:event"></md-icon>
+      <p>Carte modifiée le {{ vm.platform.lastActivity }}</p>
+      <md-divider></md-divider>
+    </md-list-item>
 
-      <md-list-item class="md-2-line">
-        <md-icon md-svg-icon="mdi:trello"></md-icon>
-        <div class="md-list-item-text">
-          <p>{{ vm.platform.status }}</p>
-        </div>
-         <md-divider></md-divider>
-      </md-list-item>
+    <md-list-item>
+      <md-icon md-svg-icon="mdi:trello"></md-icon>
+      <p>{{ vm.platform.status }}</p>
+      <md-divider></md-divider>
+    </md-list-item>
 
-      <md-list-item class="md-2-line">
-        <md-icon md-svg-icon="action:assignment_ind"></md-icon>
-        <div class="md-list-item-text">
-          <p>{{ vm.platform.contacts }}</p>
-        </div>
-      </md-list-item>
-    </md-list>
-  </div>
+    <md-list-item>
+      <md-icon md-svg-icon="action:assignment_ind"></md-icon>
+      <p>{{ vm.platform.contacts }}</p>
+    </md-list-item>
+  </md-list>
 
   <div layout="row">
     <div flex>
