@@ -12,7 +12,7 @@ router.put('*', mw.authorize);
 router.delete('*', mw.authorize);
 
 /* GET all platforms. */
-router.get('/', function(req, res, next) {
+router.get('/', function (req, res, next) {
   mongo.get('platforms').find().toArray(function (err, docs) {
     if (err)  { return next(err); }
     if (!docs) { return next(new Error('failed to find platforms')); }
@@ -22,7 +22,7 @@ router.get('/', function(req, res, next) {
 });
 
 /* GET a platform. */
-router.get('/:cid', function(req, res, next) {
+router.get('/:cid', function (req, res, next) {
   mongo.get('platforms').findOne({ cardID: req.params.cid }, function (err, doc) {
     if (err)  { return next(err); }
     if (!doc) { return res.status(404).end(); }
@@ -32,7 +32,7 @@ router.get('/:cid', function(req, res, next) {
 });
 
 /* CREATE a platform (ie. card on Trello) */
-router.post('/', function(req, res, next) {
+router.post('/', function (req, res, next) {
   var card = req.body;
 
   if (typeof card !== 'object') {
@@ -41,12 +41,13 @@ router.post('/', function(req, res, next) {
     return next(new Error('missing mandatory field'));
   }
   card.due = card.due || null;
+  card.lastModified = new Date();
 
   trello.createCard(card, req.session.oauth.token).pipe(res);
 });
 
 /* DELETE a platform */
-router.delete('/:cid', function(req, res, next) {
+router.delete('/:cid', function (req, res, next) {
   mongo.get('platforms').remove({ cardID: req.params.cid }, function (err, result) {
     if (err) { return next(err); }
     res.status(204).end();
@@ -54,33 +55,46 @@ router.delete('/:cid', function(req, res, next) {
 });
 
 /* GET the analyses of a platform. */
-router.get('/:cid/analyses', function(req, res, next) {
+router.get('/:cid/analyses', function (req, res, next) {
   mongo.get('platforms').findOne({ cardID: req.params.cid }, { analyses: 1 }, function (err, doc) {
     if (err)  { return next(err); }
     if (!doc) { return res.status(404).end(); }
 
-    res.status(200).json(doc.analyses);
+    res.status(200).json(doc.analyses || []);
+  });
+});
+
+/* GET the history of a platform. */
+router.get('/:cid/history', function (req, res, next) {
+  mongo.get('platforms').findOne({ cardID: req.params.cid }, { history: 1 }, function (err, doc) {
+    if (err)  { return next(err); }
+    if (!doc) { return res.status(404).end(); }
+
+    res.status(200).json(doc.history || []);
   });
 });
 
 /* POST new analysis. */
-router.post('/:cid/analyses', function(req, res, next) {
+router.post('/:cid/analyses', mw.updateHistory, function (req, res, next) {
   if (typeof req.body !== 'object') { return res.status(400).end(); }
 
   req.body.id = new ObjectID();
 
   mongo.get('platforms').findOneAndUpdate(
     { cardID: req.params.cid },
-    { $push: { analyses: req.body } },
-    { returnOriginal: false, upsert: true }, function (err, result) {
-
+    {
+      $push: { analyses: req.body },
+      $set: { lastModified: new Date() }
+    },
+    { upsert: true }, function (err, result) {
     if (err) { return next(err); }
+
     res.status(201).json(req.body);
   });
 });
 
-/* POST an existing analysis */
-router.post('/:cid/analyses/:aid', function(req, res, next) {
+/* PUT an existing analysis */
+router.put('/:cid/analyses/:aid', mw.updateHistory, function (req, res, next) {
   if (typeof req.body !== 'object') { return res.status(400).end(); }
   if (!ObjectID.isValid(req.params.aid)) { return res.status(400).end(); }
 
@@ -88,25 +102,78 @@ router.post('/:cid/analyses/:aid', function(req, res, next) {
 
   mongo.get('platforms').findOneAndUpdate(
     { cardID: req.params.cid, 'analyses.id': req.body.id },
-    { $set: { 'analyses.$': req.body } },
+    { $set: { 'analyses.$': req.body, lastModified: new Date() } },
     { returnOriginal: false }, function (err, result) {
 
     if (err) { return next(err); }
+
     res.status(200).json(result.value);
   });
 });
 
 /* DELETE an analysis */
-router.delete('/:cid/analyses/:aid', function(req, res, next) {
+router.delete('/:cid/analyses/:aid', mw.updateHistory, function (req, res, next) {
   if (!ObjectID.isValid(req.params.aid)) { return res.status(400).end(); }
 
   mongo.get('platforms').findOneAndUpdate(
     { cardID: req.params.cid },
-    { $pull: { analyses: { id: new ObjectID(req.params.aid) } } },
-    { returnOriginal: false }, function (err, result) {
+    {
+      $pull: { analyses: { id: new ObjectID(req.params.aid) } },
+      $set: { lastModified: new Date() }
+    },
+    function (err, result) {
 
     if (err) { return next(err); }
-    res.status(200).json(result.value);
+    res.status(204).end();
+  });
+});
+
+/* DELETE an entry in the history */
+router.delete('/:cid/history/:hid', function (req, res, next) {
+  if (!ObjectID.isValid(req.params.hid)) { return res.status(400).end(); }
+
+  mongo.get('platforms').findOneAndUpdate(
+    { cardID: req.params.cid },
+    { $pull: { history: { id: new ObjectID(req.params.hid) } } },
+    function (err, result) {
+
+    if (err) { return next(err); }
+    res.status(204).end();
+  });
+});
+
+/* POST an entry in the history, ie. restore the analyses to this point */
+router.post('/:cid/history/:hid', function (req, res, next) {
+  if (!ObjectID.isValid(req.params.hid)) { return res.status(400).end(); }
+
+  mongo.get('platforms').findOne(
+    { cardID: req.params.cid, 'history.id': new ObjectID(req.params.hid) },
+    { 'history.$': 1, 'analyses': 1 },
+    function (err, platform) {
+
+    if (err) { return next(err); }
+    if (!platform) { return res.status(404).end(); }
+
+    if (!Array.isArray(platform.history) || !platform.history[0]) {
+      return res.status(500).end();
+    }
+
+    mongo.get('platforms').findOneAndUpdate(
+      { _id: platform._id },
+      {
+        $set: { analyses: platform.history[0].analyses },
+        $push: {
+          history: {
+            $position: 0,
+            $each: [{ id: new ObjectID(), date: new Date(), analyses: platform.analyses }]
+          }
+        }
+      },
+      function (err) {
+      if (err) { return next(err); }
+
+      res.status(204).end();
+    });
   });
 });
 

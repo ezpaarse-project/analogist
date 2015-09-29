@@ -220,7 +220,7 @@ angular.module('WebApp')
     };
 
     var update = function () {
-      return $http.post(baseUrl + '/' + analysis.id, analysis).then(function () {
+      return $http.put(baseUrl + '/' + analysis.id, analysis).then(function () {
         saved = angular.copy(analysis);
       });
     };

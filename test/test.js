@@ -78,11 +78,11 @@ describe("Routes", function () {
     });
   });
 
-  it("POST /api/platforms/" + cardID + "/analyses/:id", function (done) {
+  it("PUT /api/platforms/" + cardID + "/analyses/:id", function (done) {
     expect(analysisID).to.exist;
 
     request(app)
-    .post('/api/platforms/' + cardID + '/analyses/' + analysisID)
+    .put('/api/platforms/' + cardID + '/analyses/' + analysisID)
     .send({ bar: 'foo' })
     .expect('Content-Type', /json/)
     .expect(200)
@@ -152,14 +152,7 @@ describe("Routes", function () {
 
     request(app)
     .delete('/api/platforms/' + cardID + '/analyses/' + analysisID)
-    .expect('Content-Type', /json/)
-    .expect(200)
-    .expect(function (res) {
-      var body = res.body;
-
-      expect(body).to.be.an('object');
-      expect(body).to.have.property('analyses').that.is.an('array').with.length(0);
-    })
+    .expect(204)
     .end(function (error) {
       expect(error).to.not.exist;
 
