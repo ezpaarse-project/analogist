@@ -54,14 +54,14 @@
             <md-menu-item ng-repeat="item in menuItems">
               <md-button ng-if="::item.action" aria-label="{{ ::item.label }}" ng-click="item.action()">
                 <div layout="row">
-                  <p flex>{{ ::item.label }}</p>
+                  <p ng-bind="::item.label" flex></p>
                   <md-icon md-menu-align-target md-svg-icon="{{ ::item.icon }}"></md-icon>
                 </div>
               </md-button>
 
               <md-button ng-if="::!item.action" ng-disabled="::!item.href" aria-label="{{ ::item.label }}" ng-href="{{ ::item.href }}">
                 <div layout="row" layout-fill>
-                  <p flex>{{ ::item.label }}</p>
+                  <p ng-bind="::item.label" flex></p>
                   <md-icon md-menu-align-target md-svg-icon="{{ ::item.icon }}"></md-icon>
                 </div>
               </md-button>
