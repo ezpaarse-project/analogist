@@ -2,7 +2,7 @@
 AnalogIST is the platform that gathers all analyses made for ezPAARSE.
 
 ## Install
-We assume that node.js is installed and that a mongo database is up and running.
+We assume that node.js v4+ is installed and that a mongo v2.6+ is up and running.
 ```
 git clone https://github.com/ezpaarse-project/analogist.git analogist
 cd analogist
@@ -48,4 +48,20 @@ docker-compose up
 docker-compose stop
 # Restart
 docker-compose start
+```
+
+## Running tests
+
+Run tests:
+```shell
+npm test
+```
+Run ESLint:
+```shell
+npm run lint
+```
+
+A hook is available in `git-hooks`, it will run tests before each commit. To activate it, just create a symlink :
+```shell
+ln -s ../../git-hooks/pre-commit .git/hooks/pre-commit
 ```
