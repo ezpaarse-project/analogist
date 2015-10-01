@@ -5,6 +5,6 @@ services:
   - docker
 before_install:
   - docker pull mongo
-  - docker run -d -p 27017:27017 mongo
+  - docker run -d -p 127.0.0.1:27017:27017 mongo
 before_script:
   - "until nc -z localhost 27017; do echo Waiting for MongoDB; sleep 1; done"
