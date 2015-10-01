@@ -1,5 +1,5 @@
-/* global describe, it */
-"use strict";
+/* global before, describe, it */
+'use strict';
 
 process.env.NODE_ENV = 'production';
 

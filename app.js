@@ -1,6 +1,5 @@
 var express      = require('express');
 var path         = require('path');
-var request      = require('request');
 var favicon      = require('serve-favicon');
 var logger       = require('morgan');
 var cookieParser = require('cookie-parser');
@@ -21,12 +20,12 @@ app.set('view engine', 'ejs');
 var oneMonth = 3600000 * 24 * 30;
 
 app.use(session({
-    resave: false,
-    saveUninitialized: false,
-    secret: 'xJ87L71I3025O7812P4g36n39my6VnAH',
-    cookie: { maxAge: oneMonth },
-    unset: 'destroy',
-    store: new MongoStore({ db: mongo.db })
+  resave: false,
+  saveUninitialized: false,
+  secret: 'xJ87L71I3025O7812P4g36n39my6VnAH',
+  cookie: { maxAge: oneMonth },
+  unset: 'destroy',
+  store: new MongoStore({ db: mongo.db })
 }));
 
 app.use(new Grant({

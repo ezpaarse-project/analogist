@@ -86,11 +86,12 @@ router.post('/:cid/analyses', mw.updateHistory, function (req, res, next) {
       $push: { analyses: req.body },
       $set: { lastModified: new Date() }
     },
-    { upsert: true }, function (err, result) {
-    if (err) { return next(err); }
-
-    res.status(201).json(req.body);
-  });
+    { upsert: true },
+    function (err, result) {
+      if (err) { return next(err); }
+      res.status(201).json(req.body);
+    }
+  );
 });
 
 /* PUT an existing analysis */
@@ -103,12 +104,12 @@ router.put('/:cid/analyses/:aid', mw.updateHistory, function (req, res, next) {
   mongo.get('platforms').findOneAndUpdate(
     { cardID: req.params.cid, 'analyses.id': req.body.id },
     { $set: { 'analyses.$': req.body, lastModified: new Date() } },
-    { returnOriginal: false }, function (err, result) {
-
-    if (err) { return next(err); }
-
-    res.status(200).json(result.value);
-  });
+    { returnOriginal: false },
+    function (err, result) {
+      if (err) { return next(err); }
+      res.status(200).json(result.value);
+    }
+  );
 });
 
 /* DELETE an analysis */
@@ -122,10 +123,10 @@ router.delete('/:cid/analyses/:aid', mw.updateHistory, function (req, res, next)
       $set: { lastModified: new Date() }
     },
     function (err, result) {
-
-    if (err) { return next(err); }
-    res.status(204).end();
-  });
+      if (err) { return next(err); }
+      res.status(204).end();
+    }
+  );
 });
 
 /* DELETE an entry in the history */
@@ -136,10 +137,10 @@ router.delete('/:cid/history/:hid', function (req, res, next) {
     { cardID: req.params.cid },
     { $pull: { history: { id: new ObjectID(req.params.hid) } } },
     function (err, result) {
-
-    if (err) { return next(err); }
-    res.status(204).end();
-  });
+      if (err) { return next(err); }
+      res.status(204).end();
+    }
+  );
 });
 
 /* POST an entry in the history, ie. restore the analyses to this point */
@@ -150,31 +151,31 @@ router.post('/:cid/history/:hid', function (req, res, next) {
     { cardID: req.params.cid, 'history.id': new ObjectID(req.params.hid) },
     { 'history.$': 1, 'analyses': 1 },
     function (err, platform) {
+      if (err) { return next(err); }
+      if (!platform) { return res.status(404).end(); }
 
-    if (err) { return next(err); }
-    if (!platform) { return res.status(404).end(); }
+      if (!Array.isArray(platform.history) || !platform.history[0]) {
+        return res.status(500).end();
+      }
 
-    if (!Array.isArray(platform.history) || !platform.history[0]) {
-      return res.status(500).end();
-    }
-
-    mongo.get('platforms').findOneAndUpdate(
-      { _id: platform._id },
-      {
-        $set: { analyses: platform.history[0].analyses },
-        $push: {
-          history: {
-            $position: 0,
-            $each: [{ id: new ObjectID(), date: new Date(), analyses: platform.analyses }]
+      mongo.get('platforms').findOneAndUpdate(
+        { _id: platform._id },
+        {
+          $set: { analyses: platform.history[0].analyses },
+          $push: {
+            history: {
+              $position: 0,
+              $each: [{ id: new ObjectID(), date: new Date(), analyses: platform.analyses }]
+            }
           }
+        },
+        function (err) {
+          if (err) { return next(err); }
+          res.status(204).end();
         }
-      },
-      function (err) {
-      if (err) { return next(err); }
-
-      res.status(204).end();
-    });
-  });
+      );
+    }
+  );
 });
 
 module.exports = router;
