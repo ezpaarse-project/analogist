@@ -9,5 +9,8 @@
     "KEY": "",
     "SECRET": "",
     "BOARDID": ""
+  },
+  "HISTORY": {
+    "DEBOUNCE_TIME": 900
   }
 }
