@@ -77,8 +77,7 @@ app.use('/api/logout', function (req, res) {
   res.status(204).end();
 });
 
-// uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(favicon(path.join(__dirname, 'public/images', 'favicon.ico')));
 if (app.get('env') === 'development') { app.use(logger('dev')); }
 
 app.use(bodyParser.json());
