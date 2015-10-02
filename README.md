@@ -50,18 +50,18 @@ docker-compose stop
 docker-compose start
 ```
 
-## Running tests
+## Development
 
 Run tests:
 ```shell
 npm test
 ```
-Run ESLint:
+Run javascript linter:
 ```shell
 npm run lint
 ```
 
-A hook is available in `git-hooks`, it will run tests before each commit. To activate it, just create a symlink :
+A hook that run tests before each commit is available in `git-hooks`. To activate it, just create a symlink :
 ```shell
 ln -s ../../git-hooks/pre-commit .git/hooks/pre-commit
 ```
