@@ -35,6 +35,8 @@ md-toolbar > .md-toolbar-tools-bottom { padding-left: 5%; }
 
 .fixed.md-fab { position: fixed !important; }
 
+.list-toolbar { padding: 0 15px; }
+
 .autocomplete li {
   border-bottom: 1px solid #ccc;
   height: auto;

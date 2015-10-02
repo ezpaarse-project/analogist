@@ -1,15 +1,20 @@
-<div layout="row" layout-align="center center">
-  <md-input-container flex="50">
-    <label>Search</label>
+<div layout="row" layout-wrap class="list-toolbar white md-whiteframe-z1">
+  <md-input-container flex flex-sm="100">
+    <label>Recherche</label>
     <input ng-model="vm.search.name">
   </md-input-container>
-</div>
-<div layout="row" layout-sm="column" layout-align="center center">
-  <label>Grouper par</label>
-  <md-radio-group ng-model="vm.groupby" ng-change="vm.buildList()" layout="row">
-    <md-radio-button value="letter">première lettre</md-radio-button>
-    <md-radio-button value="status">statut</md-radio-button>
-  </md-radio-group>
+
+  <md-input-container flex-sm>
+    <label>Grouper par</label>
+    <md-select ng-model="vm.groupby" ng-change="vm.buildList()">
+      <md-option value="letter">première lettre</md-option>
+      <md-option value="status">statut</md-option>
+    </md-select>
+  </md-input-container>
+
+  <md-button aria-label="Actualiser la liste" ng-click="platforms.reload()">
+    <md-icon md-svg-icon="navigation:refresh"></md-icon>
+  </md-button>
 </div>
 
 <div ng-if="platforms.loading" class="md-padding" layout="row" layout-align="center center">
@@ -20,7 +25,7 @@
   <h3 class="md-headline" ng-bind="::group.name"></h3>
 
   <div layout="row" layout-wrap>
-    <div class="fade-down" flex="25" flex-lg="33" flex-md="50" flex-sm="100" ng-repeat="p in ::group.list | filter:vm.search | orderBy:'name'">
+    <div class="fade-down" flex="25" flex-lg="33" flex-md="50" flex-sm="100" ng-repeat="p in group.list | filter:vm.search | orderBy:'name'">
       <md-card class="link" ng-click="goto('/platforms/' + p.card.id)">
         <md-card-content class="ellipsis">{{ ::p.name }}</md-card-content>
       </md-card>

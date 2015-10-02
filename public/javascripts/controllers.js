@@ -216,19 +216,6 @@ angular.module('WebApp')
   getPlatforms();
   $rootScope.$on('newCardCreated', reload);
 
-  $scope.setMenuItems([
-    { label: 'Actualiser', icon: 'navigation:refresh', action: reload }
-  ]);
-
-  vm.showAdd = function(ev) {
-    $mdDialog.show({
-      controller: 'NewPlatformCtrl as vm',
-      parent: angular.element(document.body),
-      templateUrl: '/partials/form-add',
-      targetEvent: ev
-    });
-  };
-
   function getPlatforms() {
     vm.loading = true;
 
@@ -243,6 +230,15 @@ angular.module('WebApp')
     platforms.reload();
     getPlatforms();
   }
+
+  vm.showAdd = function(ev) {
+    $mdDialog.show({
+      controller: 'NewPlatformCtrl as vm',
+      parent: angular.element(document.body),
+      templateUrl: '/partials/form-add',
+      targetEvent: ev
+    });
+  };
 
   vm.buildList = function () {
     if (!platforms.list) { return vm.list = null; }
