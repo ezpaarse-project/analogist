@@ -1,4 +1,5 @@
 /* global before, describe, it */
+/* eslint global-require: 0 */
 'use strict';
 
 process.env.NODE_ENV = 'production';

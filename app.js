@@ -1,3 +1,5 @@
+/* eslint camelcase: 0 */
+
 var express      = require('express');
 var path         = require('path');
 var favicon      = require('serve-favicon');
@@ -31,7 +33,7 @@ app.use(session({
 app.use(new Grant({
   server: {
     protocol: 'http',
-    host: 'localhost:' + config.PORT,
+    host: `localhost:${config.PORT}`,
     callback: '/callback',
     transport: 'session'
   },
