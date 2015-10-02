@@ -17,12 +17,12 @@
 </div>
 
 <div ng-hide="platforms.loading" ng-repeat="group in vm.list | filter:{ list: vm.search } | naturalSortBy:'name'">
-  <h3 class="md-headline" ng-bind="group.name"></h3>
+  <h3 class="md-headline" ng-bind="::group.name"></h3>
 
   <div layout="row" layout-wrap>
-    <div class="fade-down" flex="25" flex-lg="33" flex-md="50" flex-sm="100" ng-repeat="p in group.list | filter:vm.search">
+    <div class="fade-down" flex="25" flex-lg="33" flex-md="50" flex-sm="100" ng-repeat="p in ::group.list | filter:vm.search | orderBy:'name'">
       <md-card class="link" ng-click="goto('/platforms/' + p.card.id)">
-        <md-card-content class="ellipsis">{{ p.name }}</md-card-content>
+        <md-card-content class="ellipsis">{{ ::p.name }}</md-card-content>
       </md-card>
     </div>
   </div>
