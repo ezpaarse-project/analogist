@@ -42,11 +42,12 @@
     </md-list-item>
   </md-list>
 
-  <div layout="row">
-    <div flex>
-      <h2 class="md-headline" flex>Analyses d'URLs</h2>
-    </div>
-    <md-button ng-click="vm.toggleSplitView()">{{ vm.split ? 'Vue simple' : 'Scinder la vue' }}</md-button>
+  <div layout="row" layout-align="space-between center">
+    <h2 class="md-headline" flex>Analyses d'URLs</h2>
+
+    <md-switch ng-model="vm.split" md-no-ink aria-label="Basculer la vue double">
+      Vue double
+    </md-switch>
   </div>
 
   <div class="md-margin">
@@ -56,5 +57,11 @@
   <div layout="row" ng-show="vm.analyses.length" ng-class="{ splitted: vm.split }">
     <ez-analyzer ez-analyses="vm.analyses" ez-authorized="auth.isAuthorized()" flex></ez-analyzer>
     <ez-analyzer ez-analyses="vm.analyses" ez-authorized="auth.isAuthorized()" flex ng-if="vm.split"></ez-analyzer>
+  </div>
+
+  <div layout="row" layout-align="center center" ng-if="auth.isAuthorized()">
+    <md-button aria-label="Nouvelle analyse" ng-click="vm.newAnalysis()">
+      <md-icon md-svg-icon="content:add"></md-icon> Nouvelle analyse
+    </md-button>
   </div>
 </div>

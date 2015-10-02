@@ -43,9 +43,10 @@ angular.module('WebApp')
 
   getPlatform();
 
-  vm.toggleSplitView = function () {
-    vm.split = !vm.split;
-  }
+  vm.newAnalysis = function () {
+    if (!vm.analyses) { return; }
+    vm.analyses.push(analysesFactory.wrapAnalysis(vm.cardID));
+  };
 
   function reload() {
     platforms.reload();
@@ -72,8 +73,7 @@ angular.module('WebApp')
 
       $scope.setSubtitle(vm.platform.name);
       $scope.setToolbarItems([
-        { label: 'Sauvegarder', icon: 'content:save', action: save },
-        { label: 'Nouvelle analyse', icon: 'content:add', action: newAnalysis }
+        { label: 'Sauvegarder', icon: 'content:save', action: save }
       ]);
 
       $scope.setMenuItems([
@@ -107,11 +107,6 @@ angular.module('WebApp')
       vm.loading = false;
     });
   }
-
-  function newAnalysis() {
-    if (!vm.analyses) { return; }
-    vm.analyses.push(analysesFactory.wrapAnalysis(vm.cardID));
-  };
 
   function save() {
     if (!vm.analyses) { return; }
