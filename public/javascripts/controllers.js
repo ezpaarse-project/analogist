@@ -209,16 +209,18 @@ angular.module('WebApp')
     });
   };
 }])
-.controller('ListCtrl', ['$scope', '$mdDialog', 'platforms', function($scope, $mdDialog, platforms) {
-  $scope.groupby = 'letter';
+.controller('ListCtrl', ['$rootScope', '$scope', '$mdDialog', 'platforms', function($rootScope, $scope, $mdDialog, platforms) {
+  var vm = this;
+  vm.groupby = 'letter';
 
   getPlatforms();
+  $rootScope.$on('newCardCreated', reload);
 
   $scope.setMenuItems([
     { label: 'Actualiser', icon: 'navigation:refresh', action: reload }
   ]);
 
-  $scope.showAdd = function(ev) {
+  vm.showAdd = function(ev) {
     $mdDialog.show({
       controller: 'NewPlatformCtrl as vm',
       parent: angular.element(document.body),
@@ -228,12 +230,12 @@ angular.module('WebApp')
   };
 
   function getPlatforms() {
-    $scope.loading = true;
+    vm.loading = true;
 
     platforms.get().then(function () {
-      $scope.buildList();
+      vm.buildList();
     }).finally(function () {
-      $scope.loading = false;
+      vm.loading = false;
     });
   }
 
@@ -242,16 +244,16 @@ angular.module('WebApp')
     getPlatforms();
   }
 
-  $scope.buildList = function () {
-    if (!platforms.list) { return $scope.list = null; }
+  vm.buildList = function () {
+    if (!platforms.list) { return vm.list = null; }
 
     var groups  = {};
-    $scope.list = [];
+    vm.list = [];
 
     platforms.list.forEach(function (el) {
       var group = '#';
 
-      switch ($scope.groupby) {
+      switch (vm.groupby) {
       case 'letter':
         if (typeof el.name === 'string' && /^[a-z]/i.test(el.name)) {
           group = el.name.charAt(0).toUpperCase();
@@ -265,7 +267,7 @@ angular.module('WebApp')
       }
 
       if (!groups[group]) {
-        $scope.list.push({ name: group, list: groups[group] = [] });
+        vm.list.push({ name: group, list: groups[group] = [] });
       }
       groups[group].push(el);
     });
@@ -278,7 +280,8 @@ angular.module('WebApp')
   'TrelloService',
   '$q',
   'APIService',
-  function($mdDialog, $mdToast, ezAlert, TrelloService, $q, APIService) {
+  '$rootScope',
+  function($mdDialog, $mdToast, ezAlert, TrelloService, $q, APIService, $rootScope) {
   var vm = this;
 
   vm.hide   = function() { $mdDialog.hide(); };
@@ -308,10 +311,9 @@ angular.module('WebApp')
 
     APIService.createCard(card)
     .then(function (res) {
-      var card = res.data;
+      $rootScope.$emit('newCardCreated');
 
       $mdDialog.hide();
-
       $mdToast.show({
         template: '<md-toast><span flex>Plateforme sauvegardée</span></md-toast>',
         hideDelay: 3000,
@@ -320,7 +322,6 @@ angular.module('WebApp')
     })
     .finally(function () { vm.loading = false; })
     .catch(function (res) {
-      console.log(res);
       ezAlert({
         title: "Erreur",
         content: "Une erreur est survenue pendant la création de la plateforme",
