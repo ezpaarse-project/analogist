@@ -211,18 +211,29 @@ angular.module('WebApp')
     var loading = false;
 
     var insert = function () {
+      loading = true;
       return $http.post(baseUrl, analysis).then(function (response) {
         if (!angular.isObject(response.data)) {
           return $q.reject('got an invalid response');
         }
-        analysis.id = saved.id = response.data.id;
+        analysis.id = response.data.id;
+        saved = angular.copy(analysis);
+      }).finally(function () {
+        loading = false;
       });
     };
 
     var update = function () {
+      loading = true;
       return $http.put(baseUrl + '/' + analysis.id, analysis).then(function () {
         saved = angular.copy(analysis);
+      }).finally(function () {
+        loading = false;
       });
+    };
+
+    analysis.isLoading = function () {
+      return loading;
     };
 
     analysis.save = function () {
@@ -236,7 +247,8 @@ angular.module('WebApp')
     };
     analysis.remove = function () {
       if (analysis.id) {
-        return $http.delete(baseUrl + '/' + analysis.id);
+        loading = true;
+        return $http.delete(baseUrl + '/' + analysis.id).finally(function () { loading = false; });
       }
 
       var deferred = $q.defer();
