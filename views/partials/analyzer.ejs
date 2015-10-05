@@ -106,6 +106,11 @@
       </md-input-container>
     </div>
 
+    <md-input-container>
+      <label>Remarques</label>
+      <textarea ng-readonly="!authorized" ng-model="analysis.comment"></textarea>
+    </md-input-container>
+
     <h2 class="md-headline">Identifiants</h2>
     <div layout="row" layout-align="center center" class="fade-down white md-whiteframe-z1 inset md-margin" layout-wrap ng-repeat="identifier in analysis.identifiers">
 
@@ -201,10 +206,5 @@
         <md-icon md-svg-icon="content:add"></md-icon>
       </md-button>
     </div>
-
-    <md-input-container>
-      <label>Remarques</label>
-      <textarea ng-readonly="!authorized" ng-model="analysis.comment"></textarea>
-    </md-input-container>
   </div>
 </div>
