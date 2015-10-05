@@ -135,10 +135,11 @@ angular.module('WebApp')
 .controller('AnalyzerCtrl', [
   '$scope',
   '$mdToast',
+  '$mdDialog',
   '$http',
   'ezAlert',
   'analysesFactory',
-  function($scope, $mdToast, $http, ezAlert, analysesFactory) {
+  function($scope, $mdToast, $mdDialog, $http, ezAlert, analysesFactory) {
 
   $http.get('https://raw.githubusercontent.com/ezpaarse-project/ezpaarse-platforms/master/rtype.json').then(function (response) {
     if (angular.isArray(response.data)) { $scope.resourceTypes = response.data; }
@@ -161,7 +162,6 @@ angular.module('WebApp')
     if (!angular.isArray(analysis[field])) { analysis[field] = []; }
 
     analysis[field].push({});
-    analysis.setDirty(true);
   };
 
   /**
@@ -172,7 +172,27 @@ angular.module('WebApp')
     if (!angular.isArray(analysis[field])) { return; }
 
     analysis[field].splice(i, 1);
-    analysis.setDirty(true);
+  };
+
+  $scope.parseUrl = function (analysis) {
+    if (!analysis) { return; }
+
+    var hasPathParams = angular.isArray(analysis.pathParams) && analysis.pathParams.length > 0;
+    var hasQueryParams = angular.isArray(analysis.queryParams) && analysis.queryParams.length > 0;
+
+    if (!hasPathParams && !hasQueryParams) {
+      return analysis.parseUrl();
+    }
+
+    $mdDialog.show($mdDialog.confirm({
+      title: "Êtes-vous sûr ?",
+      content: "Cette action remplacera les champs relatifs aux paramètres de l'URL.",
+      ariaLabel: "Confirmer le remplacement des champs",
+      ok: "Remplacer",
+      cancel: "Annuler"
+    })).then(function () {
+      analysis.parseUrl();
+    });
   };
 
   $scope.remove = function (analysis) {
