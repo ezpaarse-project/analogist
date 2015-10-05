@@ -32,6 +32,8 @@ md-toolbar > .md-toolbar-tools-bottom { padding-left: 5%; }
 
 .fade-down.ng-enter { animation: fadeInDown 0.5s; }
 .fade-down.ng-leave { animation: fadeOutUp 0.5s; }
+.fade.ng-enter { animation: fadeIn 0.5s; }
+.fade.ng-leave { animation: fadeOut 0.5s; }
 
 .fixed.md-fab { position: fixed !important; }
 

@@ -21,7 +21,7 @@
   <md-progress-circular md-mode="indeterminate"></md-progress-circular>
 </div>
 
-<div ng-hide="platforms.loading" ng-repeat="group in vm.list | filter:{ list: vm.search } | naturalSortBy:'name'">
+<div ng-hide="platforms.loading" ng-repeat="group in filteredGroups = (vm.list | filter:{ list: vm.search }) | naturalSortBy:'name'">
   <h3 class="md-headline" ng-bind="::group.name"></h3>
 
   <div layout="row" layout-wrap>
@@ -31,6 +31,14 @@
       </md-card>
     </div>
   </div>
+</div>
+
+<div layout="column" layout-align="center center" class="fade md-padding md-margin" ng-if="filteredGroups.length === 0">
+  <p>La plateforme que vous cherchez n'existe pas.</p>
+
+  <md-button ng-if="auth.isAuthorized()" class="md-raised md-primary" aria-label="Nouvelle plateforme" ng-click="vm.showAdd($event)">
+    Nouvelle plateforme
+  </md-button>
 </div>
 
 <md-button ng-if="auth.isAuthorized()" class="fixed md-fab md-fab-bottom-right" aria-label="Nouvelle plateforme" ng-click="vm.showAdd($event)">
