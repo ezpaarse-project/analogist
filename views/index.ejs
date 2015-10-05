@@ -37,7 +37,7 @@
             <md-menu-item ng-show="auth.isAuthenticated()">
               <div>
                 <div class="md-body-1" ng-bind="session.user.fullName"></div>
-                <div class="md-caption" ng-bind="auth.isAuthorized ? 'Membre' : 'Invité'"></div>
+                <div class="md-caption" ng-bind="auth.isAuthorized() ? 'Membre' : 'Invité'"></div>
               </div>
             </md-menu-item>
 
