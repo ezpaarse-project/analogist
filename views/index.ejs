@@ -11,11 +11,15 @@
     <link rel="stylesheet" href="/css/style.css">
   </head>
   <body layout="column">
-    <md-toolbar class="md-whiteframe-z1 md-tall">
+    <md-toolbar class="md-whiteframe-z1">
       <div class="md-toolbar-tools">
         <md-button ng-hide="onRootPage" ng-click="goto('/list')" class="md-icon-button">
           <md-icon aria-label="Retour à la liste" md-svg-icon="navigation:arrow_back"></md-icon>
         </md-button>
+
+        <a href="/list">Plateformes</a>
+        <span><md-icon ng-show="subtitle" md-svg-icon="navigation:chevron_right"></md-icon></span>
+        <span title="{{ subtitle }}" class="ellipsis" ng-bind="subtitle"></span>
 
         <span flex></span>
 
@@ -87,15 +91,6 @@
           </md-menu-content>
         </md-menu>
       </div>
-
-      <span flex></span>
-
-      <h1 class="md-toolbar-tools md-toolbar-tools-bottom">
-        <a href="/list">Plateformes</a>
-        <span><md-icon ng-show="subtitle" md-svg-icon="navigation:chevron_right"></md-icon></span>
-        <span title="{{ subtitle }}" class="ellipsis" ng-bind="subtitle"></span>
-        <span flex></span>
-      </h1>
     </md-toolbar>
 
     <md-content flex ng-view class="whitesmoke main-container"></md-content>
