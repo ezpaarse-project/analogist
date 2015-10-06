@@ -1,4 +1,4 @@
-FROM node:0.12-wheezy
+FROM node:4-wheezy
 MAINTAINER ezPAARSE Team <ezpaarse@couperin.org>
 
 ENV ANALOGIST_DIR /opt/analogist
