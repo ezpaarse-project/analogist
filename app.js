@@ -11,7 +11,6 @@ var MongoStore   = require('connect-mongo')(session);
 var Grant        = require('grant-express');
 var mongo        = require('./lib/mongo.js');
 
-var trello = require('./lib/trello.js');
 var config = require('./lib/config.js');
 var app = express();
 
@@ -64,20 +63,6 @@ app.use('/callback', function (req, res, next) {
   res.redirect(req.path);
 });
 
-app.use('/api/loggedin', function (req, res, next) {
-  var oauth = req.session.oauth;
-
-  if (oauth && oauth.token && oauth.secret) {
-    return trello.getTokenMember(oauth.token).pipe(res);
-  }
-  res.status(204).end();
-});
-
-app.use('/api/logout', function (req, res) {
-  req.session = null;
-  res.status(204).end();
-});
-
 app.use(favicon(path.join(__dirname, 'public/images', 'favicon.ico')));
 if (app.get('env') === 'development') { app.use(logger('dev')); }
 
@@ -104,6 +89,7 @@ app.use('/js', notFound);
 
 app.use('/', require('./routes/index'));
 app.use('/api/platforms', require('./routes/platforms'));
+app.use('/auth', require('./routes/auth'));
 
 // Catch-all for HTML5 mode
 app.get('*', function(req, res, next) {

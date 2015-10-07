@@ -1,30 +1,24 @@
 angular.module('WebApp')
-.service('Session', ['TRELLO', function (TRELLO) {
+.service('Session', function () {
   this.create = function (user) {
     if (!angular.isObject(user)) { return this.destroy(); };
 
     this.user = user;
-    this.isAuthorized = false;
-
-    if (angular.isArray(user.idBoards)) {
-      this.isAuthorized = user.idBoards.some(function (id) {
-        return (id == TRELLO.boardID);
-      });
-    }
+    this.isAuthorized = user.isAuthorized;
   };
 
   this.destroy = function () {
     this.user = null;
     this.isAuthorized = false;
   };
-}])
+})
 .factory('AuthService', ['$http', 'Session', '$window', function ($http, Session, $window) {
   var authService = {};
 
   authService.checkSession = function () {
     authService.loadingSession = true;
 
-    return $http.get('/api/loggedin').then(function (res) {
+    return $http.get('/auth/loggedin').then(function (res) {
       if (res.status == 200) {
         Session.create(res.data);
       } else {
@@ -41,7 +35,7 @@ angular.module('WebApp')
   };
 
   authService.logout = function () {
-    return $http.get('/api/logout').then(function (res) {
+    return $http.get('/auth/logout').then(function (res) {
       Session.destroy();
     });
   };
