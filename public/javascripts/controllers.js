@@ -232,6 +232,7 @@ angular.module('WebApp')
 .controller('ListCtrl', ['$rootScope', '$scope', '$mdDialog', 'platforms', function($rootScope, $scope, $mdDialog, platforms) {
   var vm = this;
   vm.groupby = 'letter';
+  vm.search  = {};
 
   getPlatforms();
   $rootScope.$on('newCardCreated', reload);
