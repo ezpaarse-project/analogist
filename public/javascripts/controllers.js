@@ -256,7 +256,8 @@ angular.module('WebApp')
       controller: 'NewPlatformCtrl as vm',
       parent: angular.element(document.body),
       templateUrl: '/partials/form-add',
-      targetEvent: ev
+      targetEvent: ev,
+      locals: { searchValue: vm.search.name }
     });
   };
 
@@ -297,8 +298,11 @@ angular.module('WebApp')
   '$q',
   'APIService',
   '$rootScope',
-  function($mdDialog, $mdToast, ezAlert, TrelloService, $q, APIService, $rootScope) {
+  'searchValue',
+  function($mdDialog, $mdToast, ezAlert, TrelloService, $q, APIService, $rootScope, searchValue) {
   var vm = this;
+
+  vm.platform = { longName: searchValue };
 
   vm.hide   = function() { $mdDialog.hide(); };
   vm.cancel = function() { $mdDialog.cancel(); };
