@@ -20,6 +20,7 @@
     "no-else-return": 2,
     "max-nested-callbacks": [1, 4],
     "camelcase": [1, {"properties": "always"}],
+    "no-warning-comments": [1, { "terms": ["todo", "fixme"], "location": "anywhere" }],
     "prefer-template": 1,
     "yoda": 1
   }
