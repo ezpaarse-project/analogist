@@ -198,6 +198,17 @@ angular.module('WebApp')
   $scope.remove = function (analysis) {
     if (!analysis || $scope.loading) { return; }
 
+    $mdDialog.show($mdDialog.confirm({
+      content: "Êtes-vous sûr de vouloir supprimer cette URL ?",
+      ariaLabel: "Confirmer la suppression de l'URL",
+      ok: "Supprimer",
+      cancel: "Annuler"
+    })).then(function () {
+      deleteAnalysis(analysis);
+    });
+  };
+
+  function deleteAnalysis(analysis) {
     $scope.loading = true;
 
     analysis.remove()
@@ -227,7 +238,7 @@ angular.module('WebApp')
         ariaLabel: "Erreur suppression de l'analyse"
       });
     });
-  };
+  }
 }])
 .controller('ListCtrl', ['$rootScope', '$scope', '$mdDialog', 'platforms', function($rootScope, $scope, $mdDialog, platforms) {
   var vm = this;
