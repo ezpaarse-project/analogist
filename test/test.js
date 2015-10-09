@@ -23,9 +23,9 @@ var historyID;
 /**
  * Tests a complete scenario involving sequences of requests
  */
-describe('Routes', function () {
-  before(function (done) {
-    mongo.connect(mongoUrl, function (err) {
+describe('Routes', () => {
+  before((done) => {
+    mongo.connect(mongoUrl, (err) => {
       if (err) { throw err; }
 
       app = require('../app.js');
@@ -33,27 +33,27 @@ describe('Routes', function () {
     });
   });
 
-  it(`GET    /api/platforms/${cardID}`, function (done) {
+  it(`GET    /api/platforms/${cardID}`, (done) => {
     request(app)
     .get(`/api/platforms/${cardID}`)
     .expect(404)
     .end(done);
   });
 
-  it(`GET    /api/platforms/${cardID}/analyses`, function (done) {
+  it(`GET    /api/platforms/${cardID}/analyses`, (done) => {
     request(app)
     .get(`/api/platforms/${cardID}/analyses`)
     .expect(404)
     .end(done);
   });
 
-  it(`POST   /api/platforms/${cardID}/analyses`, function (done) {
+  it(`POST   /api/platforms/${cardID}/analyses`, (done) => {
     request(app)
     .post(`/api/platforms/${cardID}/analyses`)
     .send({ foo: 'bar' })
     .expect('Content-Type', /json/)
     .expect(201)
-    .expect(function (res) {
+    .expect((res) => {
       var body = res.body;
 
       expect(body).to.be.an('object');
@@ -62,10 +62,10 @@ describe('Routes', function () {
 
       analysisID = body.id;
     })
-    .end(function (error) {
+    .end((error) => {
       expect(error).to.not.exist;
 
-      mongo.get('platforms').findOne({ cardID: cardID }, function (err, doc) {
+      mongo.get('platforms').findOne({ cardID: cardID }, (err, doc) => {
         if (err) { throw err; }
 
         expect(doc).to.exist;
@@ -82,7 +82,7 @@ describe('Routes', function () {
     });
   });
 
-  it(`PUT    /api/platforms/${cardID}/analyses/:id`, function (done) {
+  it(`PUT    /api/platforms/${cardID}/analyses/:id`, (done) => {
     expect(analysisID).to.exist;
 
     request(app)
@@ -90,7 +90,7 @@ describe('Routes', function () {
     .send({ bar: 'foo' })
     .expect('Content-Type', /json/)
     .expect(200)
-    .expect(function (res) {
+    .expect((res) => {
       var body = res.body;
 
       expect(body).to.be.an('object');
@@ -101,10 +101,10 @@ describe('Routes', function () {
       expect(analysis).to.have.property('id', analysisID);
       expect(analysis).to.have.property('bar', 'foo');
     })
-    .end(function (error) {
+    .end((error) => {
       expect(error).to.not.exist;
 
-      mongo.get('platforms').findOne({ cardID: cardID }, function (err, doc) {
+      mongo.get('platforms').findOne({ cardID: cardID }, (err, doc) => {
         if (err) { throw err; }
 
         expect(doc).to.exist;
@@ -121,12 +121,12 @@ describe('Routes', function () {
     });
   });
 
-  it(`GET    /api/platforms/${cardID}`, function (done) {
+  it(`GET    /api/platforms/${cardID}`, (done) => {
     request(app)
     .get(`/api/platforms/${cardID}`)
     .expect('Content-Type', /json/)
     .expect(200)
-    .expect(function (res) {
+    .expect((res) => {
       var body = res.body;
 
       expect(body).to.be.an('object');
@@ -137,12 +137,12 @@ describe('Routes', function () {
     .end(done);
   });
 
-  it(`GET    /api/platforms/${cardID}/analyses`, function (done) {
+  it(`GET    /api/platforms/${cardID}/analyses`, (done) => {
     request(app)
     .get(`/api/platforms/${cardID}/analyses`)
     .expect('Content-Type', /json/)
     .expect(200)
-    .expect(function (res) {
+    .expect((res) => {
       var body = res.body;
 
       expect(body).to.be.an('array').with.length(1);
@@ -151,16 +151,16 @@ describe('Routes', function () {
     .end(done);
   });
 
-  it(`DELETE /api/platforms/${cardID}/analyses/:id`, function (done) {
+  it(`DELETE /api/platforms/${cardID}/analyses/:id`, (done) => {
     expect(analysisID).to.exist;
 
     request(app)
     .delete(`/api/platforms/${cardID}/analyses/${analysisID}`)
     .expect(204)
-    .end(function (error) {
+    .end((error) => {
       expect(error).to.not.exist;
 
-      mongo.get('platforms').findOne({ cardID: cardID }, function (err, doc) {
+      mongo.get('platforms').findOne({ cardID: cardID }, (err, doc) => {
         if (err) { throw err; }
 
         expect(doc).to.exist;
@@ -171,12 +171,12 @@ describe('Routes', function () {
     });
   });
 
-  it(`GET    /api/platforms/${cardID}/history`, function (done) {
+  it(`GET    /api/platforms/${cardID}/history`, (done) => {
     request(app)
     .get(`/api/platforms/${cardID}/history`)
     .expect('Content-Type', /json/)
     .expect(200)
-    .expect(function (res) {
+    .expect((res) => {
       var body = res.body;
 
       expect(body).to.be.an('array').with.length(2);
@@ -198,14 +198,14 @@ describe('Routes', function () {
     .end(done);
   });
 
-  it(`POST   /api/platforms/${cardID}/history/:id`, function (done) {
+  it(`POST   /api/platforms/${cardID}/history/:id`, (done) => {
     request(app)
     .post(`/api/platforms/${cardID}/history/${historyID}`)
     .expect(204)
-    .end(function (error) {
+    .end((error) => {
       expect(error).to.not.exist;
 
-      mongo.get('platforms').findOne({ cardID: cardID }, function (err, doc) {
+      mongo.get('platforms').findOne({ cardID: cardID }, (err, doc) => {
         if (err) { throw err; }
 
         expect(doc).to.have.property('analyses').that.is.an('array').with.length(1);
@@ -225,14 +225,14 @@ describe('Routes', function () {
     });
   });
 
-  it(`DELETE /api/platforms/${cardID}/history/:id`, function (done) {
+  it(`DELETE /api/platforms/${cardID}/history/:id`, (done) => {
     request(app)
     .delete(`/api/platforms/${cardID}/history/${historyID}`)
     .expect(204)
-    .end(function (error) {
+    .end((error) => {
       expect(error).to.not.exist;
 
-      mongo.get('platforms').findOne({ cardID: cardID }, function (err, doc) {
+      mongo.get('platforms').findOne({ cardID: cardID }, (err, doc) => {
         if (err) { throw err; }
 
         expect(doc).to.have.property('history').that.is.an('array').with.length(2);
@@ -247,14 +247,14 @@ describe('Routes', function () {
     });
   });
 
-  it(`DELETE /api/platforms/${cardID}`, function (done) {
+  it(`DELETE /api/platforms/${cardID}`, (done) => {
     request(app)
     .delete(`/api/platforms/${cardID}`)
     .expect(204)
-    .end(function (error) {
+    .end((error) => {
       expect(error).to.not.exist;
 
-      mongo.get('platforms').findOne({ cardID: cardID }, function (err, doc) {
+      mongo.get('platforms').findOne({ cardID: cardID }, (err, doc) => {
         if (err) { throw err; }
 
         expect(doc).to.not.exist;

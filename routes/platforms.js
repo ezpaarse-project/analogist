@@ -12,8 +12,8 @@ router.put('*', mw.authorize);
 router.delete('*', mw.authorize);
 
 /* GET all platforms. */
-router.get('/', function (req, res, next) {
-  mongo.get('platforms').find().toArray(function (err, docs) {
+router.get('/', (req, res, next) => {
+  mongo.get('platforms').find().toArray((err, docs) => {
     if (err)  { return next(err); }
     if (!docs) { return next(new Error('failed to find platforms')); }
 
@@ -22,8 +22,8 @@ router.get('/', function (req, res, next) {
 });
 
 /* GET a platform. */
-router.get('/:cid', function (req, res, next) {
-  mongo.get('platforms').findOne({ cardID: req.params.cid }, function (err, doc) {
+router.get('/:cid', (req, res, next) => {
+  mongo.get('platforms').findOne({ cardID: req.params.cid }, (err, doc) => {
     if (err)  { return next(err); }
     if (!doc) { return res.status(404).end(); }
 
@@ -32,7 +32,7 @@ router.get('/:cid', function (req, res, next) {
 });
 
 /* CREATE a platform (ie. card on Trello) */
-router.post('/', function (req, res, next) {
+router.post('/', (req, res, next) => {
   var card = req.body;
 
   if (typeof card !== 'object') {
@@ -47,16 +47,16 @@ router.post('/', function (req, res, next) {
 });
 
 /* DELETE a platform */
-router.delete('/:cid', function (req, res, next) {
-  mongo.get('platforms').remove({ cardID: req.params.cid }, function (err, result) {
+router.delete('/:cid', (req, res, next) => {
+  mongo.get('platforms').remove({ cardID: req.params.cid }, (err, result) => {
     if (err) { return next(err); }
     res.status(204).end();
   });
 });
 
 /* GET the analyses of a platform. */
-router.get('/:cid/analyses', function (req, res, next) {
-  mongo.get('platforms').findOne({ cardID: req.params.cid }, { analyses: 1 }, function (err, doc) {
+router.get('/:cid/analyses', (req, res, next) => {
+  mongo.get('platforms').findOne({ cardID: req.params.cid }, { analyses: 1 }, (err, doc) => {
     if (err)  { return next(err); }
     if (!doc) { return res.status(404).end(); }
 
@@ -65,8 +65,8 @@ router.get('/:cid/analyses', function (req, res, next) {
 });
 
 /* GET the history of a platform. */
-router.get('/:cid/history', function (req, res, next) {
-  mongo.get('platforms').findOne({ cardID: req.params.cid }, { history: 1 }, function (err, doc) {
+router.get('/:cid/history', (req, res, next) => {
+  mongo.get('platforms').findOne({ cardID: req.params.cid }, { history: 1 }, (err, doc) => {
     if (err)  { return next(err); }
     if (!doc) { return res.status(404).end(); }
 
@@ -75,7 +75,7 @@ router.get('/:cid/history', function (req, res, next) {
 });
 
 /* POST new analysis. */
-router.post('/:cid/analyses', mw.updateHistory, function (req, res, next) {
+router.post('/:cid/analyses', mw.updateHistory, (req, res, next) => {
   if (typeof req.body !== 'object') { return res.status(400).end(); }
 
   req.body.id = new ObjectID();
@@ -87,7 +87,7 @@ router.post('/:cid/analyses', mw.updateHistory, function (req, res, next) {
       $set: { lastModified: new Date() }
     },
     { upsert: true },
-    function (err, result) {
+    (err, result) => {
       if (err) { return next(err); }
       res.status(201).json(req.body);
     }
@@ -95,7 +95,7 @@ router.post('/:cid/analyses', mw.updateHistory, function (req, res, next) {
 });
 
 /* PUT an existing analysis */
-router.put('/:cid/analyses/:aid', mw.updateHistory, function (req, res, next) {
+router.put('/:cid/analyses/:aid', mw.updateHistory, (req, res, next) => {
   if (typeof req.body !== 'object') { return res.status(400).end(); }
   if (!ObjectID.isValid(req.params.aid)) { return res.status(400).end(); }
 
@@ -105,7 +105,7 @@ router.put('/:cid/analyses/:aid', mw.updateHistory, function (req, res, next) {
     { cardID: req.params.cid, 'analyses.id': req.body.id },
     { $set: { 'analyses.$': req.body, lastModified: new Date() } },
     { returnOriginal: false },
-    function (err, result) {
+    (err, result) => {
       if (err) { return next(err); }
       res.status(200).json(result.value);
     }
@@ -113,7 +113,7 @@ router.put('/:cid/analyses/:aid', mw.updateHistory, function (req, res, next) {
 });
 
 /* DELETE an analysis */
-router.delete('/:cid/analyses/:aid', mw.updateHistory, function (req, res, next) {
+router.delete('/:cid/analyses/:aid', mw.updateHistory, (req, res, next) => {
   if (!ObjectID.isValid(req.params.aid)) { return res.status(400).end(); }
 
   mongo.get('platforms').findOneAndUpdate(
@@ -122,7 +122,7 @@ router.delete('/:cid/analyses/:aid', mw.updateHistory, function (req, res, next)
       $pull: { analyses: { id: new ObjectID(req.params.aid) } },
       $set: { lastModified: new Date() }
     },
-    function (err, result) {
+    (err, result) => {
       if (err) { return next(err); }
       res.status(204).end();
     }
@@ -130,13 +130,13 @@ router.delete('/:cid/analyses/:aid', mw.updateHistory, function (req, res, next)
 });
 
 /* DELETE an entry in the history */
-router.delete('/:cid/history/:hid', function (req, res, next) {
+router.delete('/:cid/history/:hid', (req, res, next) => {
   if (!ObjectID.isValid(req.params.hid)) { return res.status(400).end(); }
 
   mongo.get('platforms').findOneAndUpdate(
     { cardID: req.params.cid },
     { $pull: { history: { id: new ObjectID(req.params.hid) } } },
-    function (err, result) {
+    (err, result) => {
       if (err) { return next(err); }
       res.status(204).end();
     }
@@ -144,13 +144,13 @@ router.delete('/:cid/history/:hid', function (req, res, next) {
 });
 
 /* POST an entry in the history, ie. restore the analyses to this point */
-router.post('/:cid/history/:hid', function (req, res, next) {
+router.post('/:cid/history/:hid', (req, res, next) => {
   if (!ObjectID.isValid(req.params.hid)) { return res.status(400).end(); }
 
   mongo.get('platforms').findOne(
     { cardID: req.params.cid, 'history.id': new ObjectID(req.params.hid) },
     { 'history.$': 1, 'analyses': 1 },
-    function (err, platform) {
+    (err, platform) => {
       if (err) { return next(err); }
       if (!platform) { return res.status(404).end(); }
 
@@ -169,7 +169,7 @@ router.post('/:cid/history/:hid', function (req, res, next) {
             }
           }
         },
-        function (err) {
+        (err) => {
           if (err) { return next(err); }
           res.status(204).end();
         }

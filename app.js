@@ -50,7 +50,7 @@ app.use(new Grant({
  * Callback for the Oauth authentication
  * The request is then redirected to the path after /callback/
  */
-app.use('/callback', function (req, res, next) {
+app.use('/callback', (req, res, next) => {
   if (req.query.error) {
     delete req.session;
   } else if (req.session.grant && req.session.grant.response) {
@@ -92,7 +92,7 @@ app.use('/api/platforms', require('./routes/platforms'));
 app.use('/auth', require('./routes/auth'));
 
 // Catch-all for HTML5 mode
-app.get('*', function(req, res, next) {
+app.get('*', (req, res, next) => {
   res.render('index', { apiKey: config.TRELLO.KEY, boardID: config.TRELLO.BOARDID });
 });
 
@@ -101,7 +101,7 @@ app.use(notFound);
 // development error handler
 // will print stacktrace
 if (app.get('env') === 'development') {
-  app.use(function(err, req, res, next) {
+  app.use((err, req, res, next) => {
     res.status(err.status || 500);
     res.render('error', {
       message: err.message,
@@ -112,7 +112,7 @@ if (app.get('env') === 'development') {
 
 // production error handler
 // no stacktraces leaked to user
-app.use(function(err, req, res, next) {
+app.use((err, req, res, next) => {
   res.status(err.status || 500);
   res.render('error', {
     message: err.message,

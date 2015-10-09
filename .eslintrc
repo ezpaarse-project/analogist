@@ -18,6 +18,7 @@
     "no-throw-literal": 2,
     "no-sequences": 2,
     "no-else-return": 2,
+    "prefer-arrow-callback": 2,
     "max-nested-callbacks": [1, 4],
     "camelcase": [1, {"properties": "always"}],
     "no-warning-comments": [1, { "terms": ["todo", "fixme"], "location": "anywhere" }],
