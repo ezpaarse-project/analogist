@@ -4,21 +4,21 @@
 
 process.env.NODE_ENV = 'production';
 
-var request = require('supertest');
-var expect  = require('chai').expect;
+let request = require('supertest');
+let expect  = require('chai').expect;
 
-var config  = require('../lib/config.js');
-var mongo   = require('../lib/mongo.js');
-var app;
+let config  = require('../lib/config.js');
+let mongo   = require('../lib/mongo.js');
+let app;
 
 config.BYPASS = true;
 config.HISTORY.DEBOUNCE_TIME = 0;
 
-var mongoUrl = `mongodb://${config.MONGO.ADDRESS}:${config.MONGO.PORT}/test`;
+let mongoUrl = `mongodb://${config.MONGO.ADDRESS}:${config.MONGO.PORT}/test`;
 
-var cardID = 'sd123';
-var analysisID;
-var historyID;
+let cardID = 'sd123';
+let analysisID;
+let historyID;
 
 /**
  * Tests a complete scenario involving sequences of requests
@@ -54,7 +54,7 @@ describe('Routes', () => {
     .expect('Content-Type', /json/)
     .expect(201)
     .expect((res) => {
-      var body = res.body;
+      let body = res.body;
 
       expect(body).to.be.an('object');
       expect(body).to.have.property('id').that.is.a('string');
@@ -72,7 +72,7 @@ describe('Routes', () => {
         expect(doc).to.have.property('cardID', cardID);
         expect(doc).to.have.property('analyses').that.is.an('array').with.length(1);
 
-        var analysis = doc.analyses[0];
+        let analysis = doc.analyses[0];
         expect(analysis).to.have.property('foo', 'bar');
         expect(analysis).to.have.property('id').that.is.an('object');
         expect(analysis.id.toString()).to.equal(analysisID);
@@ -91,13 +91,13 @@ describe('Routes', () => {
     .expect('Content-Type', /json/)
     .expect(200)
     .expect((res) => {
-      var body = res.body;
+      let body = res.body;
 
       expect(body).to.be.an('object');
       expect(body).to.have.property('cardID', cardID);
       expect(body).to.have.property('analyses').that.is.an('array').with.length(1);
 
-      var analysis = body.analyses[0];
+      let analysis = body.analyses[0];
       expect(analysis).to.have.property('id', analysisID);
       expect(analysis).to.have.property('bar', 'foo');
     })
@@ -111,7 +111,7 @@ describe('Routes', () => {
         expect(doc.cardID).to.equal(cardID);
         expect(doc).to.have.property('analyses').that.is.an('array').with.length(1);
 
-        var analysis = doc.analyses[0];
+        let analysis = doc.analyses[0];
         expect(analysis).to.have.property('bar', 'foo');
         expect(analysis).to.have.property('id').that.is.an('object');
         expect(analysis.id.toString()).to.equal(analysisID);
@@ -127,7 +127,7 @@ describe('Routes', () => {
     .expect('Content-Type', /json/)
     .expect(200)
     .expect((res) => {
-      var body = res.body;
+      let body = res.body;
 
       expect(body).to.be.an('object');
       expect(body).to.have.property('cardID', cardID);
@@ -143,7 +143,7 @@ describe('Routes', () => {
     .expect('Content-Type', /json/)
     .expect(200)
     .expect((res) => {
-      var body = res.body;
+      let body = res.body;
 
       expect(body).to.be.an('array').with.length(1);
       expect(body[0]).to.have.property('bar', 'foo');
@@ -177,7 +177,7 @@ describe('Routes', () => {
     .expect('Content-Type', /json/)
     .expect(200)
     .expect((res) => {
-      var body = res.body;
+      let body = res.body;
 
       expect(body).to.be.an('array').with.length(2);
       expect(body[0]).to.have.property('analyses').that.is.an('array').with.length(1);
@@ -186,8 +186,8 @@ describe('Routes', () => {
       expect(body[0]).to.have.property('date');
       expect(body[1]).to.have.property('date');
 
-      var date1 = new Date(body[0].date);
-      var date2 = new Date(body[1].date);
+      let date1 = new Date(body[0].date);
+      let date2 = new Date(body[1].date);
       expect(date1.getTime()).to.be.above(date2.getTime());
 
       expect(body[1].analyses[0]).to.have.property('foo', 'bar'); // was inserted with foo:bar

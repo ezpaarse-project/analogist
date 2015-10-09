@@ -1,5 +1,7 @@
-var router = require('express').Router();
-var mw     = require('../lib/middlewares.js');
+'use strict';
+
+let router = require('express').Router();
+let mw     = require('../lib/middlewares.js');
 
 /* Get the Trello profile of the user currently connected */
 router.get('/loggedin', mw.updateUserProfile, (req, res, next) => {

@@ -8,7 +8,7 @@
   "scripts": {
     "start": "node ./bin/www",
     "test": "mocha",
-    "lint": "eslint ./*.js routes/ test/ lib/"
+    "lint": "eslint ./*.js routes/ test/ lib/ bin/*"
   },
   "dependencies": {
     "body-parser": "~1.13.2",

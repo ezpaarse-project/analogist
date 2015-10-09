@@ -1,33 +1,34 @@
 #!/usr/bin/env node
+/* eslint no-console: 0, global-require: 0 */
+'use strict';
 
 /**
  * Module dependencies.
  */
 
-var mongo  = require('../lib/mongo.js');
-var config = require('../lib/config.js');
-var debug  = require('debug')('analogist:server');
-var http   = require('http');
-var server;
+let mongo  = require('../lib/mongo.js');
+let config = require('../lib/config.js');
+let http   = require('http');
+let server;
 
 /**
  * Get port from environment and store in Express.
  */
-var port = normalizePort(process.env.PORT || config.PORT || '3000');
+let port = normalizePort(process.env.PORT || config.PORT || '3000');
 
 /**
  * Build mongo URL from config or env and store in Express
  */
-var mongoAddress = process.env.MONGODB_PORT_27017_TCP_ADDR || config.MONGO.ADDRESS;
-var mongoPort    = process.env.MONGODB_PORT_27017_TCP_PORT || config.MONGO.PORT;
-var mongoUrl     = 'mongodb://' + mongoAddress + ':' + mongoPort + '/' + config.MONGO.DB;
+let mongoAddress = process.env.MONGODB_PORT_27017_TCP_ADDR || config.MONGO.ADDRESS;
+let mongoPort    = process.env.MONGODB_PORT_27017_TCP_PORT || config.MONGO.PORT;
+let mongoUrl     = `mongodb://${mongoAddress}:${mongoPort}'/'${config.MONGO.DB}`;
 
 /**
  * Open a mongodb connection
  */
-var i = 1;
+let i = 1;
 (function start() {
-  mongo.connect(mongoUrl, function (err) {
+  mongo.connect(mongoUrl, (err) => {
     if (err) {
       console.error('Failed to connect to mongo (attempt %d/20)', i);
 
@@ -37,7 +38,7 @@ var i = 1;
       process.exit(1);
     }
 
-    var app = require('../app');
+    let app = require('../app');
     app.set('port', port);
 
     // Create HTTP server.
@@ -54,7 +55,7 @@ var i = 1;
  * Normalize a port into a number, string, or false.
  */
 function normalizePort(val) {
-  var port = parseInt(val, 10);
+  let port = parseInt(val, 10);
 
   if (isNaN(port)) {
     // named pipe
@@ -77,22 +78,22 @@ function onError(error) {
     throw error;
   }
 
-  var bind = typeof port === 'string'
-    ? 'Pipe ' + port
-    : 'Port ' + port;
+  let bind = typeof port === 'string'
+    ? `Pipe ${port}`
+    : `Port ${port}`;
 
   // handle specific listen errors with friendly messages
   switch (error.code) {
-    case 'EACCES':
-      console.error(bind + ' requires elevated privileges');
-      process.exit(1);
-      break;
-    case 'EADDRINUSE':
-      console.error(bind + ' is already in use');
-      process.exit(1);
-      break;
-    default:
-      throw error;
+  case 'EACCES':
+    console.error(`${bind} requires elevated privileges`);
+    process.exit(1);
+    break;
+  case 'EADDRINUSE':
+    console.error(`${bind} is already in use`);
+    process.exit(1);
+    break;
+  default:
+    throw error;
   }
 }
 
@@ -100,10 +101,10 @@ function onError(error) {
  * Event listener for HTTP server "listening" event.
  */
 function onListening() {
-  var addr = server.address();
-  var bind = typeof addr === 'string'
-    ? 'pipe ' + addr
-    : 'port ' + addr.port;
+  let addr = server.address();
+  let bind = typeof addr === 'string'
+    ? `pipe ${addr}`
+    : `port ${addr.port}`;
   console.log('Listening on %s', bind);
 }
 

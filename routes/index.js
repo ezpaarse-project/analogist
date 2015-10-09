@@ -1,4 +1,6 @@
-var router = require('express').Router();
+'use strict';
+
+let router = require('express').Router();
 
 /* GET a partial view. */
 router.get('/partials/:name', (req, res, next) => {

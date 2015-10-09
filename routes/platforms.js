@@ -1,8 +1,10 @@
-var router   = require('express').Router();
-var trello   = require('../lib/trello.js');
-var mongo    = require('../lib/mongo.js');
-var mw       = require('../lib/middlewares.js');
-var ObjectID = require('mongodb').ObjectID;
+'use strict';
+
+let router   = require('express').Router();
+let trello   = require('../lib/trello.js');
+let mongo    = require('../lib/mongo.js');
+let mw       = require('../lib/middlewares.js');
+let ObjectID = require('mongodb').ObjectID;
 
 /**
  * Require authorization for all post/put/delete routes
@@ -33,7 +35,7 @@ router.get('/:cid', (req, res, next) => {
 
 /* CREATE a platform (ie. card on Trello) */
 router.post('/', (req, res, next) => {
-  var card = req.body;
+  let card = req.body;
 
   if (typeof card !== 'object') {
     return next(new Error('no card given'));

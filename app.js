@@ -1,24 +1,25 @@
 /* eslint camelcase: 0 */
+'use strict';
 
-var express      = require('express');
-var path         = require('path');
-var favicon      = require('serve-favicon');
-var logger       = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser   = require('body-parser');
-var session      = require('express-session');
-var MongoStore   = require('connect-mongo')(session);
-var Grant        = require('grant-express');
-var mongo        = require('./lib/mongo.js');
+let express      = require('express');
+let path         = require('path');
+let favicon      = require('serve-favicon');
+let logger       = require('morgan');
+let cookieParser = require('cookie-parser');
+let bodyParser   = require('body-parser');
+let session      = require('express-session');
+let MongoStore   = require('connect-mongo')(session);
+let Grant        = require('grant-express');
+let mongo        = require('./lib/mongo.js');
 
-var config = require('./lib/config.js');
-var app = express();
+let config = require('./lib/config.js');
+let app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-var oneMonth = 3600000 * 24 * 30;
+let oneMonth = 3600000 * 24 * 30;
 
 app.use(session({
   resave: false,
@@ -72,7 +73,7 @@ app.use(cookieParser());
 
 // catch 404 and forward to error handler
 function notFound(req, res, next) {
-  var err = new Error('Not Found');
+  let err = new Error('Not Found');
   err.status = 404;
   next(err);
 }
