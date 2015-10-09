@@ -71,13 +71,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-// catch 404 and forward to error handler
-function notFound(req, res, next) {
-  let err = new Error('Not Found');
-  err.status = 404;
-  next(err);
-}
-
 // Expose static files from the public directory
 app.use('/assets', express.static(path.join(__dirname, 'public')));
 app.use('/assets', notFound);
@@ -121,5 +114,9 @@ app.use((err, req, res, next) => {
   });
 });
 
+// send 404
+function notFound(req, res, next) {
+  res.status(404).end();
+}
 
 module.exports = app;

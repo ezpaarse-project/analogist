@@ -17,9 +17,8 @@ router.delete('*', mw.authorize);
 router.get('/', (req, res, next) => {
   mongo.get('platforms').find().toArray((err, docs) => {
     if (err)  { return next(err); }
-    if (!docs) { return next(new Error('failed to find platforms')); }
 
-    res.status(200).json(docs);
+    res.status(200).json(docs || []);
   });
 });
 
@@ -38,9 +37,9 @@ router.post('/', (req, res, next) => {
   let card = req.body;
 
   if (typeof card !== 'object') {
-    return next(new Error('no card given'));
+    return res.status(400).end('no card given');
   } else if (!card.idList || !card.name) {
-    return next(new Error('missing mandatory field'));
+    return res.status(400).end('missing mandatory field');
   }
   card.due = card.due || null;
   card.lastModified = new Date();
