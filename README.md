@@ -23,7 +23,11 @@ npm start
 When running a container, don't forget to set the environment variables `TRELLO__KEY`, `TRELLO__SECRET` and `TRELLO__BOARDID`. This step may become unecessary in the future.
 
 ```
-# Run
+# Get the latest images
+docker pull mongo
+docker pull ezpaarseproject/analogist
+
+# Run the containers
 docker run -d --name anadb mongo
 docker run -d --name analogist --link anadb:mongodb -p 3000:3000 ezpaarseproject/analogist
 
@@ -42,7 +46,9 @@ wget https://raw.githubusercontent.com/ezpaarse-project/analogist/master/docker-
 
 # Edit docker-compose.yml and define the trello variables under 'environment'
   
-# Create or recreate
+# Pull the latest images
+docker-compose pull
+# (re)Create the containers
 docker-compose up
 # Stop
 docker-compose stop
