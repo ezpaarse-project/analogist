@@ -23,6 +23,7 @@
     "mongodb": "^2.0.36",
     "morgan": "~1.6.1",
     "nconf": "^0.7.2",
+    "nodemailer": "^1.8.0",
     "request": "^2.61.0",
     "serve-favicon": "~2.3.0"
   },

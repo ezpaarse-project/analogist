@@ -10,6 +10,14 @@
     "SECRET": "",
     "BOARDID": ""
   },
+  "SMTP": {
+    "host": "localhost",
+    "port": 25
+  },
+  "NOTIFICATIONS": {
+    "SENDER": "AnalogIST",
+    "RECEIVERS": []
+  },
   "HISTORY": {
     "DEBOUNCE_TIME": 900
   }
