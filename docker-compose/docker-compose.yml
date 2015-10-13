@@ -14,3 +14,4 @@ mongodb:
   image: mongo:latest
   volumes:
     - ./data/db:/data/db
+  command: --smallfiles
