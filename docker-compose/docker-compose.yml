@@ -5,9 +5,12 @@ analogist:
   ports:
    - "3000:3000"
   environment:
+   # les variables d'environnement pour l'accès au board trello par l'application
+   # exemple le board de prod : https://trello.com/b/wEaLnz8d/ezpaarse-analogist-suivi-des-plateformes
    - TRELLO__KEY
    - TRELLO__SECRET
    - TRELLO__BOARDID
+   # les variables d'environnement pour que l'application puisse accéder à l'exterieur (ex: l'API trello)
    - http_proxy
    - https_proxy
 
