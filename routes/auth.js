@@ -27,6 +27,8 @@ router.post('/membership', mw.updateUserProfile, (req, res, next) => {
     let sender    = config.NOTIFICATIONS.SENDER;
     let receivers = config.NOTIFICATIONS.RECEIVERS;
 
+    if (typeof receivers === 'string') { receivers = receivers.split(','); }
+
     if (!sender || !receivers || receivers.length === 0) {
       return res.status(501).end();
     }
