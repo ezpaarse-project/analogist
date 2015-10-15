@@ -9,6 +9,8 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+body { letter-spacing: 0.03em; }
+p { line-height: 1.6em; }
 
 md-sidenav.sidemenu {
   min-width: 250px;

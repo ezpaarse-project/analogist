@@ -10,24 +10,76 @@ angular.module('WebApp')
   $scope.auth.checkSession();
 
   $rootScope.$on('$routeChangeSuccess', function() {
-    $scope.subtitle     = null;
-    $scope.toolbarItems = null;
-    $scope.menuItems    = null;
-    $scope.onRootPage   = ($location.path() === '/list');
+    $scope.subtitle   = null;
+    $scope.onRootPage = ($location.path() === '/list');
   });
 
   $scope.setSubtitle = function (str) {
     $scope.subtitle = str;
   };
-  $scope.setToolbarItems = function (items) {
-    $scope.toolbarItems = items;
-  };
-  $scope.setMenuItems = function (items) {
-    $scope.menuItems = items;
-  };
 
   $scope.goto = function(path) {
     $location.path(path || '/');
+  };
+}])
+.controller('ToolbarCtrl', ['$scope', '$mdDialog', 'TRELLO', function ($scope, $mdDialog, TRELLO) {
+  var vm = this;
+
+  vm.links = [
+    { href: 'http://analogist.couperin.org/', icon: 'action:home', label: 'AnalogIST' },
+    { href: 'http://trello.com/b/' + TRELLO.boardID, icon: 'mdi:trello', label: 'Tableau Trello' }
+  ];
+
+  vm.actions = [
+    { trigger: $scope.auth.login, icon: 'mdi:login', label: 'Connexion' },
+    { trigger: $scope.auth.logout, icon: 'mdi:logout', label: 'Déconnexion' }
+  ];
+
+  vm.showMembershipDialog = function (ev) {
+    $mdDialog.show({
+      controller: 'MembershipCtrl as vm',
+      parent: angular.element(document.body),
+      templateUrl: '/partials/form-membership',
+      targetEvent: ev
+    });
+  };
+}])
+.controller('MembershipCtrl', [
+  '$mdDialog',
+  '$http',
+  '$mdToast',
+  'ezAlert',
+  'TRELLO',
+  function ($mdDialog, $http, $mdToast, ezAlert, TRELLO) {
+  var vm = this;
+  vm.boardID = TRELLO.boardID;
+
+  vm.hide   = function() { $mdDialog.hide(); };
+  vm.cancel = function() { $mdDialog.cancel(); };
+
+  vm.requestMembership = function () {
+    if (vm.submitting) { return; }
+    vm.submitting = true;
+
+    $http.post('/auth/membership')
+    .then(function () {
+      $mdDialog.hide();
+      $mdToast.show({
+        template: '<md-toast><span flex>Demande envoyée</span></md-toast>',
+        hideDelay: 2000,
+        position: 'bottom right'
+      });
+    })
+    .catch(function () {
+      ezAlert({
+        title: "Erreur",
+        content: "La demande n'a pas pu être envoyée, veuillez réessayer.",
+        ariaLabel: "Erreur demande des droits de modification"
+      });
+    })
+    .finally(function () {
+      vm.submitting = false;
+    });
   };
 }])
 .controller('PlatformCtrl', [
@@ -46,6 +98,30 @@ angular.module('WebApp')
   vm.newAnalysis = function () {
     if (!vm.analyses) { return; }
     vm.analyses.push(analysesFactory.wrapAnalysis(vm.cardID));
+  };
+
+  vm.save = function () {
+    if (!vm.analyses) { return; }
+    vm.saving = true;
+
+    analysesFactory.save(vm.analyses)
+    .then(function success() {
+      vm.saving = false;
+
+      $mdToast.show({
+        template: '<md-toast><span flex>Analyses sauvegardées</span></md-toast>',
+        hideDelay: 2000,
+        position: 'bottom right'
+      });
+    }, function fail() {
+      vm.saving = false;
+
+      ezAlert({
+        title: "Erreur",
+        content: "Une erreur est survenue pendant la sauvegarde",
+        ariaLabel: "Erreur sauvegarde des analyses"
+      });
+    });
   };
 
   function reload() {
@@ -72,13 +148,6 @@ angular.module('WebApp')
       }
 
       $scope.setSubtitle(vm.platform.name);
-      $scope.setToolbarItems([
-        { label: 'Sauvegarder', icon: 'content:save', action: save }
-      ]);
-
-      $scope.setMenuItems([
-        { label: 'Actualiser', icon: 'navigation:refresh', action: reload }
-      ]);
 
       vm.links = [
         { label: 'Page d\'accueil', icon: 'action:home', href: vm.platform.homeUrl },
@@ -107,30 +176,6 @@ angular.module('WebApp')
       vm.loading = false;
     });
   }
-
-  function save() {
-    if (!vm.analyses) { return; }
-    vm.saving = true;
-
-    analysesFactory.save(vm.analyses)
-    .then(function success() {
-      vm.saving = false;
-
-      $mdToast.show({
-        template: '<md-toast><span flex>Analyses sauvegardées</span></md-toast>',
-        hideDelay: 2000,
-        position: 'bottom right'
-      });
-    }, function fail() {
-      vm.saving = false;
-
-      ezAlert({
-        title: "Erreur",
-        content: "Une erreur est survenue pendant la sauvegarde",
-        ariaLabel: "Erreur sauvegarde des analyses"
-      });
-    });
-  };
 }])
 .controller('AnalyzerCtrl', [
   '$scope',

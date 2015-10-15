@@ -43,12 +43,18 @@
   </md-list>
 
   <div layout="row" layout-align="space-between center">
-    <h2 class="md-headline" flex>URLs analysées</h2>
+    <h2 class="md-headline">URLs analysées</h2>
+    <md-button ng-if="auth.isAuthorized()" aria-label="Sauvegarder" class="md-fab md-mini md-primary" ng-click="vm.save()">
+      <md-icon md-svg-icon="content:save"></md-icon>
+    </md-button>
+
+    <span flex></span>
 
     <md-switch ng-model="vm.split" md-no-ink aria-label="Basculer la vue double">
       Vue double
     </md-switch>
   </div>
+
 
   <div class="md-margin">
     <md-progress-linear md-mode="{{ vm.saving ? 'indeterminate' : '' }}"></md-progress-linear>

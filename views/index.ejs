@@ -11,7 +11,44 @@
     <link rel="stylesheet" href="/css/style.css">
   </head>
   <body layout="column">
-    <md-toolbar class="md-whiteframe-z1">
+    <md-toolbar class="md-whiteframe-z1" ng-controller="ToolbarCtrl as vm">
+      <div class="md-toolbar-tools" hide show-gt-sm>
+        <md-icon class="md-margin" md-svg-icon="action:account_circle"></md-icon>
+
+        <md-progress-circular ng-if="auth.loadingSession" class="md-hue-3" md-mode="indeterminate" md-diameter="30px"></md-progress-circular>
+
+        <div ng-hide="auth.loadingSession">
+          <div ng-show="auth.isAuthenticated()">
+            <h2 ng-bind="session.user.fullName"></h2>
+            <div class="md-caption" ng-show="auth.isAuthorized()">Modification autorisée</div>
+            <div class="md-caption" ng-hide="auth.isAuthorized()">
+              <a href="javascript:void(0)" ng-click="vm.showMembershipDialog($event)">Cliquez ici si vous souhaitez participer</a>
+            </div>
+          </div>
+
+          <div ng-hide="auth.isAuthenticated()">
+            <h2 class="md-healine">Non connecté</h2>
+          </div>
+        </div>
+
+        <span flex></span>
+
+        <md-button class="md-icon-button" ng-repeat="link in ::vm.links" aria-label="{{ ::link.label }}" ng-href="{{ ::link.href }}">
+          <md-tooltip>{{ ::link.label }}</md-tooltip>
+          <md-icon md-svg-icon="{{ ::link.icon }}"></md-icon>
+        </md-button>
+
+        <md-button class="md-icon-button" ng-hide="auth.isAuthenticated()" aria-label="Connexion" ng-click="auth.login()">
+          <md-tooltip>Connexion</md-tooltip>
+          <md-icon md-svg-icon="mdi:login"></md-icon>
+        </md-button>
+
+        <md-button class="md-icon-button" ng-show="auth.isAuthenticated()" aria-label="Déconnexion" ng-click="auth.logout()">
+          <md-tooltip>Déconnexion</md-tooltip>
+          <md-icon md-svg-icon="mdi:logout"></md-icon>
+        </md-button>
+      </div>
+
       <div class="md-toolbar-tools">
         <md-button ng-hide="onRootPage" ng-click="goto('/list')" class="md-icon-button">
           <md-icon aria-label="Retour à la liste" md-svg-icon="navigation:arrow_back"></md-icon>
@@ -23,11 +60,7 @@
 
         <span flex></span>
 
-        <md-button ng-show="auth.isAuthorized()" class="md-icon-button" aria-label="{{ ::item.label }}" ng-click="item.action()" ng-repeat="item in toolbarItems">
-          <md-icon md-menu-align-target md-svg-icon="{{ ::item.icon }}"></md-icon>
-        </md-button>
-
-        <md-menu md-position-mode="target-right target">
+        <md-menu hide show-sm md-position-mode="target-right target">
           <md-button aria-label="Ouvrir le menu" class="md-icon-button" ng-click="$mdOpenMenu($event)">
             <md-icon md-menu-origin md-svg-icon="navigation:more_vert"></md-icon>
           </md-button>
@@ -41,48 +74,33 @@
             <md-menu-item ng-show="auth.isAuthenticated()">
               <div>
                 <div class="md-body-1" ng-bind="session.user.fullName"></div>
-                <div class="md-caption" ng-bind="auth.isAuthorized() ? 'Membre' : 'Invité'"></div>
+                <div class="md-caption" ng-bind="auth.isAuthorized() ? 'Modification autorisée' : 'Modification interdite'"></div>
               </div>
             </md-menu-item>
 
             <md-divider></md-divider>
 
-            <md-menu-item>
-              <md-button aria-label="Aller sur AnalogIST" href="http://analogist.couperin.org/">
+            <md-menu-item ng-show="auth.isAuthenticated() && !auth.isAuthorized()">
+              <md-button aria-label="Demander à participer" ng-click="vm.showMembershipDialog($event)">
                 <div layout="row" layout-fill>
-                  <p flex>Se rendre sur AnalogIST</p>
+                  <p flex>Je souhaite participer</p>
                 </div>
               </md-button>
             </md-menu-item>
 
-            <md-menu-item>
-              <md-button aria-label="Aller sur le tableat Trello" href="http://trello.com/b/<%= boardID %>">
+            <md-menu-item ng-repeat="link in ::vm.links">
+              <md-button aria-label="{{ ::link.label }}" ng-href="{{ ::link.href }}">
                 <div layout="row" layout-fill>
-                  <p flex>Voir le tableau Trello</p>
-                </div>
-              </md-button>
-            </md-menu-item>
-
-            <md-menu-item ng-repeat="item in menuItems">
-              <md-button ng-if="::item.action" aria-label="{{ ::item.label }}" ng-click="item.action()">
-                <div layout="row">
-                  <p ng-bind="::item.label" flex></p>
-                  <md-icon md-menu-align-target md-svg-icon="{{ ::item.icon }}"></md-icon>
-                </div>
-              </md-button>
-
-              <md-button ng-if="::!item.action" ng-disabled="::!item.href" aria-label="{{ ::item.label }}" ng-href="{{ ::item.href }}">
-                <div layout="row" layout-fill>
-                  <p ng-bind="::item.label" flex></p>
-                  <md-icon md-menu-align-target md-svg-icon="{{ ::item.icon }}"></md-icon>
+                  <p flex ng-bind="::link.label"></p>
+                  <md-icon md-menu-align-target md-svg-icon="{{ ::link.icon }}"></md-icon>
                 </div>
               </md-button>
             </md-menu-item>
 
             <md-menu-item ng-hide="auth.isAuthenticated()">
-              <md-button aria-label="Connexion avec Trello" ng-click="auth.login()">
+              <md-button aria-label="Connexion" ng-click="auth.login()">
                 <div layout="row">
-                  <p flex>Se connecter avec Trello</p>
+                  <p flex>Connexion</p>
                   <md-icon md-menu-align-target md-svg-icon="mdi:login"></md-icon>
                 </div>
               </md-button>
@@ -91,7 +109,7 @@
             <md-menu-item ng-show="auth.isAuthenticated()">
               <md-button aria-label="Déconnexion" ng-click="auth.logout()">
                 <div layout="row">
-                  <p flex>Se déconnecter</p>
+                  <p flex>Déconnexion</p>
                   <md-icon md-menu-align-target md-svg-icon="mdi:logout" ></md-icon>
                 </div>
               </md-button>

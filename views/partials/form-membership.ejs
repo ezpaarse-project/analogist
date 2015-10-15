@@ -1,0 +1,22 @@
+<md-dialog aria-label="Formulaire de demande de droits" style="width:500px;">
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <h2>Demande de participation</h2>
+      <span flex></span>
+      <md-button class="md-icon-button" ng-click="vm.cancel()">
+        <md-icon aria-label="Fermer la fenêtre" md-svg-icon="navigation:close"></md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+
+  <md-dialog-content>
+    <div class="md-dialog-content">
+      <p>Pour participer aux analyses, vous devez être membre du <a ng-href="https://trello.com/b/{{ vm.boardID }}">tableau Trello</a>. En cliquant ci-dessous, les administrateurs seront avertis de votre demande et pourront ainsi vous y intégrer. Une notification vous sera envoyée par Trello une fois votre adhésion éffectuée.</p>
+
+      <div layout="row" layout-align="center center">
+        <md-progress-circular ng-if="vm.submitting" class="md-hue-3" md-mode="indeterminate"></md-progress-circular>
+        <md-button ng-hide="vm.submitting" class="md-raised md-primary" ng-click="vm.requestMembership()">Je souhaite participer</md-button>
+      </div>
+    </div>
+  </md-dialog-content>
+</md-dialog>
