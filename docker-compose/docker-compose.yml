@@ -1,17 +1,21 @@
 analogist:
-  image: ezpaarseproject/analogist
+  image: ezpaarseproject/analogist:latest
   links:
-   - mongodb:mongodb
+   - analogistdb:mongodb
   ports:
    - "3000:3000"
   environment:
-   - TRELLO__KEY=xxx
-   - TRELLO__SECRET=xxx
-   - TRELLO__BOARDID=xxx
+   # les variables d'environnement pour l'accès au board trello par l'application
+   # exemple le board de prod : https://trello.com/b/wEaLnz8d/ezpaarse-analogist-suivi-des-plateformes
+   - TRELLO__KEY
+   - TRELLO__SECRET
+   - TRELLO__BOARDID
+   # les variables d'environnement pour que l'application puisse accéder à l'exterieur (ex: l'API trello)
    - http_proxy
    - https_proxy
-mongodb:
-  image: mongo:latest
+
+analogistdb:
+  image: mongo:3.0.6
   volumes:
     - ./data/db:/data/db
   command: --smallfiles
