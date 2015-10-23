@@ -21,7 +21,7 @@ let port = normalizePort(process.env.PORT || config.PORT || '3000');
  */
 let mongoAddress = process.env.MONGODB_PORT_27017_TCP_ADDR || config.MONGO.ADDRESS;
 let mongoPort    = process.env.MONGODB_PORT_27017_TCP_PORT || config.MONGO.PORT;
-let mongoUrl     = `mongodb://${mongoAddress}:${mongoPort}'/'${config.MONGO.DB}`;
+let mongoUrl     = `mongodb://${mongoAddress}:${mongoPort}/${config.MONGO.DB}`;
 
 /**
  * Open a mongodb connection
