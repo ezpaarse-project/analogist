@@ -40,6 +40,7 @@ app.use(new Grant({
   trello: {
     key: config.TRELLO.KEY,
     secret: config.TRELLO.SECRET,
+    expiration: 'never',
     scope: ['read', 'write'],
     custom_params: {
       name: 'AnalogIST'
