@@ -88,7 +88,7 @@ app.use('/auth', require('./routes/auth'));
 
 // Catch-all for HTML5 mode
 app.get('*', (req, res, next) => {
-  res.render('index', { apiKey: config.TRELLO.KEY, boardID: config.TRELLO.BOARDID });
+  res.render('index', { boardID: config.TRELLO.BOARDID });
 });
 
 app.use(notFound);
