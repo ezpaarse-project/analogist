@@ -11,6 +11,7 @@ let ObjectID = require('mongodb').ObjectID;
  */
 router.post('*', mw.authorize);
 router.put('*', mw.authorize);
+router.patch('*', mw.authorize);
 router.delete('*', mw.authorize);
 
 /* GET all platforms. */
@@ -53,6 +54,16 @@ router.delete('/:cid', (req, res, next) => {
     if (err) { return next(err); }
     res.status(204).end();
   });
+});
+
+/* PATCH the card of a platform */
+router.patch('/:cid', (req, res, next) => {
+  if (typeof req.body !== 'object') { return res.status(400).end(); }
+
+  trello.updateCard(req.params.cid, {
+    desc: req.body.desc,
+    idList: req.body.idList
+  }, req.session.oauth.token).pipe(res);
 });
 
 /* GET the analyses of a platform. */
