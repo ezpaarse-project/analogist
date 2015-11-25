@@ -98,7 +98,7 @@ angular.module('WebApp')
               card:         card
             };
 
-            var regexGithub = new RegExp('(https://github.com/ezpaarse-project/ezpaarse-platforms/[^ $\n]+)', 'i');
+            var regexGithub = new RegExp('code[^\n]+source[^\n]+\n(https?://[^ $\n]+)', 'i');
             if (match = card.desc.match(regexGithub)) {
               platform.githubUrl = match[1];
             }
@@ -128,6 +128,10 @@ angular.module('WebApp')
 
   apiService.createCard = function (card) {
     return $http.post('/api/platforms', card);
+  };
+
+  apiService.updateCard = function (cardID, changes) {
+    return $http.patch('/api/platforms/' + cardID, changes);
   };
 
   return apiService;

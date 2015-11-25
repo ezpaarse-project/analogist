@@ -87,9 +87,10 @@ angular.module('WebApp')
   'analysesFactory',
   '$mdToast',
   '$routeParams',
+  '$mdDialog',
   'platforms',
   'ezAlert',
-  function($scope, analysesFactory, $mdToast, $routeParams, platforms, ezAlert) {
+  function($scope, analysesFactory, $mdToast, $routeParams, $mdDialog, platforms, ezAlert) {
   var vm = this;
   var cardID = vm.cardID = $routeParams.id;
 
@@ -121,6 +122,16 @@ angular.module('WebApp')
         content: "Une erreur est survenue pendant la sauvegarde",
         ariaLabel: "Erreur sauvegarde des analyses"
       });
+    });
+  };
+
+  vm.showUpdateForm = function(ev) {
+    $mdDialog.show({
+      controller: 'UpdatePlatformCtrl as vm',
+      parent: angular.element(document.body),
+      templateUrl: '/partials/form-update',
+      targetEvent: ev,
+      locals: { platform: vm.platform }
     });
   };
 
@@ -359,7 +370,10 @@ angular.module('WebApp')
   function($mdDialog, $mdToast, ezAlert, TrelloService, $q, APIService, $rootScope, searchValue) {
   var vm = this;
 
+  getLists();
+
   vm.platform = { longName: searchValue };
+  vm.getLists = getLists;
 
   vm.hide   = function() { $mdDialog.hide(); };
   vm.cancel = function() { $mdDialog.cancel(); };
@@ -367,21 +381,17 @@ angular.module('WebApp')
 
     if (!valid) { return; }
 
-    var descLines = [];
+    var desc = '';
 
     if (vm.platform.homeUrl) {
-      descLines.push('Url de la page d\'accueil de la plateforme :');
-      descLines.push(vm.platform.homeUrl);
-    }
-    if (vm.platform.githubUrl) {
-      descLines.push('Code source de la plateforme (PKB / scrapeur / parseur) :');
-      descLines.push(vm.platform.githubUrl);
+      desc += 'Url de la page d\'accueil de la plateforme :\n';
+      desc += vm.platform.homeUrl;
     }
 
     var card = {
       name: vm.platform.longName + ' [' + vm.platform.shortName + ']',
       idList: vm.platform.list,
-      desc: descLines.join('\n')
+      desc: desc
     };
 
     vm.loading = true;
@@ -407,7 +417,112 @@ angular.module('WebApp')
     });
   };
 
-  vm.getLists = function () {
+  function getLists() {
+    var deferred = $q.defer();
+
+    if (vm.lists) {
+      deferred.resolve();
+    } else {
+      TrelloService.getLists().then(function (lists) {
+        vm.lists = lists;
+        deferred.resolve();
+      });
+    }
+
+    return deferred.promise;
+  };
+}])
+.controller('UpdatePlatformCtrl', [
+  '$mdDialog',
+  '$mdToast',
+  'ezAlert',
+  'TrelloService',
+  '$q',
+  'APIService',
+  'platform',
+  function ($mdDialog, $mdToast, ezAlert, TrelloService, $q, APIService, platform) {
+  var vm = this;
+
+  getLists();
+
+  vm.platform = angular.copy(platform);
+  vm.getLists = getLists;
+
+  vm.hide   = function() { $mdDialog.hide(); };
+  vm.cancel = function() { $mdDialog.cancel(); };
+  vm.submit = function(valid) {
+
+    if (!valid) { return; }
+
+    var changes = {
+      idList: vm.platform.card.idList,
+      desc: vm.platform.card.desc
+    };
+
+    /**
+     * Add or replace the GitHub URL
+     */
+    if (vm.platform.githubUrl !== platform.githubUrl) {
+      var regexGithub = new RegExp('(code[^\n]+source[^\n]+\n)[^ $\n]*', 'i');
+
+      if (regexGithub.test(changes.desc)) {
+        changes.desc = changes.desc.replace(regexGithub, '$1' + vm.platform.githubUrl);
+      } else {
+        changes.desc += '\nCode source de la plateforme (PKB / scrapeur / parseur) :\n';
+        changes.desc += vm.platform.githubUrl;
+      }
+    }
+
+    /**
+     * Add or replace the home URL
+     */
+    if (vm.platform.homeUrl !== platform.homeUrl) {
+      var regexHome = new RegExp('(page[^\n]+accueil[^\n]+\n)[^ $\n]*', 'i');
+
+      if (regexHome.test(changes.desc)) {
+        changes.desc = changes.desc.replace(regexHome, '$1' + vm.platform.homeUrl);
+      } else {
+        changes.desc += '\nUrl de la page d\'accueil de la plateforme :\n';
+        changes.desc += vm.platform.homeUrl;
+      }
+    }
+
+    vm.loading = true;
+
+    APIService.updateCard(platform.card.id, changes)
+    .then(function (res) {
+      platform.homeUrl     = vm.platform.homeUrl;
+      platform.githubUrl   = vm.platform.githubUrl;
+      platform.card.idList = changes.idList;
+      platform.card.desc   = changes.desc;
+
+      if (vm.lists) {
+        for (var i = vm.lists.length - 1; i >= 0; i--) {
+          if (vm.lists[i].id == platform.card.idList) {
+            platform.status = vm.lists[i].name.replace(/\s*\([^\)]+\)/, '');
+            break;
+          }
+        };
+      }
+
+      $mdDialog.hide();
+      $mdToast.show({
+        template: '<md-toast><span flex>Plateforme sauvegardée</span></md-toast>',
+        hideDelay: 3000,
+        position: 'bottom right'
+      });
+    })
+    .finally(function () { vm.loading = false; })
+    .catch(function (res) {
+      ezAlert({
+        title: 'Erreur',
+        content: 'Une erreur est survenue pendant la modification de la plateforme',
+        ariaLabel: 'Erreur modification de plateforme'
+      });
+    });
+  };
+
+  function getLists() {
     var deferred = $q.defer();
 
     if (vm.lists) {

@@ -1,7 +1,7 @@
 <md-dialog aria-label="Formulaire d'ajout de plateforme" style="width:500px;">
   <md-toolbar>
     <div class="md-toolbar-tools">
-      <h2>Nouvelle plateforme</h2>
+      <h2>Mettre à jour</h2>
       <span flex></span>
       <md-button class="md-icon-button" ng-click="vm.cancel()">
         <md-icon aria-label="Fermer la fenêtre" md-svg-icon="navigation:close"></md-icon>
@@ -12,38 +12,23 @@
   <form name="pForm" ng-submit="vm.submit(pForm.$valid)" novalidate>
     <md-dialog-content>
       <div class="md-dialog-content">
-        <div layout="row">
-          <md-input-container flex="25" flex-sm="33">
-            <label>Nom court</label>
-            <input name="shortName" ng-model="vm.platform.shortName" required>
-
-            <div ng-messages="pForm.shortName.$error" ng-show="pForm.$submitted || pForm.shortName.$touched">
-              <div ng-message="required">Obligatoire</div>
-            </div>
-          </md-input-container>
-
-          <md-input-container flex>
-            <label>Nom complet</label>
-            <input name="longName" ng-model="vm.platform.longName" required>
-
-            <div ng-messages="pForm.longName.$error" ng-show="pForm.$submitted || pForm.longName.$touched">
-              <div ng-message="required">Obligatoire</div>
-            </div>
-          </md-input-container>
-        </div>
-
         <md-input-container flex>
           <label>Lien page d'accueil</label>
           <input name="homeUrl" ng-model="vm.platform.homeUrl">
         </md-input-container>
 
         <md-input-container flex>
-          <label>Ajouter dans</label>
-          <md-select aria-label="Sélectionner la liste" name="list" md-on-open="vm.getLists()" ng-model="vm.platform.list" required>
-            <md-option ng-repeat="list in vm.lists" value="{{list.id}}">{{list.name}}</md-option>
+          <label>Lien GitHub</label>
+          <input name="githubUrl" ng-model="vm.platform.githubUrl">
+        </md-input-container>
+
+        <md-input-container flex>
+          <label>Statut</label>
+          <md-select aria-label="Sélectionner la liste" name="list" md-on-open="vm.getLists()" ng-model="vm.platform.card.idList" required>
+            <md-option ng-repeat="list in vm.lists" value="{{ ::list.id }}">{{ ::list.name }}</md-option>
           </md-select>
 
-          <div ng-messages="pForm.list.$error" ng-show="pForm.$submitted || pForm.list.$touched">
+          <div ng-messages="pForm.list.$error">
             <div ng-message="required">Obligatoire</div>
           </div>
         </md-input-container>

@@ -6,21 +6,28 @@
   <div layout="row">
     <h2 flex class="md-headline">{{ vm.platform.name }}</h2>
 
-    <md-menu md-position-mode="target-right target">
-      <md-button aria-label="Ouvrir le menu" class="md-fab md-mini" ng-click="$mdOpenMenu($event)">
-        <md-icon md-menu-origin md-svg-icon="navigation:more_horiz"></md-icon>
+    <div layout="row" layout-align="center center">
+
+      <md-button aria-label="Ouvrir la fenêtre de modification" class="md-fab md-mini" ng-click="vm.showUpdateForm()">
+        <md-icon md-menu-origin md-svg-icon="content:create"></md-icon>
       </md-button>
-      <md-menu-content width="4">
-        <md-menu-item ng-repeat="item in vm.links">
-          <md-button ng-disabled="::!item.href" aria-label="{{ ::item.label }}" ng-href="{{ ::item.href }}">
-            <div layout="row" layout-fill>
-              <p flex>{{ ::item.label }}</p>
-              <md-icon md-menu-align-target md-svg-icon="{{ ::item.icon }}"></md-icon>
-            </div>
-          </md-button>
-        </md-menu-item>
-      </md-menu-content>
-    </md-menu>
+
+      <md-menu md-position-mode="target-right target">
+        <md-button aria-label="Ouvrir le menu" class="md-fab md-mini" ng-click="$mdOpenMenu($event)">
+          <md-icon md-menu-origin md-svg-icon="navigation:more_horiz"></md-icon>
+        </md-button>
+        <md-menu-content width="4">
+          <md-menu-item ng-repeat="item in vm.links">
+            <md-button ng-disabled="::!item.href" aria-label="{{ ::item.label }}" ng-href="{{ ::item.href }}">
+              <div layout="row" layout-fill>
+                <p flex>{{ ::item.label }}</p>
+                <md-icon md-menu-align-target md-svg-icon="{{ ::item.icon }}"></md-icon>
+              </div>
+            </md-button>
+          </md-menu-item>
+        </md-menu-content>
+      </md-menu>
+    </div>
   </div>
 
   <md-list class="unpadded white md-whiteframe-z1">
@@ -44,7 +51,7 @@
 
   <div layout="row" layout-align="space-between center">
     <h2 class="md-headline">URLs analysées</h2>
-    <md-button ng-if="auth.isAuthorized()" aria-label="Sauvegarder" class="md-fab md-mini md-primary" ng-click="vm.save()">
+    <md-button ng-if="auth.isAuthorized()" aria-label="Sauvegarder" class="md-fab md-mini" ng-click="vm.save()">
       <md-icon md-svg-icon="content:save"></md-icon>
     </md-button>
 
