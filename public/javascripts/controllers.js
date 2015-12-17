@@ -353,7 +353,7 @@ angular.module('WebApp')
   vm.buildList = function () {
     if (!cards.list) { return vm.list = null; }
 
-    var groups  = {};
+    var groups = {};
     vm.list = [];
 
     cards.list.forEach(function (el) {
@@ -366,8 +366,8 @@ angular.module('WebApp')
         }
         break;
       case 'status':
-        if (typeof el.status === 'string') {
-          group = el.status;
+        if (typeof el.listName === 'string') {
+          group = el.listName;
         }
         break;
       }
