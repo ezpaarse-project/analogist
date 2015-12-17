@@ -76,6 +76,26 @@ router.get('/:cid/history', (req, res, next) => {
   });
 });
 
+/* PATCH the platform comment. */
+router.patch('/:cid/comment', (req, res, next) => {
+  if (typeof req.body !== 'object') { return res.status(400).end(); }
+
+  mongo.get('platforms').findOneAndUpdate(
+    { cardID: req.params.cid },
+    {
+      $set: {
+        comment: req.body.text,
+        lastModified: new Date()
+      }
+    },
+    { upsert: true },
+    (err, result) => {
+      if (err) { return next(err); }
+      res.status(201).json(req.body);
+    }
+  );
+});
+
 /* POST new analysis. */
 router.post('/:cid/analyses', mw.updateHistory, (req, res, next) => {
   if (typeof req.body !== 'object') { return res.status(400).end(); }

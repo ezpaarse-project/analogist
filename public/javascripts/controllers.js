@@ -84,17 +84,18 @@ angular.module('WebApp')
 }])
 .controller('PlatformCtrl', [
   '$scope',
+  'APIService',
   'analysesFactory',
   '$mdToast',
   '$routeParams',
   '$mdDialog',
   'cards',
   'ezAlert',
-  function($scope, analysesFactory, $mdToast, $routeParams, $mdDialog, cards, ezAlert) {
+  function($scope, APIService, analysesFactory, $mdToast, $routeParams, $mdDialog, cards, ezAlert) {
   var vm = this;
   var cardID = vm.cardID = $routeParams.id;
 
-  getPlatform();
+  getCard();
 
   vm.newAnalysis = function () {
     if (!vm.analyses) { return; }
@@ -125,26 +126,49 @@ angular.module('WebApp')
     });
   };
 
+  vm.updateComment = function (text) {
+    vm.savingComment = true;
+
+    APIService.updateComment(cardID, text)
+    .then(function success() {
+      vm.savingComment = false;
+
+      $mdToast.show({
+        template: '<md-toast><span flex>Remarques sauvegardées</span></md-toast>',
+        hideDelay: 2000,
+        position: 'bottom right'
+      });
+    }, function fail() {
+      vm.savingComment = false;
+
+      ezAlert({
+        title: "Erreur",
+        content: "Une erreur est survenue pendant la sauvegarde",
+        ariaLabel: "Erreur sauvegarde des remarques"
+      });
+    });
+  };
+
   vm.showUpdateForm = function(ev) {
     $mdDialog.show({
       controller: 'UpdatePlatformCtrl as vm',
       parent: angular.element(document.body),
       templateUrl: '/partials/form-update',
       targetEvent: ev,
-      locals: { platform: vm.platform }
+      locals: { platform: vm.card }
     });
   };
 
   function reload() {
     cards.reload();
-    getPlatform();
+    getCard();
   }
 
-  function getPlatform() {
+  function getCard() {
     vm.loading = true;
 
-    cards.get(cardID).then(function (platform) {
-      if (!platform) {
+    cards.get(cardID).then(function (card) {
+      if (!card) {
         vm.loading = false;
 
         return ezAlert({
@@ -154,16 +178,16 @@ angular.module('WebApp')
         });
       }
 
-      $scope.setSubtitle(platform.name);
+      $scope.setSubtitle(card.name);
 
-      vm.platform = platform;
+      vm.card = card;
       vm.links = [
-        { label: 'Page d\'accueil', icon: 'action:home', href: vm.platform.homeUrl },
-        { label: 'Code source', icon: 'mdi:github', href: vm.platform.githubUrl },
-        { label: 'Carte Trello', icon: 'mdi:trello', href: vm.platform.url }
+        { label: 'Page d\'accueil', icon: 'action:home', href: vm.card.homeUrl },
+        { label: 'Code source', icon: 'mdi:github', href: vm.card.githubUrl },
+        { label: 'Carte Trello', icon: 'mdi:trello', href: vm.card.url }
       ];
 
-      analysesFactory.get(vm.platform.id)
+      analysesFactory.get(vm.card.id)
       .then(function (analyses) {
         vm.loading  = false;
         vm.analyses = analyses;

@@ -57,6 +57,10 @@ angular.module('WebApp')
     return $http.post('/api/platforms', card);
   };
 
+  apiService.updateComment = function (cardID, text) {
+    return $http.patch('/api/platforms/' + cardID + '/comment', { text: text });
+  };
+
   apiService.updateCard = function (cardID, changes) {
     return $http.patch('/api/trello/cards/' + cardID, changes);
   };
