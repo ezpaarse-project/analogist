@@ -1,4 +1,34 @@
 angular.module('WebApp')
+.filter('timeAgo', function () {
+  return function (input) {
+    var secondsAgo = (Date.now() - (new Date(input)).getTime()) / 1000;
+    var time;
+    var unit;
+
+    if (isNaN(secondsAgo)) { return '?'; }
+
+    if (secondsAgo < 60) {
+      unit = 'seconde';
+      time = parseInt(secondsAgo);
+    } else if (secondsAgo < 3600) {
+      unit = 'minute';
+      time = parseInt(secondsAgo / 60);
+    } else if (secondsAgo < 86400) {
+      unit = 'heure';
+      time = parseInt(secondsAgo / 3600);
+    } else {
+      unit = 'jour';
+      time = parseInt(secondsAgo / 86400);
+    }
+
+    return time + ' ' + unit + (time > 1 ? 's' : '');
+  };
+})
+.filter('localDate', function () {
+  return function (input) {
+    return new Date(input).toLocaleString();
+  };
+})
 .filter('naturalSortBy', function () {
   function chunkify(t) {
     var tz = new Array();

@@ -33,13 +33,13 @@
   <md-list class="unpadded white md-whiteframe-z1">
     <md-list-item>
       <md-icon md-svg-icon="action:event"></md-icon>
-      <p>Carte modifiée le {{ vm.platform.lastActivity }}</p>
+      <p>Dernière activité le {{ vm.platform.lastActivity | localDate }}</p>
       <md-divider></md-divider>
     </md-list-item>
 
     <md-list-item>
       <md-icon md-svg-icon="mdi:trello"></md-icon>
-      <p>{{ vm.platform.status }}</p>
+      <p>{{ vm.platform.listName }}</p>
       <md-divider></md-divider>
     </md-list-item>
 

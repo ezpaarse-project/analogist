@@ -50,80 +50,7 @@ angular.module('WebApp')
 
   return authService;
 }])
-.factory('TrelloService', ['$http', '$q', 'TRELLO', function ($http, $q, TRELLO) {
-  var trelloService = {};
-  var baseUrl    = 'https://api.trello.com';
-  var boardUrl   = baseUrl + '/1/boards/' + TRELLO.boardID;
-  var listsURL   = boardUrl + '/lists?cards=open';
-  var membersURL = boardUrl + '/members';
-
-  trelloService.getLists = function () {
-    return $http.get(listsURL).then(function (res) { return res.data; });
-  };
-
-  trelloService.getMembers = function () {
-    return $http.get(membersURL).then(function (res) { return res.data; });
-  };
-
-  trelloService.getPlatforms = function () {
-
-    var deferred = $q.defer();
-
-    trelloService.getLists()
-    .then(function (lists) {
-
-      trelloService.getMembers()
-      .then(function (members) {
-        var indexedMembers = {};
-        members.forEach(function (m) { indexedMembers[m.id] = m.fullName; });
-
-        var platforms = [];
-
-        lists.forEach(function (list) {
-          list.cards.forEach(function (card) {
-            if (!angular.isArray(card.idMembers)) { card.idMembers = []; }
-
-            card.members = card.idMembers.map(function (member) {
-              return indexedMembers[member];
-            });
-
-            // Remove the example card
-            if (card.id === TRELLO.exampleCardID) { return; }
-
-            var platform = {
-              status:       list.name.replace(/\s*\([^\)]+\)/, ''),
-              lastActivity: new Date(card.dateLastActivity).toLocaleDateString(),
-              name:         card.name,
-              contacts:     card.members.join(', '),
-              card:         card
-            };
-
-            var regexGithub = new RegExp('code[^\n]+source[^\n]+\n(https?://[^ $\n]+)', 'i');
-            if (match = card.desc.match(regexGithub)) {
-              platform.githubUrl = match[1];
-            }
-
-            var regexHome = new RegExp('page[^\n]+accueil[^\n]+\n(https?://[^ $\n]+)', 'i');
-            if (match = card.desc.match(regexHome)) {
-              platform.homeUrl = match[1];
-            }
-
-            platforms.push(platform);
-          });
-        });
-
-        deferred.resolve(platforms);
-      })
-      .catch(function (response) { deferred.reject(); });
-    })
-    .catch(function (response) { deferred.reject(); });
-
-    return deferred.promise;
-  };
-
-  return trelloService;
-}])
-.factory('APIService', ['$http', function ($http) {
+.factory('APIService', ['$http', 'TRELLO', function ($http, TRELLO) {
   var apiService = {};
 
   apiService.createCard = function (card) {
@@ -131,7 +58,64 @@ angular.module('WebApp')
   };
 
   apiService.updateCard = function (cardID, changes) {
-    return $http.patch('/api/platforms/' + cardID, changes);
+    return $http.patch('/api/trello/cards/' + cardID, changes);
+  };
+
+  apiService.getLists = function () {
+    return $http.get('/api/trello/lists').then(function (res) { return res.data; });
+  };
+
+  apiService.getCards = function () {
+    return $http.get('/api/trello/cards').then(function (res) { return res.data; });
+  };
+
+  apiService.getPlatforms = function () {
+    return $http.get('/api/platforms').then(function (res) { return res.data; });
+  };
+
+  /**
+   * Get trello cards and extend them with their list name and platform data
+   */
+  apiService.getExtendedCards = function () {
+    // Get trello cards
+    return apiService.getCards().then(function (cards) {
+      // Get trello lists
+      return apiService.getLists().then(function (lists) {
+        // Get platforms
+        return apiService.getPlatforms().then(function (platforms) {
+          var listNames = {};
+          var platformsMap = {};
+
+          lists.forEach(function (list) { listNames[list.id] = list.name; });
+          platforms.forEach(function (p) { platformsMap[p.cardID] = p; });
+
+          return cards.map(function (card) {
+            // Remove the example card
+            if (card.id === TRELLO.exampleCardID) { return; }
+
+            card.platform = platformsMap[card.id];
+            card.listName = (listNames[card.idList] || '').replace(/\s*\([^\)]+\)/, '');
+            card.contacts = card.members.map(function (m) { return m.fullName; }).join(', ');
+
+            // Select the latest date between trello and analogist
+            if (card.platform && card.platform.lastModified > card.dateLastActivity) {
+              card.lastActivity = card.platform.lastModified;
+            } else {
+              card.lastActivity = card.dateLastActivity;
+            }
+
+            var match;
+            var regexGithub = new RegExp('code[^\n]+source[^\n]+\n(https?://[^ $\n]+)', 'i');
+            var regexHome   = new RegExp('page[^\n]+accueil[^\n]+\n(https?://[^ $\n]+)', 'i');
+
+            if (match = regexGithub.exec(card.desc)) { card.githubUrl = match[1]; }
+            if (match = regexHome.exec(card.desc))   { card.homeUrl   = match[1]; }
+
+            return card;
+          });
+        });
+      });
+    });
   };
 
   return apiService;
@@ -146,17 +130,32 @@ angular.module('WebApp')
     );
   }
 }])
-.factory('platforms', ['ezAlert', '$q', 'TrelloService', function(ezAlert, $q, TrelloService) {
+.factory('cards', ['ezAlert', '$q', 'APIService', function(ezAlert, $q, APIService) {
   var service = {};
   var promise;
 
-  service.get = function () {
+  service.get = function (cardID) {
     var deferred = $q.defer();
+
     if (service.list) {
-      deferred.resolve(service.list);
+      resolve();
     } else {
-      service.reload().then(deferred.resolve).catch(deferred.reject);
+      service.reload()
+      .then(function (list) { resolve(); })
+      .catch(deferred.reject);
     }
+
+    function resolve() {
+      if (cardID) {
+        for (var i = service.list.length - 1; i >= 0; i--) {
+          if (service.list[i].id == cardID) { return deferred.resolve(service.list[i]); }
+        };
+        return deferred.resolve(null);
+      }
+
+      return deferred.resolve(service.list);
+    }
+
     return deferred.promise;
   };
 
@@ -169,13 +168,13 @@ angular.module('WebApp')
     service.loading = true;
     service.list    = null;
 
-    TrelloService.getPlatforms()
+    APIService.getExtendedCards()
     .finally(function () {
       promise = null;
       service.loading = false;
     })
-    .then(function (platforms) {
-      service.list = platforms;
+    .then(function (cards) {
+      service.list = cards;
       deferred.resolve(service.list);
     })
     .catch(function () {

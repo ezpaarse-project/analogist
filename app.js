@@ -84,6 +84,7 @@ app.use('/js', notFound);
 
 app.use('/', require('./routes/index'));
 app.use('/api/platforms', require('./routes/platforms'));
+app.use('/api/trello', require('./routes/trello'));
 app.use('/auth', require('./routes/auth'));
 
 // Catch-all for HTML5 mode

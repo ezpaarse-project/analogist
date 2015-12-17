@@ -45,8 +45,8 @@ angular.module('WebApp', ['ngMaterial', 'ngMessages', 'ngAnimate', 'ngRoute'])
     })
     .otherwise('/list');
 }])
-.run(['$rootScope', 'Session', 'AuthService', 'platforms', function ($rootScope, Session, AuthService, platforms) {
-  $rootScope.session   = Session;
-  $rootScope.auth      = AuthService;
-  $rootScope.platforms = platforms;
+.run(['$rootScope', 'Session', 'AuthService', 'cards', function ($rootScope, Session, AuthService, cards) {
+  $rootScope.session = Session;
+  $rootScope.auth    = AuthService;
+  $rootScope.cards   = cards;
 }]);

@@ -24,7 +24,7 @@
 
         <md-input-container flex>
           <label>Statut</label>
-          <md-select aria-label="Sélectionner la liste" name="list" md-on-open="vm.getLists()" ng-model="vm.platform.card.idList" required>
+          <md-select aria-label="Sélectionner la liste" name="list" md-on-open="vm.getLists()" ng-model="vm.platform.idList" required>
             <md-option ng-repeat="list in vm.lists" value="{{ ::list.id }}">{{ ::list.name }}</md-option>
           </md-select>
 

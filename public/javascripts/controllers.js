@@ -88,9 +88,9 @@ angular.module('WebApp')
   '$mdToast',
   '$routeParams',
   '$mdDialog',
-  'platforms',
+  'cards',
   'ezAlert',
-  function($scope, analysesFactory, $mdToast, $routeParams, $mdDialog, platforms, ezAlert) {
+  function($scope, analysesFactory, $mdToast, $routeParams, $mdDialog, cards, ezAlert) {
   var vm = this;
   var cardID = vm.cardID = $routeParams.id;
 
@@ -136,19 +136,15 @@ angular.module('WebApp')
   };
 
   function reload() {
-    platforms.reload();
+    cards.reload();
     getPlatform();
   }
 
   function getPlatform() {
     vm.loading = true;
 
-    platforms.get().then(function (list) {
-      for (var i = list.length - 1; i >= 0; i--) {
-        if (list[i].card.id == cardID) { vm.platform = list[i]; break; }
-      };
-
-      if (!vm.platform) {
+    cards.get(cardID).then(function (platform) {
+      if (!platform) {
         vm.loading = false;
 
         return ezAlert({
@@ -158,15 +154,16 @@ angular.module('WebApp')
         });
       }
 
-      $scope.setSubtitle(vm.platform.name);
+      $scope.setSubtitle(platform.name);
 
+      vm.platform = platform;
       vm.links = [
         { label: 'Page d\'accueil', icon: 'action:home', href: vm.platform.homeUrl },
         { label: 'Code source', icon: 'mdi:github', href: vm.platform.githubUrl },
-        { label: 'Carte Trello', icon: 'mdi:trello', href: vm.platform.card.url }
+        { label: 'Carte Trello', icon: 'mdi:trello', href: vm.platform.url }
       ];
 
-      analysesFactory.get(vm.platform.card.id)
+      analysesFactory.get(vm.platform.id)
       .then(function (analyses) {
         vm.loading  = false;
         vm.analyses = analyses;
@@ -296,7 +293,7 @@ angular.module('WebApp')
     });
   }
 }])
-.controller('ListCtrl', ['$rootScope', '$scope', '$mdDialog', 'platforms', function($rootScope, $scope, $mdDialog, platforms) {
+.controller('ListCtrl', ['$rootScope', '$scope', '$mdDialog', 'cards', function($rootScope, $scope, $mdDialog, cards) {
   var vm = this;
   vm.groupby = 'letter';
   vm.search  = {};
@@ -307,7 +304,7 @@ angular.module('WebApp')
   function getPlatforms() {
     vm.loading = true;
 
-    platforms.get().then(function () {
+    cards.get().then(function () {
       vm.buildList();
     }).finally(function () {
       vm.loading = false;
@@ -315,7 +312,7 @@ angular.module('WebApp')
   }
 
   function reload() {
-    platforms.reload();
+    cards.reload();
     getPlatforms();
   }
 
@@ -330,12 +327,12 @@ angular.module('WebApp')
   };
 
   vm.buildList = function () {
-    if (!platforms.list) { return vm.list = null; }
+    if (!cards.list) { return vm.list = null; }
 
     var groups  = {};
     vm.list = [];
 
-    platforms.list.forEach(function (el) {
+    cards.list.forEach(function (el) {
       var group = '#';
 
       switch (vm.groupby) {
@@ -362,12 +359,11 @@ angular.module('WebApp')
   '$mdDialog',
   '$mdToast',
   'ezAlert',
-  'TrelloService',
-  '$q',
   'APIService',
+  '$q',
   '$rootScope',
   'searchValue',
-  function($mdDialog, $mdToast, ezAlert, TrelloService, $q, APIService, $rootScope, searchValue) {
+  function($mdDialog, $mdToast, ezAlert, APIService, $q, $rootScope, searchValue) {
   var vm = this;
 
   getLists();
@@ -423,7 +419,7 @@ angular.module('WebApp')
     if (vm.lists) {
       deferred.resolve();
     } else {
-      TrelloService.getLists().then(function (lists) {
+      APIService.getLists().then(function (lists) {
         vm.lists = lists;
         deferred.resolve();
       });
@@ -436,11 +432,10 @@ angular.module('WebApp')
   '$mdDialog',
   '$mdToast',
   'ezAlert',
-  'TrelloService',
-  '$q',
   'APIService',
+  '$q',
   'platform',
-  function ($mdDialog, $mdToast, ezAlert, TrelloService, $q, APIService, platform) {
+  function ($mdDialog, $mdToast, ezAlert, APIService, $q, platform) {
   var vm = this;
 
   getLists();
@@ -455,8 +450,8 @@ angular.module('WebApp')
     if (!valid) { return; }
 
     var changes = {
-      idList: vm.platform.card.idList,
-      desc: vm.platform.card.desc
+      idList: vm.platform.idList,
+      desc: vm.platform.desc
     };
 
     /**
@@ -489,17 +484,17 @@ angular.module('WebApp')
 
     vm.loading = true;
 
-    APIService.updateCard(platform.card.id, changes)
+    APIService.updateCard(platform.id, changes)
     .then(function (res) {
-      platform.homeUrl     = vm.platform.homeUrl;
-      platform.githubUrl   = vm.platform.githubUrl;
-      platform.card.idList = changes.idList;
-      platform.card.desc   = changes.desc;
+      platform.homeUrl   = vm.platform.homeUrl;
+      platform.githubUrl = vm.platform.githubUrl;
+      platform.idList    = changes.idList;
+      platform.desc      = changes.desc;
 
       if (vm.lists) {
         for (var i = vm.lists.length - 1; i >= 0; i--) {
-          if (vm.lists[i].id == platform.card.idList) {
-            platform.status = vm.lists[i].name.replace(/\s*\([^\)]+\)/, '');
+          if (vm.lists[i].id == platform.idList) {
+            platform.listName = vm.lists[i].name.replace(/\s*\([^\)]+\)/, '');
             break;
           }
         };
@@ -513,7 +508,7 @@ angular.module('WebApp')
       });
     })
     .finally(function () { vm.loading = false; })
-    .catch(function (res) {
+    .catch(function () {
       ezAlert({
         title: 'Erreur',
         content: 'Une erreur est survenue pendant la modification de la plateforme',
@@ -528,7 +523,7 @@ angular.module('WebApp')
     if (vm.lists) {
       deferred.resolve();
     } else {
-      TrelloService.getLists().then(function (lists) {
+      APIService.getLists().then(function (lists) {
         vm.lists = lists;
         deferred.resolve();
       });
