@@ -50,7 +50,7 @@ angular.module('WebApp')
 
   return authService;
 }])
-.factory('APIService', ['$http', 'TRELLO', function ($http, TRELLO) {
+.factory('APIService', ['$http', function ($http) {
   var apiService = {};
 
   apiService.createCard = function (card) {
@@ -94,8 +94,6 @@ angular.module('WebApp')
           platforms.forEach(function (p) { platformsMap[p.cardID] = p; });
 
           return cards.map(function (card) {
-            // Remove the example card
-            if (card.id === TRELLO.exampleCardID) { return; }
 
             card.platform = platformsMap[card.id];
             card.listName = (listNames[card.idList] || '').replace(/\s*\([^\)]+\)/, '');

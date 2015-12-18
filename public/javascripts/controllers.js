@@ -22,12 +22,12 @@ angular.module('WebApp')
     $location.path(path || '/');
   };
 }])
-.controller('ToolbarCtrl', ['$scope', '$mdDialog', 'TRELLO', function ($scope, $mdDialog, TRELLO) {
+.controller('ToolbarCtrl', ['$scope', '$mdDialog', 'boardID', function ($scope, $mdDialog, boardID) {
   var vm = this;
 
   vm.links = [
     { href: 'http://analogist.couperin.org/', icon: 'action:home', label: 'AnalogIST' },
-    { href: 'http://trello.com/b/' + TRELLO.boardID, icon: 'mdi:trello', label: 'Tableau Trello' }
+    { href: 'http://trello.com/b/' + boardID, icon: 'mdi:trello', label: 'Tableau Trello' }
   ];
 
   vm.actions = [
@@ -49,10 +49,10 @@ angular.module('WebApp')
   '$http',
   '$mdToast',
   'ezAlert',
-  'TRELLO',
-  function ($mdDialog, $http, $mdToast, ezAlert, TRELLO) {
+  'boardID',
+  function ($mdDialog, $http, $mdToast, ezAlert, boardID) {
   var vm = this;
-  vm.boardID = TRELLO.boardID;
+  vm.boardID = boardID;
 
   vm.hide   = function() { $mdDialog.hide(); };
   vm.cancel = function() { $mdDialog.cancel(); };
