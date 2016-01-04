@@ -10,6 +10,11 @@
     "test": "mocha",
     "lint": "eslint ./*.js routes/ test/ lib/ bin/*"
   },
+  "config": {
+    "ghooks": {
+      "pre-commit": "npm run lint && npm test"
+    }
+  },
   "dependencies": {
     "body-parser": "^1.14.1",
     "connect-mongo": "^0.8.2",
@@ -30,6 +35,7 @@
   "devDependencies": {
     "chai": "^3.2.0",
     "eslint": "^1.5.1",
+    "ghooks": "^1.0.1",
     "mocha": "^2.2.5",
     "supertest": "^1.0.1"
   },
