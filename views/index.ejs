@@ -33,9 +33,14 @@
 
         <span flex></span>
 
-        <md-button class="md-icon-button" ng-repeat="link in ::vm.links" aria-label="{{ ::link.label }}" ng-href="{{ ::link.href }}" target="_blank">
+        <md-button class="md-icon-button" ng-repeat="link in ::vm.links" aria-label="{{ ::link.label }}" ng-href="{{ ::link.href }}" target="{{ ::link.target }}">
           <md-tooltip>{{ ::link.label }}</md-tooltip>
           <md-icon md-svg-icon="{{ ::link.icon }}"></md-icon>
+        </md-button>
+
+        <md-button class="md-icon-button" aria-label="A propos" ng-click="vm.showAboutDialog($event)">
+          <md-tooltip>A propos</md-tooltip>
+          <md-icon md-svg-icon="action:info"></md-icon>
         </md-button>
 
         <md-button class="md-icon-button" ng-hide="auth.isAuthenticated()" aria-label="Connexion" ng-click="auth.login()">
@@ -89,10 +94,19 @@
             </md-menu-item>
 
             <md-menu-item ng-repeat="link in ::vm.links">
-              <md-button aria-label="{{ ::link.label }}" ng-href="{{ ::link.href }}">
+              <md-button aria-label="{{ ::link.label }}" ng-href="{{ ::link.href }}" target="{{ ::link.target }}">
                 <div layout="row" layout-fill>
                   <p flex ng-bind="::link.label"></p>
                   <md-icon md-menu-align-target md-svg-icon="{{ ::link.icon }}"></md-icon>
+                </div>
+              </md-button>
+            </md-menu-item>
+
+            <md-menu-item>
+              <md-button aria-label="A propos" ng-click="vm.showAboutDialog($event)">
+                <div layout="row">
+                  <p flex>A propos</p>
+                  <md-icon md-menu-align-target md-svg-icon="action:info"></md-icon>
                 </div>
               </md-button>
             </md-menu-item>

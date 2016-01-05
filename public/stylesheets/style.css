@@ -4,6 +4,7 @@
 .white { background-color: #FFFFFF; }
 .link { cursor: pointer; }
 .unpadded { padding: 0; }
+.no-margin { margin: 0; }
 .ellipsis {
   overflow: hidden;
   text-overflow: ellipsis;

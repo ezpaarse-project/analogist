@@ -26,14 +26,32 @@ angular.module('WebApp')
   var vm = this;
 
   vm.links = [
-    { href: 'http://analogist.couperin.org/', icon: 'action:home', label: 'AnalogIST' },
-    { href: 'http://trello.com/b/' + boardID, icon: 'mdi:trello', label: 'Tableau Trello' }
+    {
+      href: 'http://analogist.couperin.org/',
+      target: '_blank',
+      icon: 'action:home',
+      label: 'AnalogIST'
+    },{
+      href: 'http://trello.com/b/' + boardID,
+      target: '_blank',
+      icon: 'mdi:trello',
+      label: 'Tableau Trello'
+    }
   ];
 
   vm.actions = [
     { trigger: $scope.auth.login, icon: 'mdi:login', label: 'Connexion' },
     { trigger: $scope.auth.logout, icon: 'mdi:logout', label: 'Déconnexion' }
   ];
+
+  vm.showAboutDialog = function (ev) {
+    $mdDialog.show({
+      parent: angular.element(document.body),
+      clickOutsideToClose: true,
+      templateUrl: '/partials/about',
+      targetEvent: ev
+    });
+  };
 
   vm.showMembershipDialog = function (ev) {
     $mdDialog.show({
