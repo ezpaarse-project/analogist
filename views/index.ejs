@@ -33,7 +33,7 @@
 
         <span flex></span>
 
-        <md-button class="md-icon-button" ng-repeat="link in ::vm.links" aria-label="{{ ::link.label }}" ng-href="{{ ::link.href }}">
+        <md-button class="md-icon-button" ng-repeat="link in ::vm.links" aria-label="{{ ::link.label }}" ng-href="{{ ::link.href }}" target="_blank">
           <md-tooltip>{{ ::link.label }}</md-tooltip>
           <md-icon md-svg-icon="{{ ::link.icon }}"></md-icon>
         </md-button>
