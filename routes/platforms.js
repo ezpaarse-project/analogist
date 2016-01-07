@@ -44,6 +44,7 @@ router.post('/', (req, res, next) => {
   }
   card.due = card.due || null;
   card.lastModified = new Date();
+  card.idMembers = [req.session.profile.id];
 
   trello.createCard(card, req.session.oauth.token).pipe(res);
 });
