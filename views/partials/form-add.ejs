@@ -34,7 +34,13 @@
 
         <md-input-container flex>
           <label>Lien page d'accueil</label>
-          <input name="homeUrl" ng-model="vm.platform.homeUrl">
+          <input name="homeUrl" ng-model="vm.platform.homeUrl" ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 1000, 'blur': 0 } }" ng-change="vm.checkDomain(vm.platform.homeUrl)">
+
+          <div ng-messages="vm.domainCheck">
+            <div ng-message="error">Impossible de vérifier la prise en charge du domaine</div>
+            <div ng-message="info">Cette plateforme est déjà prise en charge : <a ng-href="{{ ::vm.domainCheck.info.manifest.trello }}" target="_blank">{{ ::vm.domainCheck.info.platformName }}</a></div>
+            <div ng-message="proxy"><strong>{{ ::vm.domainCheck.proxy }}</strong> semble être un suffixe de proxy</div>
+          </div>
         </md-input-container>
 
         <md-input-container flex>

@@ -77,6 +77,15 @@ angular.module('WebApp')
     return $http.get('/api/platforms').then(function (res) { return res.data; });
   };
 
+  apiService.checkDomain = function (domain, callback) {
+    $http.get('http://ezpaarse-preprod.couperin.org/info/domains/' + domain)
+    .then(function (res) {
+      callback(null, res.data);
+    }).catch(function (res) {
+      callback(res.status == 404 ? null : res, null);
+    });
+  };
+
   /**
    * Get trello cards and extend them with their list name and platform data
    */

@@ -410,8 +410,9 @@ angular.module('WebApp')
 
   getLists();
 
-  vm.platform = { longName: searchValue };
-  vm.getLists = getLists;
+  vm.domainCheck = {};
+  vm.platform    = { longName: searchValue };
+  vm.getLists    = getLists;
 
   vm.hide   = function() { $mdDialog.hide(); };
   vm.cancel = function() { $mdDialog.cancel(); };
@@ -454,6 +455,26 @@ angular.module('WebApp')
       });
     });
   };
+
+  vm.checkDomain = function (url) {
+    vm.domainCheck.error = null;
+    vm.domainCheck.info  = null;
+    vm.domainCheck.proxy = null;
+
+    if (!url) { return; }
+    if (!/https?:\/\//.test(url)) { url = 'http://' + url; }
+
+    var link = document.createElement('a');
+    link.href = url;
+
+    APIService.checkDomain(link.hostname, function (err, data) {
+      if (err) { vm.domainCheck.error = err; }
+      vm.domainCheck.info = data;
+
+      var match = /\.(net|org|com|fr)(\..*)/i.exec(link.hostname);
+      vm.domainCheck.proxy = match && match[2];
+    });
+  }
 
   function getLists() {
     var deferred = $q.defer();
