@@ -55,6 +55,7 @@ md-toolbar > .md-toolbar-tools-bottom { padding-left: 5%; }
 .autocomplete .item-metadata {
   display: block;
   line-height: 1.5;
+  white-space: normal;
 }
 
 .splitted ez-analyzer:first-child { margin-right: 5px; }
