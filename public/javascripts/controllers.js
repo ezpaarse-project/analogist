@@ -236,14 +236,10 @@ angular.module('WebApp')
   'analysesFactory',
   function($scope, $mdToast, $mdDialog, $http, ezAlert, analysesFactory) {
 
-  $http.get('https://raw.githubusercontent.com/ezpaarse-project/ezpaarse-platforms/master/rtype.json').then(function (response) {
-    if (angular.isArray(response.data)) { $scope.resourceTypes = response.data; }
-  });
-  $http.get('https://raw.githubusercontent.com/ezpaarse-project/ezpaarse-platforms/master/mime.json').then(function (response) {
-    if (angular.isArray(response.data)) { $scope.mimeTypes = response.data; }
-  });
-  $http.get('https://raw.githubusercontent.com/ezpaarse-project/ezpaarse-platforms/master/rid.json').then(function (response) {
-    if (angular.isArray(response.data)) { $scope.resourceIDs = response.data; }
+  $http.get('https://raw.githubusercontent.com/ezpaarse-project/ezpaarse-platforms/master/fields.json').then(function (response) {
+    if (angular.isObject(response.data)) {
+      $scope.ezFields = response.data;
+    }
   });
 
   $scope.back = function () { $scope.analysis = null; };

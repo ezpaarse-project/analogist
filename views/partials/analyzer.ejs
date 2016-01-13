@@ -55,7 +55,7 @@
           md-menu-class="autocomplete"
           md-search-text="analysis.rtype"
           md-min-length="0"
-          md-items="item in resourceTypes | filter:analysis.rtype"
+          md-items="item in ezFields.rtype | filter:analysis.rtype"
           md-item-text="item.code"
           md-floating-label="Type">
 
@@ -75,7 +75,7 @@
           md-menu-class="autocomplete"
           md-search-text="analysis.mime"
           md-min-length="0"
-          md-items="item in mimeTypes | filter:analysis.mime"
+          md-items="item in ezFields.mime | filter:analysis.mime"
           md-item-text="item.code"
           md-floating-label="Format">
 
@@ -119,7 +119,7 @@
           md-menu-class="autocomplete"
           md-search-text="identifier.type"
           md-min-length="0"
-          md-items="item in resourceIDs | filter:identifier.type"
+          md-items="item in ezFields.rid | filter:identifier.type"
           md-item-text="item.code"
           md-floating-label="Type">
 
