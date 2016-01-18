@@ -111,7 +111,7 @@
       <textarea ng-readonly="!authorized" ng-model="analysis.comment"></textarea>
     </md-input-container>
 
-    <h2 class="md-headline">Identifiants</h2>
+    <h2 class="md-headline">Champs reconnus</h2>
     <div layout="row" layout-align="center center" class="fade-down white md-whiteframe-z1 inset md-margin" layout-wrap ng-repeat="identifier in analysis.identifiers">
 
       <md-autocomplete flex="50"
@@ -119,7 +119,7 @@
           md-menu-class="autocomplete"
           md-search-text="identifier.type"
           md-min-length="0"
-          md-items="item in ezFields.rid | filter:identifier.type"
+          md-items="item in ezFields.possibleFields | filter:identifier.type"
           md-item-text="item.code"
           md-floating-label="Type">
 

@@ -239,6 +239,7 @@ angular.module('WebApp')
   $http.get('https://raw.githubusercontent.com/ezpaarse-project/ezpaarse-platforms/master/fields.json').then(function (response) {
     if (angular.isObject(response.data)) {
       $scope.ezFields = response.data;
+      $scope.ezFields.possibleFields = ($scope.ezFields.rid || []).concat($scope.ezFields.other || []);
     }
   });
 
