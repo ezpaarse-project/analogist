@@ -2,8 +2,8 @@
 <div class="white md-whiteframe-z1">
   <md-progress-linear md-mode="{{ loading ? 'indeterminate' : '' }}"></md-progress-linear>
 
-  <md-list class="unpadded" ng-hide="analysis">
-    <md-list-item class="md-2-line" ng-repeat="a in analyses" ng-click="select(a)">
+  <md-list class="unpadded" ng-hide="analysis" dragula="'analyses-bag'" dragula-model="analyses">
+    <md-list-item class="md-2-line" ng-click="select(a)" ng-repeat="a in analyses">
       <div class="md-list-item-text">
         <h3 ng-class="{ 'grayed-out': !a.title }">{{ a.title || 'Analyse sans titre'}}</h3>
         <p>{{ a.rtype || '-' }} / {{ a.mime || '-' }}</p>
@@ -14,7 +14,7 @@
           <md-progress-circular md-mode="indeterminate"></md-progress-circular>
         </div>
       </div>
-       <md-divider ng-if="!$last"></md-divider>
+       <md-divider></md-divider>
     </md-list-item>
   </md-list>
 

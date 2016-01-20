@@ -1,4 +1,4 @@
-angular.module('WebApp', ['ngMaterial', 'ngMessages', 'ngAnimate', 'ngRoute'])
+angular.module('WebApp', ['ngMaterial', 'ngMessages', 'ngAnimate', 'ngRoute', angularDragula(angular)])
 .config(['$mdThemingProvider', function($mdThemingProvider) {
   $mdThemingProvider.definePalette('crimsonRed', $mdThemingProvider.extendPalette('red', {
     '500': 'ED143D'

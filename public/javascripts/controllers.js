@@ -105,11 +105,12 @@ angular.module('WebApp')
   'APIService',
   'analysesFactory',
   '$mdToast',
+  '$filter',
   '$routeParams',
   '$mdDialog',
   'cards',
   'ezAlert',
-  function($scope, APIService, analysesFactory, $mdToast, $routeParams, $mdDialog, cards, ezAlert) {
+  function($scope, APIService, analysesFactory, $mdToast, $filter, $routeParams, $mdDialog, cards, ezAlert) {
   var vm = this;
   var cardID = vm.cardID = $routeParams.id;
 
@@ -205,10 +206,16 @@ angular.module('WebApp')
         { label: 'Carte Trello', icon: 'mdi:trello', href: vm.card.url }
       ];
 
+      $scope.$watchCollection('vm.analyses', function () {
+        angular.forEach(vm.analyses, function (analysis, i) {
+          analysis.order = i + 1;
+        });
+      });
+
       analysesFactory.get(vm.card.id)
       .then(function (analyses) {
         vm.loading  = false;
-        vm.analyses = analyses;
+        vm.analyses = $filter('orderBy')(analyses, 'order');
       })
       .catch(function (response) {
         vm.loading  = false;
