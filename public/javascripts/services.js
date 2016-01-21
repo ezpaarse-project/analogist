@@ -106,7 +106,6 @@ angular.module('WebApp')
 
             card.platform = platformsMap[card.id];
             card.listName = (listNames[card.idList] || '').replace(/\s*\([^\)]+\)/, '');
-            card.contacts = card.members.map(function (m) { return m.fullName; }).join(', ');
 
             // Select the latest date between trello and analogist
             if (card.platform && card.platform.lastModified > card.dateLastActivity) {
