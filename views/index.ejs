@@ -14,20 +14,23 @@
   <body layout="column">
     <md-toolbar class="md-whiteframe-z1" ng-controller="ToolbarCtrl as vm">
       <div class="md-toolbar-tools" hide show-gt-sm>
-        <md-icon class="md-margin" md-svg-icon="action:account_circle"></md-icon>
-
         <md-progress-circular ng-if="auth.loadingSession" class="md-hue-3" md-mode="indeterminate" md-diameter="30px"></md-progress-circular>
 
-        <div ng-hide="auth.loadingSession">
-          <div ng-show="auth.isAuthenticated()">
-            <h2 ng-bind="session.user.fullName"></h2>
-            <div class="md-caption" ng-show="auth.isAuthorized()">Modification autorisée</div>
-            <div class="md-caption" ng-hide="auth.isAuthorized()">
-              <a href="javascript:void(0)" ng-click="vm.showMembershipDialog($event)">Cliquez ici si vous souhaitez participer</a>
+        <div ng-hide="auth.loadingSession" ng-switch="auth.isAuthenticated()">
+          <div ng-switch-when="true" layout="row" layout-align="start center">
+            <ez-avatar avatar-user="session.user"></ez-avatar>
+
+            <div layout="column" layout-align="center start">
+              <h2>{{ ::session.user.fullName }}</h2>
+              <div class="md-caption" ng-show="::auth.isAuthorized()">Modification autorisée</div>
+              <div class="md-caption" ng-hide="::auth.isAuthorized()">
+                <a href="javascript:void(0)" ng-click="vm.showMembershipDialog($event)">Cliquez ici si vous souhaitez participer</a>
+              </div>
             </div>
           </div>
 
-          <div ng-hide="auth.isAuthenticated()">
+          <div ng-switch-default layout="row" layout-align="start center">
+            <md-icon class="md-margin" md-svg-icon="action:account_circle"></md-icon>
             <h2 class="md-healine">Non connecté</h2>
           </div>
         </div>

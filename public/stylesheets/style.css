@@ -33,6 +33,32 @@ md-toolbar.site-toolbar:not(.md-menu-toolbar) button {
 .main-container { padding: 20px 5%; }
 md-toolbar > .md-toolbar-tools-bottom { padding-left: 5%; }
 
+ez-avatar {
+  width: 50px;
+  height: 50px;
+  line-height: 50px;
+  font-size: 20px;
+  font-weight: bold;
+  display: inline-block;
+  text-align: center;
+  background-color: #d6dadc;
+  color: #4d4d4d;
+  overflow: hidden;
+  border-radius: 3px;
+  margin-right: 10px;
+}
+ez-avatar.small {
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  font-size: 14px;
+  margin-right: 5px;
+}
+ez-avatar img {
+  width: 100%;
+  height: 100%;
+}
+
 .fade-down.ng-enter { animation: fadeInDown 0.5s; }
 .fade-down.ng-leave { animation: fadeOutUp 0.5s; }
 .fade.ng-enter { animation: fadeIn 0.5s; }
