@@ -13,7 +13,7 @@ angular.module('WebApp')
     replace: true,
     scope: { user: '=avatarUser' },
     template: '<div class="avatar">'
-            +'<span ng-hide="::user.avatarHash" title="{{ ::user.fullName }} (@{{ ::user.username }})" class="initials">{{ ::user.initials }}</span>'
+            + '<span ng-hide="::user.avatarHash" title="{{ ::user.fullName }} (@{{ ::user.username }})" class="initials">{{ ::user.initials }}</span>'
             + '<img ng-show="::user.avatarHash" title="{{ ::user.fullName }} (@{{ ::user.username }})" ng-src="https://trello-avatars.s3.amazonaws.com/{{ ::user.avatarHash }}/{{ ::(size == \'small\' ? 30 : 50) }}.png">'
             + '</div>'
   };

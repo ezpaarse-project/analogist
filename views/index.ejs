@@ -18,7 +18,7 @@
 
         <div ng-hide="auth.loadingSession" ng-switch="auth.isAuthenticated()">
           <div ng-switch-when="true" layout="row" layout-align="start center">
-            <ez-avatar avatar-user="session.user"></ez-avatar>
+            <ez-avatar class="md-whiteframe-z1" avatar-user="session.user"></ez-avatar>
 
             <div layout="column" layout-align="center start">
               <h2>{{ ::session.user.fullName }}</h2>
