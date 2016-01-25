@@ -223,9 +223,10 @@ angular.module('WebApp')
     if (!angular.isString(cardID)) { return; }
     if (!angular.isObject(analysis)) { analysis = {}; }
 
-    var baseUrl = '/api/platforms/' + cardID + '/analyses';
-    var saved   = angular.copy(analysis);
-    var loading = false;
+    var baseUrl  = '/api/platforms/' + cardID + '/analyses';
+    var saved    = angular.copy(analysis);
+    var loading  = false;
+    var dirtyUrl = false;
 
     var insert = function () {
       loading = true;
@@ -249,9 +250,9 @@ angular.module('WebApp')
       });
     };
 
-    analysis.isLoading = function () {
-      return loading;
-    };
+    analysis.isLoading   = function () { return loading; };
+    analysis.hasDirtyUrl = function () { return dirtyUrl; };
+    analysis.setDirtyUrl = function () { return dirtyUrl = true; };
 
     analysis.save = function () {
       if (!angular.equals(saved, analysis)) {
@@ -296,6 +297,8 @@ angular.module('WebApp')
           value: decodeURIComponent(parts[1] || '')
         });
       });
+
+      dirtyUrl = false;
     };
 
     return analysis;

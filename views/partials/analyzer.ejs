@@ -33,11 +33,11 @@
     <div layout="row" layout-sm="column">
       <md-input-container flex>
         <label>URL</label>
-        <input type="text" ng-readonly="!authorized" ng-model="analysis.url">
+        <input type="text" ng-readonly="!authorized" ng-model="analysis.url" ng-change="analysis.setDirtyUrl()">
       </md-input-container>
 
       <div layout="row" layout-align="center center">
-        <md-button ng-if="authorized" aria-label="Découper l'URL" ng-click="parseUrl(analysis)" ng-disabled="!analysis.url">
+        <md-button ng-if="authorized" ng-class="{ 'md-accent md-raised': analysis.hasDirtyUrl() }" aria-label="Découper l'URL" ng-click="parseUrl(analysis)" ng-disabled="!analysis.url">
           <md-tooltip md-direction="bottom" md-autohide>Découper l'url</md-tooltip>
           Découper
         </md-button>
