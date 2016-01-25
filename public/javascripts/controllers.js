@@ -110,7 +110,8 @@ angular.module('WebApp')
   '$mdDialog',
   'cards',
   'ezAlert',
-  function($scope, APIService, analysesFactory, $mdToast, $filter, $routeParams, $mdDialog, cards, ezAlert) {
+  'Session',
+  function($scope, APIService, analysesFactory, $mdToast, $filter, $routeParams, $mdDialog, cards, ezAlert, Session) {
   var vm = this;
   var cardID = vm.cardID = $routeParams.id;
 
@@ -122,10 +123,19 @@ angular.module('WebApp')
   };
 
   vm.save = function () {
-    if (!vm.analyses) { return; }
+    if (!vm.analyses || !Session.user) { return; }
+
+    var user = Session.user;
     vm.saving = true;
 
     analysesFactory.save(vm.analyses)
+    .then(function () {
+      if (!vm.card || !angular.isArray(vm.card.idMembers)) { return; }
+
+      if (vm.card.idMembers.indexOf(user.id) === -1) {
+        return APIService.addUserToCard(vm.card, user);
+      }
+    })
     .then(function success() {
       vm.saving = false;
 
@@ -134,7 +144,8 @@ angular.module('WebApp')
         hideDelay: 2000,
         position: 'bottom right'
       });
-    }, function fail() {
+    })
+    .catch(function fail() {
       vm.saving = false;
 
       ezAlert({

@@ -77,6 +77,16 @@ angular.module('WebApp')
     return $http.get('/api/platforms').then(function (res) { return res.data; });
   };
 
+  apiService.addUserToCard = function (card, user) {
+    return $http.post('/api/trello/cards/' + card.id + '/members', {
+      id: user.id
+    }).then(function (res) {
+      card.idMembers.push(user.id);
+      card.members.push(user);
+      return res.data;
+    });
+  };
+
   apiService.checkDomain = function (domain, callback) {
     $http.get('http://ezpaarse-preprod.couperin.org/info/domains/' + domain)
     .then(function (res) {
