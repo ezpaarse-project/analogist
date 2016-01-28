@@ -117,6 +117,9 @@ angular.module('WebApp')
 
   getCard();
 
+  vm.select = function (analysis) { vm.analysis = analysis; };
+  vm.back = function () { vm.analysis = null; };
+
   vm.newAnalysis = function () {
     if (!vm.analyses) { return; }
     vm.analyses.push(analysesFactory.wrapAnalysis(vm.cardID));
@@ -179,6 +182,44 @@ angular.module('WebApp')
     });
   };
 
+  vm.remove = function (analysis) {
+    if (!analysis || analysis.isLoading()) { return; }
+
+    $mdDialog.show($mdDialog.confirm({
+      content: "Êtes-vous sûr de vouloir supprimer cette URL ?",
+      ariaLabel: "Confirmer la suppression de l'URL",
+      ok: "Supprimer",
+      cancel: "Annuler"
+    })).then(function deleteAnalysis() {
+
+      analysis.remove()
+      .then(function success() {
+        // Remove from local analyses
+        for (var i = vm.analyses.length - 1; i >= 0; i--) {
+          if (vm.analyses[i] === analysis) {
+            vm.analyses.splice(i, 1);
+            break;
+          }
+        };
+
+        if (vm.analysis === analysis) { vm.analysis = null; }
+
+        $mdToast.show({
+          template: '<md-toast><span flex>Analyse supprimée</span></md-toast>',
+          hideDelay: 2000,
+          position: 'bottom right'
+        });
+      })
+      .catch(function fail() {
+        ezAlert({
+          title: "Erreur",
+          content: "Une erreur est survenue pendant la suppression",
+          ariaLabel: "Erreur suppression de l'analyse"
+        });
+      });
+    });
+  };
+
   vm.showUpdateForm = function(ev) {
     $mdDialog.show({
       controller: 'UpdatePlatformCtrl as vm',
@@ -188,11 +229,6 @@ angular.module('WebApp')
       locals: { platform: vm.card }
     });
   };
-
-  function reload() {
-    cards.reload();
-    getCard();
-  }
 
   function getCard() {
     vm.loading = true;
@@ -246,28 +282,25 @@ angular.module('WebApp')
   }
 }])
 .controller('AnalyzerCtrl', [
-  '$scope',
   '$mdToast',
   '$mdDialog',
   '$http',
   'ezAlert',
   'analysesFactory',
-  function($scope, $mdToast, $mdDialog, $http, ezAlert, analysesFactory) {
+  function($mdToast, $mdDialog, $http, ezAlert, analysesFactory) {
 
+  var vm = this;
   $http.get('https://raw.githubusercontent.com/ezpaarse-project/ezpaarse-platforms/master/fields.json').then(function (response) {
     if (angular.isObject(response.data)) {
-      $scope.ezFields = response.data;
-      $scope.ezFields.possibleFields = ($scope.ezFields.rid || []).concat($scope.ezFields.other || []);
+      vm.ezFields = response.data;
+      vm.ezFields.possibleFields = (vm.ezFields.rid || []).concat(vm.ezFields.other || []);
     }
   });
-
-  $scope.back = function () { $scope.analysis = null; };
-  $scope.select = function (analysis) { $scope.analysis = analysis; };
 
   /**
    * Add an element in an array
    */
-  $scope.addElement = function (analysis, field) {
+  vm.addElement = function (analysis, field) {
     if (!analysis) { return; }
     if (!angular.isArray(analysis[field])) { analysis[field] = []; }
 
@@ -277,14 +310,14 @@ angular.module('WebApp')
   /**
    * Remove an element from an array
    */
-  $scope.removeElement = function (analysis, field, i) {
+  vm.removeElement = function (analysis, field, i) {
     if (!analysis) { return; }
     if (!angular.isArray(analysis[field])) { return; }
 
     analysis[field].splice(i, 1);
   };
 
-  $scope.parseUrl = function (analysis) {
+  vm.parseUrl = function (analysis) {
     if (!analysis) { return; }
 
     var hasPathParams = angular.isArray(analysis.pathParams) && analysis.pathParams.length > 0;
@@ -304,51 +337,6 @@ angular.module('WebApp')
       analysis.parseUrl();
     });
   };
-
-  $scope.remove = function (analysis) {
-    if (!analysis || $scope.loading) { return; }
-
-    $mdDialog.show($mdDialog.confirm({
-      content: "Êtes-vous sûr de vouloir supprimer cette URL ?",
-      ariaLabel: "Confirmer la suppression de l'URL",
-      ok: "Supprimer",
-      cancel: "Annuler"
-    })).then(function () {
-      deleteAnalysis(analysis);
-    });
-  };
-
-  function deleteAnalysis(analysis) {
-    $scope.loading = true;
-
-    analysis.remove()
-    .then(function success() {
-      $scope.loading = false;
-
-      // Remove from local analyses
-      for (var i = $scope.analyses.length - 1; i >= 0; i--) {
-        if ($scope.analyses[i] === analysis) {
-          $scope.analyses.splice(i, 1);
-          break;
-        }
-      };
-
-      if ($scope.analysis === analysis) { $scope.analysis = null; }
-
-      $mdToast.show({
-        template: '<md-toast><span flex>Analyse supprimée</span></md-toast>',
-        hideDelay: 2000,
-        position: 'bottom right'
-      });
-    }, function fail() {
-      $scope.loading = false;
-      ezAlert({
-        title: "Erreur",
-        content: "Une erreur est survenue pendant la suppression",
-        ariaLabel: "Erreur suppression de l'analyse"
-      });
-    });
-  }
 }])
 .controller('ListCtrl', ['$rootScope', '$scope', '$mdDialog', 'cards', function($rootScope, $scope, $mdDialog, cards) {
   var vm = this;

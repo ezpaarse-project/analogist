@@ -1,61 +1,33 @@
-
-<div class="white md-whiteframe-z1">
+<div class="white md-padding md-whiteframe-z1">
   <md-progress-linear md-mode="{{ loading ? 'indeterminate' : '' }}"></md-progress-linear>
 
-  <md-list class="unpadded" ng-hide="analysis" dragula="'analyses-bag'" dragula-model="analyses">
-    <md-list-item class="md-2-line" ng-click="select(a)" ng-repeat="a in analyses">
-      <div class="md-list-item-text">
-        <h3 ng-class="{ 'grayed-out': !a.title }">{{ a.title || 'Analyse sans titre'}}</h3>
-        <p>{{ a.rtype || '-' }} / {{ a.mime || '-' }}</p>
+  <md-input-container>
+    <label>Titre</label>
+    <input type="text" ng-readonly="!authorized" ng-model="analysis.title">
+  </md-input-container>
 
-        <md-icon ng-if="authorized" ng-hide="a.isLoading()" md-svg-icon="action:delete" class="md-secondary" aria-label="Supprimer l'analyse" ng-click="remove(a)"></md-icon>
-
-        <div ng-show="a.isLoading()" class="md-secondary">
-          <md-progress-circular md-mode="indeterminate"></md-progress-circular>
-        </div>
-      </div>
-       <md-divider></md-divider>
-    </md-list-item>
-  </md-list>
-
-  <div class="md-padding" ng-if="analysis">
-    <div>
-      <md-button aria-label="Revenir à la liste" ng-click="back()">
-        <md-icon md-svg-icon="navigation:arrow_back"></md-icon> Revenir à la liste
-      </md-button>
-    </div>
-
-    <md-input-container>
-      <label>Titre</label>
-      <input type="text" ng-readonly="!authorized" ng-model="analysis.title">
+  <div layout="row" layout-sm="column">
+    <md-input-container flex>
+      <label>URL</label>
+      <input type="text" ng-readonly="!authorized" ng-model="analysis.url" ng-change="analysis.setDirtyUrl()">
     </md-input-container>
 
-    <div layout="row" layout-sm="column">
-      <md-input-container flex>
-        <label>URL</label>
-        <input type="text" ng-readonly="!authorized" ng-model="analysis.url" ng-change="analysis.setDirtyUrl()">
-      </md-input-container>
-
-      <div layout="row" layout-align="center center">
-        <md-button ng-if="authorized" ng-class="{ 'md-accent md-raised': analysis.hasDirtyUrl() }" aria-label="Découper l'URL" ng-click="parseUrl(analysis)" ng-disabled="!analysis.url">
-          <md-tooltip md-direction="bottom" md-autohide>Découper l'url</md-tooltip>
-          Découper
-        </md-button>
-
-        <md-button aria-label="Accéder à l'URL" ng-href="{{ analysis.url }}" ng-disabled="!analysis.url" target="_blank">
-          <md-tooltip md-direction="bottom" md-autohide>Accéder à l'URL</md-tooltip>
-          Visiter
-        </md-button>
-      </div>
+    <div layout="row" layout-align="center center">
+      <md-button ng-if="authorized" ng-class="{ 'md-accent md-raised': analysis.hasDirtyUrl() }" aria-label="Découper l'URL" ng-click="vm.parseUrl(analysis)" ng-disabled="!analysis.url">
+        <md-tooltip md-direction="bottom" md-autohide>Découper l'url</md-tooltip>
+        Découper
+      </md-button>
     </div>
+  </div>
 
-    <div layout="row" layout-wrap>
-      <md-autocomplete flex="50" flex-gt-md="33"
+  <div layout="column" layout-gt-md="row">
+    <div flex-gt-md="66" layout="row">
+      <md-autocomplete flex
           ng-if="authorized"
           md-menu-class="autocomplete"
           md-search-text="analysis.rtype"
           md-min-length="0"
-          md-items="item in ezFields.rtype | filter:analysis.rtype"
+          md-items="item in vm.ezFields.rtype | filter:analysis.rtype"
           md-item-text="item.code"
           md-floating-label="Type">
 
@@ -70,12 +42,12 @@
         </md-item-template>
       </md-autocomplete>
 
-      <md-autocomplete flex="50" flex-gt-md="33"
+      <md-autocomplete flex
           ng-if="authorized"
           md-menu-class="autocomplete"
           md-search-text="analysis.mime"
           md-min-length="0"
-          md-items="item in ezFields.mime | filter:analysis.mime"
+          md-items="item in vm.ezFields.mime | filter:analysis.mime"
           md-item-text="item.code"
           md-floating-label="Format">
 
@@ -90,121 +62,121 @@
         </md-item-template>
       </md-autocomplete>
 
-      <md-input-container ng-if="!authorized" flex="50" flex-gt-md="33">
+      <md-input-container ng-if="!authorized" flex>
         <label>Type</label>
         <input type="text" ng-readonly="true" ng-model="analysis.rtype">
       </md-input-container>
 
-      <md-input-container ng-if="!authorized" flex="50" flex-gt-md="33">
+      <md-input-container ng-if="!authorized" flex>
         <label>Format</label>
         <input type="text" ng-readonly="true" ng-model="analysis.mime">
       </md-input-container>
-
-      <md-input-container flex>
-        <label>UnitID</label>
-        <input type="text" ng-readonly="!authorized" ng-model="analysis.unitid">
-      </md-input-container>
     </div>
 
-    <md-input-container>
-      <label>Remarques</label>
-      <textarea ng-readonly="!authorized" ng-model="analysis.comment"></textarea>
+    <md-input-container flex-gt-md="33">
+      <label>UnitID</label>
+      <input type="text" ng-readonly="!authorized" ng-model="analysis.unitid">
+    </md-input-container>
+  </div>
+
+  <md-input-container>
+    <label>Remarques</label>
+    <textarea ng-readonly="!authorized" ng-model="analysis.comment"></textarea>
+  </md-input-container>
+
+  <h2 class="md-headline">Champs reconnus</h2>
+  <div layout="row" layout-align="center center" class="fade-down white md-whiteframe-z1 inset md-margin" layout-wrap ng-repeat="identifier in analysis.identifiers">
+
+    <md-autocomplete flex="50"
+        ng-if="authorized"
+        md-menu-class="autocomplete"
+        md-search-text="identifier.type"
+        md-min-length="0"
+        md-items="item in vm.ezFields.possibleFields | filter:identifier.type"
+        md-item-text="item.code"
+        md-floating-label="Type">
+
+      <md-item-template>
+        <span class="item-title">
+          <md-icon md-svg-icon="mdi:tag-outline"></md-icon>
+          <span md-highlight-text="identifier.type" md-highlight-flags="^i">{{ item.code }}</span>
+        </span>
+        <span md-highlight-text="identifier.type" md-highlight-flags="^i" class="item-metadata">
+          {{ item.description }}
+        </span>
+      </md-item-template>
+    </md-autocomplete>
+
+    <md-input-container ng-if="!authorized" flex="50" flex-gt-md="33">
+      <label>Type</label>
+      <input type="text" ng-readonly="true" ng-model="identifier.type">
     </md-input-container>
 
-    <h2 class="md-headline">Champs reconnus</h2>
-    <div layout="row" layout-align="center center" class="fade-down white md-whiteframe-z1 inset md-margin" layout-wrap ng-repeat="identifier in analysis.identifiers">
+    <md-input-container flex>
+      <label>Valeur</label>
+      <input type="text" ng-readonly="!authorized" ng-model="identifier.value">
+    </md-input-container>
 
-      <md-autocomplete flex="50"
-          ng-if="authorized"
-          md-menu-class="autocomplete"
-          md-search-text="identifier.type"
-          md-min-length="0"
-          md-items="item in ezFields.possibleFields | filter:identifier.type"
-          md-item-text="item.code"
-          md-floating-label="Type">
+    <md-button ng-if="authorized" class="md-icon-button md-raised" aria-label="Supprimer un identifiant" ng-click="vm.removeElement(analysis, 'identifiers', $index)">
+      <md-icon md-svg-icon="action:delete"></md-icon>
+    </md-button>
+  </div>
 
-        <md-item-template>
-          <span class="item-title">
-            <md-icon md-svg-icon="mdi:tag-outline"></md-icon>
-            <span md-highlight-text="identifier.type" md-highlight-flags="^i">{{ item.code }}</span>
-          </span>
-          <span md-highlight-text="identifier.type" md-highlight-flags="^i" class="item-metadata">
-            {{ item.description }}
-          </span>
-        </md-item-template>
-      </md-autocomplete>
+  <div layout="row" ng-if="authorized" layout-align="center center">
+    <md-button class="md-fab md-mini" aria-label="Ajouter un identifiant" ng-click="vm.addElement(analysis, 'identifiers')">
+      <md-icon md-svg-icon="content:add"></md-icon>
+    </md-button>
+  </div>
 
-      <md-input-container ng-if="!authorized" flex="50" flex-gt-md="33">
-        <label>Type</label>
-        <input type="text" ng-readonly="true" ng-model="identifier.type">
-      </md-input-container>
+  <h2 class="md-headline">Paramètres du path</h2>
+  <div layout="row" layout-align="center start" class="fade-down parameter white md-whiteframe-z1 inset md-margin" layout-wrap ng-repeat="path in analysis.pathParams">
+    <md-input-container flex="50" flex-md="35" flex-gt-md="25">
+      <label>Path</label>
+      <input type="text" ng-readonly="!authorized" ng-model="path.value">
+    </md-input-container>
 
-      <md-input-container flex>
-        <label>Valeur</label>
-        <input type="text" ng-readonly="!authorized" ng-model="identifier.value">
-      </md-input-container>
+    <md-input-container flex>
+      <label>Commentaire</label>
+      <textarea ng-readonly="!authorized" ng-model="path.comment"></textarea>
+    </md-input-container>
 
-      <md-button ng-if="authorized" class="md-icon-button md-raised" aria-label="Supprimer un identifiant" ng-click="removeElement(analysis, 'identifiers', $index)">
-        <md-icon md-svg-icon="action:delete"></md-icon>
-      </md-button>
-    </div>
+    <md-button ng-if="authorized" class="md-icon-button md-raised" aria-label="Supprimer un paramètre du path" ng-click="vm.removeElement(analysis, 'pathParams', $index)">
+      <md-icon md-svg-icon="action:delete"></md-icon>
+    </md-button>
+  </div>
 
-    <div layout="row" ng-if="authorized" layout-align="center center">
-      <md-button class="md-fab md-mini" aria-label="Ajouter un identifiant" ng-click="addElement(analysis, 'identifiers')">
-        <md-icon md-svg-icon="content:add"></md-icon>
-      </md-button>
-    </div>
-
-    <h2 class="md-headline">Paramètres du path</h2>
-    <div layout="row" layout-align="center start" class="fade-down parameter white md-whiteframe-z1 inset md-margin" layout-wrap ng-repeat="path in analysis.pathParams">
-      <md-input-container flex="50" flex-md="35" flex-gt-md="25">
-        <label>Path</label>
-        <input type="text" ng-readonly="!authorized" ng-model="path.value">
-      </md-input-container>
-
-      <md-input-container flex>
-        <label>Commentaire</label>
-        <textarea ng-readonly="!authorized" ng-model="path.comment"></textarea>
-      </md-input-container>
-
-      <md-button ng-if="authorized" class="md-icon-button md-raised" aria-label="Supprimer un paramètre du path" ng-click="removeElement(analysis, 'pathParams', $index)">
-        <md-icon md-svg-icon="action:delete"></md-icon>
-      </md-button>
-    </div>
-
-    <div layout="row" ng-if="authorized" layout-align="center center">
-      <md-button class="md-fab md-mini" aria-label="Ajouter un paramètre du path" ng-click="addElement(analysis, 'pathParams')">
-        <md-icon md-svg-icon="content:add"></md-icon>
-      </md-button>
-    </div>
+  <div layout="row" ng-if="authorized" layout-align="center center">
+    <md-button class="md-fab md-mini" aria-label="Ajouter un paramètre du path" ng-click="vm.addElement(analysis, 'pathParams')">
+      <md-icon md-svg-icon="content:add"></md-icon>
+    </md-button>
+  </div>
 
 
-    <h2 class="md-headline">Paramètres de la query</h2>
-    <div layout="row" layout-align="center start" class="fade-down parameter white md-whiteframe-z1 inset md-margin" layout-wrap ng-repeat="query in analysis.queryParams">
-      <md-input-container flex="25" flex-sm="50">
-        <label>Nom</label>
-        <input type="text" ng-readonly="!authorized" ng-model="query.name">
-      </md-input-container>
+  <h2 class="md-headline">Paramètres de la query</h2>
+  <div layout="row" layout-align="center start" class="fade-down parameter white md-whiteframe-z1 inset md-margin" layout-wrap ng-repeat="query in analysis.queryParams">
+    <md-input-container flex="25" flex-sm="50">
+      <label>Nom</label>
+      <input type="text" ng-readonly="!authorized" ng-model="query.name">
+    </md-input-container>
 
-      <md-input-container flex="25" flex-sm="50">
-        <label>Valeur</label>
-        <input type="text" ng-readonly="!authorized" ng-model="query.value">
-      </md-input-container>
+    <md-input-container flex="25" flex-sm="50">
+      <label>Valeur</label>
+      <input type="text" ng-readonly="!authorized" ng-model="query.value">
+    </md-input-container>
 
-      <md-input-container flex>
-        <label>Commentaire</label>
-        <textarea ng-readonly="!authorized" ng-model="query.comment"></textarea>
-      </md-input-container>
+    <md-input-container flex>
+      <label>Commentaire</label>
+      <textarea ng-readonly="!authorized" ng-model="query.comment"></textarea>
+    </md-input-container>
 
-      <md-button ng-if="authorized" class="md-icon-button md-raised" aria-label="Supprimer un paramètre de la query" ng-click="removeElement(analysis, 'queryParams', $index)">
-        <md-icon md-svg-icon="action:delete"></md-icon>
-      </md-button>
-    </div>
+    <md-button ng-if="authorized" class="md-icon-button md-raised" aria-label="Supprimer un paramètre de la query" ng-click="vm.removeElement(analysis, 'queryParams', $index)">
+      <md-icon md-svg-icon="action:delete"></md-icon>
+    </md-button>
+  </div>
 
-    <div layout="row" ng-if="authorized" layout-align="center center">
-      <md-button class="md-fab md-mini" aria-label="Ajouter un paramètre de la query" ng-click="addElement(analysis, 'queryParams')">
-        <md-icon md-svg-icon="content:add"></md-icon>
-      </md-button>
-    </div>
+  <div layout="row" ng-if="authorized" layout-align="center center">
+    <md-button class="md-fab md-mini" aria-label="Ajouter un paramètre de la query" ng-click="vm.addElement(analysis, 'queryParams')">
+      <md-icon md-svg-icon="content:add"></md-icon>
+    </md-button>
   </div>
 </div>

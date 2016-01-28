@@ -2,7 +2,7 @@
   <md-progress-circular md-mode="indeterminate"></md-progress-circular>
 </div>
 
-<div ng-if="!vm.loading">
+<div ng-hide="vm.loading || vm.analysis">
   <div layout="row">
     <h2 flex class="md-headline">{{ vm.card.name }}</h2>
 
@@ -79,14 +79,54 @@
 
   <md-progress-linear md-mode="{{ vm.saving ? 'indeterminate' : '' }}"></md-progress-linear>
 
-  <div layout="row" ng-show="vm.analyses.length" ng-class="{ splitted: vm.split }">
-    <ez-analyzer ez-analyses="vm.analyses" ez-authorized="auth.isAuthorized()" flex></ez-analyzer>
-    <ez-analyzer ez-analyses="vm.analyses" ez-authorized="auth.isAuthorized()" flex ng-if="vm.split"></ez-analyzer>
-  </div>
+  <md-list class="white md-whiteframe-z1 unpadded" dragula="'analyses-bag'" dragula-model="vm.analyses">
+    <md-list-item class="md-2-line" ng-click="vm.select(a)" ng-repeat="a in vm.analyses">
+      <div class="md-list-item-text">
+        <h3 ng-class="{ 'grayed-out': !a.title }">{{ a.title || 'Analyse sans titre'}}</h3>
+        <p>{{ a.rtype || '-' }} / {{ a.mime || '-' }}</p>
+
+        <md-icon ng-if="auth.isAuthorized()" ng-hide="a.isLoading()" md-svg-icon="action:delete" class="md-secondary" aria-label="Supprimer l'analyse" ng-click="vm.remove(a)"></md-icon>
+
+        <div ng-show="a.isLoading()" class="md-secondary">
+          <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+        </div>
+      </div>
+       <md-divider></md-divider>
+    </md-list-item>
+  </md-list>
 
   <div layout="row" layout-align="center center" ng-if="auth.isAuthorized()">
     <md-button aria-label="Nouvelle analyse" ng-click="vm.newAnalysis()">
       <md-icon md-svg-icon="content:add"></md-icon> Nouvelle URL
     </md-button>
+  </div>
+</div>
+
+<div ng-if="vm.analysis">
+  <div layout="row">
+    <md-button aria-label="Revenir à la liste" ng-click="vm.back()">
+      <md-icon md-svg-icon="navigation:arrow_back"></md-icon> Revenir à la liste
+    </md-button>
+    <span flex></span>
+
+    <md-input-container flex>
+      <label>Analyse</label>
+      <md-select aria-label="Sélectionner une analyse" ng-model="vm.analysis">
+        <md-option ng-repeat="a in vm.analyses" ng-value="a">{{::a.title}}</md-option>
+      </md-select>
+    </md-input-container>
+
+    <md-input-container flex>
+      <label>Comparer avec</label>
+      <md-select aria-label="Sélectionner une analyse à comparer" ng-model="vm.secondaryAnalysis">
+        <md-option ng-value="">Aucune</md-option>
+        <md-option ng-repeat="a in vm.analyses" ng-value="a">{{::a.title}}</md-option>
+      </md-select>
+    </md-input-container>
+  </div>
+
+  <div layout="column" layout-gt-sm="row">
+    <ez-analyzer ez-authorized="auth.isAuthorized()" ez-analysis="vm.analysis" flex></ez-analyzer>
+    <ez-analyzer ez-authorized="auth.isAuthorized()" ez-analysis="vm.secondaryAnalysis" flex ng-if="vm.secondaryAnalysis"></ez-analyzer>
   </div>
 </div>

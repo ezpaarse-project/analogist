@@ -3,8 +3,8 @@ angular.module('WebApp')
   return {
     restrict: 'E',
     templateUrl: '/partials/analyzer',
-    scope: { analyses: '=ezAnalyses', authorized: '=ezAuthorized' },
-    controller: 'AnalyzerCtrl'
+    scope: { analysis: '=ezAnalysis', authorized: '=ezAuthorized' },
+    controller: 'AnalyzerCtrl as vm'
   };
 })
 .directive('ezAvatar', function () {
