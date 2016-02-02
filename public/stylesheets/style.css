@@ -10,6 +10,10 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+.cubic-spacer {
+  width: 10px;
+  height: 10px;
+}
 body { letter-spacing: 0.03em; }
 p { line-height: 1.6em; }
 
@@ -99,3 +103,21 @@ md-toolbar .md-menu { padding: 0; }
 
 /* Fix icon alignment for icon-buttons with href */
 .md-icon-button[ng-href], .md-fab[ng-href] { display: inline-flex; }
+
+/* Fix autocomplete bottom space */
+md-autocomplete[md-floating-label] md-input-container {
+  padding-bottom: 2px;
+}
+
+/* Fix input-containers margin */
+md-input-container {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+/* Add scrollbar for textareas without autogrow */
+/* Workaround until the autogrow is fixed */
+md-input-container textarea[md-no-autogrow].md-input {
+  height: inherit;
+  overflow-y: auto;
+}

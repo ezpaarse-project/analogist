@@ -11,18 +11,18 @@
 
   <form name="pForm" ng-submit="vm.submit(pForm.$valid)" novalidate>
     <md-dialog-content>
-      <div class="md-dialog-content">
-        <md-input-container flex>
+      <div layout="column" class="md-dialog-content">
+        <md-input-container>
           <label>Lien page d'accueil</label>
           <input name="homeUrl" ng-model="vm.platform.homeUrl">
         </md-input-container>
 
-        <md-input-container flex>
+        <md-input-container>
           <label>Lien GitHub</label>
           <input name="githubUrl" ng-model="vm.platform.githubUrl">
         </md-input-container>
 
-        <md-input-container flex>
+        <md-input-container>
           <label>Statut</label>
           <md-select aria-label="Sélectionner la liste" name="list" md-on-open="vm.getLists()" ng-model="vm.platform.idList" required>
             <md-option ng-repeat="list in vm.lists" value="{{ ::list.id }}">{{ ::list.name }}</md-option>
