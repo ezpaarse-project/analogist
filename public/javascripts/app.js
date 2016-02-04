@@ -1,4 +1,4 @@
-angular.module('WebApp', ['ngMaterial', 'ngMessages', 'ngAnimate', 'ngRoute', angularDragula(angular)])
+angular.module('WebApp', ['ngMaterial', 'ngMessages', 'ngAnimate', 'ui.router', angularDragula(angular)])
 .config(['$mdThemingProvider', function($mdThemingProvider) {
   $mdThemingProvider.definePalette('crimsonRed', $mdThemingProvider.extendPalette('red', {
     '500': 'ED143D'
@@ -29,21 +29,24 @@ angular.module('WebApp', ['ngMaterial', 'ngMessages', 'ngAnimate', 'ngRoute', an
     // .iconSet('social',        '/img/icons/social-icons.svg', 24)
     // .iconSet('toggle',        '/img/icons/toggle-icons.svg', 24)
 }])
-.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
+.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', function($stateProvider, $urlRouterProvider, $locationProvider) {
   $locationProvider.html5Mode(true);
 
-  $routeProvider
-    .when('/list', {
+  $stateProvider
+    .state('list', {
+      url: '/',
       title: 'Plateformes',
       templateUrl: '/partials/list',
       controller: 'ListCtrl as vm'
     })
-    .when('/platforms/:id', {
+    .state('platform', {
+      url: '/platforms/:id',
       title: 'Plateformes',
       templateUrl: '/partials/platform',
       controller: 'PlatformCtrl as vm'
-    })
-    .otherwise('/list');
+    });
+
+    $urlRouterProvider.otherwise('/');
 }])
 .run(['$rootScope', 'Session', 'AuthService', 'cards', function ($rootScope, Session, AuthService, cards) {
   $rootScope.session = Session;

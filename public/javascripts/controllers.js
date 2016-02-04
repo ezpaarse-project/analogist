@@ -2,24 +2,18 @@ angular.module('WebApp')
 .controller('AppCtrl', [
   '$scope',
   '$mdSidenav',
-  '$location',
   '$rootScope',
-  '$route',
-  function($scope, $mdSidenav, $location, $rootScope, $route) {
+  function($scope, $mdSidenav, $rootScope) {
 
   $scope.auth.checkSession();
 
-  $rootScope.$on('$routeChangeSuccess', function() {
+  $rootScope.$on('$stateChangeSuccess', function(event, toState) {
     $scope.subtitle   = null;
-    $scope.onRootPage = ($location.path() === '/list');
+    $scope.onRootPage = (toState === 'list');
   });
 
   $scope.setSubtitle = function (str) {
     $scope.subtitle = str;
-  };
-
-  $scope.goto = function(path) {
-    $location.path(path || '/');
   };
 }])
 .controller('ToolbarCtrl', ['$scope', '$mdDialog', 'boardID', function ($scope, $mdDialog, boardID) {
@@ -106,14 +100,14 @@ angular.module('WebApp')
   'analysesFactory',
   '$mdToast',
   '$filter',
-  '$routeParams',
+  '$stateParams',
   '$mdDialog',
   'cards',
   'ezAlert',
   'Session',
-  function($scope, APIService, analysesFactory, $mdToast, $filter, $routeParams, $mdDialog, cards, ezAlert, Session) {
+  function($scope, APIService, analysesFactory, $mdToast, $filter, $stateParams, $mdDialog, cards, ezAlert, Session) {
   var vm = this;
-  var cardID = vm.cardID = $routeParams.id;
+  var cardID = vm.cardID = $stateParams.id;
 
   getCard();
 
