@@ -1,10 +1,10 @@
-<div layout="row" layout-wrap class="list-toolbar white md-whiteframe-z1">
-  <md-input-container flex flex-sm="100">
+<div layout="row" class="list-toolbar white md-whiteframe-z1">
+  <md-input-container flex>
     <label>Recherche</label>
     <input ng-model="vm.search.name">
   </md-input-container>
 
-  <md-input-container flex-sm>
+  <md-input-container>
     <label>Grouper par</label>
     <md-select ng-model="vm.groupby" ng-change="vm.buildList()">
       <md-option value="letter">première lettre</md-option>
@@ -12,9 +12,11 @@
     </md-select>
   </md-input-container>
 
-  <md-button aria-label="Actualiser la liste" ng-click="cards.reload()">
-    <md-icon md-svg-icon="navigation:refresh"></md-icon>
-  </md-button>
+  <div layout="row" layout-align="center center">
+    <md-button class="md-icon-button" aria-label="Actualiser la liste" ng-click="cards.reload()">
+      <md-icon md-svg-icon="navigation:refresh"></md-icon>
+    </md-button>
+  </div>
 </div>
 
 <div ng-if="cards.loading" class="md-padding" layout="row" layout-align="center center">

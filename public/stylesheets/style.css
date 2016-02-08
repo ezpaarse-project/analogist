@@ -64,7 +64,7 @@ md-toolbar > .md-toolbar-tools-bottom { padding-left: 5%; }
 
 .fixed.md-fab { position: fixed !important; }
 
-.list-toolbar { padding: 0 15px; }
+.list-toolbar { padding: 0 10px; }
 
 .autocomplete li {
   border-bottom: 1px solid #ccc;
@@ -103,12 +103,6 @@ md-autocomplete[md-floating-label] md-input-container {
   padding-bottom: 2px;
 }
 
-/* Fix input-containers margin */
-md-input-container {
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
-
 /* Add scrollbar for textareas without autogrow */
 /* Workaround until the autogrow is fixed */
 md-input-container textarea[md-no-autogrow].md-input {
@@ -125,4 +119,9 @@ md-list-item.md-2-line, md-list-item.md-2-line > a.md-no-style {
 }
 md-list-item.md-2-line > a.md-no-style > .md-list-item-inner {
   margin: 5px;
+}
+
+/* Fix overpadded inputs */
+md-input-container .md-errors-spacer {
+  min-height: 0;
 }
