@@ -1,4 +1,4 @@
-angular.module('WebApp', ['ngMaterial', 'ngMessages', 'ngAnimate', 'ui.router', angularDragula(angular)])
+angular.module('WebApp', ['ngMaterial', 'ngMessages', 'ngAnimate', 'ui.router', 'ncy-angular-breadcrumb', angularDragula(angular)])
 .config(['$mdThemingProvider', function($mdThemingProvider) {
   $mdThemingProvider.definePalette('crimsonRed', $mdThemingProvider.extendPalette('red', {
     '500': 'ED143D'
@@ -29,7 +29,12 @@ angular.module('WebApp', ['ngMaterial', 'ngMessages', 'ngAnimate', 'ui.router', 
     // .iconSet('social',        '/img/icons/social-icons.svg', 24)
     // .iconSet('toggle',        '/img/icons/toggle-icons.svg', 24)
 }])
-.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', function($stateProvider, $urlRouterProvider, $locationProvider) {
+.config(['$breadcrumbProvider', function ($breadcrumbProvider) {
+  $breadcrumbProvider.setOptions({
+    templateUrl: '/partials/breadcrumb'
+  });
+}])
+.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', function ($stateProvider, $urlRouterProvider, $locationProvider) {
   $locationProvider.html5Mode(true);
 
   $stateProvider
@@ -37,13 +42,38 @@ angular.module('WebApp', ['ngMaterial', 'ngMessages', 'ngAnimate', 'ui.router', 
       url: '/',
       title: 'Plateformes',
       templateUrl: '/partials/list',
-      controller: 'ListCtrl as vm'
+      controller: 'ListCtrl as vm',
+      ncyBreadcrumb: {
+        label: 'Plateformes'
+      }
     })
     .state('platform', {
+      abstract: true,
       url: '/platforms/:id',
       title: 'Plateformes',
       templateUrl: '/partials/platform',
       controller: 'PlatformCtrl as vm'
+    })
+    .state('platform.description', {
+      url: '/',
+      title: 'Plateforme',
+      templateUrl: '/partials/platform-description',
+      ncyBreadcrumb: {
+        label: '{{ vm.card.name }}',
+        parent: 'list'
+      }
+    })
+    .state('platform.analysis', {
+      url: '/:index',
+      title: 'Analyse',
+      templateUrl: '/partials/platform-analysis',
+      ncyBreadcrumb: {
+        label: '{{ vm.analysis.title }}',
+        parent: 'platform.description'
+      },
+      controller: ['$scope', '$stateParams', function ($scope, $stateParams) {
+        $scope.select($stateParams.index);
+      }]
     });
 
     $urlRouterProvider.otherwise('/');

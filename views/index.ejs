@@ -14,7 +14,7 @@
   <body layout="column">
     <md-toolbar class="md-whiteframe-z1" ng-controller="ToolbarCtrl as vm">
       <div class="md-toolbar-tools" hide show-gt-sm>
-        <md-progress-circular ng-if="auth.loadingSession" class="md-hue-3" md-mode="indeterminate" md-diameter="30px"></md-progress-circular>
+        <md-progress-circular ng-if="auth.loadingSession" class="md-hue-3" md-mode="indeterminate" md-diameter="60px"></md-progress-circular>
 
         <div ng-hide="auth.loadingSession" ng-switch="auth.isAuthenticated()">
           <div ng-switch-when="true" layout="row" layout-align="start center">
@@ -59,17 +59,16 @@
       </div>
 
       <div class="md-toolbar-tools">
-        <md-button ng-hide="onRootPage" href="/" class="md-icon-button">
-          <md-icon aria-label="Retour à la liste" md-svg-icon="navigation:arrow_back"></md-icon>
-        </md-button>
 
-        <a href="/">Plateformes</a>
+        <div ncy-breadcrumb></div>
+
+        <!-- <a href="/">Plateformes</a>
         <span><md-icon ng-show="subtitle" md-svg-icon="navigation:chevron_right"></md-icon></span>
-        <span title="{{ subtitle }}" class="ellipsis" ng-bind="subtitle"></span>
+        <span title="{{ subtitle }}" class="ellipsis" ng-bind="subtitle"></span> -->
 
         <span flex></span>
 
-        <md-menu hide show-sm md-position-mode="target-right target">
+        <md-menu hide-gt-sm md-position-mode="target-right target">
           <md-button aria-label="Ouvrir le menu" class="md-icon-button" ng-click="$mdOpenMenu($event)">
             <md-icon md-menu-origin md-svg-icon="navigation:more_vert"></md-icon>
           </md-button>
@@ -147,6 +146,7 @@
     <script src="/assets/components/angular-aria/angular-aria.min.js"></script>
     <script src="/assets/components/angular-material/angular-material.min.js"></script>
     <script src="/assets/components/angular-dragula/dist/angular-dragula.min.js"></script>
+    <script src="/assets/components/angular-breadcrumb/release/angular-breadcrumb.min.js"></script>
 
     <script src="/js/app.js"></script>
     <script src="/js/controllers.js"></script>

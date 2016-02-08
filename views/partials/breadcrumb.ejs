@@ -1,0 +1,13 @@
+<div class="breadcrumb">
+  <div layout="row" layout-align="start center" hide show-gt-sm>
+    <a href="{{ step.ncyBreadcrumbLink }}" ng-repeat-start="step in steps">{{ step.ncyBreadcrumbLabel }}</a>
+    <md-icon ng-repeat-end ng-hide="$last" md-svg-icon="navigation:chevron_right"></md-icon>
+  </div>
+
+  <div layout="row" layout-align="start center" hide-gt-sm>
+    <md-button ng-hide="steps.length <= 1" href="{{ steps[steps.length - 2].ncyBreadcrumbLink }}" class="md-icon-button">
+      <md-icon aria-label="Retour à la liste" md-svg-icon="navigation:arrow_back"></md-icon>
+    </md-button>
+    <a href="{{ steps[steps.length - 1].ncyBreadcrumbLink }}">{{ steps[steps.length - 1].ncyBreadcrumbLabel }}</a>
+  </div>
+</div>

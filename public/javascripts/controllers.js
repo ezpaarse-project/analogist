@@ -111,8 +111,9 @@ angular.module('WebApp')
 
   getCard();
 
-  vm.select = function (analysis) { vm.analysis = analysis; };
-  vm.back = function () { vm.analysis = null; };
+  $scope.select = function (index) {
+    vm.analysis = vm.analyses[index];
+  };
 
   vm.newAnalysis = function () {
     if (!vm.analyses) { return; }

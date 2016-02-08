@@ -17,13 +17,7 @@
 body { letter-spacing: 0.03em; }
 p { line-height: 1.6em; }
 
-md-sidenav.sidemenu {
-  min-width: 250px;
-  width: 250px;
-}
-md-sidenav.sidemenu .logo {
-  width: 100%;
-}
+.breadcrumb a { text-align: center; }
 
 md-toolbar.site-toolbar {
   background: #f6f6f6 !important;
@@ -120,4 +114,15 @@ md-input-container {
 md-input-container textarea[md-no-autogrow].md-input {
   height: inherit;
   overflow-y: auto;
+}
+
+/**
+ * Fix lists with href instead of buttons
+ */
+md-list-item.md-2-line, md-list-item.md-2-line > a.md-no-style {
+  min-height: 0;
+  margin: 0;
+}
+md-list-item.md-2-line > a.md-no-style > .md-list-item-inner {
+  margin: 5px;
 }

@@ -14,7 +14,7 @@
       <p>Pour participer aux analyses, vous devez être membre du <a ng-href="https://trello.com/b/{{ vm.boardID }}">tableau Trello</a>. En cliquant ci-dessous, les administrateurs seront avertis de votre demande et pourront ainsi vous y intégrer. Une notification vous sera envoyée par Trello une fois votre adhésion éffectuée.</p>
 
       <div layout="row" layout-align="center center">
-        <md-progress-circular ng-if="vm.submitting" class="md-hue-3" md-mode="indeterminate"></md-progress-circular>
+        <md-progress-circular ng-if="vm.submitting" class="md-hue-3" md-mode="indeterminate" md-diameter="50px"></md-progress-circular>
         <md-button ng-hide="vm.submitting" class="md-raised md-primary" ng-click="vm.requestMembership()">Je souhaite participer</md-button>
       </div>
     </div>
