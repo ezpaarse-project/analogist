@@ -6,15 +6,6 @@ angular.module('WebApp')
   function($scope, $mdSidenav, $rootScope) {
 
   $scope.auth.checkSession();
-
-  $rootScope.$on('$stateChangeSuccess', function(event, toState) {
-    $scope.subtitle   = null;
-    $scope.onRootPage = (toState === 'list');
-  });
-
-  $scope.setSubtitle = function (str) {
-    $scope.subtitle = str;
-  };
 }])
 .controller('ToolbarCtrl', ['$scope', '$mdDialog', 'boardID', function ($scope, $mdDialog, boardID) {
   var vm = this;
@@ -238,8 +229,6 @@ angular.module('WebApp')
           ariaLabel: "Erreur plateforme introuvable"
         });
       }
-
-      $scope.setSubtitle(card.name);
 
       vm.card = card;
       vm.links = [
