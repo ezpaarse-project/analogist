@@ -1,10 +1,10 @@
-<div layout="row" layout-wrap class="list-toolbar white md-whiteframe-z1">
-  <md-input-container flex flex-sm="100">
+<div layout="row" class="list-toolbar white md-whiteframe-z1">
+  <md-input-container flex>
     <label>Recherche</label>
     <input ng-model="vm.search.name">
   </md-input-container>
 
-  <md-input-container flex-sm>
+  <md-input-container>
     <label>Grouper par</label>
     <md-select ng-model="vm.groupby" ng-change="vm.buildList()">
       <md-option value="letter">première lettre</md-option>
@@ -12,21 +12,23 @@
     </md-select>
   </md-input-container>
 
-  <md-button aria-label="Actualiser la liste" ng-click="cards.reload()">
-    <md-icon md-svg-icon="navigation:refresh"></md-icon>
-  </md-button>
+  <div layout="row" layout-align="center center">
+    <md-button class="md-icon-button" aria-label="Actualiser la liste" ng-click="cards.reload()">
+      <md-icon md-svg-icon="navigation:refresh"></md-icon>
+    </md-button>
+  </div>
 </div>
 
 <div ng-if="cards.loading" class="md-padding" layout="row" layout-align="center center">
-  <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+  <md-progress-circular md-mode="indeterminate" md-diameter="80px"></md-progress-circular>
 </div>
 
 <div ng-hide="cards.loading" ng-repeat="group in filteredGroups = (vm.list | filter:{ list: vm.search }) | naturalSortBy:'name'">
   <h3 class="md-headline" ng-bind="::group.name"></h3>
 
   <div layout="row" layout-wrap>
-    <div class="fade-down" flex="25" flex-lg="33" flex-md="50" flex-sm="100" ng-repeat="p in group.list | filter:vm.search | orderBy:'name'">
-      <md-card class="link" ng-click="goto('/platforms/' + p.id)">
+    <div class="fade-down" flex="100" flex-md="50" flex-lg="33" flex-gt-lg="25" ng-repeat="p in group.list | filter:vm.search | orderBy:'name'">
+      <md-card class="link" ui-sref="platform.description({ id: p.id })">
         <md-card-content>
           <div class="md-title ellipsis">{{ ::p.name }}</div>
           <div class="md-body-1">Activité il y a {{ ::p.lastActivity | timeAgo }} - {{ ::p.platform.analyses.length || '0' }} URLs</div>

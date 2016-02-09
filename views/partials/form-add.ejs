@@ -11,7 +11,7 @@
 
   <form name="pForm" ng-submit="vm.submit(pForm.$valid)" novalidate>
     <md-dialog-content>
-      <div class="md-dialog-content">
+      <div layout="column" class="md-dialog-content">
         <div layout="row">
           <md-input-container flex="25" flex-sm="33">
             <label>Nom court</label>
@@ -32,18 +32,18 @@
           </md-input-container>
         </div>
 
-        <md-input-container flex>
+        <md-input-container>
           <label>Lien page d'accueil</label>
           <input name="homeUrl" ng-model="vm.platform.homeUrl" ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 1000, 'blur': 0 } }" ng-change="vm.checkDomain(vm.platform.homeUrl)">
 
-          <div ng-messages="vm.domainCheck">
+          <div ng-messages="vm.domainCheck" md-auto-hide="false">
             <div ng-message="error">Impossible de vérifier la prise en charge du domaine</div>
             <div ng-message="info">Cette plateforme est déjà prise en charge : <a ng-href="{{ ::vm.domainCheck.info.manifest.trello }}" target="_blank">{{ ::vm.domainCheck.info.platformName }}</a></div>
             <div ng-message="proxy"><strong>{{ ::vm.domainCheck.proxy }}</strong> semble être un suffixe de proxy</div>
           </div>
         </md-input-container>
 
-        <md-input-container flex>
+        <md-input-container>
           <label>Ajouter dans</label>
           <md-select aria-label="Sélectionner la liste" name="list" md-on-open="vm.getLists()" ng-model="vm.platform.list" required>
             <md-option ng-repeat="list in vm.lists" value="{{list.id}}">{{list.name}}</md-option>
@@ -62,7 +62,7 @@
       <md-button ng-hide="vm.loading" type="reset" ng-click="vm.cancel()">Annuler</md-button>
       <md-button ng-hide="vm.loading" type="submit" class="md-primary">Sauvegarder</md-button>
 
-      <md-progress-circular ng-show="vm.loading" md-mode="indeterminate"></md-progress-circular>
+      <md-progress-circular ng-show="vm.loading" md-mode="indeterminate" md-diameter="50px"></md-progress-circular>
     </div>
   </form>
 </md-dialog>

@@ -10,16 +10,14 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+.cubic-spacer {
+  width: 10px;
+  height: 10px;
+}
 body { letter-spacing: 0.03em; }
 p { line-height: 1.6em; }
 
-md-sidenav.sidemenu {
-  min-width: 250px;
-  width: 250px;
-}
-md-sidenav.sidemenu .logo {
-  width: 100%;
-}
+.breadcrumb a { text-align: center; }
 
 md-toolbar.site-toolbar {
   background: #f6f6f6 !important;
@@ -66,7 +64,7 @@ md-toolbar > .md-toolbar-tools-bottom { padding-left: 5%; }
 
 .fixed.md-fab { position: fixed !important; }
 
-.list-toolbar { padding: 0 15px; }
+.list-toolbar { padding: 0 10px; }
 
 .autocomplete li {
   border-bottom: 1px solid #ccc;
@@ -99,3 +97,31 @@ md-toolbar .md-menu { padding: 0; }
 
 /* Fix icon alignment for icon-buttons with href */
 .md-icon-button[ng-href], .md-fab[ng-href] { display: inline-flex; }
+
+/* Fix autocomplete bottom space */
+md-autocomplete[md-floating-label] md-input-container {
+  padding-bottom: 2px;
+}
+
+/* Add scrollbar for textareas without autogrow */
+/* Workaround until the autogrow is fixed */
+md-input-container textarea[md-no-autogrow].md-input {
+  height: inherit;
+  overflow-y: auto;
+}
+
+/**
+ * Fix lists with href instead of buttons
+ */
+md-list-item.md-2-line, md-list-item.md-2-line > a.md-no-style {
+  min-height: 0;
+  margin: 0;
+}
+md-list-item.md-2-line > a.md-no-style > .md-list-item-inner {
+  margin: 5px;
+}
+
+/* Fix overpadded inputs */
+md-input-container .md-errors-spacer {
+  min-height: 0;
+}

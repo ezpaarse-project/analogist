@@ -1,0 +1,15 @@
+<div layout="row">
+  <md-input-container flex>
+    <label>Comparer avec</label>
+    <md-select aria-label="Sélectionner une analyse à comparer" ng-model="vm.secondaryAnalysis">
+      <md-option ng-value="" class="grayed-out">Aucune</md-option>
+      <md-option ng-repeat="a in vm.analyses" ng-value="a">{{::a.title}}</md-option>
+    </md-select>
+  </md-input-container>
+</div>
+
+<div layout="column" layout-gt-sm="row">
+  <ez-analyzer ez-authorized="auth.isAuthorized()" ez-analysis="vm.analysis" flex-gt-sm></ez-analyzer>
+  <span class="cubic-spacer" ng-show="vm.secondaryAnalysis"></span>
+  <ez-analyzer ez-authorized="auth.isAuthorized()" ez-analysis="vm.secondaryAnalysis" flex-gt-sm ng-if="vm.secondaryAnalysis"></ez-analyzer>
+</div>

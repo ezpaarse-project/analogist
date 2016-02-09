@@ -1,4 +1,4 @@
-angular.module('WebApp', ['ngMaterial', 'ngMessages', 'ngAnimate', 'ngRoute', angularDragula(angular)])
+angular.module('WebApp', ['ngMaterial', 'ngMessages', 'ngAnimate', 'ui.router', 'ncy-angular-breadcrumb', angularDragula(angular)])
 .config(['$mdThemingProvider', function($mdThemingProvider) {
   $mdThemingProvider.definePalette('crimsonRed', $mdThemingProvider.extendPalette('red', {
     '500': 'ED143D'
@@ -29,21 +29,54 @@ angular.module('WebApp', ['ngMaterial', 'ngMessages', 'ngAnimate', 'ngRoute', an
     // .iconSet('social',        '/img/icons/social-icons.svg', 24)
     // .iconSet('toggle',        '/img/icons/toggle-icons.svg', 24)
 }])
-.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
+.config(['$breadcrumbProvider', function ($breadcrumbProvider) {
+  $breadcrumbProvider.setOptions({
+    templateUrl: '/partials/breadcrumb'
+  });
+}])
+.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', function ($stateProvider, $urlRouterProvider, $locationProvider) {
   $locationProvider.html5Mode(true);
 
-  $routeProvider
-    .when('/list', {
+  $stateProvider
+    .state('list', {
+      url: '/',
       title: 'Plateformes',
       templateUrl: '/partials/list',
-      controller: 'ListCtrl as vm'
+      controller: 'ListCtrl as vm',
+      ncyBreadcrumb: {
+        label: 'Plateformes'
+      }
     })
-    .when('/platforms/:id', {
+    .state('platform', {
+      abstract: true,
+      url: '/platforms/:id',
       title: 'Plateformes',
       templateUrl: '/partials/platform',
       controller: 'PlatformCtrl as vm'
     })
-    .otherwise('/list');
+    .state('platform.description', {
+      url: '/',
+      title: 'Plateforme',
+      templateUrl: '/partials/platform-description',
+      ncyBreadcrumb: {
+        label: '{{ vm.card.name }}',
+        parent: 'list'
+      }
+    })
+    .state('platform.analysis', {
+      url: '/:index',
+      title: 'Analyse',
+      templateUrl: '/partials/platform-analysis',
+      ncyBreadcrumb: {
+        label: '{{ vm.analysis.title }}',
+        parent: 'platform.description'
+      },
+      controller: ['$scope', '$stateParams', function ($scope, $stateParams) {
+        $scope.select($stateParams.index);
+      }]
+    });
+
+    $urlRouterProvider.otherwise('/');
 }])
 .run(['$rootScope', 'Session', 'AuthService', 'cards', function ($rootScope, Session, AuthService, cards) {
   $rootScope.session = Session;
