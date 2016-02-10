@@ -251,9 +251,10 @@ angular.module('WebApp')
       });
     };
 
-    analysis.isLoading   = function () { return loading; };
-    analysis.hasDirtyUrl = function () { return dirtyUrl; };
-    analysis.setDirtyUrl = function () { return dirtyUrl = true; };
+    analysis.isLoading         = function () { return loading; };
+    analysis.hasDirtyUrl       = function () { return dirtyUrl; };
+    analysis.setDirtyUrl       = function () { return dirtyUrl = true; };
+    analysis.hasUnsavedChanges = function () { return !angular.equals(saved, analysis); }
 
     analysis.save = function () {
       if (!angular.equals(saved, analysis)) {
@@ -311,6 +312,17 @@ angular.module('WebApp')
   factory.save = function (analyses) {
     return $q.all(analyses.map(function (analysis) { return analysis.save(); }));
   };
+
+  factory.hasUnsavedChanges = function () {
+    for (var id in cache) {
+      var unsaved = cache[id].some(function (a) {
+        return a.hasUnsavedChanges();
+      });
+      if (unsaved) { return true; }
+    }
+
+    return false;
+  }
 
   factory.get = function (cardID) {
     if (cache[cardID]) { return $q.resolve(cache[cardID]); }

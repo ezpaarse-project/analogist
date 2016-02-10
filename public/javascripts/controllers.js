@@ -1,6 +1,16 @@
 angular.module('WebApp')
-.controller('AppCtrl', ['$scope', function ($scope) {
+.controller('AppCtrl', ['$scope', '$window', 'analysesFactory', function ($scope, $window, analysesFactory) {
   $scope.auth.checkSession();
+
+  $window.onbeforeunload = function (e) {
+    if (analysesFactory.hasUnsavedChanges()) {
+      e = e || $window.event;
+      var message = 'Les analyses non enregistrées seront perdues.';
+
+      if (e) { e.returnValue = message; }
+      return message;
+    }
+  };
 }])
 .controller('ToolbarCtrl', ['$scope', '$mdDialog', 'boardID', function ($scope, $mdDialog, boardID) {
   var vm = this;
