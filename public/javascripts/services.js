@@ -215,6 +215,7 @@ angular.module('WebApp')
 }])
 .factory('analysesFactory', ['$http', 'ezAlert', '$q', function($http, ezAlert, $q) {
   var factory = {};
+  var cache = {};
 
   /**
    * Add some methods to a raw analysis object
@@ -312,14 +313,18 @@ angular.module('WebApp')
   };
 
   factory.get = function (cardID) {
+    if (cache[cardID]) { return $q.resolve(cache[cardID]); }
+
     return $http.get('/api/platforms/' + cardID + '/analyses').then(function (response) {
       if (!angular.isArray(response.data)) {
         return $q.reject('could not get analyses');
       }
 
-      return response.data.map(function (analysis) {
+      cache[cardID] = response.data.map(function (analysis) {
         return factory.wrapAnalysis(cardID, analysis);
       });
+
+      return cache[cardID];
     });
   };
 
