@@ -13,6 +13,15 @@
     <md-dialog-content>
       <div layout="column" class="md-dialog-content">
         <md-input-container>
+          <label>Nom de la plateforme</label>
+          <input name="platformName" ng-model="vm.platform.name" required>
+
+          <div ng-messages="pForm.platformName.$error">
+            <div ng-message="required">Obligatoire</div>
+          </div>
+        </md-input-container>
+
+        <md-input-container>
           <label>Lien page d'accueil</label>
           <input name="homeUrl" ng-model="vm.platform.homeUrl">
         </md-input-container>

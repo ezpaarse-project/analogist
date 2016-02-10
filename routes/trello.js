@@ -17,6 +17,7 @@ router.patch('/cards/:cid', (req, res, next) => {
   if (typeof req.body !== 'object') { return res.status(400).end(); }
 
   trello.updateCard(req.params.cid, {
+    name: req.body.name,
     desc: req.body.desc,
     idList: req.body.idList
   }, req.session.oauth.token).pipe(res);

@@ -501,7 +501,8 @@ angular.module('WebApp')
 
     var changes = {
       idList: vm.platform.idList,
-      desc: vm.platform.desc
+      desc: vm.platform.desc,
+      name: vm.platform.name
     };
 
     /**
@@ -536,6 +537,7 @@ angular.module('WebApp')
 
     APIService.updateCard(platform.id, changes)
     .then(function (res) {
+      platform.name      = vm.platform.name;
       platform.homeUrl   = vm.platform.homeUrl;
       platform.githubUrl = vm.platform.githubUrl;
       platform.idList    = changes.idList;
