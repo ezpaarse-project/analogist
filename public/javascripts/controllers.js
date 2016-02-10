@@ -1,10 +1,5 @@
 angular.module('WebApp')
-.controller('AppCtrl', [
-  '$scope',
-  '$mdSidenav',
-  '$rootScope',
-  function($scope, $mdSidenav, $rootScope) {
-
+.controller('AppCtrl', ['$scope', function ($scope) {
   $scope.auth.checkSession();
 }])
 .controller('ToolbarCtrl', ['$scope', '$mdDialog', 'boardID', function ($scope, $mdDialog, boardID) {
@@ -266,12 +261,9 @@ angular.module('WebApp')
   }
 }])
 .controller('AnalyzerCtrl', [
-  '$mdToast',
   '$mdDialog',
   '$http',
-  'ezAlert',
-  'analysesFactory',
-  function($mdToast, $mdDialog, $http, ezAlert, analysesFactory) {
+  function($mdDialog, $http) {
 
   var vm = this;
   $http.get('https://raw.githubusercontent.com/ezpaarse-project/ezpaarse-platforms/master/fields.json').then(function (response) {
@@ -322,7 +314,7 @@ angular.module('WebApp')
     });
   };
 }])
-.controller('ListCtrl', ['$rootScope', '$scope', '$mdDialog', 'cards', function($rootScope, $scope, $mdDialog, cards) {
+.controller('ListCtrl', ['$rootScope', '$mdDialog', 'cards', function($rootScope, $mdDialog, cards) {
   var vm = this;
   vm.groupby = 'letter';
   vm.search  = {};
