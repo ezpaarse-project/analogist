@@ -19,7 +19,7 @@ WORKDIR $ANALOGIST_DIR
 RUN git clone https://github.com/ezpaarse-project/analogist.git . \
   && npm install --production \
   && npm install bower \
-  && ./node_modules/.bin/bower install --config.interactive=false \
+  && ./node_modules/.bin/bower install -F --config.interactive=false \
   && npm uninstall bower \
   && npm cache clean
 
