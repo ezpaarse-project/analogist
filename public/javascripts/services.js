@@ -332,7 +332,8 @@ angular.module('WebApp')
         return $q.reject('could not get analyses');
       }
 
-      cache[cardID] = response.data.map(function (analysis) {
+      cache[cardID] = response.data.map(function (analysis, i) {
+        if (!analysis.order) { analysis.order = i + 1; }
         return factory.wrapAnalysis(cardID, analysis);
       });
 
