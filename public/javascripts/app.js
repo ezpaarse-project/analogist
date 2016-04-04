@@ -55,7 +55,7 @@ angular.module('WebApp', ['ngMaterial', 'ngMessages', 'ngAnimate', 'ui.router', 
       controller: 'PlatformCtrl as vm'
     })
     .state('platform.description', {
-      url: '/',
+      url: '',
       title: 'Plateforme',
       templateUrl: '/partials/platform-description',
       ncyBreadcrumb: {
