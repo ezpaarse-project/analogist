@@ -34,8 +34,14 @@ angular.module('WebApp', ['ngMaterial', 'ngMessages', 'ngAnimate', 'ui.router', 
     templateUrl: '/partials/breadcrumb'
   });
 }])
-.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', function ($stateProvider, $urlRouterProvider, $locationProvider) {
+.config([
+  '$stateProvider',
+  '$urlRouterProvider',
+  '$locationProvider',
+  '$urlMatcherFactoryProvider',
+  function ($stateProvider, $urlRouterProvider, $locationProvider, $urlMatcherFactoryProvider) {
   $locationProvider.html5Mode(true);
+  $urlMatcherFactoryProvider.strictMode(false);
 
   $stateProvider
     .state('list', {
