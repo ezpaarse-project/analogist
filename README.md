@@ -1,5 +1,7 @@
 # analogist
+
 AnalogIST is the platform that gathers all analyses made for ezPAARSE.
+http://ang.couperin.org/
 
 ## Install
 We assume that node.js v4+ is installed and that a mongo v2.6+ is up and running.
