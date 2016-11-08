@@ -14,7 +14,7 @@
         </md-button>
         <md-menu-content width="4">
           <md-menu-item ng-repeat="item in vm.links">
-            <md-button ng-disabled="::!item.href" aria-label="{{ ::item.label }}" ng-href="{{ ::item.href }}">
+            <md-button ng-disabled="::!item.href" aria-label="{{ ::item.label }}" ng-href="{{ ::item.href }}" target="{{ ::item.target }}" >
               <div layout="row" layout-fill>
                 <p flex>{{ ::item.label }}</p>
                 <md-icon md-menu-align-target md-svg-icon="{{ ::item.icon }}"></md-icon>
