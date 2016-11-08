@@ -13,6 +13,7 @@ npm install bower -g
 bower install
 ```
 
+## Trello Board and API Key
 Before running anything, create `config/config.json` and provide the trello board to use and your API credentials (see `default.json` for the syntax). This step may become unecessary in the future.
 
 ## Run
