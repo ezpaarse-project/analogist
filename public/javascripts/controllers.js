@@ -237,9 +237,9 @@ angular.module('WebApp')
 
       vm.card = card;
       vm.links = [
-        { label: 'Page d\'accueil', icon: 'action:home', href: vm.card.homeUrl },
-        { label: 'Code source', icon: 'mdi:github', href: vm.card.githubUrl },
-        { label: 'Carte Trello', icon: 'mdi:trello', href: vm.card.url }
+        { label: 'Page d\'accueil', icon: 'action:home', href: vm.card.homeUrl, target: '_blank' },
+        { label: 'Code source', icon: 'mdi:github', href: vm.card.githubUrl, target: '_blank' },
+	{ label: 'Carte Trello', icon: 'mdi:trello', href: vm.card.url, target: '_blank' }
       ];
 
       $scope.$watchCollection('vm.analyses', function () {
