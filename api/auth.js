@@ -1,0 +1,114 @@
+'use strict'
+
+const config     = require('config')
+const router     = require('express').Router()
+const mw         = require('../lib/middlewares')
+const trello     = require('../lib/trello')
+const mailer     = require('../lib/mailer')
+
+const Grant      = require('grant-express')
+const session    = require('express-session')
+const MongoStore = require('connect-mongo')(session)
+const mongo      = require('../lib/mongo')
+
+const oneMonth = 3600000 * 24 * 30
+
+router.use(session({
+  name: 'grant',
+  resave: false,
+  saveUninitialized: false,
+  secret: 'xJ87L71I3025O7812P4g36n39my6VnAH',
+  cookie: { maxAge: oneMonth },
+  unset: 'destroy',
+  store: new MongoStore({ db: mongo.db })
+}))
+
+router.use(new Grant({
+  server: {
+    protocol: 'http',
+    host: `localhost:${config.port}`,
+    callback: '/api/auth/callback',
+    transport: 'session',
+    path: '/api/auth'
+  },
+  trello: {
+    key: config.trello.key,
+    secret: config.trello.secret,
+    expiration: 'never',
+    scope: ['read', 'write'],
+    'custom_params': {
+      name: 'AnalogIST'
+    }
+  }
+}))
+
+/**
+ * Callback for the Oauth authentication
+ * The request is then redirected to the path after /callback/
+ */
+router.use('/callback', (req, res, next) => {
+  if (req.query.error) {
+    delete req.session
+    return res.redirect(req.path)
+  }
+
+  const response = req.session.grant && req.session.grant.response
+
+  if (!response) {
+    return res.redirect(req.path)
+  }
+
+  req.session.oauth = {
+    token: req.session.grant.response.access_token,
+    secret: req.session.grant.response.access_secret
+  }
+
+  delete req.session.grant
+  res.redirect(req.path)
+})
+
+/* Get the Trello profile of the user currently connected */
+router.get('/loggedin', mw.updateUserProfile, (req, res) => {
+  if (!req.session.profile) { return res.status(500).end() }
+
+  res.status(200).json(req.session.profile)
+})
+
+router.get('/logout', (req, res) => {
+  req.session = null
+  res.status(204).end()
+})
+
+router.post('/membership', mw.updateUserProfile, (req, res, next) => {
+  if (!req.session.profile) { return res.status(500).end() }
+
+  trello.getBoard((err, board) => {
+    if (err) { return res.status(500).end() }
+
+    const sender  = config.notifications.sender
+    let receivers = config.notifications.receivers
+
+    if (typeof receivers === 'string') { receivers = receivers.split(',') }
+
+    if (!sender || !receivers || receivers.length === 0) {
+      return res.status(501).end()
+    }
+
+    const profile = req.session.profile
+    let html = `<a href="https://trello.com/${profile.username}">${profile.fullName}</a>`
+    html += ' souhaite devenir membre du board '
+    html += `<a href="https://trello.com/b/${board.id}">${board.name}</a>`
+
+    mailer()
+    .from(config.notifications.sender)
+    .to(config.notifications.receivers)
+    .subject(`Demande AnalogIST (${profile.fullName})`)
+    .html(html)
+    .send(err => {
+      if (err) { return next(err) }
+      res.status(200).end()
+    })
+  })
+})
+
+module.exports = router

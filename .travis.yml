@@ -1,0 +1,16 @@
+sudo: required
+language: node_js
+node_js:
+  - "4.1"
+services:
+  - docker
+before_install:
+  - sudo service docker restart
+  - sleep 10
+  - docker pull mongo
+  - docker run -d -p 127.0.0.1:27017:27017 mongo
+before_script:
+  - "until nc -z localhost 27017; do echo Waiting for MongoDB; sleep 1; done"
+notifications:
+  slack:
+    secure: OaLsdSzGjLC9ToeiSZ5pqPW3xuZ/aAysI7+G3HaLcLbrfYm89xEM0NrfmqLQHimJVQ9p52ww1wKLNp0U31m5MPeotTJVZg9bzXL295VIKhFGy6gZfuMLkg+/krbvuzSL7BELiHhzaD0upKMPpF21T0VBG/uVxl+UlrqF8e03bzeHn/S9asA87ageCcGxBkZrn/q6PQbsxVKMMYcTECNhK9WxwomiZPwFLpletpTktnG6yHlQQOyeIvDNDaG5AZdvwg2XQpO2EawNYudR0B8sJXeFLvGCcDiNX+x/eWeQjCpYoeuUFrsW+7+8GnRfxQdA4HeUxHh5gUkmn1yXB02D1lP7x5rCyEbnPYN85fOCP0dSGL8vIYmVUuFv4rL5GoBv74zJvtoLOnEcg+m2KpMZMbQpPmOb038zXQ1DL+CjcxBtLNaOgQbV5GL3MG1/EykSclBlg+eHdINUWj9a4WvtoDcSb6GzYcTf9/WnlVAOWEKZcLdNpy79t6dmMQ2zWsGUuuZtBUqZyzLOWAK3f8+5v9uBjJNP1mldueFfeR+N7wI4+Z//tEZtbnIM6OO21yu7XqkQOLSLui9FKrJ2BbzjizwW4A9PjybKt+hUSWl9F7QRO3CrowI/oQsTQojoiNpdHzbcywSSP1ruKfvRifSYmE0jG88rDcDzVeMYrHOlzUw=
