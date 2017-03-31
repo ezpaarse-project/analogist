@@ -21,19 +21,21 @@
           <v-card-row class="ma-2">
             <div>
               <div>Statut</div>
-              <strong>{{ list.name }}</strong>
+              <strong v-if="list">{{ list.name }}</strong>
+              <strong v-else>Unknown</strong>
             </div>
           </v-card-row>
         </v-card-text>
 
         <v-divider/>
+
         <v-subheader>Contributeurs</v-subheader>
         <v-list>
           <v-list-item v-for="member in card.members" v-bind:key="member.id">
             <v-list-tile avatar :href="'https://trello.com/' + member.username">
               <v-list-tile-avatar>
                 <img v-if="member.avatarHash" :src="'https://trello-avatars.s3.amazonaws.com/' + member.avatarHash + '/50.png'" alt="avatar">
-                <span v-else>{{ member.initials }}</span>
+                <span v-else class="icon blue-grey lighten-4">{{ member.initials }}</span>
               </v-list-tile-avatar>
               <v-list-tile-content>
                 <v-list-tile-title v-text="member.fullName" />

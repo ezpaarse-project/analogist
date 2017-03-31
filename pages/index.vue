@@ -53,7 +53,7 @@
             </td>
             <td v-text="card.dateLastActivity" />
 
-            <td v-if="card.platform">{{ card.platform.analyses.length }}</td>
+            <td v-if="card.platform && card.platform.analyses">{{ card.platform.analyses.length }}</td>
             <td v-else>0</td>
           </tr>
         </tbody>
