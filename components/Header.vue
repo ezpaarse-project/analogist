@@ -1,7 +1,7 @@
 <template>
   <v-toolbar class="red accent-3">
     <v-toolbar-title>AnalogIST</v-toolbar-title>
-    <v-toolbar-items class="hidden-md-and-down">
+    <v-toolbar-items>
       <v-toolbar-item router href="/" ripple>Plateformes</v-toolbar-item>
       <v-toolbar-item :href="trelloLink" ripple>Tableau Trello</v-toolbar-item>
     </v-toolbar-items>

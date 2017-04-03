@@ -1,6 +1,5 @@
 <template>
   <section>
-
     <v-container>
       <v-btn class="blue-grey mx-0" router href="/">Retour</v-btn>
 
@@ -11,20 +10,28 @@
           </v-card-title>
         </v-card-row>
 
+        <v-card-row actions>
+          <v-btn tag="a" flat class="blue-grey--text" router :href="{ name: 'platform-cid-analyses', params: { cid: card.id } }">Analyses ({{ analyses.length }})</v-btn>
+          <v-spacer/>
+          <v-btn tag="a" flat class="blue-grey--text" target="_blank" v-if="card.githubUrl" :href="card.githubUrl">Github</v-btn>
+          <v-btn tag="a" flat class="blue-grey--text" target="_blank" v-if="card.homeUrl" :href="card.homeUrl">Page d'accueil</v-btn>
+          <v-btn tag="a" flat class="blue-grey--text" target="_blank" v-if="card.url" :href="card.url">Carte Trello</v-btn>
+        </v-card-row>
+
         <v-card-text>
-          <v-card-row class="ma-2">
-            <div>
-              <div>Dernière activité</div>
-              <strong>{{ card.dateLastActivity }}</strong>
-            </div>
-          </v-card-row>
-          <v-card-row class="ma-2">
-            <div>
-              <div>Statut</div>
-              <strong v-if="list">{{ list.name }}</strong>
-              <strong v-else>Unknown</strong>
-            </div>
-          </v-card-row>
+          <v-container fluid>
+            <v-row>
+              <v-col xs12 sm6>
+                <div>Dernière activité</div>
+                <strong>{{ lastActivity }}</strong>
+              </v-col>
+              <v-col xs12 sm6>
+                <div>Statut</div>
+                <strong v-if="list">{{ list.name }}</strong>
+                <strong v-else>Unknown</strong>
+              </v-col>
+            </v-row>
+          </v-container>
         </v-card-text>
 
         <v-divider/>
@@ -44,26 +51,22 @@
           </v-list-item>
         </v-list>
 
-        <v-card-row actions>
-          <v-btn tag="a" flat class="blue-grey--text" target="_blank" v-if="card.githubUrl" :href="card.githubUrl">Github</v-btn>
-          <v-btn tag="a" flat class="blue-grey--text" target="_blank" v-if="card.homeUrl" :href="card.homeUrl">Page d'accueil</v-btn>
-          <v-btn tag="a" flat class="blue-grey--text" target="_blank" v-if="card.url" :href="card.url">Carte Trello</v-btn>
-        </v-card-row>
+
       </v-card>
     </v-container>
   </section>
 </template>
 
 <script>
-import axios from '~plugins/axios'
+import moment from 'moment'
 
 export default {
-  name: 'id',
+  name: 'platform',
   async fetch ({ params, store, error }) {
     await store.dispatch('FETCH_TRELLO_LISTS')
 
     try {
-      await store.dispatch('FETCH_CARD', params.id)
+      await store.dispatch('FETCH_CARD', params.cid)
     } catch (e) {
       const statusCode = e.response && e.response.status
       const message    = e.response && e.response.statusText
@@ -78,13 +81,17 @@ export default {
   },
   computed: {
     card () {
-      return this.$store.state.current.card
+      return this.$store.state.card
     },
     analyses () {
       return this.$store.state.analyses
     },
     list () {
       return this.$store.state.lists.trelloLists.find(l => this.card.idList === l.id)
+    },
+    lastActivity () {
+      moment.locale('fr')
+      return moment(this.$store.state.card.dateLastActivity).fromNow()
     }
   }
 }

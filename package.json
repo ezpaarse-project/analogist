@@ -22,6 +22,7 @@
     "express": "^4.14.0",
     "express-session": "^1.15.1",
     "grant-express": "^3.7.1",
+    "moment": "^2.18.1",
     "mongodb": "^2.2.25",
     "morgan": "^1.8.1",
     "nodemailer": "^3.1.8",

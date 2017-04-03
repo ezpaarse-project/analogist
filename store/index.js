@@ -5,10 +5,7 @@ import api from './api'
 const store = new Vuex.Store({
   state: {
     app: {},
-    current: {
-      card: null,
-      platform: null
-    },
+    card: null,
     lists: {
       cards: [],
       analyses: [],
@@ -24,16 +21,16 @@ const store = new Vuex.Store({
         .then(items => commit('SET_LIST', { type: 'cards', items }))
     },
     FETCH_CARD: ({ commit }, cardID) => {
-      return api.getCard(cardID)
-        .then(card => commit('SET_CURRENT_CARD', card))
-    },
-    FETCH_PLATFORM: ({ commit }, cardID) => {
-      return api.getPlatform(cardID)
-        .then(platform => commit('SET_CURRENT_PLATFORM', platform))
+      return api.getExtendedCard(cardID)
+        .then(card => commit('SET_CARD', card))
     },
     FETCH_TRELLO_LISTS: ({ commit }) => {
       return api.getLists()
         .then(items => commit('SET_LIST', { type: 'trelloLists', items }))
+    },
+    GET_ANALYSIS: ({ commit, state }, analysisID) => {
+      const analysis = (state.analyses || []).find(a => a.id === analysisID)
+      return commit('SET_ANALYSIS', analysis)
     }
   },
   mutations: {
@@ -43,11 +40,13 @@ const store = new Vuex.Store({
     SET_APP_INFO: (state, appInfo) => {
       Vue.set(state, 'app', appInfo)
     },
-    SET_CURRENT_CARD: (state, card) => {
-      Vue.set(state.current, 'card', card)
+    SET_ANALYSIS: (state, analysis) => {
+      Vue.set(state, 'analysis', analysis)
     },
-    SET_CURRENT_PLATFORM: (state, platform) => {
-      Vue.set(state.current, 'platform', platform)
+    SET_CARD: (state, card) => {
+      Vue.set(state, 'card', card)
+      Vue.set(state, 'platform', card.platform)
+      Vue.set(state, 'analyses', card.platform && card.platform.analyses || [])
     }
   }
 })
