@@ -1,6 +1,9 @@
 <template>
   <v-container>
-    <v-btn class="blue-grey mx-0" router :href="{ name: 'platform-cid-analyses', params: { cid: card.id } }">Retour</v-btn>
+    <v-row>
+      <v-btn class="blue-grey" router :href="{ name: 'platform-cid-analyses', params: { cid: card.id } }"><v-icon>arrow_back</v-icon></v-btn>
+      <v-btn class="blue" @click.native="save"><v-icon>save</v-icon></v-btn>
+    </v-row>
 
     <v-card>
       <v-card-row class="blue-grey white--text">
@@ -28,17 +31,17 @@
 
           <v-text-field multi-line name="comment" label="Remarques" v-model="analysis.comment"></v-text-field>
 
-          <h3>Champs reconnus</h3>
+          <h4>Champs reconnus</h4>
           <v-row v-for="(id, index) in analysis.identifiers" :key="index">
-            <v-col xs12 sm6 md4>
+            <v-col xs12 sm6>
               <v-text-field label="Type" v-model="id.type"></v-text-field>
             </v-col>
-            <v-col xs12 sm6 md4>
+            <v-col xs12 sm6>
               <v-text-field label="Value" v-model="id.value"></v-text-field>
             </v-col>
           </v-row>
 
-          <h3>Éléments de la route</h3>
+          <h4>Éléments de la route</h4>
           <v-row v-for="(id, index) in analysis.pathParams" :key="index">
             <v-col xs12 sm6>
               <v-text-field label="Value" v-model="id.value"></v-text-field>
@@ -48,7 +51,7 @@
             </v-col>
           </v-row>
 
-          <h3>Paramètres de la query</h3>
+          <h4>Paramètres de la query</h4>
           <v-row v-for="(id, index) in analysis.queryParams" :key="index">
             <v-col xs12 sm6 md3>
               <v-text-field label="Name" v-model="id.name"></v-text-field>
@@ -56,7 +59,7 @@
             <v-col xs12 sm6 md4>
               <v-text-field label="Value" v-model="id.value"></v-text-field>
             </v-col>
-            <v-col xs12 sm12 md4>
+            <v-col xs12 sm12 md5>
               <v-text-field label="Comment" v-model="id.comment"></v-text-field>
             </v-col>
           </v-row>
@@ -97,6 +100,11 @@ export default {
     },
     analysis () {
       return this.$store.state.analysis
+    }
+  },
+  methods: {
+    save () {
+      console.log('SAVING', this.analysis)
     }
   }
 }

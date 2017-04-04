@@ -1,6 +1,8 @@
 <template>
   <v-container>
-    <v-btn class="blue-grey mx-0" router :href="{ name: 'platform-cid', params: { cid: card.id } }">Retour</v-btn>
+    <v-row>
+      <v-btn class="blue-grey" router :href="{ name: 'platform-cid', params: { cid: card.id } }"><v-icon>arrow_back</v-icon></v-btn>
+    </v-row>
 
     <v-card>
       <v-card-row class="blue-grey white--text">
