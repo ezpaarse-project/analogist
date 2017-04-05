@@ -4,6 +4,7 @@ import api from './api'
 
 const store = new Vuex.Store({
   state: {
+    user: null,
     app: {},
     card: null,
     lists: {
@@ -13,8 +14,14 @@ const store = new Vuex.Store({
     }
   },
   actions: {
-    nuxtServerInit ({ commit }, { req }) {
+    async nuxtServerInit ({ commit }, { req }) {
+      if (req.session.profile) {
+        commit('SET_USER', req.session.profile)
+      }
       return api.info().then(info => commit('SET_APP_INFO', info))
+    },
+    LOGOUT: ({ commit }) => {
+      return api.logout().then(() => { commit('SET_USER', null) })
     },
     FETCH_CARDS: ({ commit }) => {
       return api.getExtendedCards()
@@ -34,6 +41,9 @@ const store = new Vuex.Store({
     }
   },
   mutations: {
+    SET_USER: (state, user) => {
+      state.user = user
+    },
     SET_LIST: (state, { type, items }) => {
       state.lists[type] = items
     },

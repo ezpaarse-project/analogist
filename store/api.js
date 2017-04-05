@@ -5,6 +5,10 @@ api.info = function () {
   return axios.get('/api').then(res => res.data)
 }
 
+api.logout = function () {
+  return axios.get('/api/auth/logout')
+}
+
 api.createCard = function (card) {
   return axios.post('/api/platforms', card)
 }

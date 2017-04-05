@@ -1,27 +1,16 @@
 'use strict'
 
-const config     = require('config')
-const router     = require('express').Router()
-const mw         = require('../lib/middlewares')
-const trello     = require('../lib/trello')
-const mailer     = require('../lib/mailer')
+const config = require('config')
+const router = require('express').Router()
+const Grant  = require('grant-express')
+const mw     = require('../lib/middlewares')
+const trello = require('../lib/trello')
+const mailer = require('../lib/mailer')
 
-const Grant      = require('grant-express')
-const session    = require('express-session')
-const MongoStore = require('connect-mongo')(session)
-const mongo      = require('../lib/mongo')
-
-const oneMonth = 3600000 * 24 * 30
-
-router.use(session({
-  name: 'grant',
-  resave: false,
-  saveUninitialized: false,
-  secret: 'xJ87L71I3025O7812P4g36n39my6VnAH',
-  cookie: { maxAge: oneMonth },
-  unset: 'destroy',
-  store: new MongoStore({ db: mongo.db })
-}))
+router.use('/connect/trello', (req, res, next) => {
+  req.query.host = req.query.host || req.headers.host
+  next()
+})
 
 router.use(new Grant({
   server: {
@@ -59,11 +48,13 @@ router.use('/callback', (req, res, next) => {
   }
 
   req.session.oauth = {
-    token: req.session.grant.response.access_token,
-    secret: req.session.grant.response.access_secret
+    token: response.access_token,
+    secret: response.access_secret
   }
 
   delete req.session.grant
+  next()
+}, mw.updateUserProfile, (req, res) => {
   res.redirect(req.path)
 })
 
