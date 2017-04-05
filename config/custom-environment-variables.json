@@ -1,5 +1,9 @@
 {
   "port": "ANG_PORT",
+  "cookie": {
+    "secret": "ANG_COOKIE_SECRET",
+    "maxAge": "ANG_COOKIE_MAX_AGE"
+  },
   "mongo": {
     "host": "ANG_MONGO_HOST",
     "port": "ANG_MONGO_PORT",

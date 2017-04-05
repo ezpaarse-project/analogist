@@ -9,8 +9,6 @@ const session    = require('express-session')
 const MongoStore = require('connect-mongo')(session)
 const mongo      = require('./lib/mongo')
 
-const oneMonth = 3600000 * 24 * 30
-
 process.env.PORT = config.port
 
 const isDev = app.get('env') !== 'production'
@@ -19,8 +17,8 @@ if (isDev) { app.use(logger('dev')) }
 app.use(session({
   resave: false,
   saveUninitialized: false,
-  secret: 'xJ87L71I3025O7812P4g36n39my6VnAH',
-  cookie: { maxAge: oneMonth },
+  secret: config.cookie.secret,
+  cookie: { maxAge: config.cookie.maxAge },
   unset: 'destroy',
   store: new MongoStore({ db: mongo.db })
 }))
