@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-row>
-      <v-btn class="blue-grey" router :href="{ name: 'platform-cid', params: { cid: card.id } }"><v-icon>arrow_back</v-icon></v-btn>
+      <v-btn class="blue-grey" router :href="{ name: 'platforms-cid', params: { cid: card.id } }"><v-icon>arrow_back</v-icon></v-btn>
     </v-row>
 
     <v-card>
@@ -13,7 +13,7 @@
 
       <v-list two-line>
         <v-list-item v-for="analysis in analyses" v-bind:key="analysis.id">
-          <v-list-tile router :href="{ name: 'platform-cid-analyses-aid', params: { cid: card.id, aid: analysis.id } }">
+          <v-list-tile router :href="{ name: 'platforms-cid-analyses-aid', params: { cid: card.id, aid: analysis.id } }">
             <v-list-tile-content>
               <v-list-tile-title v-text="analysis.title" />
               <v-list-tile-sub-title>{{ analysis.rtype || '-' }} / {{ analysis.mime || '-' }}</v-list-tile-sub-title>

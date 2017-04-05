@@ -13,7 +13,7 @@
         </v-card-row>
 
         <v-card-row actions>
-          <v-btn tag="a" flat class="blue-grey--text" router :href="{ name: 'platform-cid-analyses', params: { cid: card.id } }">Analyses ({{ analyses.length }})</v-btn>
+          <v-btn tag="a" flat class="blue-grey--text" router :href="{ name: 'platforms-cid-analyses', params: { cid: card.id } }">Analyses ({{ analyses.length }})</v-btn>
           <v-spacer/>
           <v-btn tag="a" flat class="blue-grey--text" target="_blank" v-if="card.githubUrl" :href="card.githubUrl">Github</v-btn>
           <v-btn tag="a" flat class="blue-grey--text" target="_blank" v-if="card.homeUrl" :href="card.homeUrl">Page d'accueil</v-btn>

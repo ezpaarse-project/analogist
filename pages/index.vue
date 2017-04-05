@@ -49,7 +49,7 @@
         <tbody>
           <tr v-for="(card, index) in cards" :key="card.id">
             <td>
-              <router-link :to="{ name: 'platform-cid', params: { cid: card.id }}" v-text="card.name"/>
+              <router-link :to="{ name: 'platforms-cid', params: { cid: card.id }}" v-text="card.name"/>
             </td>
             <td v-text="card.dateLastActivity" />
 
