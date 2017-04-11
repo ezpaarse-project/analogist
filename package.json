@@ -29,7 +29,7 @@
     "nuxt": "^0.10.5",
     "request": "^2.81.0",
     "vue": "^2.2.6",
-    "vuetify": "^0.9.4"
+    "vuetify": "^0.10.4"
   },
   "devDependencies": {
     "chai": "^3.5.0",
