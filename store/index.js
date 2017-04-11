@@ -7,6 +7,9 @@ const store = new Vuex.Store({
     user: null,
     app: {},
     card: null,
+    platform: null,
+    analyses: null,
+    analysis: null,
     lists: {
       cards: [],
       analyses: [],
@@ -38,14 +41,26 @@ const store = new Vuex.Store({
     GET_ANALYSIS: ({ commit, state }, analysisID) => {
       const analysis = (state.analyses || []).find(a => a.id === analysisID)
       return commit('SET_ANALYSIS', analysis)
+    },
+    SAVE_ANALYSIS: ({ commit }, { cardID, analysis }) => {
+      if (analysis.id) {
+        return api.updateAnalysis(cardID, analysis)
+      } else {
+        return api.createAnalysis(cardID, analysis)
+      }
+    },
+    DELETE_ANALYSIS: ({ commit }, { cardID, analysisID }) => {
+      return api.deleteAnalysis(cardID, analysisID).then(() => {
+        commit('REMOVE_ANALYSIS', analysisID)
+      })
     }
   },
   mutations: {
     SET_USER: (state, user) => {
-      state.user = user
+      Vue.set(state, 'user', user)
     },
     SET_LIST: (state, { type, items }) => {
-      state.lists[type] = items
+      Vue.set(state.lists, type, items)
     },
     SET_APP_INFO: (state, appInfo) => {
       Vue.set(state, 'app', appInfo)
@@ -57,6 +72,9 @@ const store = new Vuex.Store({
       Vue.set(state, 'card', card)
       Vue.set(state, 'platform', card.platform)
       Vue.set(state, 'analyses', card.platform && card.platform.analyses || [])
+    },
+    REMOVE_ANALYSIS: (state, analysisID) => {
+      Vue.set(state, 'analyses', state.analyses.filter(a => a.id !== analysisID))
     }
   }
 })

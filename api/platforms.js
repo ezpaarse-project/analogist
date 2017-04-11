@@ -130,6 +130,7 @@ router.put('/:cid/analyses/:aid', mw.updateHistory, (req, res, next) => {
     { returnOriginal: false },
     (err, result) => {
       if (err) { return next(err) }
+
       res.status(200).json(result.value)
     }
   )

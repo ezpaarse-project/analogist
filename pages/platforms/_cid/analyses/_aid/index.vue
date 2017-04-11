@@ -1,8 +1,8 @@
 <template>
   <v-container v-if="analysis">
     <v-row>
-      <v-btn class="blue-grey" router :href="{ name: 'platforms-cid-analyses', params: { cid: card.id } }"><v-icon>arrow_back</v-icon></v-btn>
-      <v-btn flat v-if="canEdit" router :href="{ name: 'platforms-cid-analyses-aid-edit', params: { cid: card.id, aid: analysis.id } }">Éditer</v-btn>
+      <v-btn class="blue-grey" router :href="{ name: 'platforms-cid-analyses', params: { cid: $route.params.cid } }"><v-icon>arrow_back</v-icon></v-btn>
+      <v-btn v-if="canEdit" flat router :href="{ name: 'platforms-cid-analyses-aid-edit', params: { cid: $route.params.cid, aid: $route.params.aid } }">Éditer</v-btn>
     </v-row>
 
     <v-card>
@@ -113,7 +113,7 @@
 
   <v-container v-else>
     <v-row>
-      <v-btn class="blue-grey" router :href="{ name: 'platforms-cid-analyses', params: { cid: card.id } }"><v-icon>arrow_back</v-icon></v-btn>
+      <v-btn class="blue-grey" router :href="{ name: 'platforms-cid-analyses', params: { cid: $route.params.cid } }"><v-icon>arrow_back</v-icon></v-btn>
     </v-row>
 
     <v-card>

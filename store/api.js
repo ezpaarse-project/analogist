@@ -10,15 +10,27 @@ api.logout = function () {
 }
 
 api.createCard = function (card) {
-  return axios.post('/api/platforms', card)
+  return axios.post('/api/platforms', card).then(res => res.data)
+}
+
+api.updateAnalysis = function (cardID, analysis) {
+  return axios.put(`/api/platforms/${cardID}/analyses/${analysis.id}`, analysis).then(res => res.data)
+}
+
+api.createAnalysis = function (cardID, analysis) {
+  return axios.post(`/api/platforms/${cardID}/analyses`, analysis).then(res => res.data)
+}
+
+api.deleteAnalysis = function (cardID, analysisID) {
+  return axios.delete(`/api/platforms/${cardID}/analyses/${analysisID}`).then(res => res.data)
 }
 
 api.updateComment = function (cardID, text) {
-  return axios.patch(`/api/platforms/${cardID}/comment`, { text: text })
+  return axios.patch(`/api/platforms/${cardID}/comment`, { text: text }).then(res => res.data)
 }
 
 api.updateCard = function (cardID, changes) {
-  return axios.patch(`/api/trello/cards/${cardID}`, changes)
+  return axios.patch(`/api/trello/cards/${cardID}`, changes).then(res => res.data)
 }
 
 api.getLists = function () {

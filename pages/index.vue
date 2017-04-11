@@ -1,42 +1,12 @@
 <template>
   <section>
+    <v-text-field v-model="search" prepend-icon="search" label="Recherche..." hide-details single-line />
     <v-card>
-      <v-toolbar class="cyan">
-        <v-toolbar-title>Plateformes</v-toolbar-title>
-      </v-toolbar>
-
-      <v-card-row>
-        <v-card-column class="pa-3">
-          <v-text-field
-              name="input-10-1"
-              label="Recherche"
-              v-model="search"
-              prepend-icon="search"
-            ></v-text-field>
-        </v-card-column>
-
-        <!--<v-card-column class="pa-3">
-          <v-select
-            v-bind:items="sortChoices"
-            v-model="sortBy"
-            item-text="desc"
-            label="Trier par"
-          />
-        </v-card-column>-->
+      <v-card-row class="cyan white--text">
+        <v-card-title>
+          Plateformes
+        </v-card-title>
       </v-card-row>
-
-      <!--<v-list two-line>
-        <v-list-item v-for="(platform, index) in platforms" :key="platform.id">
-          <v-list-tile router :href="{ name: 'id', params: { id: platform.id }}">
-            <v-list-tile-content>
-              <v-list-tile-title v-text="platform.name" />
-              <v-list-tile-sub-title>
-                {{ platform.dateLastActivity }}
-              </v-list-tile-sub-title>
-            </v-list-tile-content>
-          </v-list-tile>
-        </v-list-item>
-      </v-list>-->
 
       <table>
         <thead>
