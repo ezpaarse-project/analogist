@@ -35,10 +35,12 @@
             </v-col>
           </v-row>
 
-          <div class="title">Remarques</div>
-          <p v-text="analysis.comment"></p>
+          <v-row v-if="analysis.comment">
+            <div class="title">Remarques</div>
+            <p v-text="analysis.comment"></p>
+          </v-row>
 
-          <v-card class="my-3">
+          <v-card class="my-3" v-if="analysis.identifiers && analysis.identifiers.length">
             <v-card-row class="blue-grey lighten-5">
               <v-card-title>
                 Champs reconnus
@@ -60,7 +62,7 @@
             </table>
           </v-card>
 
-          <v-card class="my-3">
+          <v-card class="my-3" v-if="analysis.pathParams && analysis.pathParams.length">
             <v-card-row class="blue-grey lighten-5">
               <v-card-title>
                 Éléments de la route
@@ -82,7 +84,7 @@
             </table>
           </v-card>
 
-          <v-card class="my-3">
+          <v-card class="my-3" v-if="analysis.queryParams && analysis.queryParams.length">
             <v-card-row class="blue-grey lighten-5">
               <v-card-title>
                 Paramètres de la query
