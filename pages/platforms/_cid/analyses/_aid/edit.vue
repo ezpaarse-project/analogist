@@ -8,7 +8,7 @@
     <v-card>
       <v-card-row class="blue-grey white--text">
         <v-card-title>
-          {{ card.name }} {{ saved }}
+          {{ card.name }}
         </v-card-title>
       </v-card-row>
 
@@ -32,12 +32,17 @@
           <v-text-field @input="handleChange" multi-line name="comment" label="Remarques" v-model="analysis.comment"></v-text-field>
 
           <h4>Champs reconnus</h4>
-          <v-row v-for="(id, index) in analysis.identifiers" :key="index">
-            <v-col xs12 sm6>
+          <v-row class="elevation-1 my-2" v-for="(id, index) in analysis.identifiers" :key="index">
+            <v-col xs12 sm5 md5>
               <v-text-field @input="handleChange" label="Type" v-model="id.type"></v-text-field>
             </v-col>
-            <v-col xs12 sm6>
+            <v-col xs12 sm5 md6>
               <v-text-field @input="handleChange" label="Valeur" v-model="id.value"></v-text-field>
+            </v-col>
+            <v-col xs12 sm2 md1 class="text-xs-center">
+              <v-btn secondary floating small v-on:click.native="removeEntryFrom('identifiers', index)">
+                <v-icon>delete</v-icon>
+              </v-btn>
             </v-col>
           </v-row>
           <p class="text-xs-center">
@@ -47,12 +52,17 @@
           </p>
 
           <h4>Éléments de la route</h4>
-          <v-row v-for="(id, index) in analysis.pathParams" :key="index">
-            <v-col xs12 sm6>
+          <v-row class="elevation-1 my-2" v-for="(id, index) in analysis.pathParams" :key="index">
+            <v-col xs12 sm5 md5>
               <v-text-field @input="handleChange" label="Valeur" v-model="id.value"></v-text-field>
             </v-col>
-            <v-col xs12 sm6>
+            <v-col xs12 sm5 md6>
               <v-text-field @input="handleChange" label="Commentaire" v-model="id.comment"></v-text-field>
+            </v-col>
+            <v-col xs12 sm2 md1 class="text-xs-center">
+              <v-btn secondary floating small v-on:click.native="removeEntryFrom('pathParams', index)">
+                <v-icon>delete</v-icon>
+              </v-btn>
             </v-col>
           </v-row>
           <p class="text-xs-center">
@@ -62,15 +72,20 @@
           </p>
 
           <h4>Paramètres de la query</h4>
-          <v-row v-for="(id, index) in analysis.queryParams" :key="index">
+          <v-row class="elevation-1 my-2" v-for="(id, index) in analysis.queryParams" :key="index">
             <v-col xs12 sm6 md3>
               <v-text-field @input="handleChange" label="Nom" v-model="id.name"></v-text-field>
             </v-col>
             <v-col xs12 sm6 md4>
               <v-text-field @input="handleChange" label="Valeur" v-model="id.value"></v-text-field>
             </v-col>
-            <v-col xs12 sm12 md5>
+            <v-col xs12 sm10 md4>
               <v-text-field @input="handleChange" label="Commentaire" v-model="id.comment"></v-text-field>
+            </v-col>
+            <v-col xs12 sm2 md1 class="text-xs-center">
+              <v-btn secondary floating small v-on:click.native="removeEntryFrom('queryParams', index)">
+                <v-icon>delete</v-icon>
+              </v-btn>
             </v-col>
           </v-row>
           <p class="text-xs-center">
@@ -175,6 +190,10 @@ export default {
     addEntryIn (arrayName) {
       if (!Array.isArray(this.analysis[arrayName])) { this.analysis[arrayName] = [] }
       this.analysis[arrayName].push({})
+    },
+    removeEntryFrom (arrayName, index) {
+      this.analysis[arrayName].splice(index, 1)
+      this.handleChange()
     },
     handleChange() {
       clearTimeout(changeTimeout)
