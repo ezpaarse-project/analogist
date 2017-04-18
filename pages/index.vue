@@ -1,11 +1,18 @@
 <template>
   <section>
     <v-text-field v-model="search" prepend-icon="search" label="Recherche..." hide-details single-line />
+
     <v-card>
       <v-card-row class="cyan white--text">
         <v-card-title>
           Plateformes
         </v-card-title>
+        <v-spacer/>
+        <div>
+          <v-btn v-if="canEdit" floating icon router :href="{ name: 'platforms-new' }">
+            <v-icon>add</v-icon>
+          </v-btn>
+        </div>
       </v-card-row>
 
       <table>
@@ -55,6 +62,9 @@ export default {
     await store.dispatch('FETCH_CARDS')
   },
   computed: {
+    canEdit() {
+      return this.$store.state.user && this.$store.state.user.isAuthorized
+    },
     cards () {
       const search = this.search.toLowerCase()
       return this.$store.state.lists.cards.filter(p => {

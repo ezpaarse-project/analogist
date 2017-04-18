@@ -42,6 +42,9 @@ const store = new Vuex.Store({
       const analysis = (state.analyses || []).find(a => a.id === analysisID)
       return commit('SET_ANALYSIS', analysis)
     },
+    CREATE_CARD: ({ commit }, card) => {
+      return api.createCard(card)
+    },
     SAVE_ANALYSIS: ({ commit }, { cardID, analysis }) => {
       if (analysis.id) {
         return api.updateAnalysis(cardID, analysis)
