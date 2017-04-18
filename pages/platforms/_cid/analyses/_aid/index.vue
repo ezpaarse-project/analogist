@@ -159,7 +159,7 @@ export default {
     analysis () {
       return this.$store.state.analysis
     },
-    canEdit() {
+    canEdit () {
       return this.$store.state.user && this.$store.state.user.isAuthorized
     }
   }

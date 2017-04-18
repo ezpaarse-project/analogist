@@ -126,7 +126,7 @@
 </template>
 
 <script>
-let changeTimeout;
+let changeTimeout
 
 export default {
   name: 'analysis-edit',
@@ -141,7 +141,7 @@ export default {
   },
   async fetch ({ params, store, error, redirect }) {
     if (!store.state.user || !store.state.user.isAuthorized) {
-      return redirect(`/platforms/${params.cid}/analyses/${params.aid}`);
+      return redirect(`/platforms/${params.cid}/analyses/${params.aid}`)
     }
 
     try {
@@ -167,7 +167,7 @@ export default {
     analysis () {
       return this.$store.state.analysis
     },
-    canSave() {
+    canSave () {
       return this.$store.state.user && this.$store.state.user.isAuthorized
     }
   },
@@ -195,7 +195,7 @@ export default {
       this.analysis[arrayName].splice(index, 1)
       this.handleChange()
     },
-    handleChange() {
+    handleChange () {
       clearTimeout(changeTimeout)
       this.dirty = true
       if (this.saving) {
@@ -226,7 +226,7 @@ export default {
         this.error = e
         this.saving = false
         this.pendingChanges = false
-        return console.error(e)
+        return console.error(e) // TODO: handle error
       }
     }
   }

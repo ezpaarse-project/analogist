@@ -50,5 +50,4 @@ if (nuxtConfig.dev) {
   })
 }
 
-
 module.exports = app

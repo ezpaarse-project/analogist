@@ -62,7 +62,7 @@ export default {
     await store.dispatch('FETCH_CARDS')
   },
   computed: {
-    canEdit() {
+    canEdit () {
       return this.$store.state.user && this.$store.state.user.isAuthorized
     },
     cards () {

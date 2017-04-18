@@ -63,7 +63,7 @@ export default {
     analyses () {
       return this.$store.state.analyses
     },
-    canEdit() {
+    canEdit () {
       return this.$store.state.user && this.$store.state.user.isAuthorized
     }
   },
@@ -75,7 +75,7 @@ export default {
         const analysis = await this.$store.dispatch('SAVE_ANALYSIS', { cardID: this.card.id, analysis: {} })
         this.$router.push(`/platforms/${this.card.id}/analyses/${analysis.id}/edit`)
       } catch (e) {
-        console.log('NOPE :<', e)
+        console.log('NOPE :<', e) // TODO: handle error
       }
 
       this.creating = false
@@ -86,7 +86,7 @@ export default {
       try {
         await this.$store.dispatch('DELETE_ANALYSIS', { cardID: this.card.id, analysisID })
       } catch (e) {
-        console.log('NOPE :<', e)
+        console.log('NOPE :<', e) // TODO: handle error
       }
 
       this.$set(this.deleting, analysisID, false)
