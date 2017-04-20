@@ -56,6 +56,9 @@ const store = new Vuex.Store({
       return api.deleteAnalysis(cardID, analysisID).then(() => {
         commit('REMOVE_ANALYSIS', analysisID)
       })
+    },
+    CHECK_DOMAIN: ({ commit }, domain) => {
+      return api.checkDomain(domain)
     }
   },
   mutations: {

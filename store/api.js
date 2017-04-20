@@ -63,12 +63,15 @@ api.addUserToCard = function (card, user) {
   })
 }
 
-api.checkDomain = function (domain, callback) {
-  axios.get(`http://ezpaarse-preprod.couperin.org/info/domains/${domain}`)
+api.checkDomain = function (domain) {
+  return axios.get(`http://ezpaarse-preprod.couperin.org/info/domains/${domain}`)
   .then(res => {
-    callback(null, res.data)
-  }).catch(res => {
-    callback(res.status === 404 ? null : res, null)
+    if (typeof res.data === 'object') { return res.data }
+    throw new Error('Invalid Response')
+  })
+  .catch(err => {
+    if (err.response && err.response.status === 404) { return null }
+    throw err
   })
 }
 
