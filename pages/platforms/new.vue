@@ -8,7 +8,7 @@
 
     <v-stepper v-model="step" vertical>
       <v-stepper-step step="1" :complete="step > 1">
-        Vérifiez que la plateforme n'existe pas déjà
+        Support des domaines
       </v-stepper-step>
       <v-stepper-content step="1">
         <v-container class="mb-5">
