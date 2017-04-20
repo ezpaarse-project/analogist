@@ -126,7 +126,4 @@ export default {
 </script>
 
 <style scoped>
-.align-center {
-  align-items: center
-}
 </style>
