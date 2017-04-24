@@ -136,6 +136,43 @@ router.put('/:cid/analyses/:aid', mw.updateHistory, (req, res, next) => {
   )
 })
 
+/* PATCH the order of analyses */
+router.patch('/:cid/analyses/order', mw.updateHistory, (req, res, next) => {
+  if (typeof req.body !== 'object') { return res.status(400).end() }
+
+  const order = req.body
+
+  mongo.get('platforms').findOne({ 'cardID': req.params.cid }, (err, platform) => {
+    if (err) { return next(err) }
+    if (!platform) { return res.status(404).end() }
+
+    const changes = {}
+
+    platform.analyses.forEach((analysis, i) => {
+      if (!isNaN(order[analysis.id])) {
+        changes[`analyses.${i}.order`] = order[analysis.id]
+      }
+    })
+
+    if (Object.keys(changes).length === 0) {
+      return res.status(200).json(platform)
+    }
+
+    changes.lastModified = new Date()
+
+    mongo.get('platforms').findOneAndUpdate(
+      { cardID: req.params.cid },
+      { $set: changes },
+      { returnOriginal: false },
+      (err, result) => {
+        if (err) { return next(err) }
+
+        res.status(200).json(result.value)
+      }
+    )
+  })
+})
+
 /* DELETE an analysis */
 router.delete('/:cid/analyses/:aid', mw.updateHistory, (req, res, next) => {
   if (!ObjectID.isValid(req.params.aid)) { return res.status(400).end() }

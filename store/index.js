@@ -32,7 +32,11 @@ const store = new Vuex.Store({
     },
     FETCH_CARD: ({ commit }, cardID) => {
       return api.getExtendedCard(cardID)
-        .then(card => commit('SET_CARD', card))
+        .then(card => {
+          commit('SET_CARD', card)
+          commit('SET_PLATFORM', card.platform)
+          commit('SET_ANALYSES', card.platform && card.platform.analyses || [])
+        })
     },
     FETCH_TRELLO_LISTS: ({ commit }) => {
       return api.getLists()
@@ -41,6 +45,17 @@ const store = new Vuex.Store({
     GET_ANALYSIS: ({ commit, state }, analysisID) => {
       const analysis = (state.analyses || []).find(a => a.id === analysisID)
       return commit('SET_ANALYSIS', analysis)
+    },
+    REORDER_ANALYSES: ({ commit, state }, { cardID, list }) => {
+      const order = {}
+
+      list.forEach((analysis, i) => {
+        order[analysis.id] = i + 1
+        Vue.set(analysis, 'order', i + 1)
+      })
+
+      commit('SET_ANALYSES', list)
+      return api.reorderAnalyses(cardID, order)
     },
     CREATE_CARD: ({ commit }, card) => {
       return api.createCard(card)
@@ -74,10 +89,14 @@ const store = new Vuex.Store({
     SET_ANALYSIS: (state, analysis) => {
       Vue.set(state, 'analysis', analysis)
     },
+    SET_ANALYSES: (state, analyses) => {
+      Vue.set(state, 'analyses', analyses)
+    },
+    SET_PLATFORM: (state, platform) => {
+      Vue.set(state, 'platform', platform)
+    },
     SET_CARD: (state, card) => {
       Vue.set(state, 'card', card)
-      Vue.set(state, 'platform', card.platform)
-      Vue.set(state, 'analyses', card.platform && card.platform.analyses || [])
     },
     REMOVE_ANALYSIS: (state, analysisID) => {
       Vue.set(state, 'analyses', state.analyses.filter(a => a.id !== analysisID))

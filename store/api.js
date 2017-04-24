@@ -13,6 +13,10 @@ api.createCard = function (card) {
   return axios.post('/api/platforms', card).then(res => res.data)
 }
 
+api.reorderAnalyses = function (cardID, order) {
+  return axios.patch(`/api/platforms/${cardID}/analyses/order`, order).then(res => res.data)
+}
+
 api.updateAnalysis = function (cardID, analysis) {
   return axios.put(`/api/platforms/${cardID}/analyses/${analysis.id}`, analysis).then(res => res.data)
 }
