@@ -33,7 +33,7 @@ export default {
       return this.list && this.list.name
     },
     list () {
-      return this.$store.state.lists.trelloLists.find(l => this.card.idList === l.id)
+      return this.$store.state.trelloLists.find(l => this.card.idList === l.id)
     }
   }
 }

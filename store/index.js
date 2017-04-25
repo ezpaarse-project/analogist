@@ -10,11 +10,8 @@ const store = new Vuex.Store({
     platform: null,
     analyses: null,
     analysis: null,
-    lists: {
-      cards: [],
-      analyses: [],
-      trelloLists: []
-    }
+    cards: [],
+    trelloLists: []
   },
   actions: {
     async nuxtServerInit ({ commit }, { req }) {
@@ -27,8 +24,7 @@ const store = new Vuex.Store({
       return api.logout().then(() => { commit('SET_USER', null) })
     },
     FETCH_CARDS: ({ commit }) => {
-      return api.getExtendedCards()
-        .then(items => commit('SET_LIST', { type: 'cards', items }))
+      return api.getExtendedCards().then(items => commit('SET_CARDS', items))
     },
     FETCH_CARD: ({ commit }, cardID) => {
       return api.getExtendedCard(cardID)
@@ -39,8 +35,7 @@ const store = new Vuex.Store({
         })
     },
     FETCH_TRELLO_LISTS: ({ commit }) => {
-      return api.getLists()
-        .then(items => commit('SET_LIST', { type: 'trelloLists', items }))
+      return api.getLists().then(items => commit('SET_TRELLO_LISTS', items))
     },
     GET_ANALYSIS: ({ commit, state }, analysisID) => {
       const analysis = (state.analyses || []).find(a => a.id === analysisID)
@@ -80,8 +75,11 @@ const store = new Vuex.Store({
     SET_USER: (state, user) => {
       Vue.set(state, 'user', user)
     },
-    SET_LIST: (state, { type, items }) => {
-      Vue.set(state.lists, type, items)
+    SET_CARDS: (state, items) => {
+      Vue.set(state, 'cards', items)
+    },
+    SET_TRELLO_LISTS: (state, items) => {
+      Vue.set(state, 'trelloLists', items)
     },
     SET_APP_INFO: (state, appInfo) => {
       Vue.set(state, 'app', appInfo)

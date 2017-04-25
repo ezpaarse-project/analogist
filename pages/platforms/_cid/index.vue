@@ -89,7 +89,7 @@ export default {
       return this.$store.state.analyses
     },
     list () {
-      return this.$store.state.lists.trelloLists.find(l => this.card.idList === l.id)
+      return this.$store.state.trelloLists.find(l => this.card.idList === l.id)
     },
     lastActivity () {
       moment.locale('fr')

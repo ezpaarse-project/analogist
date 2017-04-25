@@ -91,7 +91,7 @@ export default {
   },
   computed: {
     lists () {
-      return this.$store.state.lists.trelloLists
+      return this.$store.state.trelloLists
     },
     canEdit () {
       return this.$store.state.user && this.$store.state.user.isAuthorized

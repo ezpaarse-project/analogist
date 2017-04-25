@@ -1,11 +1,22 @@
 <template>
   <section>
-    <v-text-field v-model="search" prepend-icon="search" label="Recherche..." hide-details single-line />
+
+    <v-expansion-panel class="my-2">
+      <v-expansion-panel-content>
+        <div slot="header">Recherche</div>
+        <v-card>
+          <v-card-text>
+            <v-text-field v-model="search.text" prepend-icon="search" label="Nom" hide-details single-line />
+            <v-select label="Statut" prepend-icon="label" :items="lists" v-model="search.lists" item-text="name" item-value="id" multiple chips />
+          </v-card-text>
+        </v-card>
+      </v-expansion-panel-content>
+    </v-expansion-panel>
 
     <v-card>
       <v-card-row class="cyan white--text">
         <v-card-title>
-          Plateformes
+          Plateformes ({{ cards.length }})
         </v-card-title>
         <v-spacer/>
         <div>
@@ -32,7 +43,10 @@ export default {
   },
   data () {
     return {
-      search: '',
+      search: {
+        text: '',
+        lists: []
+      },
       sortBy: 'nameAsc',
       sortChoices: [
         { key: 'nameAsc', desc: 'A -> Z' },
@@ -50,13 +64,26 @@ export default {
     await store.dispatch('FETCH_CARDS')
   },
   computed: {
+    lists () {
+      return this.$store.state.trelloLists
+    },
     canEdit () {
       return this.$store.state.user && this.$store.state.user.isAuthorized
     },
     cards () {
-      const search = this.search.toLowerCase()
-      return this.$store.state.lists.cards.filter(p => {
-        return p.name.toLowerCase().includes(search)
+      const search = this.search.text.toLowerCase()
+      const lists = this.search.lists
+
+      return this.$store.state.cards.filter(card => {
+        if (!card.name.toLowerCase().includes(search)) {
+          return false
+        }
+
+        if (lists.length && !lists.find(l => l.id === card.idList)) {
+          return false
+        }
+
+        return true
       }).sort((a, b) => {
         switch (this.sortBy) {
           case 'nameDesc':
