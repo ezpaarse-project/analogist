@@ -74,6 +74,8 @@ export default {
         })
       },
       async set (list) {
+        if (!this.canEdit) { return }
+
         try {
           this.$store.dispatch('REORDER_ANALYSES', { cardID: this.card.id, list })
         } catch (e) {
