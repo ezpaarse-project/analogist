@@ -15,33 +15,21 @@
         </div>
       </v-card-row>
 
-      <table>
-        <thead>
-          <tr>
-            <th>Nom</th>
-            <th>Dernière activité</th>
-            <th>URLs analysées</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(card, index) in cards" :key="card.id">
-            <td>
-              <router-link :to="{ name: 'platforms-cid', params: { cid: card.id }}" v-text="card.name"/>
-            </td>
-            <td v-text="card.dateLastActivity" />
-
-            <td v-if="card.platform && card.platform.analyses">{{ card.platform.analyses.length }}</td>
-            <td v-else>0</td>
-          </tr>
-        </tbody>
-      </table>
+      <v-list three-line>
+        <CardTile v-for="card in cards" :key="card.id" :card="card"></CardTile>
+      </v-list>
     </v-card>
   </section>
 </template>
 
 <script>
+import CardTile from '~components/CardTile'
+
 export default {
   name: 'platforms',
+  components: {
+    CardTile
+  },
   data () {
     return {
       search: '',
