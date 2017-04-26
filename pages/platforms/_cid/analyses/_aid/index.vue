@@ -35,10 +35,8 @@
             </v-col>
           </v-row>
 
-          <v-row v-if="analysis.comment">
-            <div class="title">{{ $t('analyses.comment')}}</div>
-            <p v-text="analysis.comment"></p>
-          </v-row>
+          <div class="title">{{ $t('analyses.comment')}}</div>
+          <p v-text="analysis.comment"></p>
 
           <v-card class="my-3" v-if="analysis.identifiers && analysis.identifiers.length">
             <v-card-row class="blue-grey lighten-5">
