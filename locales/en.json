@@ -1,0 +1,64 @@
+{
+  "header": {
+    "platforms": "Platforms",
+    "trelloBoard": "Trello board",
+    "logout": "Logout",
+    "notConnected": "Not connected",
+    "login": "Login"
+  },
+  "card": {
+    "lastActivity": "Last activity",
+    "status": "Status",
+    "unknown": "Unknown",
+    "nbAnalyses": "{n} analyses",
+    "github": "Github",
+    "homepage": "Homepage",
+    "trello": "Trello card",
+    "contributors": "Contributors",
+    "humanCertification": "Human certification",
+    "publisherCertification": "Publisher certification"
+  },
+  "analyses": {
+    "new": "New analysis",
+    "title": "Title",
+    "url": "URL",
+    "type": "Type",
+    "format": "Format",
+    "unitid": "UnitID",
+    "comment": "Comment",
+    "name": "Name",
+    "value": "Value",
+    "recognizedFields": "Recognized fields",
+    "pathParams": "Path parameters",
+    "queryParams": "Query parameters",
+    "notFound": "Analysis not found",
+    "saved": "Analysis saved"
+  },
+  "cards": {
+    "search": "Search",
+    "name": "Name",
+    "status": "Status",
+    "platforms": "Platforms"
+  },
+  "creation": {
+    "newPlatform": "New platform",
+    "domainCheck": "Domain check",
+    "next": "Next",
+    "previous": "Previous",
+    "platformInfo": "Platform informations",
+    "platformStatus": "Platform status",
+    "create": "Create",
+    "name": "Name",
+    "abv": "Abbreviation",
+    "homepage": "Homepage"
+  },
+  "domainCheck": {
+    "domainName": "Domain name",
+    "check": "Check",
+    "checking": "Checking...",
+    "supported": "The domain <strong>{domainName}</strong> is already supported by the parser <a href=\"{trello}\" target=\"_blank\">{cardName}</a>.",
+    "error": "An error occurred : {message}",
+    "unsupported": "The domain <strong>{domainName}</strong> has no associated parser yet.",
+    "pleaseType": "Enter a domain name that can host resources."
+  }
+}

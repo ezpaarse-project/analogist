@@ -20,13 +20,13 @@ const store = new Vuex.Store({
       }
       return api.info().then(info => commit('SET_APP_INFO', info))
     },
-    LOGOUT: ({ commit }) => {
+    LOGOUT ({ commit }) {
       return api.logout().then(() => { commit('SET_USER', null) })
     },
-    FETCH_CARDS: ({ commit }) => {
+    FETCH_CARDS ({ commit }) {
       return api.getExtendedCards().then(items => commit('SET_CARDS', items))
     },
-    FETCH_CARD: ({ commit }, cardID) => {
+    FETCH_CARD ({ commit }, cardID) {
       return api.getExtendedCard(cardID)
         .then(card => {
           commit('SET_CARD', card)
@@ -34,14 +34,14 @@ const store = new Vuex.Store({
           commit('SET_ANALYSES', card.platform && card.platform.analyses || [])
         })
     },
-    FETCH_TRELLO_LISTS: ({ commit }) => {
+    FETCH_TRELLO_LISTS ({ commit }) {
       return api.getLists().then(items => commit('SET_TRELLO_LISTS', items))
     },
-    GET_ANALYSIS: ({ commit, state }, analysisID) => {
+    GET_ANALYSIS ({ commit, state }, analysisID) {
       const analysis = (state.analyses || []).find(a => a.id === analysisID)
       return commit('SET_ANALYSIS', analysis)
     },
-    REORDER_ANALYSES: ({ commit, state }, { cardID, list }) => {
+    REORDER_ANALYSES ({ commit, state }, { cardID, list }) {
       const order = {}
 
       list.forEach((analysis, i) => {
@@ -52,51 +52,51 @@ const store = new Vuex.Store({
       commit('SET_ANALYSES', list)
       return api.reorderAnalyses(cardID, order)
     },
-    CREATE_CARD: ({ commit }, card) => {
+    CREATE_CARD ({ commit }, card) {
       return api.createCard(card)
     },
-    SAVE_ANALYSIS: ({ commit }, { cardID, analysis }) => {
+    SAVE_ANALYSIS ({ commit }, { cardID, analysis }) {
       if (analysis.id) {
         return api.updateAnalysis(cardID, analysis)
       } else {
         return api.createAnalysis(cardID, analysis)
       }
     },
-    DELETE_ANALYSIS: ({ commit }, { cardID, analysisID }) => {
+    DELETE_ANALYSIS ({ commit }, { cardID, analysisID }) {
       return api.deleteAnalysis(cardID, analysisID).then(() => {
         commit('REMOVE_ANALYSIS', analysisID)
       })
     },
-    CHECK_DOMAIN: ({ commit }, domain) => {
+    CHECK_DOMAIN ({ commit }, domain) {
       return api.checkDomain(domain)
     }
   },
   mutations: {
-    SET_USER: (state, user) => {
+    SET_USER (state, user) {
       Vue.set(state, 'user', user)
     },
-    SET_CARDS: (state, items) => {
+    SET_CARDS (state, items) {
       Vue.set(state, 'cards', items)
     },
-    SET_TRELLO_LISTS: (state, items) => {
+    SET_TRELLO_LISTS (state, items) {
       Vue.set(state, 'trelloLists', items)
     },
-    SET_APP_INFO: (state, appInfo) => {
+    SET_APP_INFO (state, appInfo) {
       Vue.set(state, 'app', appInfo)
     },
-    SET_ANALYSIS: (state, analysis) => {
+    SET_ANALYSIS (state, analysis) {
       Vue.set(state, 'analysis', analysis)
     },
-    SET_ANALYSES: (state, analyses) => {
+    SET_ANALYSES (state, analyses) {
       Vue.set(state, 'analyses', analyses)
     },
-    SET_PLATFORM: (state, platform) => {
+    SET_PLATFORM (state, platform) {
       Vue.set(state, 'platform', platform)
     },
-    SET_CARD: (state, card) => {
+    SET_CARD (state, card) {
       Vue.set(state, 'card', card)
     },
-    REMOVE_ANALYSIS: (state, analysisID) => {
+    REMOVE_ANALYSIS (state, analysisID) {
       Vue.set(state, 'analyses', state.analyses.filter(a => a.id !== analysisID))
     }
   }

@@ -2,7 +2,7 @@
   <v-container>
     <v-row>
       <v-btn class="blue-grey" router :href="{ name: 'platforms-cid', params: { cid: $route.params.cid } }"><v-icon>arrow_back</v-icon></v-btn>
-      <v-btn v-if="canEdit" @click.native="createAnalysis" :loading="creating" flat router>Nouvelle analyse</v-btn>
+      <v-btn v-if="canEdit" @click.native="createAnalysis" :loading="creating" flat router>{{ $t('analyses.new') }}</v-btn>
     </v-row>
 
     <v-card>
@@ -60,7 +60,7 @@ export default {
   },
   head () {
     return {
-      title: `Analyses: ${this.card.name}`
+      title: this.card.name
     }
   },
   computed: {

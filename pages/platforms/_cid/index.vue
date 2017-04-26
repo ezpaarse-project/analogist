@@ -15,22 +15,22 @@
         <v-card-row actions>
           <v-btn tag="a" flat class="blue-grey--text" router :href="{ name: 'platforms-cid-analyses', params: { cid: $route.params.cid } }">Analyses ({{ analyses.length }})</v-btn>
           <v-spacer/>
-          <v-btn tag="a" flat class="blue-grey--text" target="_blank" v-if="card.githubUrl" :href="card.githubUrl">Github</v-btn>
-          <v-btn tag="a" flat class="blue-grey--text" target="_blank" v-if="card.homeUrl" :href="card.homeUrl">Page d'accueil</v-btn>
-          <v-btn tag="a" flat class="blue-grey--text" target="_blank" v-if="card.url" :href="card.url">Carte Trello</v-btn>
+          <v-btn tag="a" flat class="blue-grey--text" target="_blank" v-if="card.githubUrl" :href="card.githubUrl">{{ $t('card.github') }}</v-btn>
+          <v-btn tag="a" flat class="blue-grey--text" target="_blank" v-if="card.homeUrl" :href="card.homeUrl">{{ $t('card.homepage') }}</v-btn>
+          <v-btn tag="a" flat class="blue-grey--text" target="_blank" v-if="card.url" :href="card.url">{{ $t('card.trello') }}</v-btn>
         </v-card-row>
 
         <v-card-text>
           <v-container fluid>
             <v-row>
               <v-col xs12 sm6>
-                <div>Dernière activité</div>
+                <div>{{ $t('card.lastActivity') }}</div>
                 <strong>{{ lastActivity }}</strong>
               </v-col>
               <v-col xs12 sm6>
-                <div>Statut</div>
+                <div>{{ $t('card.status') }}</div>
                 <strong v-if="list">{{ list.name }}</strong>
-                <strong v-else>Unknown</strong>
+                <strong v-else>{{ $t('card.unknown') }}</strong>
               </v-col>
             </v-row>
           </v-container>
@@ -38,7 +38,7 @@
 
         <v-divider/>
 
-        <v-subheader>Contributeurs</v-subheader>
+        <v-subheader>{{ $t('card.contributors') }}</v-subheader>
         <v-list>
           <v-list-item v-for="member in card.members" v-bind:key="member.id">
             <v-list-tile avatar :href="'https://trello.com/' + member.username">
@@ -92,8 +92,7 @@ export default {
       return this.$store.state.trelloLists.find(l => this.card.idList === l.id)
     },
     lastActivity () {
-      moment.locale('fr')
-      return moment(this.$store.state.card.dateLastActivity).fromNow()
+      return moment(this.card.lastActivity).fromNow()
     }
   }
 }

@@ -20,7 +20,8 @@ module.exports = {
   },
   plugins: [
     '~plugins/axios.js',
-    '~plugins/vuetify.js'
+    '~plugins/vuetify.js',
+    { src: '~plugins/i18n.js', injectAs: 'i18n' }
   ],
   /*
   ** Global CSS
@@ -30,12 +31,14 @@ module.exports = {
     'vuetify/dist/vuetify.min.css'
   ],
   /*
-  ** Add axios and vuetify globally
+  ** Add global packages
   */
   build: {
     vendor: [
       'axios',
-      'vuetify'
+      'vuetify',
+      'vue-i18n',
+      'moment'
     ]
   }
 }

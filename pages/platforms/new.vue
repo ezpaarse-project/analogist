@@ -2,45 +2,45 @@
   <v-card>
     <v-card-row class="cyan white--text">
       <v-card-title>
-        Nouvelle plateforme
+        {{ $t('creation.newPlatform') }}
       </v-card-title>
     </v-card-row>
 
     <v-stepper v-model="step" vertical>
       <v-stepper-step step="1" :complete="step > 1">
-        Support des domaines
+        {{ $t('creation.domainCheck') }}
       </v-stepper-step>
       <v-stepper-content step="1">
         <v-container class="mb-5">
           <DomainChecker></DomainChecker>
         </v-container>
 
-        <v-btn primary @click.native="step++">Suivant</v-btn>
+        <v-btn primary @click.native="step++">{{ $t('creation.next') }}</v-btn>
       </v-stepper-content>
 
       <v-stepper-step step="2" :complete="step > 2">
-        Informations sur la plateforme
+        {{ $t('creation.platformInfo') }}
       </v-stepper-step>
       <v-stepper-content step="2">
         <v-container fluid class="mb-5">
           <v-row>
             <v-col xs12 sm8>
-              <v-text-field name="longName" label="Nom" v-model="form.longName" required></v-text-field>
+              <v-text-field name="longName" :label="$t('creation.name')" v-model="form.longName" required></v-text-field>
             </v-col>
             <v-col xs12 sm4>
-              <v-text-field name="shortName" label="Abréviation" v-model="form.shortName" required></v-text-field>
+              <v-text-field name="shortName" :label="$t('creation.abv')" v-model="form.shortName" required></v-text-field>
             </v-col>
             <v-col xs12>
-              <v-text-field name="homeUrl" label="Page d'accueil" v-model="form.homeUrl"></v-text-field>
+              <v-text-field name="homeUrl" :label="$t('creation.homepage')" v-model="form.homeUrl"></v-text-field>
             </v-col>
           </v-row>
         </v-container>
-        <v-btn primary :disabled="!form.longName || !form.shortName" @click.native="step++">Suivant</v-btn>
-        <v-btn flat @click.native="step--">Précédent</v-btn>
+        <v-btn primary :disabled="!form.longName || !form.shortName" @click.native="step++">{{ $t('creation.next') }}</v-btn>
+        <v-btn flat @click.native="step--">{{ $t('creation.previous') }}</v-btn>
       </v-stepper-content>
 
       <v-stepper-step step="3" :complete="step > 3">
-        Statut de la plateforme
+        {{ $t('creation.platformStatus') }}
       </v-stepper-step>
       <v-stepper-content step="3">
         <v-container fluid class="mb-5">
@@ -54,8 +54,8 @@
           />
         </v-container>
 
-        <v-btn primary :disabled="!form.idList" :loading="creating" @click.native="createCard()">Créer</v-btn>
-        <v-btn flat @click.native="step--">Précédent</v-btn>
+        <v-btn primary :disabled="!form.idList" :loading="creating" @click.native="createCard()">{{ $t('creation.create') }}</v-btn>
+        <v-btn flat @click.native="step--">{{ $t('creation.previous') }}</v-btn>
       </v-stepper-content>
     </v-stepper>
   </v-card>

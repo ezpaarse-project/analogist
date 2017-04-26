@@ -109,16 +109,12 @@ api.getExtendedCard = function (cardID) {
 }
 
 function extendCard (card, platform) {
-  if (platform) {
-    card.platform = platform
+  card.platform = platform
 
-    // Select the latest date between trello and analogist
-    if (platform.lastModified > card.dateLastActivity) {
-      card.lastActivity = platform.lastModified
-    } else {
-      card.lastActivity = card.dateLastActivity
-    }
-  }
+  // Select the latest date between trello and analogist
+  card.lastActivity = (platform && platform.lastModified > card.dateLastActivity)
+                      ? platform.lastModified
+                      : card.dateLastActivity
 
   if (card.labels) {
     card.humanCertified = card.labels.some(l => /^certified:\s*human$/i.test(l.name))

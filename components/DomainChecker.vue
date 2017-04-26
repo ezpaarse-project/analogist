@@ -2,15 +2,15 @@
   <form @submit.prevent="checkDomain(domainInput)">
     <v-container fluid>
       <v-row class="align-center">
-        <v-text-field hide-details name="domain" label="Nom de domaine" v-model="domainInput" autocomplete="off"></v-text-field>
-        <v-btn type="submit" flat :loading="checking">Vérifier</v-btn>
+        <v-text-field hide-details name="domain" :label="$t('domainCheck.domainName')" v-model="domainInput" autocomplete="off"></v-text-field>
+        <v-btn type="submit" flat :loading="checking">{{ $t('domainCheck.check') }}</v-btn>
       </v-row>
       <v-row>
-        <p v-if="checking">Vérification...</p>
-        <p v-else-if="parser">Le domaine <strong>{{ domainName }}</strong> est déjà supporté par le parseur <a :href="parser.manifest.trello" target="_blank">{{ parser.manifest.longname }}</a>.</p>
-        <p v-else-if="error">Une erreur est survenue : {{ error.message }}</p>
-        <p v-else-if="domainName">Le domaine <strong>{{ domainName }}</strong> n'a pas encore de parseur associé.</p>
-        <p v-else>Entrez un nom de domaine susceptible d'héberger des ressources.</p>
+        <p v-if="checking">{{ $t('domainCheck.checking') }}</p>
+        <p v-else-if="parser" v-html="$t('domainCheck.supported', { domainName, trello: parser.manifest.trello, cardName: parser.manifest.longname })"></p>
+        <p v-else-if="error">{{ $t('domainCheck.error', { message: error.message }) }}</p>
+        <p v-else-if="domainName" v-html="$t('domainCheck.unsupported', { domainName })"></p>
+        <p v-else>{{ $t('domainCheck.pleaseType') }}</p>
       </v-row>
     </v-container>
   </form>

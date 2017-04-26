@@ -3,11 +3,11 @@
 
     <v-expansion-panel class="my-2">
       <v-expansion-panel-content>
-        <div slot="header">Recherche</div>
+        <div slot="header">{{ $t('cards.search') }}</div>
         <v-card>
           <v-card-text>
-            <v-text-field v-model="search.text" prepend-icon="search" label="Nom" hide-details single-line />
-            <v-select label="Statut" prepend-icon="label" :items="lists" v-model="search.lists" item-text="name" item-value="id" multiple chips />
+            <v-text-field :label="$t('cards.name')" v-model="search.text" prepend-icon="search" />
+            <v-select :label="$t('cards.status')" prepend-icon="label" :items="lists" v-model="search.lists" item-text="name" item-value="id" multiple chips />
           </v-card-text>
         </v-card>
       </v-expansion-panel-content>
@@ -16,7 +16,7 @@
     <v-card>
       <v-card-row class="cyan white--text">
         <v-card-title>
-          Plateformes ({{ cards.length }})
+          {{ $t('cards.platforms') }} ({{ cards.length }})
         </v-card-title>
         <v-spacer/>
         <div>

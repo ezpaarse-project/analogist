@@ -14,43 +14,43 @@
 
       <v-card-text>
         <v-container fluid>
-          <div class="title">Titre</div>
+          <div class="title">{{ $t('analyses.title')}}</div>
           <p v-text="analysis.title"></p>
 
-          <div class="title">URL</div>
+          <div class="title">{{ $t('analyses.url')}}</div>
           <p v-text="analysis.url" class="break-all"></p>
 
           <v-row>
             <v-col xs12 sm6 md4>
-              <div class="title">Type</div>
+              <div class="title">{{ $t('analyses.type')}}</div>
               <p v-text="analysis.rtype"></p>
             </v-col>
             <v-col xs12 sm6 md4>
-              <div class="title">Format</div>
+              <div class="title">{{ $t('analyses.format')}}</div>
               <p v-text="analysis.mime"></p>
             </v-col>
             <v-col xs12 sm12 md4>
-              <div class="title">UnitID</div>
+              <div class="title">{{ $t('analyses.unitid')}}</div>
               <p v-text="analysis.unitid"></p>
             </v-col>
           </v-row>
 
           <v-row v-if="analysis.comment">
-            <div class="title">Remarques</div>
+            <div class="title">{{ $t('analyses.comment')}}</div>
             <p v-text="analysis.comment"></p>
           </v-row>
 
           <v-card class="my-3" v-if="analysis.identifiers && analysis.identifiers.length">
             <v-card-row class="blue-grey lighten-5">
               <v-card-title>
-                Champs reconnus
+                {{ $t('analyses.recognizedFields') }}
               </v-card-title>
             </v-card-row>
             <table>
               <thead>
                 <tr>
-                  <th>Type</th>
-                  <th>Valeur</th>
+                  <th>{{ $t('analyses.type') }}</th>
+                  <th>{{ $t('analyses.value') }}</th>
                 </tr>
               </thead>
               <tbody>
@@ -65,14 +65,14 @@
           <v-card class="my-3" v-if="analysis.pathParams && analysis.pathParams.length">
             <v-card-row class="blue-grey lighten-5">
               <v-card-title>
-                Éléments de la route
+                {{ $t('analyses.pathParams') }}
               </v-card-title>
             </v-card-row>
             <table>
               <thead>
                 <tr>
-                  <th>Valeur</th>
-                  <th>Commentaire</th>
+                  <th>{{ $t('analyses.value') }}</th>
+                  <th>{{ $t('analyses.comment') }}</th>
                 </tr>
               </thead>
               <tbody>
@@ -87,15 +87,15 @@
           <v-card class="my-3" v-if="analysis.queryParams && analysis.queryParams.length">
             <v-card-row class="blue-grey lighten-5">
               <v-card-title>
-                Paramètres de la query
+                {{ $t('analyses.queryParams') }}
               </v-card-title>
             </v-card-row>
             <table>
               <thead>
                 <tr>
-                  <th>Nom</th>
-                  <th>Valeur</th>
-                  <th>Commentaire</th>
+                  <th>{{ $t('analyses.name') }}</th>
+                  <th>{{ $t('analyses.value') }}</th>
+                  <th>{{ $t('analyses.comment') }}</th>
                 </tr>
               </thead>
               <tbody>
@@ -126,7 +126,7 @@
       </v-card-row>
 
       <v-card-text>
-        Analyse introuvable
+        {{ $t('analyses.notFound') }}
       </v-card-text>
     </v-card>
   </v-container>

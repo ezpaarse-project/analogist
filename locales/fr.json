@@ -1,0 +1,64 @@
+{
+  "header": {
+    "platforms": "Plateformes",
+    "trelloBoard": "Tableau Trello",
+    "logout": "Se déconnecter",
+    "notConnected": "Non connecté",
+    "login": "Se connecter"
+  },
+  "card": {
+    "lastActivity": "Dernière activité",
+    "status": "Statut",
+    "unknown": "Inconnu",
+    "nbAnalyses": "{n} analyses",
+    "github": "Github",
+    "homepage": "Page d'accueil",
+    "trello": "Carte Trello",
+    "contributors": "Contributeurs",
+    "humanCertification": "Certification humaine",
+    "publisherCertification": "Certification éditeur"
+  },
+  "analyses": {
+    "new": "Nouvelle analyse",
+    "title": "Titre",
+    "url": "URL",
+    "type": "Type",
+    "format": "Format",
+    "unitid": "UnitID",
+    "comment": "Remarques",
+    "name": "Nom",
+    "value": "Valeur",
+    "recognizedFields": "Champs reconnus",
+    "pathParams": "Éléments de la route",
+    "queryParams": "Paramètres de la query",
+    "notFound": "Analyse introuvable",
+    "saved": "Analyse sauvegardée"
+  },
+  "cards": {
+    "search": "Recherche",
+    "name": "Nom",
+    "status": "Statut",
+    "platforms": "Plateformes"
+  },
+  "creation": {
+    "newPlatform": "Nouvelle plateforme",
+    "domainCheck": "Vérification des domaines",
+    "next": "Suivant",
+    "previous": "Précédent",
+    "platformInfo": "Informations sur la plateforme",
+    "platformStatus": "Statut de la plateforme",
+    "create": "Créer",
+    "name": "Nom",
+    "abv": "Abbréviation",
+    "homepage": "Page d'accueil"
+  },
+  "domainCheck": {
+    "domainName": "Nom de domaine",
+    "check": "Vérifier",
+    "checking": "Vérification...",
+    "supported": "Le domaine <strong>{domainName}</strong> est déjà supporté par le parseur <a href=\"{trello}\" target=\"_blank\">{cardName}</a>.",
+    "error": "Une erreur est survenue : {message}",
+    "unsupported": "Le domaine <strong>{domainName}</strong> n'a pas encore de parseur associé.",
+    "pleaseType": "Entrez un nom de domaine susceptible d'héberger des ressources."
+  }
+}

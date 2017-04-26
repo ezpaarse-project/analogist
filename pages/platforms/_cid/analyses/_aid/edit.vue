@@ -14,30 +14,30 @@
 
       <v-card-text>
         <v-container fluid>
-          <v-text-field @input="handleChange" name="title" label="Titre" v-model="analysis.title"></v-text-field>
-          <v-text-field @input="handleChange" name="url" label="URL" v-model="analysis.url"></v-text-field>
+          <v-text-field @input="handleChange" name="title" :label="$t('analyses.title')" v-model="analysis.title"></v-text-field>
+          <v-text-field @input="handleChange" name="url" :label="$t('analyses.url')" v-model="analysis.url"></v-text-field>
 
           <v-row>
             <v-col xs12 sm6 md4>
-              <v-text-field @input="handleChange" name="rtype" label="Type" v-model="analysis.rtype"></v-text-field>
+              <v-text-field @input="handleChange" name="rtype" :label="$t('analyses.type')" v-model="analysis.rtype"></v-text-field>
             </v-col>
             <v-col xs12 sm6 md4>
-              <v-text-field @input="handleChange" name="mime" label="Format" v-model="analysis.mime"></v-text-field>
+              <v-text-field @input="handleChange" name="mime" :label="$t('analyses.format')" v-model="analysis.mime"></v-text-field>
             </v-col>
             <v-col xs12 sm12 md4>
-              <v-text-field @input="handleChange" name="unitid" label="UnitID" v-model="analysis.unitid"></v-text-field>
+              <v-text-field @input="handleChange" name="unitid" :label="$t('analyses.unitid')" v-model="analysis.unitid"></v-text-field>
             </v-col>
           </v-row>
 
-          <v-text-field @input="handleChange" multi-line name="comment" label="Remarques" v-model="analysis.comment"></v-text-field>
+          <v-text-field @input="handleChange" multi-line name="comment" :label="$t('analyses.comment')" v-model="analysis.comment"></v-text-field>
 
-          <h4>Champs reconnus</h4>
+          <h4>{{ $t('analyses.recognizedFields') }}</h4>
           <v-row class="elevation-1 my-2" v-for="(id, index) in analysis.identifiers" :key="index">
             <v-col xs12 sm5 md5>
-              <v-text-field @input="handleChange" label="Type" v-model="id.type"></v-text-field>
+              <v-text-field @input="handleChange" :label="$t('analyses.type')" v-model="id.type"></v-text-field>
             </v-col>
             <v-col xs12 sm5 md6>
-              <v-text-field @input="handleChange" label="Valeur" v-model="id.value"></v-text-field>
+              <v-text-field @input="handleChange" :label="$t('analyses.value')" v-model="id.value"></v-text-field>
             </v-col>
             <v-col xs12 sm2 md1 class="text-xs-center">
               <v-btn secondary floating small v-on:click.native="removeEntryFrom('identifiers', index)">
@@ -51,13 +51,13 @@
             </v-btn>
           </p>
 
-          <h4>Éléments de la route</h4>
+          <h4>{{ $t('analyses.pathParams') }}</h4>
           <v-row class="elevation-1 my-2" v-for="(id, index) in analysis.pathParams" :key="index">
             <v-col xs12 sm5 md5>
-              <v-text-field @input="handleChange" label="Valeur" v-model="id.value"></v-text-field>
+              <v-text-field @input="handleChange" :label="$t('analyses.title')" v-model="id.value"></v-text-field>
             </v-col>
             <v-col xs12 sm5 md6>
-              <v-text-field @input="handleChange" label="Commentaire" v-model="id.comment"></v-text-field>
+              <v-text-field @input="handleChange" :label="$t('analyses.title')" v-model="id.comment"></v-text-field>
             </v-col>
             <v-col xs12 sm2 md1 class="text-xs-center">
               <v-btn secondary floating small v-on:click.native="removeEntryFrom('pathParams', index)">
@@ -71,16 +71,16 @@
             </v-btn>
           </p>
 
-          <h4>Paramètres de la query</h4>
+          <h4>{{ $t('analyses.queryParams') }}</h4>
           <v-row class="elevation-1 my-2" v-for="(id, index) in analysis.queryParams" :key="index">
             <v-col xs12 sm6 md3>
-              <v-text-field @input="handleChange" label="Nom" v-model="id.name"></v-text-field>
+              <v-text-field @input="handleChange" :label="$t('analyses.name')" v-model="id.name"></v-text-field>
             </v-col>
             <v-col xs12 sm6 md4>
-              <v-text-field @input="handleChange" label="Valeur" v-model="id.value"></v-text-field>
+              <v-text-field @input="handleChange" :label="$t('analyses.value')" v-model="id.value"></v-text-field>
             </v-col>
             <v-col xs12 sm10 md4>
-              <v-text-field @input="handleChange" label="Commentaire" v-model="id.comment"></v-text-field>
+              <v-text-field @input="handleChange" :label="$t('analyses.comment')" v-model="id.comment"></v-text-field>
             </v-col>
             <v-col xs12 sm2 md1 class="text-xs-center">
               <v-btn secondary floating small v-on:click.native="removeEntryFrom('queryParams', index)">
@@ -98,7 +98,7 @@
     </v-card>
 
     <v-snackbar :timeout="1000" bottom right v-model="saved">
-      Analyse sauvegardée
+      {{ $t('analyses.saved') }}
     </v-snackbar>
 
     <v-snackbar bottom right v-model="error">
@@ -119,7 +119,7 @@
       </v-card-row>
 
       <v-card-text>
-        Analyse introuvable
+        {{ $t('analyses.notFound') }}
       </v-card-text>
     </v-card>
   </v-container>
