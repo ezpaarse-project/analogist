@@ -44,7 +44,7 @@
                 {{ $t('analyses.recognizedFields') }}
               </v-card-title>
             </v-card-row>
-            <table>
+            <table class="datatable table">
               <thead>
                 <tr>
                   <th>{{ $t('analyses.type') }}</th>
@@ -66,7 +66,7 @@
                 {{ $t('analyses.pathParams') }}
               </v-card-title>
             </v-card-row>
-            <table>
+            <table class="datatable table">
               <thead>
                 <tr>
                   <th>{{ $t('analyses.value') }}</th>
@@ -88,7 +88,7 @@
                 {{ $t('analyses.queryParams') }}
               </v-card-title>
             </v-card-row>
-            <table>
+            <table class="datatable table">
               <thead>
                 <tr>
                   <th>{{ $t('analyses.name') }}</th>
