@@ -184,11 +184,11 @@ export default {
     }
   },
   methods: {
-    addIdentifier () { this.analysis.identifiers.push({}) },
-    addQueryParam () { this.analysis.queryParams.push({}) },
-    addPathParam () { this.analysis.pathParams.push({}) },
     addEntryIn (arrayName) {
-      if (!Array.isArray(this.analysis[arrayName])) { this.analysis[arrayName] = [] }
+      if (!Array.isArray(this.analysis[arrayName])) {
+        this.$set(this.analysis, arrayName, [])
+      }
+
       this.analysis[arrayName].push({})
     },
     removeEntryFrom (arrayName, index) {
