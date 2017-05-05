@@ -99,9 +99,13 @@ router.patch('/:cid/comment', (req, res, next) => {
 
 /* POST new analysis. */
 router.post('/:cid/analyses', mw.updateHistory, (req, res, next) => {
+  const analysis = req.body
+
   if (typeof req.body !== 'object') { return res.status(400).end() }
 
   req.body.id = new ObjectID()
+  analysis.updatedAt = new Date()
+  analysis.updatedBy = req.session.profile.id
 
   mongo.get('platforms').findOneAndUpdate(
     { cardID: req.params.cid },
@@ -119,14 +123,18 @@ router.post('/:cid/analyses', mw.updateHistory, (req, res, next) => {
 
 /* PUT an existing analysis */
 router.put('/:cid/analyses/:aid', mw.updateHistory, (req, res, next) => {
-  if (typeof req.body !== 'object') { return res.status(400).end() }
-  if (!ObjectID.isValid(req.params.aid)) { return res.status(400).end() }
+  const analysis = req.body
 
-  req.body.id = new ObjectID(req.params.aid)
+  if (!ObjectID.isValid(req.params.aid)) { return res.status(400).end() }
+  if (typeof analysis !== 'object') { return res.status(400).end() }
+
+  analysis.id = new ObjectID(req.params.aid)
+  analysis.updatedAt = new Date()
+  analysis.updatedBy = req.session.profile.id
 
   mongo.get('platforms').findOneAndUpdate(
-    { cardID: req.params.cid, 'analyses.id': req.body.id },
-    { $set: { 'analyses.$': req.body, lastModified: new Date() } },
+    { cardID: req.params.cid, 'analyses.id': analysis.id },
+    { $set: { 'analyses.$': analysis, lastModified: new Date() } },
     { returnOriginal: false },
     (err, result) => {
       if (err) { return next(err) }
