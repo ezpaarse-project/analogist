@@ -22,7 +22,7 @@ export default {
   props: ['card'],
   computed: {
     updatedAt () {
-      return moment(this.card.lastActivity).fromNow()
+      return moment(this.card.lastActivity).locale(this.$i18n.locale).fromNow()
     },
     nbAnalyses () {
       try {

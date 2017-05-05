@@ -33,7 +33,7 @@ export default {
   },
   computed: {
     updatedAt () {
-      return moment(this.analysis.updatedAt).fromNow()
+      return moment(this.analysis.updatedAt).locale(this.$i18n.locale).fromNow()
     },
     canEdit () {
       return this.$store.state.user && this.$store.state.user.isAuthorized

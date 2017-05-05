@@ -92,7 +92,7 @@ export default {
       return this.$store.state.trelloLists.find(l => this.card.idList === l.id)
     },
     lastActivity () {
-      return moment(this.card.lastActivity).fromNow()
+      return moment(this.card.lastActivity).locale(this.$i18n.locale).fromNow()
     }
   }
 }
