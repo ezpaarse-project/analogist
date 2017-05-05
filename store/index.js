@@ -69,6 +69,9 @@ const store = new Vuex.Store({
     },
     CHECK_DOMAIN ({ commit }, domain) {
       return api.checkDomain(domain)
+    },
+    ADD_CARD_MEMBER ({ commit }, { card, user }) {
+      return api.addUserToCard(card, user)
     }
   },
   mutations: {

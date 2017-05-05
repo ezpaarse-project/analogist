@@ -167,8 +167,11 @@ export default {
     analysis () {
       return this.$store.state.analysis
     },
+    user () {
+      return this.$store.state.user
+    },
     canSave () {
-      return this.$store.state.user && this.$store.state.user.isAuthorized
+      return this.user && this.user.isAuthorized
     }
   },
   beforeRouteLeave (to, from, next) {
@@ -217,6 +220,13 @@ export default {
             analysis: this.analysis
           })
         } while (this.pendingChanges)
+
+        if (this.card.idMembers.indexOf(this.user.id) === -1) {
+          await this.$store.dispatch('ADD_CARD_MEMBER', {
+            card: this.card,
+            user: this.user
+          })
+        }
 
         this.saved = true
         this.dirty = false

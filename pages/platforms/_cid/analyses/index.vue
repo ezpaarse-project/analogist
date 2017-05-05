@@ -14,20 +14,7 @@
 
       <v-list two-line>
         <draggable v-model="analyses">
-          <v-list-item v-for="analysis in analyses" v-bind:key="analysis.id">
-            <v-list-tile router :href="{ name: 'platforms-cid-analyses-aid', params: { cid: $route.params.cid, aid: analysis.id } }">
-              <v-list-tile-content>
-                <v-list-tile-title v-text="analysis.title" />
-                <v-list-tile-sub-title>{{ analysis.rtype || '-' }} / {{ analysis.mime || '-' }}</v-list-tile-sub-title>
-              </v-list-tile-content>
-
-              <v-list-tile-action v-if="canEdit">
-                <v-btn flat icon ripple :loading="deleting[analysis.id]" @click.native.prevent="deleteAnalysis(analysis.id)">
-                  <v-icon>delete</v-icon>
-                </v-btn>
-              </v-list-tile-action>
-            </v-list-tile>
-          </v-list-item>
+          <AnalysisTile v-for="analysis in analyses" :key="analysis.id" :analysis="analysis" :cardID="card.id"/>
         </draggable>
       </v-list>
     </v-card>
@@ -35,17 +22,18 @@
 </template>
 
 <script>
+import AnalysisTile from '~/components/AnalysisTile'
 import draggable from 'vuedraggable'
 
 export default {
   name: 'analyses',
   components: {
-    draggable
+    draggable,
+    AnalysisTile
   },
   data () {
     return {
-      creating: false,
-      deleting: {}
+      creating: false
     }
   },
   async fetch ({ params, store, error }) {
@@ -83,8 +71,11 @@ export default {
         }
       }
     },
+    user () {
+      return this.$store.state.user
+    },
     canEdit () {
-      return this.$store.state.user && this.$store.state.user.isAuthorized
+      return this.user && this.user.isAuthorized
     }
   },
   methods: {
@@ -93,23 +84,20 @@ export default {
 
       try {
         const analysis = await this.$store.dispatch('SAVE_ANALYSIS', { cardID: this.card.id, analysis: {} })
+
+        if (this.card.idMembers.indexOf(this.user.id) === -1) {
+          await this.$store.dispatch('ADD_CARD_MEMBER', {
+            card: this.card,
+            user: this.user
+          })
+        }
+
         this.$router.push(`/platforms/${this.card.id}/analyses/${analysis.id}/edit`)
       } catch (e) {
         console.error('Analysis creation failed', e) // TODO: handle error
       }
 
       this.creating = false
-    },
-    async deleteAnalysis (analysisID) {
-      this.$set(this.deleting, analysisID, true)
-
-      try {
-        await this.$store.dispatch('DELETE_ANALYSIS', { cardID: this.card.id, analysisID })
-      } catch (e) {
-        console.error('Analysis deletion failed', e) // TODO: handle error
-      }
-
-      this.$set(this.deleting, analysisID, false)
     }
   }
 }
