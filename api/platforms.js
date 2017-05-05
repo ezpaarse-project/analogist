@@ -101,22 +101,22 @@ router.patch('/:cid/comment', (req, res, next) => {
 router.post('/:cid/analyses', mw.updateHistory, (req, res, next) => {
   const analysis = req.body
 
-  if (typeof req.body !== 'object') { return res.status(400).end() }
+  if (typeof analysis !== 'object') { return res.status(400).end() }
 
-  req.body.id = new ObjectID()
+  analysis.id = new ObjectID()
   analysis.updatedAt = new Date()
   analysis.updatedBy = req.session.profile.id
 
   mongo.get('platforms').findOneAndUpdate(
     { cardID: req.params.cid },
     {
-      $push: { analyses: req.body },
+      $push: { analyses: analysis },
       $set: { lastModified: new Date() }
     },
     { upsert: true },
     (err, result) => {
       if (err) { return next(err) }
-      res.status(201).json(req.body)
+      res.status(201).json(analysis)
     }
   )
 })
