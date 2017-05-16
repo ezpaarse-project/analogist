@@ -1,7 +1,7 @@
-# ang-api
+# AnalogIST
 
-> Nuxt.js project
-
+AnalogIST is the platform that gathers all analyses made for ezPAARSE.
+http://ang.couperin.org/
 
 ## Requirements
 
