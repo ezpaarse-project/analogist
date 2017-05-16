@@ -236,7 +236,9 @@ export default {
         this.error = e
         this.saving = false
         this.pendingChanges = false
-        return console.error(e) // TODO: handle error
+        // eslint-disable-next-line
+        return console.error(e)
+        // TODO: handle error
       }
     }
   }

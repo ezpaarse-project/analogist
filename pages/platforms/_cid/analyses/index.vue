@@ -67,7 +67,9 @@ export default {
         try {
           this.$store.dispatch('REORDER_ANALYSES', { cardID: this.card.id, list })
         } catch (e) {
+          // eslint-disable-next-line
           console.error('Reorder failed', e)
+          // TODO: handle error
         }
       }
     },
@@ -94,7 +96,9 @@ export default {
 
         this.$router.push(`/platforms/${this.card.id}/analyses/${analysis.id}/edit`)
       } catch (e) {
-        console.error('Analysis creation failed', e) // TODO: handle error
+        // eslint-disable-next-line
+        console.error('Analysis creation failed', e)
+        // TODO: handle error
       }
 
       this.creating = false
