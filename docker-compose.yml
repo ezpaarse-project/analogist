@@ -1,0 +1,26 @@
+analogist:
+  image: ezpaarseproject/analogist:1.0.2
+  links:
+    - analogistdb:mongodb
+  ports:
+    - "3000:3000"
+  environment:
+    # les variables d'environnement pour l'accès au board trello par l'application
+    # exemple le board de prod : https://trello.com/b/wEaLnz8d/ezpaarse-analogist-suivi-des-plateformes
+    - ANG_TRELLO_KEY
+    - ANG_TRELLO_SECRET
+    - ANG_TRELLO_BOARDID
+    - ANG_MONGO_HOST=mongodb
+    # les variables d'environnement pour que l'application puisse accéder à l'exterieur (ex: l'API trello)
+    - http_proxy
+    - https_proxy
+    - no_proxy
+  tty: true
+  restart: on-failure
+
+analogistdb:
+  image: mongo:3.4.4
+  volumes:
+    - ./data/db:/data/db
+  command: --smallfiles
+  restart: on-failure
