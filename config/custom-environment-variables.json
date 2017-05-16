@@ -12,7 +12,7 @@
   "trello": {
     "key": "ANG_TRELLO_KEY",
     "secret": "ANG_TRELLO_SECRET",
-    "boardid": "ANG_TRELLO_BOARDID"
+    "boardId": "ANG_TRELLO_BOARDID"
   },
   "smtp": {
     "host": "ANG_SMTP_HOST",
