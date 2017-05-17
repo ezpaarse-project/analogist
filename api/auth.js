@@ -8,7 +8,7 @@ const trello = require('../lib/trello')
 const mailer = require('../lib/mailer')
 
 router.use('/connect/trello', (req, res, next) => {
-  req.query.host = req.query.host || req.headers.host
+  req.query.host = req.query.host || req.headers['x-forwarded-host'] || req.headers.host
   next()
 })
 
