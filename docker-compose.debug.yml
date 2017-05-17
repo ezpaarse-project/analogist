@@ -1,24 +1,25 @@
 version: '2'
 services:
   analogist:
-    image: ezpaarseproject/analogist:1.0.3
+    image: node:6.10.3-wheezy
+    volumes:
+      - .:/app
+    working_dir: /app
     links:
       - analogistdb:mongodb
     ports:
       - "3000:3000"
     environment:
-      # les variables d'environnement pour l'accès au board trello par l'application
-      # exemple le board de prod : https://trello.com/b/wEaLnz8d/ezpaarse-analogist-suivi-des-plateformes
       - ANG_TRELLO_KEY
       - ANG_TRELLO_SECRET
       - ANG_TRELLO_BOARDID
       - ANG_MONGO_HOST=mongodb
-      # les variables d'environnement pour que l'application puisse accéder à l'exterieur (ex: l'API trello)
       - http_proxy
       - https_proxy
       - no_proxy
     tty: true
     restart: on-failure
+    command: npm run dev
 
   analogistdb:
     image: mongo:3.4.4
