@@ -15,7 +15,7 @@
       <v-card-text>
         <v-container fluid>
           <v-text-field @input="handleChange" name="title" :label="$t('analyses.title')" v-model="analysis.title"></v-text-field>
-          <v-text-field @input="handleChange" name="url" :label="$t('analyses.url')" v-model="analysis.url"></v-text-field>
+          <v-text-field @input="handleChange" @change="parseUrl" name="url" :label="$t('analyses.url')" v-model="analysis.url"></v-text-field>
 
           <v-row>
             <v-col xs12 sm6 md4>
@@ -205,6 +205,33 @@ export default {
         this.pendingChanges = true
       }
       changeTimeout = setTimeout(this.save, 2000)
+    },
+    parseUrl () {
+      if (!this.analysis || !this.analysis.url) { return }
+
+      this.analysis.pathParams = this.analysis.pathParams || []
+      this.analysis.queryParams = this.analysis.queryParams || []
+
+      if (this.analysis.pathParams.length > 0) { return }
+      if (this.analysis.queryParams.length > 0) { return }
+
+      const link = document.createElement('a')
+      link.href = this.analysis.url
+
+      link.pathname.split('/').forEach(param => {
+        if (param) { this.analysis.pathParams.push({ value: param }) }
+      })
+
+      link.search.substring(1).split('&').forEach(param => {
+        if (!param) { return }
+
+        const parts = param.split('=')
+
+        this.analysis.queryParams.push({
+          name: decodeURIComponent(parts[0] || ''),
+          value: decodeURIComponent(parts[1] || '')
+        })
+      })
     },
     async save () {
       if (!this.dirty) { return }
