@@ -2,7 +2,6 @@
   <v-container>
     <v-row>
       <v-btn class="blue-grey" router :href="{ name: 'platforms-cid', params: { cid: $route.params.cid } }"><v-icon>arrow_back</v-icon></v-btn>
-      <v-btn v-if="canEdit" @click.native="createAnalysis" :loading="creating" flat router>{{ $t('analyses.new') }}</v-btn>
     </v-row>
 
     <v-card>
@@ -10,6 +9,35 @@
         <v-card-title>
           {{ card.name }}
         </v-card-title>
+
+        <v-menu bottom left>
+          <v-btn icon="icon" slot="activator" light>
+            <v-icon>more_vert</v-icon>
+          </v-btn>
+          <v-list>
+            <v-list-item>
+              <v-list-tile v-if="canEdit" @click.native="createAnalysis">
+                <v-list-tile-action>
+                  <v-icon dark>add</v-icon>
+                </v-list-tile-action>
+                <v-list-tile-content>
+                  <v-list-tile-title>{{ $t('analyses.new') }}</v-list-tile-title>
+                </v-list-tile-content>
+              </v-list-tile>
+            </v-list-item>
+
+            <v-list-item>
+              <v-list-tile @click.native="generateTestFile">
+                <v-list-tile-action>
+                  <v-icon dark>file_upload</v-icon>
+                </v-list-tile-action>
+                <v-list-tile-content>
+                  <v-list-tile-title>{{ $t('analyses.export') }}</v-list-tile-title>
+                </v-list-tile-content>
+              </v-list-tile>
+            </v-list-item>
+          </v-list>
+        </v-menu>
       </v-card-row>
 
       <v-list two-line>
@@ -24,6 +52,15 @@
 <script>
 import AnalysisTile from '~/components/AnalysisTile'
 import draggable from 'vuedraggable'
+import { saveAs } from 'file-saver'
+
+function escapeCSVstring (str) {
+  if (/[";]/.test(str)) {
+    return `"${str.replace(/"/g, '""')}"`
+  } else {
+    return str || ''
+  }
+}
 
 export default {
   name: 'analyses',
@@ -102,6 +139,44 @@ export default {
       }
 
       this.creating = false
+    },
+    generateTestFile () {
+      if (!this.analyses) { return }
+
+      const columns = [
+        { title: 'out-unitid', getter (a) { return a.unitid } },
+        { title: 'out-rtype', getter (a) { return a.rtype } },
+        { title: 'out-mime', getter (a) { return a.mime } },
+        { title: 'in-url', getter (a) { return a.url } }
+      ]
+
+      // Add a column for each identifier
+      this.analyses.forEach(analysis => {
+        if (!analysis.identifiers) { return }
+
+        analysis.identifiers.forEach(id => {
+          if (!id.type) { return }
+          if (columns.find(c => c.title === `out-${id.type}`)) { return }
+
+          columns.unshift({
+            title: `out-${id.type}`,
+            getter (a) {
+              if (a.identifiers) {
+                const identifier = a.identifiers.find(i => i.type === id.type)
+                return identifier && identifier.value
+              }
+            }
+          })
+        })
+      })
+
+      const header = columns.map(col => escapeCSVstring(col.title)).join(';')
+
+      const lines = this.analyses.map(analysis => {
+        return columns.map(col => escapeCSVstring(col.getter(analysis))).join(';')
+      }).join('\n')
+
+      saveAs(new Blob([`${header}\n${lines}`], { type: 'text/csv;charset=utf-8' }), 'test.csv')
     }
   }
 }

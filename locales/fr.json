@@ -20,6 +20,7 @@
   },
   "analyses": {
     "new": "Nouvelle analyse",
+    "export": "Générer un fichier de test",
     "title": "Titre",
     "url": "URL",
     "type": "Type",

@@ -20,6 +20,7 @@
   },
   "analyses": {
     "new": "New analysis",
+    "export": "Generate test file",
     "title": "Title",
     "url": "URL",
     "type": "Type",
