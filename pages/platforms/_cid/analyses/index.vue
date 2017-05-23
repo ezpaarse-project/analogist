@@ -52,6 +52,7 @@
 <script>
 import AnalysisTile from '~/components/AnalysisTile'
 import draggable from 'vuedraggable'
+import moment from 'moment'
 import { saveAs } from 'file-saver'
 
 function escapeCSVstring (str) {
@@ -176,7 +177,10 @@ export default {
         return columns.map(col => escapeCSVstring(col.getter(analysis))).join(';')
       }).join('\n')
 
-      saveAs(new Blob([`${header}\n${lines}`], { type: 'text/csv;charset=utf-8' }), 'test.csv')
+      const shortName = (/\[([\w\d]+)\]$/.exec(this.card && this.card.name) || [])[1]
+      const fileName = `${shortName || 'test'}.${moment().format('YYYY-MM-DD')}.csv`
+
+      saveAs(new Blob([`${header}\n${lines}`], { type: 'text/csv;charset=utf-8' }), fileName)
     }
   }
 }
