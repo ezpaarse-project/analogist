@@ -39,7 +39,8 @@ module.exports = {
       'vuetify',
       'vue-i18n',
       'vuedraggable',
-      'moment'
+      'moment',
+      'file-saver'
     ]
   }
 }
