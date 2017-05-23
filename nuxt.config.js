@@ -38,6 +38,7 @@ module.exports = {
       'axios',
       'vuetify',
       'vue-i18n',
+      'vuedraggable',
       'moment'
     ]
   }
