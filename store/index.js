@@ -11,7 +11,9 @@ const store = new Vuex.Store({
     analyses: null,
     analysis: null,
     cards: [],
-    trelloLists: []
+    trelloLists: [],
+    searchText: '',
+    searchLists: []
   },
   actions: {
     async nuxtServerInit ({ commit }, { req }) {
@@ -72,6 +74,12 @@ const store = new Vuex.Store({
     },
     ADD_CARD_MEMBER ({ commit }, { card, user }) {
       return api.addUserToCard(card, user)
+    },
+    UPDATE_SEARCH_TEXT ({ commit }, value) {
+      return commit('SET_SEARCH_TEXT', value)
+    },
+    UPDATE_SEARCH_LISTS ({ commit }, value) {
+      return commit('SET_SEARCH_LISTS', value)
     }
   },
   mutations: {
@@ -98,6 +106,12 @@ const store = new Vuex.Store({
     },
     SET_CARD (state, card) {
       Vue.set(state, 'card', card)
+    },
+    SET_SEARCH_TEXT (state, searchText) {
+      Vue.set(state, 'searchText', searchText)
+    },
+    SET_SEARCH_LISTS (state, searchLists) {
+      Vue.set(state, 'searchLists', searchLists)
     },
     REMOVE_ANALYSIS (state, analysisID) {
       Vue.set(state, 'analyses', state.analyses.filter(a => a.id !== analysisID))

@@ -6,8 +6,8 @@
         <div slot="header">{{ $t('cards.search') }}</div>
         <v-card>
           <v-card-text>
-            <v-text-field :label="$t('cards.name')" v-model="search.text" prepend-icon="search" />
-            <v-select :label="$t('cards.status')" prepend-icon="label" :items="lists" v-model="search.lists" item-text="name" item-value="id" multiple chips />
+            <v-text-field :label="$t('cards.name')" v-model="searchText" prepend-icon="search" />
+            <v-select :label="$t('cards.status')" prepend-icon="label" :items="lists" v-model="searchLists" item-text="name" item-value="id" multiple chips />
           </v-card-text>
         </v-card>
       </v-expansion-panel-content>
@@ -43,10 +43,6 @@ export default {
   },
   data () {
     return {
-      search: {
-        text: '',
-        lists: []
-      },
       sortBy: 'nameAsc',
       sortChoices: [
         { key: 'nameAsc', desc: 'A -> Z' },
@@ -64,6 +60,22 @@ export default {
     await store.dispatch('FETCH_CARDS')
   },
   computed: {
+    searchText: {
+      get () {
+        return this.$store.state.searchText
+      },
+      set (newValue) {
+        this.$store.dispatch('UPDATE_SEARCH_TEXT', newValue)
+      }
+    },
+    searchLists: {
+      get () {
+        return this.$store.state.searchLists
+      },
+      set (newValue) {
+        this.$store.dispatch('UPDATE_SEARCH_LISTS', newValue)
+      }
+    },
     lists () {
       return this.$store.state.trelloLists
     },
@@ -71,8 +83,8 @@ export default {
       return this.$store.state.user && this.$store.state.user.isAuthorized
     },
     cards () {
-      const search = this.search.text.toLowerCase()
-      const lists = this.search.lists
+      const search = this.searchText.toLowerCase()
+      const lists = this.searchLists
 
       return this.$store.state.cards.filter(card => {
         if (!card.name.toLowerCase().includes(search)) {
