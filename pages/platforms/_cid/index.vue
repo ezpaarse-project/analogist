@@ -38,6 +38,36 @@
 
         <v-divider/>
 
+        <template v-if="card.humanCertified || card.publisherCertified">
+          <v-subheader>Certifications</v-subheader>
+
+          <v-list>
+            <v-list-item v-if="card.humanCertified">
+              <v-list-tile avatar>
+                <v-list-tile-avatar>
+                  <img src="~assets/img/certif_h.png">
+                </v-list-tile-avatar>
+                <v-list-tile-content>
+                  <v-list-tile-title>{{ $t('card.manuallyVerified') }}</v-list-tile-title>
+                </v-list-tile-content>
+              </v-list-tile>
+            </v-list-item>
+            <v-list-item v-if="card.publisherCertified">
+              <v-list-tile avatar>
+                <v-list-tile-avatar>
+                  <img src="~assets/img/certif_p.png">
+                </v-list-tile-avatar>
+                <v-list-tile-content>
+                  <v-list-tile-title>{{ $t('card.publisherVerified') }}</v-list-tile-title>
+                </v-list-tile-content>
+              </v-list-tile>
+            </v-list-item>
+          </v-list>
+
+          <v-divider/>
+        </template>
+
+
         <v-subheader>{{ $t('card.contributors') }}</v-subheader>
         <v-list>
           <v-list-item v-for="member in card.members" v-bind:key="member.id">
@@ -52,7 +82,6 @@
             </v-list-tile>
           </v-list-item>
         </v-list>
-
 
       </v-card>
     </v-container>

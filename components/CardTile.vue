@@ -8,8 +8,8 @@
       </v-list-tile-content>
       <v-list-tile-action>
         <v-list-tile-action-text>{{ updatedAt }}</v-list-tile-action-text>
-        <v-icon v-if="card.humanCertified" class="grey--text text--lighten-1" :title="$t('card.humanCertification')">star</v-icon>
-        <v-icon v-if="card.publisherCertified" class="amber--text" :title="$t('card.publisherCertification')">star</v-icon>
+        <img class="cert-icon" src="~assets/img/certif_h.png" v-if="card.humanCertified" :title="$t('card.humanCertification')">
+        <img class="cert-icon" src="~assets/img/certif_p.png" v-if="card.publisherCertified" :title="$t('card.publisherCertification')">
       </v-list-tile-action>
     </v-list-tile>
   </v-list-item>

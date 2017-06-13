@@ -16,7 +16,9 @@
     "trello": "Trello card",
     "contributors": "Contributors",
     "humanCertification": "Human certification",
-    "publisherCertification": "Publisher certification"
+    "publisherCertification": "Publisher certification",
+    "manuallyVerified": "Has been manually verified",
+    "publisherVerified": "Has been compared with the publisher's statistics"
   },
   "analyses": {
     "new": "New analysis",
