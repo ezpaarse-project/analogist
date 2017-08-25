@@ -1,4 +1,5 @@
-import axios from '~plugins/axios'
+import axios from '~/plugins/axios'
+
 const api = {}
 
 api.info = function () {
@@ -69,14 +70,14 @@ api.addUserToCard = function (card, user) {
 
 api.checkDomain = function (domain) {
   return axios.get(`http://ezpaarse-preprod.couperin.org/info/domains/${domain}`)
-  .then(res => {
-    if (typeof res.data === 'object') { return res.data }
-    throw new Error('Invalid Response')
-  })
-  .catch(err => {
-    if (err.response && err.response.status === 404) { return null }
-    throw err
-  })
+    .then(res => {
+      if (typeof res.data === 'object') { return res.data }
+      throw new Error('Invalid Response')
+    })
+    .catch(err => {
+      if (err.response && err.response.status === 404) { return null }
+      throw err
+    })
 }
 
 /**
@@ -112,9 +113,11 @@ function extendCard (card, platform) {
   card.platform = platform
 
   // Select the latest date between trello and analogist
-  card.lastActivity = (platform && platform.lastModified > card.dateLastActivity)
-                      ? platform.lastModified
-                      : card.dateLastActivity
+  card.lastActivity = card.dateLastActivity
+
+  if (platform && platform.lastModified > card.dateLastActivity) {
+    card.lastActivity = platform.lastModified
+  }
 
   if (card.labels) {
     card.humanCertified = card.labels.some(l => /^certified:\s*human$/i.test(l.name))

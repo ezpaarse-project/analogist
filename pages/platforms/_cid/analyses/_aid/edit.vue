@@ -1,99 +1,104 @@
 <template>
-  <v-container v-if="analysis">
-    <v-row>
-      <v-btn class="blue-grey" router :href="{ name: 'platforms-cid-analyses-aid', params: { cid: $route.params.cid, aid: $route.params.aid } }"><v-icon>arrow_back</v-icon></v-btn>
-      <v-btn class="blue" :disabled="!dirty" :loading="saving" v-on:click.native="save"><v-icon>save</v-icon></v-btn>
-    </v-row>
+  <section>
+    <v-layout row justify-space-between>
+      <v-btn flat router exact router :to="{ name: 'platforms-cid-analyses-aid', params: { cid: $route.params.cid, aid: $route.params.aid } }"><v-icon left>arrow_back</v-icon>{{ $t('ui.back') }}</v-btn>
+    </v-layout>
 
     <v-card>
-      <v-card-row class="blue-grey white--text">
-        <v-card-title>
+      <v-toolbar class="secondary" dark card>
+        <v-toolbar-title>
           {{ card.name }}
-        </v-card-title>
-      </v-card-row>
+        </v-toolbar-title>
 
-      <v-card-text>
-        <v-container fluid>
-          <v-text-field @input="handleChange" name="title" :label="$t('analyses.title')" v-model="analysis.title"></v-text-field>
-          <v-text-field @input="handleChange" @change="parseUrl" name="url" :label="$t('analyses.url')" v-model="analysis.url"></v-text-field>
+        <v-btn absolute fab bottom right class="pink" :disabled="!dirty" :loading="saving" v-on:click.native="save">
+          <v-icon>save</v-icon>
+        </v-btn>
+      </v-toolbar>
 
-          <v-row>
-            <v-col xs12 sm6 md4>
-              <v-text-field @input="handleChange" name="rtype" :label="$t('analyses.type')" v-model="analysis.rtype"></v-text-field>
-            </v-col>
-            <v-col xs12 sm6 md4>
-              <v-text-field @input="handleChange" name="mime" :label="$t('analyses.format')" v-model="analysis.mime"></v-text-field>
-            </v-col>
-            <v-col xs12 sm12 md4>
-              <v-text-field @input="handleChange" name="unitid" :label="$t('analyses.unitid')" v-model="analysis.unitid"></v-text-field>
-            </v-col>
-          </v-row>
+      <v-card-text v-if="analysis">
+        <v-text-field @input="handleChange" name="title" :label="$t('analyses.title')" v-model="analysis.title"></v-text-field>
+        <v-text-field @input="handleChange" @change="parseUrl" name="url" :label="$t('analyses.url')" v-model="analysis.url"></v-text-field>
 
-          <v-text-field @input="handleChange" multi-line name="comment" :label="$t('analyses.comment')" v-model="analysis.comment"></v-text-field>
+        <v-layout wrap>
+          <v-flex xs12 sm6 md4>
+            <v-text-field @input="handleChange" name="rtype" :label="$t('analyses.type')" v-model="analysis.rtype"></v-text-field>
+          </v-flex>
+          <v-flex xs12 sm6 md4>
+            <v-text-field @input="handleChange" name="mime" :label="$t('analyses.format')" v-model="analysis.mime"></v-text-field>
+          </v-flex>
+          <v-flex xs12 sm12 md4>
+            <v-text-field @input="handleChange" name="unitid" :label="$t('analyses.unitid')" v-model="analysis.unitid"></v-text-field>
+          </v-flex>
+        </v-layout>
 
-          <h4>{{ $t('analyses.recognizedFields') }}</h4>
-          <v-row class="elevation-1 my-2" v-for="(id, index) in analysis.identifiers" :key="index">
-            <v-col xs12 sm5 md5>
-              <v-text-field @input="handleChange" :label="$t('analyses.type')" v-model="id.type"></v-text-field>
-            </v-col>
-            <v-col xs12 sm5 md6>
-              <v-text-field @input="handleChange" :label="$t('analyses.value')" v-model="id.value"></v-text-field>
-            </v-col>
-            <v-col xs12 sm2 md1 class="text-xs-center">
-              <v-btn secondary floating small v-on:click.native="removeEntryFrom('identifiers', index)">
-                <v-icon>delete</v-icon>
-              </v-btn>
-            </v-col>
-          </v-row>
-          <p class="text-xs-center">
-            <v-btn primary floating small dark v-on:click.native="addEntryIn('identifiers')">
-              <v-icon>add</v-icon>
+        <v-text-field @input="handleChange" multi-line name="comment" :label="$t('analyses.comment')" v-model="analysis.comment"></v-text-field>
+
+        <h4>{{ $t('analyses.recognizedFields') }}</h4>
+        <v-layout class="elevation-1 my-2" v-for="(id, index) in analysis.identifiers" :key="index">
+          <v-flex xs12 sm5 md5>
+            <v-text-field @input="handleChange" :label="$t('analyses.type')" v-model="id.type"></v-text-field>
+          </v-flex>
+          <v-flex xs12 sm5 md6>
+            <v-text-field @input="handleChange" :label="$t('analyses.value')" v-model="id.value"></v-text-field>
+          </v-flex>
+          <v-flex xs12 sm2 md1 class="text-xs-center">
+            <v-btn secondary dark fab small v-on:click.native="removeEntryFrom('identifiers', index)">
+              <v-icon>delete</v-icon>
             </v-btn>
-          </p>
+          </v-flex>
+        </v-layout>
+        <p class="text-xs-center">
+          <v-btn primary floating small dark v-on:click.native="addEntryIn('identifiers')">
+            <v-icon>add</v-icon>
+          </v-btn>
+        </p>
 
-          <h4>{{ $t('analyses.pathParams') }}</h4>
-          <v-row class="elevation-1 my-2" v-for="(id, index) in analysis.pathParams" :key="index">
-            <v-col xs12 sm5 md5>
-              <v-text-field @input="handleChange" :label="$t('analyses.title')" v-model="id.value"></v-text-field>
-            </v-col>
-            <v-col xs12 sm5 md6>
-              <v-text-field @input="handleChange" :label="$t('analyses.title')" v-model="id.comment"></v-text-field>
-            </v-col>
-            <v-col xs12 sm2 md1 class="text-xs-center">
-              <v-btn secondary floating small v-on:click.native="removeEntryFrom('pathParams', index)">
-                <v-icon>delete</v-icon>
-              </v-btn>
-            </v-col>
-          </v-row>
-          <p class="text-xs-center">
-            <v-btn primary floating small dark v-on:click.native="addEntryIn('pathParams')">
-              <v-icon>add</v-icon>
+        <h4>{{ $t('analyses.pathParams') }}</h4>
+        <v-layout class="elevation-1 my-2" v-for="(id, index) in analysis.pathParams" :key="index">
+          <v-flex xs12 sm5 md5>
+            <v-text-field @input="handleChange" :label="$t('analyses.title')" v-model="id.value"></v-text-field>
+          </v-flex>
+          <v-flex xs12 sm5 md6>
+            <v-text-field @input="handleChange" :label="$t('analyses.title')" v-model="id.comment"></v-text-field>
+          </v-flex>
+          <v-flex xs12 sm2 md1 class="text-xs-center">
+            <v-btn secondary dark fab small v-on:click.native="removeEntryFrom('pathParams', index)">
+              <v-icon>delete</v-icon>
             </v-btn>
-          </p>
+          </v-flex>
+        </v-layout>
+        <p class="text-xs-center">
+          <v-btn primary floating small dark v-on:click.native="addEntryIn('pathParams')">
+            <v-icon>add</v-icon>
+          </v-btn>
+        </p>
 
-          <h4>{{ $t('analyses.queryParams') }}</h4>
-          <v-row class="elevation-1 my-2" v-for="(id, index) in analysis.queryParams" :key="index">
-            <v-col xs12 sm6 md3>
-              <v-text-field @input="handleChange" :label="$t('analyses.name')" v-model="id.name"></v-text-field>
-            </v-col>
-            <v-col xs12 sm6 md4>
-              <v-text-field @input="handleChange" :label="$t('analyses.value')" v-model="id.value"></v-text-field>
-            </v-col>
-            <v-col xs12 sm10 md4>
-              <v-text-field @input="handleChange" :label="$t('analyses.comment')" v-model="id.comment"></v-text-field>
-            </v-col>
-            <v-col xs12 sm2 md1 class="text-xs-center">
-              <v-btn secondary floating small v-on:click.native="removeEntryFrom('queryParams', index)">
-                <v-icon>delete</v-icon>
-              </v-btn>
-            </v-col>
-          </v-row>
-          <p class="text-xs-center">
-            <v-btn primary floating small dark v-on:click.native="addEntryIn('queryParams')">
-              <v-icon>add</v-icon>
+        <h4>{{ $t('analyses.queryParams') }}</h4>
+        <v-layout class="elevation-1 my-2" v-for="(id, index) in analysis.queryParams" :key="index">
+          <v-flex xs12 sm6 md3>
+            <v-text-field @input="handleChange" :label="$t('analyses.name')" v-model="id.name"></v-text-field>
+          </v-flex>
+          <v-flex xs12 sm6 md4>
+            <v-text-field @input="handleChange" :label="$t('analyses.value')" v-model="id.value"></v-text-field>
+          </v-flex>
+          <v-flex xs12 sm10 md4>
+            <v-text-field @input="handleChange" :label="$t('analyses.comment')" v-model="id.comment"></v-text-field>
+          </v-flex>
+          <v-flex xs12 sm2 md1 class="text-xs-center">
+            <v-btn secondary dark fab small v-on:click.native="removeEntryFrom('queryParams', index)">
+              <v-icon>delete</v-icon>
             </v-btn>
-          </p>
-        </v-container>
+          </v-flex>
+        </v-layout>
+        <p class="text-xs-center">
+          <v-btn primary floating small dark v-on:click.native="addEntryIn('queryParams')">
+            <v-icon>add</v-icon>
+          </v-btn>
+        </p>
+      </v-card-text>
+
+      <v-card-text v-else>
+        {{ $t('analyses.notFound') }}
       </v-card-text>
     </v-card>
 
@@ -104,25 +109,7 @@
     <v-snackbar bottom right v-model="error">
       {{ error }}
     </v-snackbar>
-  </v-container>
-
-  <v-container v-else>
-    <v-row>
-      <v-btn class="blue-grey" router :href="{ name: 'platforms-cid-analyses', params: { cid: card.id } }"><v-icon>arrow_back</v-icon></v-btn>
-    </v-row>
-
-    <v-card>
-      <v-card-row class="blue-grey white--text">
-        <v-card-title>
-          {{ card.name }}
-        </v-card-title>
-      </v-card-row>
-
-      <v-card-text>
-        {{ $t('analyses.notFound') }}
-      </v-card-text>
-    </v-card>
-  </v-container>
+  </section>
 </template>
 
 <script>
@@ -130,6 +117,7 @@ let changeTimeout
 
 export default {
   name: 'analysis-edit',
+  transition: 'slide-x-transition',
   data () {
     return {
       pendingChanges: false,

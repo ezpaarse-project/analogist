@@ -1,44 +1,40 @@
 <template>
-  <v-container>
-    <v-row>
-      <v-btn class="blue-grey" router :href="{ name: 'platforms-cid', params: { cid: $route.params.cid } }"><v-icon>arrow_back</v-icon></v-btn>
-    </v-row>
+  <section>
+    <v-btn flat router exact :to="{ name: 'platforms-cid', params: { cid: $route.params.cid } }"><v-icon left>arrow_back</v-icon>{{ $t('ui.back') }}</v-btn>
 
     <v-card>
-      <v-card-row class="blue-grey white--text">
-        <v-card-title>
+      <v-toolbar class="secondary" dark card>
+        <v-toolbar-title>
           {{ card.name }}
-        </v-card-title>
+        </v-toolbar-title>
+
+        <v-spacer/>
 
         <v-menu bottom left>
           <v-btn icon="icon" slot="activator" light>
             <v-icon>more_vert</v-icon>
           </v-btn>
           <v-list>
-            <v-list-item>
-              <v-list-tile v-if="canEdit" @click.native="createAnalysis">
-                <v-list-tile-action>
-                  <v-icon dark>add</v-icon>
-                </v-list-tile-action>
-                <v-list-tile-content>
-                  <v-list-tile-title>{{ $t('analyses.new') }}</v-list-tile-title>
-                </v-list-tile-content>
-              </v-list-tile>
-            </v-list-item>
+            <v-list-tile v-if="canEdit" @click.native="createAnalysis">
+              <v-list-tile-action>
+                <v-icon>add</v-icon>
+              </v-list-tile-action>
+              <v-list-tile-content>
+                <v-list-tile-title>{{ $t('analyses.new') }}</v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
 
-            <v-list-item>
-              <v-list-tile @click.native="generateTestFile">
-                <v-list-tile-action>
-                  <v-icon dark>file_upload</v-icon>
-                </v-list-tile-action>
-                <v-list-tile-content>
-                  <v-list-tile-title>{{ $t('analyses.export') }}</v-list-tile-title>
-                </v-list-tile-content>
-              </v-list-tile>
-            </v-list-item>
+            <v-list-tile @click.native="generateTestFile">
+              <v-list-tile-action>
+                <v-icon>file_upload</v-icon>
+              </v-list-tile-action>
+              <v-list-tile-content>
+                <v-list-tile-title>{{ $t('analyses.export') }}</v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
           </v-list>
         </v-menu>
-      </v-card-row>
+      </v-toolbar>
 
       <v-list two-line>
         <draggable v-model="analyses">
@@ -46,7 +42,7 @@
         </draggable>
       </v-list>
     </v-card>
-  </v-container>
+  </section>
 </template>
 
 <script>
@@ -65,6 +61,7 @@ function escapeCSVstring (str) {
 
 export default {
   name: 'analyses',
+  transition: 'slide-x-transition',
   components: {
     draggable,
     AnalysisTile

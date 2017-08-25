@@ -1,10 +1,14 @@
 {
-  "header": {
+  "ui": {
+    "back": "Retour"
+  },
+  "drawer": {
     "platforms": "Plateformes",
     "trelloBoard": "Tableau Trello",
     "logout": "Se déconnecter",
     "notConnected": "Non connecté",
-    "login": "Se connecter"
+    "login": "Se connecter",
+    "language": "Langue"
   },
   "card": {
     "lastActivity": "Dernière activité",
@@ -21,6 +25,7 @@
     "publisherVerified": "A été comparée avec les statistiques de l'éditeur"
   },
   "analyses": {
+    "edit": "Éditer",
     "new": "Nouvelle analyse",
     "export": "Générer un fichier de test",
     "title": "Titre",

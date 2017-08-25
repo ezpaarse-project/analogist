@@ -1,54 +1,46 @@
 <template>
   <section>
-
-    <v-expansion-panel class="my-2">
-      <v-expansion-panel-content>
-        <div slot="header">{{ $t('cards.search') }}</div>
-        <v-card>
-          <v-card-text>
-            <v-text-field :label="$t('cards.name')" v-model="searchText" prepend-icon="search" />
-            <v-select :label="$t('cards.status')" prepend-icon="label" :items="lists" v-model="searchLists" item-text="name" item-value="id" multiple chips />
-          </v-card-text>
-        </v-card>
-      </v-expansion-panel-content>
-    </v-expansion-panel>
-
     <v-card>
-      <v-card-row class="cyan white--text">
-        <v-card-title>
+      <v-toolbar class="secondary" dark card>
+        <v-toolbar-title>
           {{ $t('cards.platforms') }} ({{ cards.length }})
-        </v-card-title>
-        <v-spacer/>
-        <div>
-          <v-btn v-if="canEdit" floating icon router :href="{ name: 'platforms-new' }">
-            <v-icon>add</v-icon>
-          </v-btn>
+        </v-toolbar-title>
+
+        <v-btn absolute fab bottom right class="pink" v-if="canEdit" :to="{ name: 'platforms-new' }">
+          <v-icon>add</v-icon>
+        </v-btn>
+      </v-toolbar>
+
+      <v-card-text>
+        <v-layout row-sm column>
+          <v-flex xs12 sm6>
+            <v-text-field @input="checkPage" hide-details single-line :label="$t('cards.search')" v-model="searchText" append-icon="search" />
+          </v-flex>
+          <v-flex xs12 sm6>
+            <v-select @input="checkPage" hide-details single-line :label="$t('cards.status')" append-icon="label" :items="lists" v-model="searchLists" item-text="name" item-value="id" multiple />
+          </v-flex>
+        </v-layout>
+
+        <div class="text-xs-center">
+          <v-pagination :length="nbPages" v-model="searchPage" total-visible="3"></v-pagination>
         </div>
-      </v-card-row>
+      </v-card-text>
 
       <v-list three-line>
-        <CardTile v-for="card in cards" :key="card.id" :card="card"></CardTile>
+        <CardTile v-for="card in paginatedCards" :key="card.id" :card="card"></CardTile>
       </v-list>
     </v-card>
   </section>
 </template>
 
 <script>
-import CardTile from '~components/CardTile'
+import CardTile from '~/components/CardTile'
 
 export default {
   name: 'platforms',
+  transition: 'slide-x-transition',
   components: {
     CardTile
-  },
-  data () {
-    return {
-      sortBy: 'nameAsc',
-      sortChoices: [
-        { key: 'nameAsc', desc: 'A -> Z' },
-        { key: 'nameDesc', desc: 'Z -> A' }
-      ]
-    }
   },
   head () {
     return {
@@ -58,6 +50,13 @@ export default {
   async fetch ({ store }) {
     await store.dispatch('FETCH_TRELLO_LISTS')
     await store.dispatch('FETCH_CARDS')
+  },
+  methods: {
+    checkPage () {
+      if (this.searchPage <= 0 || this.searchPage > this.nbPages) {
+        this.$store.dispatch('SET_SEARCH_PAGE', 1)
+      }
+    }
   },
   computed: {
     searchText: {
@@ -76,6 +75,17 @@ export default {
         this.$store.dispatch('UPDATE_SEARCH_LISTS', newValue)
       }
     },
+    searchPage: {
+      get () {
+        return this.$store.state.searchPage
+      },
+      set (newValue) {
+        this.$store.dispatch('SET_SEARCH_PAGE', newValue)
+      }
+    },
+    nbPages () {
+      return Math.ceil(this.cards.length / 20) || 1
+    },
     lists () {
       return this.$store.state.trelloLists
     },
@@ -86,24 +96,22 @@ export default {
       const search = this.searchText.toLowerCase()
       const lists = this.searchLists
 
-      return this.$store.state.cards.filter(card => {
-        if (!card.name.toLowerCase().includes(search)) {
-          return false
-        }
+      return this.$store.state.cards
+        .filter(card => {
+          if (!card.name.toLowerCase().includes(search)) {
+            return false
+          }
 
-        if (lists.length && !lists.find(l => l.id === card.idList)) {
-          return false
-        }
+          if (lists.length && lists.indexOf(card.idList) === -1) {
+            return false
+          }
 
-        return true
-      }).sort((a, b) => {
-        switch (this.sortBy) {
-          case 'nameDesc':
-            return a.name.toLowerCase() < b.name.toLowerCase() ? 1 : -1
-          default:
-            return a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1
-        }
-      })
+          return true
+        })
+        .sort((a, b) => a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1)
+    },
+    paginatedCards () {
+      return this.cards.slice((this.searchPage - 1) * 20, (this.searchPage - 1) * 20 + 20)
     }
   }
 }

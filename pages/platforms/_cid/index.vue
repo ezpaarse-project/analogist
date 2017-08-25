@@ -1,90 +1,81 @@
 <template>
   <section>
-    <v-container>
-      <v-row>
-        <v-btn class="blue-grey" router href="/"><v-icon>arrow_back</v-icon></v-btn>
-      </v-row>
+    <v-layout row justify-space-between>
+      <v-btn flat router exact :to="{ path: '/' }"><v-icon left>arrow_back</v-icon>{{ $t('ui.back') }}</v-btn>
+      <v-btn flat router exact :to="{ name: 'platforms-cid-analyses', params: { cid: $route.params.cid } }">Analyses ({{ analyses.length }}) <v-icon right>arrow_forward</v-icon></v-btn>
+    </v-layout>
 
-      <v-card>
-        <v-card-row class="blue-grey white--text">
-          <v-card-title>
-            {{ card.name }}
-          </v-card-title>
-        </v-card-row>
+    <v-card>
+      <v-toolbar class="secondary" dark card>
+        <v-toolbar-title>
+          {{ card.name }}
+        </v-toolbar-title>
+      </v-toolbar>
 
-        <v-card-row actions>
-          <v-btn tag="a" flat class="blue-grey--text" router :href="{ name: 'platforms-cid-analyses', params: { cid: $route.params.cid } }">Analyses ({{ analyses.length }})</v-btn>
-          <v-spacer/>
-          <v-btn tag="a" flat class="blue-grey--text" target="_blank" v-if="card.githubUrl" :href="card.githubUrl">{{ $t('card.github') }}</v-btn>
-          <v-btn tag="a" flat class="blue-grey--text" target="_blank" v-if="card.homeUrl" :href="card.homeUrl">{{ $t('card.homepage') }}</v-btn>
-          <v-btn tag="a" flat class="blue-grey--text" target="_blank" v-if="card.url" :href="card.url">{{ $t('card.trello') }}</v-btn>
-        </v-card-row>
+      <v-card-actions>
+        <v-spacer/>
+        <v-btn tag="a" flat target="_blank" v-if="card.githubUrl" :href="card.githubUrl">{{ $t('card.github') }}</v-btn>
+        <v-btn tag="a" flat target="_blank" v-if="card.homeUrl" :href="card.homeUrl">{{ $t('card.homepage') }}</v-btn>
+        <v-btn tag="a" flat target="_blank" v-if="card.url" :href="card.url">{{ $t('card.trello') }}</v-btn>
+      </v-card-actions>
 
-        <v-card-text>
-          <v-container fluid>
-            <v-row>
-              <v-col xs12 sm6>
-                <div>{{ $t('card.lastActivity') }}</div>
-                <strong>{{ lastActivity }}</strong>
-              </v-col>
-              <v-col xs12 sm6>
-                <div>{{ $t('card.status') }}</div>
-                <strong v-if="list">{{ list.name }}</strong>
-                <strong v-else>{{ $t('card.unknown') }}</strong>
-              </v-col>
-            </v-row>
-          </v-container>
-        </v-card-text>
+      <v-card-text>
+        <v-layout row>
+          <v-flex>
+            <div>{{ $t('card.lastActivity') }}</div>
+            <strong>{{ lastActivity }}</strong>
+          </v-flex>
+          <v-flex>
+            <div>{{ $t('card.status') }}</div>
+            <strong v-if="list">{{ list.name }}</strong>
+            <strong v-else>{{ $t('card.unknown') }}</strong>
+          </v-flex>
+        </v-layout>
+      </v-card-text>
 
-        <v-divider/>
+      <v-divider/>
 
-        <template v-if="card.humanCertified || card.publisherCertified">
-          <v-subheader>Certifications</v-subheader>
+      <template v-if="card.humanCertified || card.publisherCertified">
+        <v-subheader>Certifications</v-subheader>
 
-          <v-list>
-            <v-list-item v-if="card.humanCertified">
-              <v-list-tile avatar>
-                <v-list-tile-avatar>
-                  <img src="~assets/img/certif_h.png">
-                </v-list-tile-avatar>
-                <v-list-tile-content>
-                  <v-list-tile-title>{{ $t('card.manuallyVerified') }}</v-list-tile-title>
-                </v-list-tile-content>
-              </v-list-tile>
-            </v-list-item>
-            <v-list-item v-if="card.publisherCertified">
-              <v-list-tile avatar>
-                <v-list-tile-avatar>
-                  <img src="~assets/img/certif_p.png">
-                </v-list-tile-avatar>
-                <v-list-tile-content>
-                  <v-list-tile-title>{{ $t('card.publisherVerified') }}</v-list-tile-title>
-                </v-list-tile-content>
-              </v-list-tile>
-            </v-list-item>
-          </v-list>
-
-          <v-divider/>
-        </template>
-
-
-        <v-subheader>{{ $t('card.contributors') }}</v-subheader>
         <v-list>
-          <v-list-item v-for="member in card.members" v-bind:key="member.id">
-            <v-list-tile avatar :href="'https://trello.com/' + member.username">
-              <v-list-tile-avatar>
-                <img v-if="member.avatarHash" :src="'https://trello-avatars.s3.amazonaws.com/' + member.avatarHash + '/50.png'" alt="avatar">
-                <span v-else class="icon blue-grey lighten-4">{{ member.initials }}</span>
-              </v-list-tile-avatar>
-              <v-list-tile-content>
-                <v-list-tile-title v-text="member.fullName" />
-              </v-list-tile-content>
-            </v-list-tile>
-          </v-list-item>
+          <v-list-tile v-if="card.humanCertified" avatar>
+            <v-list-tile-avatar>
+              <img src="~/assets/img/certif_h.png">
+            </v-list-tile-avatar>
+            <v-list-tile-content>
+              <v-list-tile-title>{{ $t('card.manuallyVerified') }}</v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile>
+
+          <v-list-tile v-if="card.publisherCertified" avatar>
+            <v-list-tile-avatar>
+              <img src="~/assets/img/certif_p.png">
+            </v-list-tile-avatar>
+            <v-list-tile-content>
+              <v-list-tile-title>{{ $t('card.publisherVerified') }}</v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile>
         </v-list>
 
-      </v-card>
-    </v-container>
+        <v-divider/>
+      </template>
+
+
+      <v-subheader>{{ $t('card.contributors') }}</v-subheader>
+      <v-list>
+        <v-list-tile v-for="member in card.members" v-bind:key="member.id" avatar :href="'https://trello.com/' + member.username">
+          <v-list-tile-avatar>
+            <img v-if="member.avatarHash" :src="'https://trello-avatars.s3.amazonaws.com/' + member.avatarHash + '/50.png'" alt="avatar">
+            <span v-else class="icon blue-grey lighten-4">{{ member.initials }}</span>
+          </v-list-tile-avatar>
+          <v-list-tile-content>
+            <v-list-tile-title v-text="member.fullName" />
+          </v-list-tile-content>
+        </v-list-tile>
+      </v-list>
+
+    </v-card>
   </section>
 </template>
 
@@ -93,6 +84,7 @@ import moment from 'moment'
 
 export default {
   name: 'platform',
+  transition: 'slide-x-transition',
   async fetch ({ params, store, error }) {
     await store.dispatch('FETCH_TRELLO_LISTS')
 

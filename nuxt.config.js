@@ -19,15 +19,15 @@ module.exports = {
     middleware: ['ssr-cookie']
   },
   plugins: [
-    '~plugins/axios.js',
-    '~plugins/vuetify.js',
-    { src: '~plugins/i18n.js', injectAs: 'i18n' }
+    // '~/plugins/axios.js',
+    '~/plugins/vuetify.js',
+    '~/plugins/i18n.js'
   ],
   /*
   ** Global CSS
   */
   css: [
-    '~assets/css/main.css',
+    '~/assets/css/main.css',
     'vuetify/dist/vuetify.min.css'
   ],
   /*
