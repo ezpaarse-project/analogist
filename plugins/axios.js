@@ -2,7 +2,7 @@ import axios from 'axios'
 
 const options = {}
 // The server-side needs a full url to work
-if (process.SERVER_BUILD) {
+if (process.server) {
   const host = process.env.HOST || 'localhost'
   const port = process.env.PORT || 3000
 

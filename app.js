@@ -1,6 +1,7 @@
 /* eslint no-console: 0 */
 
-const Nuxt   = require('nuxt')
+const { Nuxt, Builder } = require('nuxt')
+
 const app    = require('express')()
 const logger = require('morgan')
 const config = require('config')
@@ -43,11 +44,11 @@ app.use(nuxt.render)
 
 // Build only in dev mode
 if (nuxtConfig.dev) {
-  nuxt.build()
-  .catch((error) => {
-    console.error(error)
-    process.exit(1)
-  })
+  new Builder(nuxt).build()
+    .catch(error => {
+      console.error(error)
+      process.exit(1)
+    })
 }
 
 module.exports = app

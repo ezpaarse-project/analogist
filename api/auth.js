@@ -91,14 +91,14 @@ router.post('/membership', mw.updateUserProfile, (req, res, next) => {
     html += `<a href="https://trello.com/b/${board.id}">${board.name}</a>`
 
     mailer()
-    .from(config.notifications.sender)
-    .to(config.notifications.receivers)
-    .subject(`Demande AnalogIST (${profile.fullName})`)
-    .html(html)
-    .send(err => {
-      if (err) { return next(err) }
-      res.status(200).end()
-    })
+      .from(config.notifications.sender)
+      .to(config.notifications.receivers)
+      .subject(`Demande AnalogIST (${profile.fullName})`)
+      .html(html)
+      .send(err => {
+        if (err) { return next(err) }
+        res.status(200).end()
+      })
   })
 })
 

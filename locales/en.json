@@ -1,10 +1,14 @@
 {
-  "header": {
+  "ui": {
+    "back": "Back"
+  },
+  "drawer": {
     "platforms": "Platforms",
     "trelloBoard": "Trello board",
     "logout": "Logout",
     "notConnected": "Not connected",
-    "login": "Login"
+    "login": "Login",
+    "language": "Language"
   },
   "card": {
     "lastActivity": "Last activity",
@@ -21,6 +25,7 @@
     "publisherVerified": "Has been compared with the publisher's statistics"
   },
   "analyses": {
+    "edit": "Edit",
     "new": "New analysis",
     "export": "Generate test file",
     "title": "Title",

@@ -1,18 +1,21 @@
 <template>
-  <v-container v-if="analysis">
-    <v-row>
-      <v-btn class="blue-grey" router :href="{ name: 'platforms-cid-analyses', params: { cid: $route.params.cid } }"><v-icon>arrow_back</v-icon></v-btn>
-      <v-btn v-if="canEdit" flat router :href="{ name: 'platforms-cid-analyses-aid-edit', params: { cid: $route.params.cid, aid: $route.params.aid } }">Éditer</v-btn>
-    </v-row>
+  <section>
+    <v-layout row justify-space-between>
+      <v-btn flat router exact :to="{ name: 'platforms-cid-analyses', params: { cid: $route.params.cid } }"><v-icon left>arrow_back</v-icon>{{ $t('ui.back') }}</v-btn>
+    </v-layout>
 
     <v-card>
-      <v-card-row class="blue-grey white--text">
-        <v-card-title>
+      <v-toolbar class="secondary" dark card>
+        <v-toolbar-title>
           {{ card.name }}
-        </v-card-title>
-      </v-card-row>
+        </v-toolbar-title>
 
-      <v-card-text>
+        <v-btn absolute fab bottom right class="pink" v-if="analysis && canEdit" :to="{ name: 'platforms-cid-analyses-aid-edit', params: { cid: $route.params.cid, aid: $route.params.aid } }">
+          <v-icon>mode_edit</v-icon>
+        </v-btn>
+      </v-toolbar>
+
+      <v-card-text v-if="analysis">
         <v-container fluid>
           <div class="title">{{ $t('analyses.title')}}</div>
           <p v-text="analysis.title"></p>
@@ -20,30 +23,31 @@
           <div class="title">{{ $t('analyses.url')}}</div>
           <p v-text="analysis.url" class="break-all"></p>
 
-          <v-row>
-            <v-col xs12 sm6 md4>
+          <v-layout row wrap>
+            <v-flex xs12 sm6 md4>
               <div class="title">{{ $t('analyses.type')}}</div>
               <p v-text="analysis.rtype"></p>
-            </v-col>
-            <v-col xs12 sm6 md4>
+            </v-flex>
+            <v-flex xs12 sm6 md4>
               <div class="title">{{ $t('analyses.format')}}</div>
               <p v-text="analysis.mime"></p>
-            </v-col>
-            <v-col xs12 sm12 md4>
+            </v-flex>
+            <v-flex xs12 sm12 md4>
               <div class="title">{{ $t('analyses.unitid')}}</div>
               <p v-text="analysis.unitid"></p>
-            </v-col>
-          </v-row>
+            </v-flex>
+          </v-layout>
 
           <div class="title">{{ $t('analyses.comment')}}</div>
           <p v-text="analysis.comment"></p>
 
           <v-card class="my-3" v-if="analysis.identifiers && analysis.identifiers.length">
-            <v-card-row class="blue-grey lighten-5">
-              <v-card-title>
+            <v-toolbar dense card>
+              <v-toolbar-title>
                 {{ $t('analyses.recognizedFields') }}
-              </v-card-title>
-            </v-card-row>
+              </v-toolbar-title>
+            </v-toolbar>
+
             <table class="datatable table">
               <thead>
                 <tr>
@@ -61,11 +65,12 @@
           </v-card>
 
           <v-card class="my-3" v-if="analysis.pathParams && analysis.pathParams.length">
-            <v-card-row class="blue-grey lighten-5">
-              <v-card-title>
+            <v-toolbar dense card>
+              <v-toolbar-title>
                 {{ $t('analyses.pathParams') }}
-              </v-card-title>
-            </v-card-row>
+              </v-toolbar-title>
+            </v-toolbar>
+
             <table class="datatable table">
               <thead>
                 <tr>
@@ -83,11 +88,12 @@
           </v-card>
 
           <v-card class="my-3" v-if="analysis.queryParams && analysis.queryParams.length">
-            <v-card-row class="blue-grey lighten-5">
-              <v-card-title>
+            <v-toolbar dense card>
+              <v-toolbar-title>
                 {{ $t('analyses.queryParams') }}
-              </v-card-title>
-            </v-card-row>
+              </v-toolbar-title>
+            </v-toolbar>
+
             <table class="datatable table">
               <thead>
                 <tr>
@@ -108,31 +114,18 @@
         </v-container>
 
       </v-card-text>
-    </v-card>
-  </v-container>
 
-  <v-container v-else>
-    <v-row>
-      <v-btn class="blue-grey" router :href="{ name: 'platforms-cid-analyses', params: { cid: $route.params.cid } }"><v-icon>arrow_back</v-icon></v-btn>
-    </v-row>
-
-    <v-card>
-      <v-card-row class="blue-grey white--text">
-        <v-card-title>
-          {{ card.name }}
-        </v-card-title>
-      </v-card-row>
-
-      <v-card-text>
+      <v-card-text v-else>
         {{ $t('analyses.notFound') }}
       </v-card-text>
     </v-card>
-  </v-container>
+  </section>
 </template>
 
 <script>
 export default {
   name: 'analysis',
+  transition: 'slide-x-transition',
   async fetch ({ params, store, error }) {
     try {
       await store.dispatch('FETCH_CARD', params.cid)

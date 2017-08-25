@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import api from './api'
 
-const store = new Vuex.Store({
+const store = () => new Vuex.Store({
   state: {
     user: null,
     app: {},
@@ -13,10 +13,12 @@ const store = new Vuex.Store({
     cards: [],
     trelloLists: [],
     searchText: '',
-    searchLists: []
+    searchLists: [],
+    searchPage: 1,
+    drawer: true
   },
   actions: {
-    async nuxtServerInit ({ commit }, { req }) {
+    async nuxtServerInit ({ commit }, { req, app }) {
       if (req.session.profile) {
         commit('SET_USER', req.session.profile)
       }
@@ -33,7 +35,7 @@ const store = new Vuex.Store({
         .then(card => {
           commit('SET_CARD', card)
           commit('SET_PLATFORM', card.platform)
-          commit('SET_ANALYSES', card.platform && card.platform.analyses || [])
+          commit('SET_ANALYSES', (card.platform && card.platform.analyses) || [])
         })
     },
     FETCH_TRELLO_LISTS ({ commit }) {
@@ -80,9 +82,21 @@ const store = new Vuex.Store({
     },
     UPDATE_SEARCH_LISTS ({ commit }, value) {
       return commit('SET_SEARCH_LISTS', value)
+    },
+    SET_DRAWER ({ commit }, value) {
+      commit('SET_DRAWER', value)
+    },
+    SET_SEARCH_PAGE ({ commit, state }, value) {
+      commit('SET_SEARCH_PAGE', value)
     }
   },
   mutations: {
+    SET_SEARCH_PAGE (state, page) {
+      Vue.set(state, 'searchPage', page)
+    },
+    SET_DRAWER (state, bool) {
+      Vue.set(state, 'drawer', bool)
+    },
     SET_USER (state, user) {
       Vue.set(state, 'user', user)
     },
