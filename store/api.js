@@ -58,6 +58,10 @@ api.getPlatform = function (cardID) {
   return axios.get(`/api/platforms/${cardID}`).then(res => res.data)
 }
 
+api.getFields = function () {
+  return axios.get(`/api/platforms/fields.json`).then(res => res.data)
+}
+
 api.addUserToCard = function (card, user) {
   return axios.post(`/api/trello/cards/${card.id}/members`, {
     id: user.id

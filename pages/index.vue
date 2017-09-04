@@ -12,17 +12,19 @@
       </v-toolbar>
 
       <v-card-text>
-        <v-layout row-sm column>
-          <v-flex xs12 sm6>
-            <v-text-field @input="checkPage" hide-details single-line :label="$t('cards.search')" v-model="searchText" append-icon="search" />
-          </v-flex>
-          <v-flex xs12 sm6>
-            <v-select @input="checkPage" hide-details single-line :label="$t('cards.status')" append-icon="label" :items="lists" v-model="searchLists" item-text="name" item-value="id" multiple />
-          </v-flex>
-        </v-layout>
+        <v-container fluid grid-list-md>
+          <v-layout row wrap>
+            <v-flex xs12 sm6>
+              <v-text-field @input="checkPage" hide-details single-line :label="$t('cards.search')" v-model="searchText" append-icon="search" />
+            </v-flex>
+            <v-flex xs12 sm6>
+              <v-select @input="checkPage" hide-details single-line :label="$t('cards.status')" append-icon="label" :items="lists" v-model="searchLists" item-text="name" item-value="id" multiple />
+            </v-flex>
+          </v-layout>
+        </v-container>
 
-        <div class="text-xs-center">
-          <v-pagination :length="nbPages" v-model="searchPage" total-visible="3"></v-pagination>
+        <div class="text-xs-center pt-3">
+          <v-pagination :length="nbPages" v-model="searchPage" :total-visible="5"></v-pagination>
         </div>
       </v-card-text>
 
@@ -116,6 +118,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-</style>

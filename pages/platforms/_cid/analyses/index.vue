@@ -11,7 +11,7 @@
         <v-spacer/>
 
         <v-menu bottom left>
-          <v-btn icon="icon" slot="activator" light>
+          <v-btn icon="icon" slot="activator" dark>
             <v-icon>more_vert</v-icon>
           </v-btn>
           <v-list>

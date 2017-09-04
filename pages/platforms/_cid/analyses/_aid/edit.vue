@@ -16,15 +16,55 @@
       </v-toolbar>
 
       <v-card-text v-if="analysis">
+        <v-container fluid grid-list-md>
         <v-text-field @input="handleChange" name="title" :label="$t('analyses.title')" v-model="analysis.title"></v-text-field>
         <v-text-field @input="handleChange" @change="parseUrl" name="url" :label="$t('analyses.url')" v-model="analysis.url"></v-text-field>
 
         <v-layout wrap>
           <v-flex xs12 sm6 md4>
-            <v-text-field @input="handleChange" name="rtype" :label="$t('analyses.type')" v-model="analysis.rtype"></v-text-field>
+            <v-select
+              name="rtype"
+              :label="$t('analyses.type')"
+              :items="fields.rtype"
+              item-text="code"
+              item-value="code"
+              :filter="filterFields"
+              @input="handleChange"
+              v-model="analysis.rtype"
+              :append-icon="analysis.rtype ? 'clear' : undefined"
+              :append-icon-cb="clearRtype"
+              autocomplete
+            >
+              <template slot="item" scope="data">
+                <v-list-tile-content>
+                  <v-list-tile-title v-html="data.item.code"></v-list-tile-title>
+                  <v-list-tile-sub-title v-html="data.item.description"></v-list-tile-sub-title>
+                </v-list-tile-content>
+              </template>
+            </v-select>
           </v-flex>
+
           <v-flex xs12 sm6 md4>
-            <v-text-field @input="handleChange" name="mime" :label="$t('analyses.format')" v-model="analysis.mime"></v-text-field>
+            <v-select
+              name="mime"
+              :label="$t('analyses.format')"
+              :items="fields.mime"
+              item-text="code"
+              item-value="code"
+              :filter="filterFields"
+              @input="handleChange"
+              v-model="analysis.mime"
+              :append-icon="analysis.mime ? 'clear' : undefined"
+              :append-icon-cb="clearMime"
+              autocomplete
+            >
+              <template slot="item" scope="data">
+                <v-list-tile-content>
+                  <v-list-tile-title v-html="data.item.code"></v-list-tile-title>
+                  <v-list-tile-sub-title v-html="data.item.description"></v-list-tile-sub-title>
+                </v-list-tile-content>
+              </template>
+            </v-select>
           </v-flex>
           <v-flex xs12 sm12 md4>
             <v-text-field @input="handleChange" name="unitid" :label="$t('analyses.unitid')" v-model="analysis.unitid"></v-text-field>
@@ -95,6 +135,7 @@
             <v-icon>add</v-icon>
           </v-btn>
         </p>
+        </v-container>
       </v-card-text>
 
       <v-card-text v-else>
@@ -113,18 +154,20 @@
 </template>
 
 <script>
+import api from '~/store/api'
 let changeTimeout
 
 export default {
   name: 'analysis-edit',
   transition: 'slide-x-transition',
-  data () {
+  async asyncData () {
     return {
       pendingChanges: false,
       dirty: false,
       saving: false,
       saved: false,
-      error: null
+      error: null,
+      fields: await api.getFields()
     }
   },
   async fetch ({ params, store, error, redirect }) {
@@ -175,6 +218,16 @@ export default {
     }
   },
   methods: {
+    clearMime (event) {
+      this.analysis.mime = null
+      this.handleChange()
+      event.stopPropagation()
+    },
+    clearRtype (event) {
+      this.analysis.rtype = null
+      this.handleChange()
+      event.stopPropagation()
+    },
     addEntryIn (arrayName) {
       if (!Array.isArray(this.analysis[arrayName])) {
         this.$set(this.analysis, arrayName, [])
@@ -193,6 +246,19 @@ export default {
         this.pendingChanges = true
       }
       changeTimeout = setTimeout(this.save, 2000)
+    },
+    filterFields (item, search) {
+      if (typeof search !== 'string') { return true }
+      search = search.toLowerCase()
+
+      if (item.code && item.code.toLowerCase().includes(search)) {
+        return true
+      }
+      if (item.description && item.description.toLowerCase().includes(search)) {
+        return true
+      }
+
+      return false
     },
     parseUrl () {
       if (!this.analysis || !this.analysis.url) { return }

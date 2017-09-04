@@ -2,6 +2,7 @@
 
 const router   = require('express').Router()
 const ObjectID = require('mongodb').ObjectID
+const request  = require('request')
 const trello   = require('../lib/trello.js')
 const mongo    = require('../lib/mongo.js')
 const mw       = require('../lib/middlewares.js')
@@ -13,6 +14,12 @@ router.post('*', mw.authorize)
 router.put('*', mw.authorize)
 router.patch('*', mw.authorize)
 router.delete('*', mw.authorize)
+
+/* GET rtype/mime/rid fields. */
+router.get('/fields.json', (req, res, next) => {
+  const fieldsUrl = 'http://raw.githubusercontent.com/ezpaarse-project/ezpaarse-platforms/master/fields.json'
+  request.get(fieldsUrl).pipe(res)
+})
 
 /* GET all platforms. */
 router.get('/', (req, res, next) => {

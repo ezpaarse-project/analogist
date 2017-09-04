@@ -16,7 +16,7 @@
       </v-toolbar>
 
       <v-card-text v-if="analysis">
-        <v-container fluid>
+        <v-container fluid grid-list-md>
           <div class="title">{{ $t('analyses.title')}}</div>
           <p v-text="analysis.title"></p>
 
@@ -112,7 +112,6 @@
             </table>
           </v-card>
         </v-container>
-
       </v-card-text>
 
       <v-card-text v-else>

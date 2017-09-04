@@ -25,17 +25,20 @@
           {{ $t('creation.platformInfo') }}
         </v-stepper-step>
         <v-stepper-content step="2">
-          <v-layout row wrap>
-            <v-flex xs12 sm8>
-              <v-text-field name="longName" :label="$t('creation.name')" v-model="form.longName" required></v-text-field>
-            </v-flex>
-            <v-flex xs12 sm4>
-              <v-text-field name="shortName" :label="$t('creation.abv')" v-model="form.shortName" required></v-text-field>
-            </v-flex>
-            <v-flex xs12>
-              <v-text-field name="homeUrl" :label="$t('creation.homepage')" v-model="form.homeUrl"></v-text-field>
-            </v-flex>
-          </v-layout>
+          <v-container fluid grid-list-md>
+            <v-layout row wrap>
+              <v-flex xs12 sm8>
+                <v-text-field name="longName" :label="$t('creation.name')" v-model="form.longName" required></v-text-field>
+              </v-flex>
+              <v-flex xs12 sm4>
+                <v-text-field name="shortName" :label="$t('creation.abv')" v-model="form.shortName" required></v-text-field>
+              </v-flex>
+              <v-flex xs12>
+                <v-text-field name="homeUrl" :label="$t('creation.homepage')" v-model="form.homeUrl"></v-text-field>
+              </v-flex>
+            </v-layout>
+          </v-container>
+
           <v-btn primary :disabled="!form.longName || !form.shortName" @click.native="step++">{{ $t('creation.next') }}</v-btn>
           <v-btn flat @click.native="step--">{{ $t('creation.previous') }}</v-btn>
         </v-stepper-content>
@@ -44,16 +47,14 @@
           {{ $t('creation.platformStatus') }}
         </v-stepper-step>
         <v-stepper-content step="3">
-          <v-container fluid class="mb-5">
+          <v-radio-group v-model="form.idList">
             <v-radio
               v-for="list in lists"
               :key="list.id"
-              v-model="form.idList"
               :label="list.name"
               :value="list.id"
-              hide-details
             />
-          </v-container>
+          </v-radio-group>
 
           <v-btn primary :disabled="!form.idList" :loading="creating" @click.native="createCard()">{{ $t('creation.create') }}</v-btn>
           <v-btn flat @click.native="step--">{{ $t('creation.previous') }}</v-btn>
