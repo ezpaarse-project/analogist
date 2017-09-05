@@ -1,23 +1,22 @@
 <template>
   <section>
     <v-layout row justify-space-between>
-      <v-btn flat router exact :to="{ path: '/' }"><v-icon left>arrow_back</v-icon>{{ $t('ui.back') }}</v-btn>
-      <v-btn flat router exact :to="{ name: 'platforms-cid-analyses', params: { cid: $route.params.cid } }">Analyses ({{ analyses.length }}) <v-icon right>arrow_forward</v-icon></v-btn>
+      <v-btn flat router exact :to="{ path: '/' }"><v-icon left>mdi-arrow-left</v-icon>{{ $t('ui.back') }}</v-btn>
+      <v-btn flat router exact :to="{ name: 'platforms-cid-analyses', params: { cid: $route.params.cid } }">Analyses ({{ analyses.length }}) <v-icon right>mdi-arrow-right</v-icon></v-btn>
     </v-layout>
 
     <v-card>
-      <v-toolbar class="secondary" dark card>
+      <v-toolbar class="secondary" dense dark card>
         <v-toolbar-title>
           {{ card.name }}
         </v-toolbar-title>
-      </v-toolbar>
 
-      <v-card-actions>
-        <v-spacer/>
-        <v-btn tag="a" flat target="_blank" v-if="card.githubUrl" :href="card.githubUrl">{{ $t('card.github') }}</v-btn>
-        <v-btn tag="a" flat target="_blank" v-if="card.homeUrl" :href="card.homeUrl">{{ $t('card.homepage') }}</v-btn>
-        <v-btn tag="a" flat target="_blank" v-if="card.url" :href="card.url">{{ $t('card.trello') }}</v-btn>
-      </v-card-actions>
+        <v-spacer></v-spacer>
+
+        <v-btn icon tag="a" flat target="_blank" v-if="card.githubUrl" :href="card.githubUrl" v-tooltip:left="{ html: $t('card.github') }"><v-icon>mdi-github-box</v-icon></v-btn>
+        <v-btn icon tag="a" flat target="_blank" v-if="card.homeUrl" :href="card.homeUrl" v-tooltip:left="{ html: $t('card.homepage') }"><v-icon>mdi-home</v-icon></v-btn>
+        <v-btn icon tag="a" flat target="_blank" v-if="card.url" :href="card.url" v-tooltip:left="{ html: $t('card.trello') }"><v-icon>mdi-trello</v-icon></v-btn>
+      </v-toolbar>
 
       <v-card-text>
         <v-layout row>

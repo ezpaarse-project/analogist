@@ -1,39 +1,22 @@
 <template>
   <section>
-    <v-btn flat router exact :to="{ name: 'platforms-cid', params: { cid: $route.params.cid } }"><v-icon left>arrow_back</v-icon>{{ $t('ui.back') }}</v-btn>
+    <v-btn flat router exact :to="{ name: 'platforms-cid', params: { cid: $route.params.cid } }"><v-icon left>mdi-arrow-left</v-icon>{{ $t('ui.back') }}</v-btn>
 
     <v-card>
-      <v-toolbar class="secondary" dark card>
+      <v-toolbar class="secondary" dense dark card>
         <v-toolbar-title>
           {{ card.name }}
         </v-toolbar-title>
 
         <v-spacer/>
 
-        <v-menu bottom left>
-          <v-btn icon="icon" slot="activator" dark>
-            <v-icon>more_vert</v-icon>
-          </v-btn>
-          <v-list>
-            <v-list-tile v-if="canEdit" @click.native="createAnalysis">
-              <v-list-tile-action>
-                <v-icon>add</v-icon>
-              </v-list-tile-action>
-              <v-list-tile-content>
-                <v-list-tile-title>{{ $t('analyses.new') }}</v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
+        <v-btn icon @click.native="generateTestFile" v-tooltip:left="{ html: $t('analyses.export') }">
+          <v-icon>mdi-upload</v-icon>
+        </v-btn>
 
-            <v-list-tile @click.native="generateTestFile">
-              <v-list-tile-action>
-                <v-icon>file_upload</v-icon>
-              </v-list-tile-action>
-              <v-list-tile-content>
-                <v-list-tile-title>{{ $t('analyses.export') }}</v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
-          </v-list>
-        </v-menu>
+        <v-btn icon v-if="canEdit" @click.native="createAnalysis" v-tooltip:left="{ html: $t('analyses.new') }">
+          <v-icon>mdi-plus</v-icon>
+        </v-btn>
       </v-toolbar>
 
       <v-list two-line>

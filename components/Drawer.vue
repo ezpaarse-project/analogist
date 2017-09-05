@@ -1,34 +1,71 @@
 <template>
   <v-navigation-drawer enable-resize-watcher disable-route-watcher persistent :mini-variant="mini" v-model="drawer">
+    <v-list dark class="pa-1 red accent-3" v-if="!mini">
+      <v-list-tile avatar tag="div">
+        <v-list-tile-avatar>
+          <img src="~/assets/img/analogist-logo-only-white.svg" />
+        </v-list-tile-avatar>
+        <v-list-tile-content>
+          <v-list-tile-title>AnalogIST</v-list-tile-title>
+          <v-list-tile-sub-title>
+            <v-menu>
+              <span flat slot="activator">
+                Version: {{ appVersion }} <v-icon dark>mdi-menu-down</v-icon>
+              </span>
+              <v-list>
+                <v-list-tile href="https://github.com/ezpaarse-project/analogist#readme" target="_blank">
+                  <v-list-tile-action>
+                    <v-icon>mdi-github-box</v-icon>
+                  </v-list-tile-action>
+
+                  <v-list-tile-content>
+                    GitHub
+                  </v-list-tile-content>
+                </v-list-tile>
+              </v-list>
+            </v-menu>
+          </v-list-tile-sub-title>
+        </v-list-tile-content>
+      </v-list-tile>
+    </v-list>
+
+    <v-layout row justify-center v-if="!mini">
+      <v-btn icon target="_blank" v-for="link in links" :title="link.title" :href="link.href" :key="link.icon">
+        <v-icon>{{ link.icon }}</v-icon>
+      </v-btn>
+    </v-layout>
+
+    <v-divider/>
+
     <v-list class="pa-1">
-      <v-list-tile v-if="mini" @click.native.stop="mini = !mini">
+      <v-list-tile v-if="mini" @click="mini = !mini">
         <v-list-tile-action>
-          <v-icon light>chevron_right</v-icon>
+          <v-icon light>mdi-chevron-right</v-icon>
         </v-list-tile-action>
       </v-list-tile>
 
       <v-list-tile avatar tag="div">
         <v-list-tile-avatar>
           <img v-if="avatarUrl" :src="avatarUrl" />
-          <v-icon large v-else>account_circle</v-icon>
+          <v-icon large v-else>mdi-account-circle</v-icon>
         </v-list-tile-avatar>
         <v-list-tile-content>
           <v-list-tile-title v-if="user">{{ user.fullName }}</v-list-tile-title>
           <v-list-tile-title v-else>{{ $t('drawer.notConnected') }}</v-list-tile-title>
         </v-list-tile-content>
         <v-list-tile-action>
-          <v-btn icon @click.native.stop="mini = !mini">
-            <v-icon>chevron_left</v-icon>
+          <v-btn icon @click="mini = !mini">
+            <v-icon>mdi-chevron-left</v-icon>
           </v-btn>
         </v-list-tile-action>
       </v-list-tile>
     </v-list>
 
     <v-list class="pt-0">
-      <v-divider></v-divider>
-      <v-list-tile router :to="{ path: '/' }" ripple>
+      <v-divider/>
+      <v-list-tile router exact :to="{ path: '/' }" ripple>
         <v-list-tile-action>
-          <v-icon>find_in_page</v-icon>
+          <v-icon>mdi-file-powerpoint-box</v-icon>
         </v-list-tile-action>
         <v-list-tile-content>
           <v-list-tile-title>{{ $t('drawer.platforms') }}</v-list-tile-title>
@@ -37,7 +74,7 @@
 
       <v-list-tile :href="trelloLink" target="_blank">
         <v-list-tile-action>
-          <v-icon>dashboard</v-icon>
+          <v-icon>mdi-trello</v-icon>
         </v-list-tile-action>
         <v-list-tile-content>
           <v-list-tile-title>{{ $t('drawer.trelloBoard') }}</v-list-tile-title>
@@ -45,19 +82,19 @@
       </v-list-tile>
 
       <v-list-group>
-        <v-list-tile slot="item">
+        <v-list-tile slot="item" v-if="!mini">
           <v-list-tile-action>
-            <v-icon>language</v-icon>
+            <v-icon>mdi-translate</v-icon>
           </v-list-tile-action>
           <v-list-tile-content>
             <v-list-tile-title>{{ $t('drawer.language') }}</v-list-tile-title>
           </v-list-tile-content>
           <v-list-tile-action>
-            <v-icon>keyboard_arrow_down</v-icon>
+            <v-icon>mdi-chevron-down</v-icon>
           </v-list-tile-action>
         </v-list-tile>
 
-        <v-list-tile v-for="lang in locales" :key="lang.value" v-on:click.native="$i18n.locale = lang.value">
+        <v-list-tile v-for="lang in locales" :key="lang.value" @click="$i18n.locale = lang.value">
           <v-list-tile-content>
             <v-list-tile-title>{{ lang.name }}</v-list-tile-title>
           </v-list-tile-content>
@@ -66,16 +103,16 @@
 
       <v-list-tile v-if="!user" :href="loginUrl">
         <v-list-tile-action>
-          <v-icon>exit_to_app</v-icon>
+          <v-icon>mdi-login</v-icon>
         </v-list-tile-action>
         <v-list-tile-content>
           <v-list-tile-title>{{ $t('drawer.login') }}</v-list-tile-title>
         </v-list-tile-content>
       </v-list-tile>
 
-      <v-list-tile v-else v-on:click.native="logout">
+      <v-list-tile v-else @click="logout">
         <v-list-tile-action>
-          <v-icon>power_settings_new</v-icon>
+          <v-icon>mdi-logout</v-icon>
         </v-list-tile-action>
         <v-list-tile-content>
           <v-list-tile-title>{{ $t('drawer.logout') }}</v-list-tile-title>
@@ -94,6 +131,14 @@ export default {
       locales: [
         { name: 'Français', value: 'fr' },
         { name: 'English', value: 'en' }
+      ],
+      links: [
+        { icon: 'mdi-home', href: 'http://www.ezpaarse.org/' },
+        { icon: 'mdi-email', href: 'ezpaarse@couperin.org' },
+        { icon: 'mdi-twitter-box', href: 'https://twitter.com/ezpaarse' },
+        { icon: 'mdi-facebook-box', href: 'https://www.facebook.com/Ezpaarse' },
+        { icon: 'mdi-comment-text-outline', href: 'http://blog.ezpaarse.org/' },
+        { icon: 'mdi-youtube-play', href: 'https://www.youtube.com/channel/UCcR-0UE9WjYiwS4fMG2T4tQ' }
       ]
     }
   },
@@ -101,6 +146,9 @@ export default {
     drawer: {
       get () { return this.$store.state.drawer },
       set (newVal) { this.$store.dispatch('SET_DRAWER', newVal) }
+    },
+    appVersion () {
+      return this.$store.state.app.version
     },
     trelloLink () {
       return `https://trello.com/b/${this.$store.state.app.boardId}`

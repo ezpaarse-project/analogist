@@ -1,9 +1,9 @@
 <template>
   <section>
-    <v-btn flat router exact :to="{ path: '/' }"><v-icon left>arrow_back</v-icon>{{ $t('ui.back') }}</v-btn>
+    <v-btn flat router exact :to="{ path: '/' }"><v-icon left>mdi-arrow-left</v-icon>{{ $t('ui.back') }}</v-btn>
 
     <v-card>
-      <v-toolbar class="secondary" dark card>
+      <v-toolbar class="secondary" dense dark card>
         <v-toolbar-title>
           {{ $t('creation.newPlatform') }}
         </v-toolbar-title>

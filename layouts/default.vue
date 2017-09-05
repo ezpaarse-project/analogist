@@ -1,5 +1,5 @@
 <template>
-  <v-app id="analogist" toolbar footer>
+  <v-app id="analogist" toolbar>
     <AppDrawer/>
     <AppHeader/>
     <main>
@@ -7,19 +7,16 @@
         <nuxt/>
       </v-container>
     </main>
-    <AppFooter/>
   </v-app>
 </template>
 
 <script>
-import AppFooter from '~/components/Footer.vue'
 import AppHeader from '~/components/Header.vue'
 import AppDrawer from '~/components/Drawer.vue'
 
 export default {
   components: {
     AppHeader,
-    AppFooter,
     AppDrawer
   }
 }

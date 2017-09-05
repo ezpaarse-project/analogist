@@ -1,13 +1,13 @@
 <template>
   <section>
     <v-card>
-      <v-toolbar class="secondary" dark card>
+      <v-toolbar class="secondary" dense dark card>
         <v-toolbar-title>
           {{ $t('cards.platforms') }} ({{ cards.length }})
         </v-toolbar-title>
 
         <v-btn absolute fab bottom right class="pink" v-if="canEdit" :to="{ name: 'platforms-new' }">
-          <v-icon>add</v-icon>
+          <v-icon>mdi-plus</v-icon>
         </v-btn>
       </v-toolbar>
 
@@ -15,16 +15,16 @@
         <v-container fluid grid-list-md>
           <v-layout row wrap>
             <v-flex xs12 sm6>
-              <v-text-field @input="checkPage" hide-details single-line :label="$t('cards.search')" v-model="searchText" append-icon="search" />
+              <v-text-field @input="checkPage" hide-details single-line :label="$t('cards.search')" v-model="searchText" append-icon="mdi-magnify" />
             </v-flex>
             <v-flex xs12 sm6>
-              <v-select @input="checkPage" hide-details single-line :label="$t('cards.status')" append-icon="label" :items="lists" v-model="searchLists" item-text="name" item-value="id" multiple />
+              <v-select @input="checkPage" hide-details single-line :label="$t('cards.status')" append-icon="mdi-tag" :items="lists" v-model="searchLists" item-text="name" item-value="id" multiple />
             </v-flex>
           </v-layout>
         </v-container>
 
         <div class="text-xs-center pt-3">
-          <v-pagination :length="nbPages" v-model="searchPage" :total-visible="5"></v-pagination>
+          <v-pagination prev-icon="mdi-chevron-left" next-icon="mdi-chevron-right" :length="nbPages" v-model="searchPage" :total-visible="5"></v-pagination>
         </div>
       </v-card-text>
 

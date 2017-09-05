@@ -1,17 +1,17 @@
 <template>
   <section>
     <v-layout row justify-space-between>
-      <v-btn flat router exact :to="{ name: 'platforms-cid-analyses', params: { cid: $route.params.cid } }"><v-icon left>arrow_back</v-icon>{{ $t('ui.back') }}</v-btn>
+      <v-btn flat router exact :to="{ name: 'platforms-cid-analyses', params: { cid: $route.params.cid } }"><v-icon left>mdi-arrow-left</v-icon>{{ $t('ui.back') }}</v-btn>
     </v-layout>
 
     <v-card>
-      <v-toolbar class="secondary" dark card>
+      <v-toolbar class="secondary" dense dark card>
         <v-toolbar-title>
           {{ card.name }}
         </v-toolbar-title>
 
         <v-btn absolute fab bottom right class="pink" v-if="analysis && canEdit" :to="{ name: 'platforms-cid-analyses-aid-edit', params: { cid: $route.params.cid, aid: $route.params.aid } }">
-          <v-icon>mode_edit</v-icon>
+          <v-icon>mdi-pencil</v-icon>
         </v-btn>
       </v-toolbar>
 

@@ -1,6 +1,8 @@
 <template>
   <v-toolbar dark fixed class="red accent-3">
-    <v-toolbar-side-icon @click.stop="setDrawer(!drawer)"></v-toolbar-side-icon>
+    <v-toolbar-side-icon @click.stop="setDrawer(!drawer)">
+      <v-icon>mdi-menu</v-icon>
+    </v-toolbar-side-icon>
     <v-toolbar-title>AnalogIST</v-toolbar-title>
   </v-toolbar>
 </template>

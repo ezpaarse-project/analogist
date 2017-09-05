@@ -13,7 +13,7 @@
     <v-list-tile-action>
       <v-list-tile-action-text v-if="analysis.updatedAt">{{ updatedAt }}</v-list-tile-action-text>
       <v-btn v-if="canEdit" flat icon ripple :loading="deleting" @click.native.prevent="deleteAnalysis()">
-        <v-icon>delete</v-icon>
+        <v-icon>mdi-delete</v-icon>
       </v-btn>
     </v-list-tile-action>
   </v-list-tile>

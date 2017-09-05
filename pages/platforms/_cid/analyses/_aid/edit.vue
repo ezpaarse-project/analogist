@@ -1,17 +1,17 @@
 <template>
   <section>
     <v-layout row justify-space-between>
-      <v-btn flat router exact router :to="{ name: 'platforms-cid-analyses-aid', params: { cid: $route.params.cid, aid: $route.params.aid } }"><v-icon left>arrow_back</v-icon>{{ $t('ui.back') }}</v-btn>
+      <v-btn flat router exact router :to="{ name: 'platforms-cid-analyses-aid', params: { cid: $route.params.cid, aid: $route.params.aid } }"><v-icon left>mdi-arrow-left</v-icon>{{ $t('ui.back') }}</v-btn>
     </v-layout>
 
     <v-card>
-      <v-toolbar class="secondary" dark card>
+      <v-toolbar class="secondary" dense dark card>
         <v-toolbar-title>
           {{ card.name }}
         </v-toolbar-title>
 
         <v-btn absolute fab bottom right class="pink" :disabled="!dirty" :loading="saving" v-on:click.native="save">
-          <v-icon>save</v-icon>
+          <v-icon>mdi-content-save</v-icon>
         </v-btn>
       </v-toolbar>
 
@@ -31,7 +31,7 @@
               :filter="filterFields"
               @input="handleChange"
               v-model="analysis.rtype"
-              :append-icon="analysis.rtype ? 'clear' : undefined"
+              :append-icon="analysis.rtype ? 'mdi-close' : 'mdi-menu-down'"
               :append-icon-cb="clearRtype"
               autocomplete
             >
@@ -54,7 +54,7 @@
               :filter="filterFields"
               @input="handleChange"
               v-model="analysis.mime"
-              :append-icon="analysis.mime ? 'clear' : undefined"
+              :append-icon="analysis.mime ? 'mdi-close' : 'mdi-menu-down'"
               :append-icon-cb="clearMime"
               autocomplete
             >
@@ -83,13 +83,13 @@
           </v-flex>
           <v-flex xs12 sm2 md1 class="text-xs-center">
             <v-btn secondary dark fab small v-on:click.native="removeEntryFrom('identifiers', index)">
-              <v-icon>delete</v-icon>
+              <v-icon>mdi-delete</v-icon>
             </v-btn>
           </v-flex>
         </v-layout>
         <p class="text-xs-center">
           <v-btn primary floating small dark v-on:click.native="addEntryIn('identifiers')">
-            <v-icon>add</v-icon>
+            <v-icon>mdi-plus</v-icon>
           </v-btn>
         </p>
 
@@ -103,13 +103,13 @@
           </v-flex>
           <v-flex xs12 sm2 md1 class="text-xs-center">
             <v-btn secondary dark fab small v-on:click.native="removeEntryFrom('pathParams', index)">
-              <v-icon>delete</v-icon>
+              <v-icon>mdi-delete</v-icon>
             </v-btn>
           </v-flex>
         </v-layout>
         <p class="text-xs-center">
           <v-btn primary floating small dark v-on:click.native="addEntryIn('pathParams')">
-            <v-icon>add</v-icon>
+            <v-icon>mdi-plus</v-icon>
           </v-btn>
         </p>
 
@@ -126,13 +126,13 @@
           </v-flex>
           <v-flex xs12 sm2 md1 class="text-xs-center">
             <v-btn secondary dark fab small v-on:click.native="removeEntryFrom('queryParams', index)">
-              <v-icon>delete</v-icon>
+              <v-icon>mdi-delete</v-icon>
             </v-btn>
           </v-flex>
         </v-layout>
         <p class="text-xs-center">
           <v-btn primary floating small dark v-on:click.native="addEntryIn('queryParams')">
-            <v-icon>add</v-icon>
+            <v-icon>mdi-plus</v-icon>
           </v-btn>
         </p>
         </v-container>
