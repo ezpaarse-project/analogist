@@ -15,104 +15,97 @@
         </v-btn>
       </v-toolbar>
 
-      <v-card-text v-if="analysis">
-        <v-container fluid grid-list-md>
-          <div class="title">{{ $t('analyses.title')}}</div>
-          <p v-text="analysis.title"></p>
+      <template v-if="analysis">
 
-          <div class="title">{{ $t('analyses.url')}}</div>
-          <p v-text="analysis.url" class="break-all"></p>
+        <v-card-text>
+          <v-container fluid grid-list-md>
+            <div class="headline" v-text="analysis.title"></div>
+            <p class="break-all" v-text="analysis.url"></p>
 
-          <v-layout row wrap>
-            <v-flex xs12 sm6 md4>
-              <div class="title">{{ $t('analyses.type')}}</div>
-              <p v-text="analysis.rtype"></p>
-            </v-flex>
-            <v-flex xs12 sm6 md4>
-              <div class="title">{{ $t('analyses.format')}}</div>
-              <p v-text="analysis.mime"></p>
-            </v-flex>
-            <v-flex xs12 sm12 md4>
-              <div class="title">{{ $t('analyses.unitid')}}</div>
-              <p v-text="analysis.unitid"></p>
-            </v-flex>
-          </v-layout>
+            <v-layout row wrap>
+              <v-chip label v-if="analysis.rtype" class="blue white--text" v-tooltip:bottom="{ html: $t('analyses.type') }">
+                <v-icon left>mdi-tag</v-icon>
+                {{ analysis.rtype }}
+              </v-chip>
 
-          <div class="title">{{ $t('analyses.comment')}}</div>
-          <p v-text="analysis.comment"></p>
+              <v-chip label v-if="analysis.mime" class="blue white--text" v-tooltip:bottom="{ html: $t('analyses.format') }">
+                <v-icon left>mdi-file</v-icon>
+                {{ analysis.mime }}
+              </v-chip>
 
-          <v-card class="my-3" v-if="analysis.identifiers && analysis.identifiers.length">
-            <v-toolbar dense card>
-              <v-toolbar-title>
-                {{ $t('analyses.recognizedFields') }}
-              </v-toolbar-title>
-            </v-toolbar>
+              <v-chip label v-if="analysis.unitid" class="blue white--text" v-tooltip:bottom="{ html: $t('analyses.unitid') }">
+                <v-icon left>mdi-fingerprint</v-icon>
+                {{ analysis.unitid }}
+              </v-chip>
+            </v-layout>
 
-            <table class="datatable table">
-              <thead>
-                <tr>
-                  <th>{{ $t('analyses.type') }}</th>
-                  <th>{{ $t('analyses.value') }}</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="(id, index) in analysis.identifiers" :key="index">
-                  <td v-text="id.type"></td>
-                  <td v-text="id.value"></td>
-                </tr>
-              </tbody>
-            </table>
-          </v-card>
+            <v-alert class="pre-wrap" icon="mdi-information-outline" :value="true" info v-if="analysis.comment">{{ analysis.comment }}</v-alert>
 
-          <v-card class="my-3" v-if="analysis.pathParams && analysis.pathParams.length">
-            <v-toolbar dense card>
-              <v-toolbar-title>
-                {{ $t('analyses.pathParams') }}
-              </v-toolbar-title>
-            </v-toolbar>
+          </v-container>
+        </v-card-text>
 
-            <table class="datatable table">
-              <thead>
-                <tr>
-                  <th>{{ $t('analyses.value') }}</th>
-                  <th>{{ $t('analyses.comment') }}</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="(id, index) in analysis.pathParams" :key="index">
-                  <td v-text="id.value"></td>
-                  <td v-text="id.comment"></td>
-                </tr>
-              </tbody>
-            </table>
-          </v-card>
+        <template v-if="analysis.identifiers && analysis.identifiers.length">
+          <v-divider/>
+          <v-subheader class="title mt-3">{{ $t('analyses.recognizedFields') }}</v-subheader>
 
-          <v-card class="my-3" v-if="analysis.queryParams && analysis.queryParams.length">
-            <v-toolbar dense card>
-              <v-toolbar-title>
-                {{ $t('analyses.queryParams') }}
-              </v-toolbar-title>
-            </v-toolbar>
+          <table class="datatable table">
+            <thead>
+              <tr>
+                <th>{{ $t('analyses.type') }}</th>
+                <th>{{ $t('analyses.value') }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(id, index) in analysis.identifiers" :key="index">
+                <td v-text="id.type"></td>
+                <td v-text="id.value"></td>
+              </tr>
+            </tbody>
+          </table>
+        </template>
 
-            <table class="datatable table">
-              <thead>
-                <tr>
-                  <th>{{ $t('analyses.name') }}</th>
-                  <th>{{ $t('analyses.value') }}</th>
-                  <th>{{ $t('analyses.comment') }}</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="(id, index) in analysis.queryParams" :key="index">
-                  <td v-text="id.name"></td>
-                  <td v-text="id.value"></td>
-                  <td v-text="id.comment"></td>
-                </tr>
-              </tbody>
-            </table>
-          </v-card>
-        </v-container>
-      </v-card-text>
+        <template v-if="analysis.pathParams && analysis.pathParams.length">
+          <v-divider/>
+          <v-subheader class="title mt-3">{{ $t('analyses.pathParams') }}</v-subheader>
+
+          <table class="datatable table">
+            <thead>
+              <tr>
+                <th>{{ $t('analyses.value') }}</th>
+                <th>{{ $t('analyses.comment') }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(id, index) in analysis.pathParams" :key="index">
+                <td v-text="id.value"></td>
+                <td v-text="id.comment"></td>
+              </tr>
+            </tbody>
+          </table>
+        </template>
+
+        <template v-if="analysis.queryParams && analysis.queryParams.length">
+          <v-divider/>
+          <v-subheader class="title mt-3">{{ $t('analyses.queryParams') }}</v-subheader>
+
+          <table class="datatable table">
+            <thead>
+              <tr>
+                <th>{{ $t('analyses.name') }}</th>
+                <th>{{ $t('analyses.value') }}</th>
+                <th>{{ $t('analyses.comment') }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(id, index) in analysis.queryParams" :key="index">
+                <td v-text="id.name"></td>
+                <td v-text="id.value"></td>
+                <td v-text="id.comment"></td>
+              </tr>
+            </tbody>
+          </table>
+        </template>
+      </template>
 
       <v-card-text v-else>
         {{ $t('analyses.notFound') }}
@@ -159,5 +152,8 @@ export default {
 <style scoped>
   .break-all {
     word-break: break-all;
+  }
+  .pre-wrap {
+    white-space: pre-wrap;
   }
 </style>

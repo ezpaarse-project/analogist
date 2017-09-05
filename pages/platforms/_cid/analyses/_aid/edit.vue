@@ -99,7 +99,7 @@
             <v-text-field @input="handleChange" :label="$t('analyses.title')" v-model="id.value"></v-text-field>
           </v-flex>
           <v-flex xs12 sm5 md6>
-            <v-text-field @input="handleChange" :label="$t('analyses.title')" v-model="id.comment"></v-text-field>
+            <v-text-field @input="handleChange" :label="$t('analyses.comment')" v-model="id.comment"></v-text-field>
           </v-flex>
           <v-flex xs12 sm2 md1 class="text-xs-center">
             <v-btn secondary dark fab small v-on:click.native="removeEntryFrom('pathParams', index)">
