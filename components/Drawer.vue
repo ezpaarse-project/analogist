@@ -3,7 +3,7 @@
     <v-list dark class="pa-1 red accent-3" v-if="!mini">
       <v-list-tile avatar tag="div">
         <v-list-tile-avatar>
-          <img src="~/assets/img/analogist-logo-only-white.svg" />
+          <img src="~/assets/img/logo-white.svg" />
         </v-list-tile-avatar>
         <v-list-tile-content>
           <v-list-tile-title>AnalogIST</v-list-tile-title>
