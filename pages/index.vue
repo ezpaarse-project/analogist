@@ -15,16 +15,46 @@
         <v-container fluid grid-list-md>
           <v-layout row wrap>
             <v-flex xs12 sm6>
-              <v-text-field @input="checkPage" hide-details single-line :label="$t('cards.search')" v-model="searchText" append-icon="mdi-magnify" />
+              <v-text-field
+                @input="checkPage"
+                :label="$t('cards.search')"
+                v-model="searchText"
+                append-icon="mdi-magnify"
+                hide-details
+                single-line
+              />
             </v-flex>
             <v-flex xs12 sm6>
-              <v-select @input="checkPage" hide-details single-line :label="$t('cards.status')" append-icon="mdi-tag" :items="lists" v-model="searchLists" item-text="name" item-value="id" multiple />
+              <v-select
+                @input="checkPage"
+                :label="$t('cards.status')"
+                :items="lists"
+                v-model="searchLists"
+                item-text="name"
+                item-value="id"
+                append-icon="mdi-tag"
+                hide-details
+                single-line
+                multiple
+              >
+                <template slot="item" scope="data">
+                  <v-list-tile-content>
+                    <v-list-tile-title v-html="data.item.name"></v-list-tile-title>
+                  </v-list-tile-content>
+                </template>
+              </v-select>
             </v-flex>
           </v-layout>
         </v-container>
 
         <div class="text-xs-center pt-3">
-          <v-pagination prev-icon="mdi-chevron-left" next-icon="mdi-chevron-right" :length="nbPages" v-model="searchPage" :total-visible="5"></v-pagination>
+          <v-pagination
+            prev-icon="mdi-chevron-left"
+            next-icon="mdi-chevron-right"
+            :length="nbPages"
+            v-model="searchPage"
+            :total-visible="5"
+          />
         </div>
       </v-card-text>
 
