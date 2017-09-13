@@ -17,125 +17,273 @@
 
       <v-card-text v-if="analysis">
         <v-container fluid grid-list-md>
-        <v-text-field @input="handleChange" name="title" :label="$t('analyses.title')" v-model="analysis.title"></v-text-field>
-        <v-text-field @input="handleChange" @change="parseUrl" name="url" :label="$t('analyses.url')" v-model="analysis.url"></v-text-field>
+          <v-text-field @input="handleChange" name="title" :label="$t('analyses.title')" v-model="analysis.title"></v-text-field>
+          <v-text-field @input="handleChange" @change="parseUrl" name="url" :label="$t('analyses.url')" v-model="analysis.url"></v-text-field>
 
-        <v-layout wrap>
-          <v-flex xs12 sm6 md4>
-            <v-select
-              name="rtype"
-              :label="$t('analyses.type')"
-              :items="fields.rtype"
-              item-text="code"
-              item-value="code"
-              :filter="filterFields"
-              @input="handleChange"
-              v-model="analysis.rtype"
-              :append-icon="analysis.rtype ? 'mdi-close' : 'mdi-menu-down'"
-              :append-icon-cb="clearRtype"
-              autocomplete
-            >
-              <template slot="item" scope="data">
-                <v-list-tile-content>
-                  <v-list-tile-title v-html="data.item.code"></v-list-tile-title>
-                  <v-list-tile-sub-title v-html="data.item.description"></v-list-tile-sub-title>
-                </v-list-tile-content>
-              </template>
-            </v-select>
-          </v-flex>
+          <v-layout wrap>
+            <v-flex xs12 sm6 md4>
+              <v-select
+                name="rtype"
+                :label="$t('analyses.type')"
+                :items="fields.rtype"
+                item-text="code"
+                item-value="code"
+                :filter="filterFields"
+                @input="handleChange"
+                v-model="analysis.rtype"
+                :append-icon="analysis.rtype ? 'mdi-close' : 'mdi-menu-down'"
+                :append-icon-cb="clearRtype"
+                autocomplete
+              >
+                <template slot="item" scope="data">
+                  <v-list-tile-content>
+                    <v-list-tile-title v-html="data.item.code"></v-list-tile-title>
+                    <v-list-tile-sub-title v-html="data.item.description"></v-list-tile-sub-title>
+                  </v-list-tile-content>
+                </template>
+              </v-select>
+            </v-flex>
 
-          <v-flex xs12 sm6 md4>
-            <v-select
-              name="mime"
-              :label="$t('analyses.format')"
-              :items="fields.mime"
-              item-text="code"
-              item-value="code"
-              :filter="filterFields"
-              @input="handleChange"
-              v-model="analysis.mime"
-              :append-icon="analysis.mime ? 'mdi-close' : 'mdi-menu-down'"
-              :append-icon-cb="clearMime"
-              autocomplete
-            >
-              <template slot="item" scope="data">
-                <v-list-tile-content>
-                  <v-list-tile-title v-html="data.item.code"></v-list-tile-title>
-                  <v-list-tile-sub-title v-html="data.item.description"></v-list-tile-sub-title>
-                </v-list-tile-content>
-              </template>
-            </v-select>
-          </v-flex>
-          <v-flex xs12 sm12 md4>
-            <v-text-field @input="handleChange" name="unitid" :label="$t('analyses.unitid')" v-model="analysis.unitid"></v-text-field>
-          </v-flex>
-        </v-layout>
+            <v-flex xs12 sm6 md4>
+              <v-select
+                name="mime"
+                :label="$t('analyses.format')"
+                :items="fields.mime"
+                item-text="code"
+                item-value="code"
+                :filter="filterFields"
+                @input="handleChange"
+                v-model="analysis.mime"
+                :append-icon="analysis.mime ? 'mdi-close' : 'mdi-menu-down'"
+                :append-icon-cb="clearMime"
+                autocomplete
+              >
+                <template slot="item" scope="data">
+                  <v-list-tile-content>
+                    <v-list-tile-title v-html="data.item.code"></v-list-tile-title>
+                    <v-list-tile-sub-title v-html="data.item.description"></v-list-tile-sub-title>
+                  </v-list-tile-content>
+                </template>
+              </v-select>
+            </v-flex>
+            <v-flex xs12 sm12 md4>
+              <v-text-field @input="handleChange" name="unitid" :label="$t('analyses.unitid')" v-model="analysis.unitid"></v-text-field>
+            </v-flex>
+          </v-layout>
 
-        <v-text-field @input="handleChange" multi-line name="comment" :label="$t('analyses.comment')" v-model="analysis.comment"></v-text-field>
-
-        <h4>{{ $t('analyses.recognizedFields') }}</h4>
-        <v-layout class="elevation-1 my-2" v-for="(id, index) in analysis.identifiers" :key="index">
-          <v-flex xs12 sm5 md5>
-            <v-text-field @input="handleChange" :label="$t('analyses.type')" v-model="id.type"></v-text-field>
-          </v-flex>
-          <v-flex xs12 sm5 md6>
-            <v-text-field @input="handleChange" :label="$t('analyses.value')" v-model="id.value"></v-text-field>
-          </v-flex>
-          <v-flex xs12 sm2 md1 class="text-xs-center">
-            <v-btn secondary dark fab small v-on:click.native="removeEntryFrom('identifiers', index)">
-              <v-icon>mdi-delete</v-icon>
-            </v-btn>
-          </v-flex>
-        </v-layout>
-        <p class="text-xs-center">
-          <v-btn primary floating small dark v-on:click.native="addEntryIn('identifiers')">
-            <v-icon>mdi-plus</v-icon>
-          </v-btn>
-        </p>
-
-        <h4>{{ $t('analyses.pathParams') }}</h4>
-        <v-layout class="elevation-1 my-2" v-for="(id, index) in analysis.pathParams" :key="index">
-          <v-flex xs12 sm5 md5>
-            <v-text-field @input="handleChange" :label="$t('analyses.title')" v-model="id.value"></v-text-field>
-          </v-flex>
-          <v-flex xs12 sm5 md6>
-            <v-text-field @input="handleChange" :label="$t('analyses.comment')" v-model="id.comment"></v-text-field>
-          </v-flex>
-          <v-flex xs12 sm2 md1 class="text-xs-center">
-            <v-btn secondary dark fab small v-on:click.native="removeEntryFrom('pathParams', index)">
-              <v-icon>mdi-delete</v-icon>
-            </v-btn>
-          </v-flex>
-        </v-layout>
-        <p class="text-xs-center">
-          <v-btn primary floating small dark v-on:click.native="addEntryIn('pathParams')">
-            <v-icon>mdi-plus</v-icon>
-          </v-btn>
-        </p>
-
-        <h4>{{ $t('analyses.queryParams') }}</h4>
-        <v-layout class="elevation-1 my-2" v-for="(id, index) in analysis.queryParams" :key="index">
-          <v-flex xs12 sm6 md3>
-            <v-text-field @input="handleChange" :label="$t('analyses.name')" v-model="id.name"></v-text-field>
-          </v-flex>
-          <v-flex xs12 sm6 md4>
-            <v-text-field @input="handleChange" :label="$t('analyses.value')" v-model="id.value"></v-text-field>
-          </v-flex>
-          <v-flex xs12 sm10 md4>
-            <v-text-field @input="handleChange" :label="$t('analyses.comment')" v-model="id.comment"></v-text-field>
-          </v-flex>
-          <v-flex xs12 sm2 md1 class="text-xs-center">
-            <v-btn secondary dark fab small v-on:click.native="removeEntryFrom('queryParams', index)">
-              <v-icon>mdi-delete</v-icon>
-            </v-btn>
-          </v-flex>
-        </v-layout>
-        <p class="text-xs-center">
-          <v-btn primary floating small dark v-on:click.native="addEntryIn('queryParams')">
-            <v-icon>mdi-plus</v-icon>
-          </v-btn>
-        </p>
+          <v-text-field @input="handleChange" multi-line name="comment" :label="$t('analyses.comment')" v-model="analysis.comment"></v-text-field>
         </v-container>
+
+        <v-card class="my-3">
+          <v-card-title class="headline">
+            {{ $t('analyses.recognizedFields') }}
+            <v-spacer/>
+            <v-btn primary fab small dark v-on:click.native="addEntryIn('identifiers')">
+              <v-icon>mdi-plus</v-icon>
+            </v-btn>
+          </v-card-title>
+
+          <v-data-table v-if="analysis.identifiers.length"
+            :items="analysis.identifiers"
+            hide-actions
+          >
+            <template slot="headers" scope="props">
+              <tr class="text-xs-left">
+                <th>{{ $t('analyses.type') }}</th>
+                <th>{{ $t('analyses.value') }}</th>
+              </tr>
+            </template>
+
+            <template slot="items" scope="props">
+              <td>
+                <v-edit-dialog
+                  @open="tmp = props.item.type"
+                  @save="$set(props.item, 'type', tmp); handleChange()"
+                  lazy
+                  large
+                >
+                  <span v-if="props.item.type">{{ props.item.type }}</span>
+                  <span v-else class="grey--text">{{ $t('analyses.type') }}</span>
+                  <v-text-field
+                    slot="input"
+                    label="Edit"
+                    v-model="tmp"
+                    single-line
+                  />
+                </v-edit-dialog>
+              </td>
+              <td>
+                <v-edit-dialog
+                  @open="tmp = props.item.value"
+                  @save="$set(props.item, 'value', tmp); handleChange()"
+                  lazy
+                  large
+                >
+                  <span v-if="props.item.value">{{ props.item.value }}</span>
+                  <span v-else class="grey--text">{{ $t('analyses.value') }}</span>
+                  <v-text-field
+                    slot="input"
+                    label="Edit"
+                    single-line
+                    v-model="tmp"
+                  />
+                </v-edit-dialog>
+              </td>
+              <td class="text-xs-right">
+                <v-btn icon v-on:click.native="removeEntryFrom('identifiers', props.index)">
+                  <v-icon>mdi-delete</v-icon>
+                </v-btn>
+              </td>
+            </template>
+          </v-data-table>
+        </v-card>
+
+        <v-card class="my-3">
+          <v-card-title class="headline">
+            {{ $t('analyses.pathParams') }}
+            <v-spacer/>
+            <v-btn primary fab small dark v-on:click.native="addEntryIn('pathParams')">
+              <v-icon>mdi-plus</v-icon>
+            </v-btn>
+          </v-card-title>
+
+          <v-data-table v-if="analysis.pathParams.length"
+            :items="analysis.pathParams"
+            hide-actions
+          >
+            <template slot="headers" scope="props">
+              <tr class="text-xs-left">
+                <th>{{ $t('analyses.value') }}</th>
+                <th>{{ $t('analyses.comment') }}</th>
+              </tr>
+            </template>
+
+            <template slot="items" scope="props">
+              <td>
+                <v-edit-dialog
+                  @open="tmp = props.item.value"
+                  @save="$set(props.item, 'value', tmp); handleChange()"
+                  lazy
+                  large
+                >
+                  <span v-if="props.item.value">{{ props.item.value }}</span>
+                  <span v-else class="grey--text">{{ $t('analyses.value') }}</span>
+                  <v-text-field
+                    slot="input"
+                    label="Edit"
+                    single-line
+                    v-model="tmp"
+                  />
+                </v-edit-dialog>
+              </td>
+              <td>
+                <v-edit-dialog
+                  @open="tmp = props.item.comment"
+                  @save="$set(props.item, 'comment', tmp); handleChange()"
+                  lazy
+                  large
+                >
+                  <span v-if="props.item.comment">{{ props.item.comment }}</span>
+                  <span v-else class="grey--text">{{ $t('analyses.comment') }}</span>
+                  <v-text-field
+                    slot="input"
+                    label="Edit"
+                    v-model="tmp"
+                    single-line
+                  />
+                </v-edit-dialog>
+              </td>
+              <td class="text-xs-right">
+                <v-btn icon v-on:click.native="removeEntryFrom('pathParams', props.index)">
+                  <v-icon>mdi-delete</v-icon>
+                </v-btn>
+              </td>
+            </template>
+          </v-data-table>
+        </v-card>
+
+        <v-card class="my-3">
+          <v-card-title class="headline">
+            {{ $t('analyses.queryParams') }}
+            <v-spacer/>
+            <v-btn primary fab small dark v-on:click.native="addEntryIn('queryParams')">
+              <v-icon>mdi-plus</v-icon>
+            </v-btn>
+          </v-card-title>
+
+          <v-data-table v-if="analysis.queryParams.length"
+            :items="analysis.queryParams"
+            hide-actions
+          >
+            <template slot="headers" scope="props">
+              <tr class="text-xs-left">
+                <th>{{ $t('analyses.name') }}</th>
+                <th>{{ $t('analyses.value') }}</th>
+                <th>{{ $t('analyses.comment') }}</th>
+              </tr>
+            </template>
+
+            <template slot="items" scope="props">
+              <td>
+                <v-edit-dialog
+                  @open="tmp = props.item.name"
+                  @save="$set(props.item, 'name', tmp); handleChange()"
+                  lazy
+                  large
+                >
+                  <span v-if="props.item.name">{{ props.item.name }}</span>
+                  <span v-else class="grey--text">{{ $t('analyses.name') }}</span>
+                  <v-text-field
+                    slot="input"
+                    label="Edit"
+                    single-line
+                    v-model="tmp"
+                  />
+                </v-edit-dialog>
+              </td>
+              <td>
+                <v-edit-dialog
+                  @open="tmp = props.item.value"
+                  @save="$set(props.item, 'value', tmp); handleChange()"
+                  lazy
+                  large
+                >
+                  <span v-if="props.item.value">{{ props.item.value }}</span>
+                  <span v-else class="grey--text">{{ $t('analyses.value') }}</span>
+                  <v-text-field
+                    slot="input"
+                    label="Edit"
+                    single-line
+                    v-model="tmp"
+                  />
+                </v-edit-dialog>
+              </td>
+              <td>
+                <v-edit-dialog
+                  @open="tmp = props.item.comment"
+                  @save="$set(props.item, 'comment', tmp); handleChange()"
+                  lazy
+                  large
+                >
+                  <span v-if="props.item.comment">{{ props.item.comment }}</span>
+                  <span v-else class="grey--text">{{ $t('analyses.comment') }}</span>
+                  <v-text-field
+                    slot="input"
+                    label="Edit"
+                    v-model="tmp"
+                    single-line
+                  />
+                </v-edit-dialog>
+              </td>
+              <td class="text-xs-right">
+                <v-btn icon v-on:click.native="removeEntryFrom('queryParams', props.index)">
+                  <v-icon>mdi-delete</v-icon>
+                </v-btn>
+              </td>
+            </template>
+          </v-data-table>
+        </v-card>
+
       </v-card-text>
 
       <v-card-text v-else>
@@ -162,6 +310,7 @@ export default {
   transition: 'slide-x-transition',
   async asyncData () {
     return {
+      tmp: '',
       pendingChanges: false,
       dirty: false,
       saving: false,
