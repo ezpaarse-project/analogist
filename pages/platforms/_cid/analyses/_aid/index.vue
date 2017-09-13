@@ -18,30 +18,27 @@
       <template v-if="analysis">
 
         <v-card-text>
-          <v-container fluid grid-list-md>
-            <div class="headline" v-text="analysis.title"></div>
-            <p class="break-all" v-text="analysis.url"></p>
+          <div class="headline" v-text="analysis.title"></div>
+          <p class="break-all" v-text="analysis.url"></p>
 
-            <v-layout row wrap>
-              <v-chip label v-if="analysis.rtype" class="blue white--text" v-tooltip:bottom="{ html: $t('analyses.type') }">
-                <v-icon left>mdi-tag</v-icon>
-                {{ analysis.rtype }}
-              </v-chip>
+          <v-layout row wrap>
+            <v-chip label v-if="analysis.rtype" class="blue white--text" v-tooltip:bottom="{ html: $t('analyses.type') }">
+              <v-icon left>mdi-tag</v-icon>
+              {{ analysis.rtype }}
+            </v-chip>
 
-              <v-chip label v-if="analysis.mime" class="blue white--text" v-tooltip:bottom="{ html: $t('analyses.format') }">
-                <v-icon left>mdi-file</v-icon>
-                {{ analysis.mime }}
-              </v-chip>
+            <v-chip label v-if="analysis.mime" class="blue white--text" v-tooltip:bottom="{ html: $t('analyses.format') }">
+              <v-icon left>mdi-file</v-icon>
+              {{ analysis.mime }}
+            </v-chip>
 
-              <v-chip label v-if="analysis.unitid" class="blue white--text" v-tooltip:bottom="{ html: $t('analyses.unitid') }">
-                <v-icon left>mdi-fingerprint</v-icon>
-                {{ analysis.unitid }}
-              </v-chip>
-            </v-layout>
+            <v-chip label v-if="analysis.unitid" class="blue white--text" v-tooltip:bottom="{ html: $t('analyses.unitid') }">
+              <v-icon left>mdi-fingerprint</v-icon>
+              {{ analysis.unitid }}
+            </v-chip>
+          </v-layout>
 
-            <v-alert class="pre-wrap" icon="mdi-information-outline" :value="true" info v-if="analysis.comment">{{ analysis.comment }}</v-alert>
-
-          </v-container>
+          <v-alert class="pre-wrap" icon="mdi-information-outline" :value="true" info v-if="analysis.comment">{{ analysis.comment }}</v-alert>
         </v-card-text>
 
         <template v-if="analysis.identifiers && analysis.identifiers.length">
@@ -50,7 +47,7 @@
 
           <table class="datatable table">
             <thead>
-              <tr>
+              <tr class="text-xs-left">
                 <th>{{ $t('analyses.type') }}</th>
                 <th>{{ $t('analyses.value') }}</th>
               </tr>
@@ -70,7 +67,7 @@
 
           <table class="datatable table">
             <thead>
-              <tr>
+              <tr class="text-xs-left">
                 <th>{{ $t('analyses.value') }}</th>
                 <th>{{ $t('analyses.comment') }}</th>
               </tr>
@@ -90,7 +87,7 @@
 
           <table class="datatable table">
             <thead>
-              <tr>
+              <tr class="text-xs-left">
                 <th>{{ $t('analyses.name') }}</th>
                 <th>{{ $t('analyses.value') }}</th>
                 <th>{{ $t('analyses.comment') }}</th>
