@@ -16,8 +16,12 @@
       </v-toolbar>
 
       <template v-if="analysis">
-
         <v-card-text>
+
+          <div class="grey--text">
+            {{ updatedAt }} <span v-if="updatedBy">{{ $t('analyses.by') }} {{ updatedBy.fullName }}</span>
+          </div>
+
           <div class="headline" v-text="analysis.title"></div>
           <p class="break-all" v-text="analysis.url"></p>
 
@@ -112,6 +116,8 @@
 </template>
 
 <script>
+import moment from 'moment'
+
 export default {
   name: 'analysis',
   transition: 'slide-x-transition',
@@ -141,6 +147,16 @@ export default {
     },
     canEdit () {
       return this.$store.state.user && this.$store.state.user.isAuthorized
+    },
+    updatedAt () {
+      return moment(this.analysis.updatedAt).locale(this.$i18n.locale).calendar()
+    },
+    updatedBy () {
+      try {
+        return this.card.members.find(m => m.id === this.analysis.updatedBy)
+      } catch (e) {
+        return null
+      }
     }
   }
 }
