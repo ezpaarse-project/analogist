@@ -83,51 +83,49 @@
             </v-btn>
           </v-card-title>
 
-          <v-data-table v-if="analysis.identifiers.length"
+          <v-data-table v-if="analysis.identifiers && analysis.identifiers.length"
             :items="analysis.identifiers"
             hide-actions
           >
             <template slot="headers" scope="props">
-              <tr class="text-xs-left">
+              <tr>
                 <th>{{ $t('analyses.type') }}</th>
                 <th>{{ $t('analyses.value') }}</th>
+                <th></th>
               </tr>
             </template>
 
             <template slot="items" scope="props">
               <td>
-                <v-edit-dialog
-                  @open="tmp = props.item.type"
-                  @save="$set(props.item, 'type', tmp); handleChange()"
-                  lazy
-                  large
+                <v-select
+                  :label="$t('analyses.type')"
+                  :items="fields.rid"
+                  :filter="filterFields"
+                  v-model="props.item.type"
+                  @input="handleChange"
+                  item-text="code"
+                  item-value="code"
+                  append-icon="mdi-menu-down"
+                  single-line
+                  autocomplete
                 >
-                  <span v-if="props.item.type">{{ props.item.type }}</span>
-                  <span v-else class="grey--text">{{ $t('analyses.type') }}</span>
-                  <v-text-field
-                    slot="input"
-                    label="Edit"
-                    v-model="tmp"
-                    single-line
-                  />
-                </v-edit-dialog>
+                  <template slot="item" scope="data">
+                    <v-list-tile-content>
+                      <v-list-tile-title v-html="data.item.code"></v-list-tile-title>
+                      <v-list-tile-sub-title v-html="data.item.description"></v-list-tile-sub-title>
+                    </v-list-tile-content>
+                  </template>
+                </v-select>
               </td>
               <td>
-                <v-edit-dialog
-                  @open="tmp = props.item.value"
-                  @save="$set(props.item, 'value', tmp); handleChange()"
-                  lazy
-                  large
-                >
-                  <span v-if="props.item.value">{{ props.item.value }}</span>
-                  <span v-else class="grey--text">{{ $t('analyses.value') }}</span>
-                  <v-text-field
-                    slot="input"
-                    label="Edit"
-                    single-line
-                    v-model="tmp"
-                  />
-                </v-edit-dialog>
+                <v-text-field
+                  v-model="props.item.value"
+                  @input="handleChange"
+                  :label="$t('analyses.value')"
+                  single-line
+                  full-width
+                  hide-details
+                />
               </td>
               <td class="text-xs-right">
                 <v-btn icon v-on:click.native="removeEntryFrom('identifiers', props.index)">
@@ -147,51 +145,38 @@
             </v-btn>
           </v-card-title>
 
-          <v-data-table v-if="analysis.pathParams.length"
+          <v-data-table v-if="analysis.pathParams && analysis.pathParams.length"
             :items="analysis.pathParams"
             hide-actions
           >
             <template slot="headers" scope="props">
-              <tr class="text-xs-left">
+              <tr>
                 <th>{{ $t('analyses.value') }}</th>
                 <th>{{ $t('analyses.comment') }}</th>
+                <th></th>
               </tr>
             </template>
 
             <template slot="items" scope="props">
               <td>
-                <v-edit-dialog
-                  @open="tmp = props.item.value"
-                  @save="$set(props.item, 'value', tmp); handleChange()"
-                  lazy
-                  large
-                >
-                  <span v-if="props.item.value">{{ props.item.value }}</span>
-                  <span v-else class="grey--text">{{ $t('analyses.value') }}</span>
-                  <v-text-field
-                    slot="input"
-                    label="Edit"
-                    single-line
-                    v-model="tmp"
-                  />
-                </v-edit-dialog>
+                <v-text-field
+                  v-model="props.item.value"
+                  @input="handleChange"
+                  :label="$t('analyses.value')"
+                  single-line
+                  full-width
+                  hide-details
+                />
               </td>
               <td>
-                <v-edit-dialog
-                  @open="tmp = props.item.comment"
-                  @save="$set(props.item, 'comment', tmp); handleChange()"
-                  lazy
-                  large
-                >
-                  <span v-if="props.item.comment">{{ props.item.comment }}</span>
-                  <span v-else class="grey--text">{{ $t('analyses.comment') }}</span>
-                  <v-text-field
-                    slot="input"
-                    label="Edit"
-                    v-model="tmp"
-                    single-line
-                  />
-                </v-edit-dialog>
+                <v-text-field
+                  v-model="props.item.comment"
+                  @input="handleChange"
+                  :label="$t('analyses.comment')"
+                  single-line
+                  full-width
+                  hide-details
+                />
               </td>
               <td class="text-xs-right">
                 <v-btn icon v-on:click.native="removeEntryFrom('pathParams', props.index)">
@@ -211,69 +196,49 @@
             </v-btn>
           </v-card-title>
 
-          <v-data-table v-if="analysis.queryParams.length"
+          <v-data-table v-if="analysis.queryParams && analysis.queryParams.length"
             :items="analysis.queryParams"
             hide-actions
           >
             <template slot="headers" scope="props">
-              <tr class="text-xs-left">
+              <tr>
                 <th>{{ $t('analyses.name') }}</th>
                 <th>{{ $t('analyses.value') }}</th>
                 <th>{{ $t('analyses.comment') }}</th>
+                <th></th>
               </tr>
             </template>
 
             <template slot="items" scope="props">
               <td>
-                <v-edit-dialog
-                  @open="tmp = props.item.name"
-                  @save="$set(props.item, 'name', tmp); handleChange()"
-                  lazy
-                  large
-                >
-                  <span v-if="props.item.name">{{ props.item.name }}</span>
-                  <span v-else class="grey--text">{{ $t('analyses.name') }}</span>
-                  <v-text-field
-                    slot="input"
-                    label="Edit"
-                    single-line
-                    v-model="tmp"
-                  />
-                </v-edit-dialog>
+                <v-text-field
+                  v-model="props.item.name"
+                  @input="handleChange"
+                  :label="$t('analyses.name')"
+                  single-line
+                  full-width
+                  hide-details
+                />
               </td>
               <td>
-                <v-edit-dialog
-                  @open="tmp = props.item.value"
-                  @save="$set(props.item, 'value', tmp); handleChange()"
-                  lazy
-                  large
-                >
-                  <span v-if="props.item.value">{{ props.item.value }}</span>
-                  <span v-else class="grey--text">{{ $t('analyses.value') }}</span>
-                  <v-text-field
-                    slot="input"
-                    label="Edit"
-                    single-line
-                    v-model="tmp"
-                  />
-                </v-edit-dialog>
+                <v-text-field
+                  v-model="props.item.value"
+                  @input="handleChange"
+                  :label="$t('analyses.value')"
+                  single-line
+                  full-width
+                  hide-details
+                />
               </td>
               <td>
-                <v-edit-dialog
-                  @open="tmp = props.item.comment"
-                  @save="$set(props.item, 'comment', tmp); handleChange()"
-                  lazy
-                  large
-                >
-                  <span v-if="props.item.comment">{{ props.item.comment }}</span>
-                  <span v-else class="grey--text">{{ $t('analyses.comment') }}</span>
-                  <v-text-field
-                    slot="input"
-                    label="Edit"
-                    v-model="tmp"
-                    single-line
-                  />
-                </v-edit-dialog>
+                <v-text-field
+                  v-model="props.item.comment"
+                  @input="handleChange"
+                  :label="$t('analyses.comment')"
+                  single-line
+                  full-width
+                  hide-details
+                />
               </td>
               <td class="text-xs-right">
                 <v-btn icon v-on:click.native="removeEntryFrom('queryParams', props.index)">
