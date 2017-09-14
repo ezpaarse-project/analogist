@@ -134,7 +134,7 @@ export default {
       ],
       links: [
         { icon: 'mdi-home', href: 'http://www.ezpaarse.org/' },
-        { icon: 'mdi-email', href: 'ezpaarse@couperin.org' },
+        { icon: 'mdi-email', href: 'mailto:ezpaarse@couperin.org' },
         { icon: 'mdi-twitter-box', href: 'https://twitter.com/ezpaarse' },
         { icon: 'mdi-facebook-box', href: 'https://www.facebook.com/Ezpaarse' },
         { icon: 'mdi-comment-text-outline', href: 'http://blog.ezpaarse.org/' },
