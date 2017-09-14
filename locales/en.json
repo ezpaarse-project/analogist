@@ -25,6 +25,7 @@
     "publisherVerified": "Has been compared with the publisher's statistics"
   },
   "analyses": {
+    "updated": "Updated",
     "by": "by",
     "edit": "Edit",
     "new": "New analysis",

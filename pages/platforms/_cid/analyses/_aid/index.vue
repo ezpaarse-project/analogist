@@ -19,7 +19,7 @@
         <v-card-text>
 
           <div class="grey--text">
-            {{ updatedAt }} <span v-if="updatedBy">{{ $t('analyses.by') }} {{ updatedBy.fullName }}</span>
+            {{ $t('analyses.updated')}} {{ updatedAt }} <span v-if="updatedBy">{{ $t('analyses.by') }} {{ updatedBy.fullName }}</span>
           </div>
 
           <div class="headline" v-text="analysis.title"></div>
@@ -149,7 +149,7 @@ export default {
       return this.$store.state.user && this.$store.state.user.isAuthorized
     },
     updatedAt () {
-      return moment(this.analysis.updatedAt).locale(this.$i18n.locale).calendar()
+      return moment(this.analysis.updatedAt).locale(this.$i18n.locale).fromNow()
     },
     updatedBy () {
       try {
