@@ -25,7 +25,7 @@
               <v-select
                 name="rtype"
                 :label="$t('analyses.type')"
-                :items="fields.rtype"
+                :items="rtypes"
                 item-text="code"
                 item-value="code"
                 :filter="filterFields"
@@ -48,7 +48,7 @@
               <v-select
                 name="mime"
                 :label="$t('analyses.format')"
-                :items="fields.mime"
+                :items="mimes"
                 item-text="code"
                 item-value="code"
                 :filter="filterFields"
@@ -99,7 +99,7 @@
               <td>
                 <v-select
                   :label="$t('analyses.type')"
-                  :items="fields.rid"
+                  :items="recognizedFields"
                   :filter="filterFields"
                   v-model="props.item.type"
                   @input="handleChange"
@@ -317,6 +317,15 @@ export default {
     },
     canSave () {
       return this.user && this.user.isAuthorized
+    },
+    rtypes () {
+      return this.fields.rtype.sort(this.sortByCode)
+    },
+    mimes () {
+      return this.fields.mime.sort(this.sortByCode)
+    },
+    recognizedFields () {
+      return this.fields.rid.concat(this.fields.other).sort(this.sortByCode)
     }
   },
   beforeRouteLeave (to, from, next) {
@@ -332,6 +341,9 @@ export default {
     }
   },
   methods: {
+    sortByCode (a, b) {
+      return a.code.toLowerCase() > b.code.toLowerCase() ? 1 : -1
+    },
     clearMime (event) {
       this.analysis.mime = null
       this.handleChange()
