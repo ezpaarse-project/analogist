@@ -22,7 +22,9 @@
     "humanCertification": "Human certification",
     "publisherCertification": "Publisher certification",
     "manuallyVerified": "Has been manually verified",
-    "publisherVerified": "Has been compared with the publisher's statistics"
+    "publisherVerified": "Has been compared with the publisher's statistics",
+    "whatIsCertification": "What is this certification?"
+    
   },
   "analyses": {
     "updated": "Updated",

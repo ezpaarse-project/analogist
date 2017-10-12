@@ -22,7 +22,8 @@
     "humanCertification": "Certification humaine",
     "publisherCertification": "Certification éditeur",
     "manuallyVerified": "A été vérifiée manuellement",
-    "publisherVerified": "A été comparée avec les statistiques de l'éditeur"
+    "publisherVerified": "A été comparée avec les statistiques de l'éditeur",
+    "whatIsCertification": "A quoi correspond cette certification ?"
   },
   "analyses": {
     "updated": "Mise à jour",
