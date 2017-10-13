@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer enable-resize-watcher disable-route-watcher persistent :mini-variant="mini" v-model="drawer">
+  <v-navigation-drawer app enable-resize-watcher disable-route-watcher persistent :mini-variant="mini" v-model="drawer">
     <v-list dark class="pa-1 red accent-3" v-if="!mini">
       <v-list-tile avatar tag="div">
         <v-list-tile-avatar>

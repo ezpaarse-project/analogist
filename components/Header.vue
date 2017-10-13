@@ -1,5 +1,5 @@
 <template>
-  <v-toolbar dark fixed class="red accent-3">
+  <v-toolbar app dark fixed class="red accent-3">
     <v-toolbar-side-icon @click.stop="setDrawer(!drawer)">
       <v-icon>mdi-menu</v-icon>
     </v-toolbar-side-icon>

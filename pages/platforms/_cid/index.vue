@@ -13,9 +13,18 @@
 
         <v-spacer></v-spacer>
 
-        <v-btn icon tag="a" flat target="_blank" v-if="card.githubUrl" :href="card.githubUrl" v-tooltip:left="{ html: $t('card.github') }"><v-icon>mdi-github-box</v-icon></v-btn>
-        <v-btn icon tag="a" flat target="_blank" v-if="card.homeUrl" :href="card.homeUrl" v-tooltip:left="{ html: $t('card.homepage') }"><v-icon>mdi-home</v-icon></v-btn>
-        <v-btn icon tag="a" flat target="_blank" v-if="card.url" :href="card.url" v-tooltip:left="{ html: $t('card.trello') }"><v-icon>mdi-trello</v-icon></v-btn>
+        <v-tooltip left>
+          <v-btn slot="activator" icon tag="a" flat target="_blank" v-if="card.githubUrl" :href="card.githubUrl"><v-icon>mdi-github-box</v-icon></v-btn>
+          <span>{{ $t('card.github') }}</span>
+        </v-tooltip>
+        <v-tooltip left>
+          <v-btn slot="activator" icon tag="a" flat target="_blank" v-if="card.homeUrl" :href="card.homeUrl"><v-icon>mdi-home</v-icon></v-btn>
+          <span>{{ $t('card.homepage') }}</span>
+        </v-tooltip>
+        <v-tooltip left>
+          <v-btn slot="activator" icon tag="a" flat target="_blank" v-if="card.url" :href="card.url"><v-icon>mdi-trello</v-icon></v-btn>
+          <span>{{ $t('card.trello') }}</span>
+        </v-tooltip>
       </v-toolbar>
 
       <v-card-text>

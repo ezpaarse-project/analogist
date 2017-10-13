@@ -35,7 +35,7 @@
     "request": "^2.81.0",
     "vue-i18n": "^7.2.0",
     "vuedraggable": "^2.14.1",
-    "vuetify": "^0.15.7"
+    "vuetify": "^0.16.6"
   },
   "devDependencies": {
     "chai": "^4.1.2",

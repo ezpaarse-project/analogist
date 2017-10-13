@@ -10,13 +10,19 @@
 
         <v-spacer/>
 
-        <v-btn icon @click.native="generateTestFile" v-tooltip:left="{ html: $t('analyses.export') }">
-          <v-icon>mdi-upload</v-icon>
-        </v-btn>
+        <v-tooltip left>
+          <v-btn slot="activator" icon @click.native="generateTestFile">
+            <v-icon>mdi-upload</v-icon>
+          </v-btn>
+          <span>{{ $t('analyses.export') }}</span>
+        </v-tooltip>
 
-        <v-btn icon v-if="canEdit" @click.native="createAnalysis" v-tooltip:left="{ html: $t('analyses.new') }">
-          <v-icon>mdi-plus</v-icon>
-        </v-btn>
+        <v-tooltip left>
+          <v-btn slot="activator" icon v-if="canEdit" @click.native="createAnalysis">
+            <v-icon>mdi-plus</v-icon>
+          </v-btn>
+          <span>{{ $t('analyses.new') }}</span>
+        </v-tooltip>
       </v-toolbar>
 
       <v-list two-line>

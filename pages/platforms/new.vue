@@ -9,56 +9,60 @@
         </v-toolbar-title>
       </v-toolbar>
 
-      <v-stepper v-model="step" vertical>
-        <v-stepper-step step="1" :complete="step > 1">
-          {{ $t('creation.domainCheck') }}
-        </v-stepper-step>
-        <v-stepper-content step="1">
-          <v-container class="mb-5">
-            <DomainChecker></DomainChecker>
-          </v-container>
+      <v-stepper v-model="step" vertical >
+        <v-stepper-items>
+          <v-stepper-step step="1" :complete="step > 1" complete-icon="mdi-check">
+            {{ $t('creation.domainCheck') }}
+          </v-stepper-step>
+          <v-stepper-content step="1">
+            <v-container class="mb-5">
+              <DomainChecker/>
+            </v-container>
 
-          <v-btn primary @click.native="step++">{{ $t('creation.next') }}</v-btn>
-        </v-stepper-content>
+            <v-btn primary @click.native="step++">{{ $t('creation.next') }}</v-btn>
+          </v-stepper-content>
 
-        <v-stepper-step step="2" :complete="step > 2">
-          {{ $t('creation.platformInfo') }}
-        </v-stepper-step>
-        <v-stepper-content step="2">
-          <v-container fluid grid-list-md>
-            <v-layout row wrap>
-              <v-flex xs12 sm8>
-                <v-text-field name="longName" :label="$t('creation.name')" v-model="form.longName" required></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm4>
-                <v-text-field name="shortName" :label="$t('creation.abv')" v-model="form.shortName" required></v-text-field>
-              </v-flex>
-              <v-flex xs12>
-                <v-text-field name="homeUrl" :label="$t('creation.homepage')" v-model="form.homeUrl"></v-text-field>
-              </v-flex>
-            </v-layout>
-          </v-container>
+          <v-stepper-step step="2" :complete="step > 2" complete-icon="mdi-check">
+            {{ $t('creation.platformInfo') }}
+          </v-stepper-step>
+          <v-stepper-content step="2">
+            <v-container fluid grid-list-md>
+              <v-layout row wrap>
+                <v-flex xs12 sm8>
+                  <v-text-field name="longName" :label="$t('creation.name')" v-model="form.longName" required></v-text-field>
+                </v-flex>
+                <v-flex xs12 sm4>
+                  <v-text-field name="shortName" :label="$t('creation.abv')" v-model="form.shortName" required></v-text-field>
+                </v-flex>
+                <v-flex xs12>
+                  <v-text-field name="homeUrl" :label="$t('creation.homepage')" v-model="form.homeUrl"></v-text-field>
+                </v-flex>
+              </v-layout>
+            </v-container>
 
-          <v-btn primary :disabled="!form.longName || !form.shortName" @click.native="step++">{{ $t('creation.next') }}</v-btn>
-          <v-btn flat @click.native="step--">{{ $t('creation.previous') }}</v-btn>
-        </v-stepper-content>
+            <v-btn primary :disabled="!form.longName || !form.shortName" @click.native="step++">{{ $t('creation.next') }}</v-btn>
+            <v-btn flat @click.native="step--">{{ $t('creation.previous') }}</v-btn>
+          </v-stepper-content>
 
-        <v-stepper-step step="3" :complete="step > 3">
-          {{ $t('creation.platformStatus') }}
-        </v-stepper-step>
-        <v-stepper-content step="3">
-          <v-radio-group v-model="form.idList">
-            <v-radio
-              v-for="list in lists"
-              :key="list.id"
-              :label="list.name"
-              :value="list.id"
-            />
-          </v-radio-group>
+          <v-stepper-step step="3" :complete="step > 3" complete-icon="mdi-check">
+            {{ $t('creation.platformStatus') }}
+          </v-stepper-step>
+          <v-stepper-content step="3">
+            <v-select
+              :items="lists"
+              :label="$t('creation.platformStatus')"
+              v-model="form.idList"
+              append-icon="mdi-menu-down"
+              item-text="name"
+              item-value="id"
+              single-line
+              bottom
+            ></v-select>
 
-          <v-btn primary :disabled="!form.idList" :loading="creating" @click.native="createCard()">{{ $t('creation.create') }}</v-btn>
-          <v-btn flat @click.native="step--">{{ $t('creation.previous') }}</v-btn>
-        </v-stepper-content>
+            <v-btn primary :disabled="!form.idList" :loading="creating" @click.native="createCard()">{{ $t('creation.create') }}</v-btn>
+            <v-btn flat @click.native="step--">{{ $t('creation.previous') }}</v-btn>
+          </v-stepper-content>
+        </v-stepper-items>
       </v-stepper>
     </v-card>
   </section>

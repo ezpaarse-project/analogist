@@ -1,11 +1,13 @@
 <template>
-  <v-app id="analogist" toolbar>
+  <v-app id="analogist">
     <AppDrawer/>
     <AppHeader/>
     <main>
-      <v-container fluid>
-        <nuxt/>
-      </v-container>
+      <v-content>
+        <v-container fluid>
+          <nuxt/>
+        </v-container>
+      </v-content>
     </main>
   </v-app>
 </template>
