@@ -40,7 +40,7 @@
     "name": "Nom",
     "value": "Valeur",
     "recognizedFields": "Champs reconnus",
-    "pathParams": "Éléments de la route",
+    "pathParams": "Éléments de l'URL",
     "queryParams": "Paramètres de la query",
     "notFound": "Analyse introuvable",
     "saved": "Analyse sauvegardée"
