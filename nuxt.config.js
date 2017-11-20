@@ -14,11 +14,17 @@ module.exports = {
       { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Roboto' }
     ]
   },
+  mode: 'spa',
+  loading: { color: '#FFFFFF' },
+  loadingIndicator: {
+    name: 'folding-cube',
+    color: '#E10D1A'
+  },
   router: {
     middleware: ['ssr-cookie']
   },
   plugins: [
-    // '~/plugins/axios.js',
+    { src: '~/plugins/ezlogger.js', ssr: false },
     '~/plugins/vuetify.js',
     '~/plugins/i18n.js'
   ],
