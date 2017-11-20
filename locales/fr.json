@@ -1,14 +1,52 @@
 {
   "ui": {
-    "back": "Retour"
+    "back": "Retour",
+    "search": "Recherche"
   },
   "drawer": {
     "platforms": "Plateformes",
     "trelloBoard": "Tableau Trello",
+    "ezLogger": "ezPAARSE Logger",
     "logout": "Se déconnecter",
     "notConnected": "Non connecté",
     "login": "Se connecter",
     "language": "Langue"
+  },
+  "ezLogger": {
+    "title": "ezPAARSE Logger",
+    "settings": "Paramètres",
+    "consultationEvent": "Évènement de consultation",
+    "requestDetails": "Details de la requête",
+    "requestStatus": "Statut de la requête",
+    "requestType": "Type de requête",
+    "rtype": "Type de ressource",
+    "mime": "Format de ressource",
+    "noData": "Pas de données",
+    "noResults": "Aucun résultat",
+    "waitingForTraffic": "En attente de trafic, il est temps de parcourir le web !",
+    "analyze": "Analyser",
+    "clearAll": "Nettoyer tout",
+    "export": "Exporter",
+    "filter": "Filtrer",
+    "exportDesc": "Cliquez ci-dessous pour exporter le trafic capturé sous la forme d'un fichier de log standard. Ce fichier peut être traité avec ezPAARSE sans aucune configuration.",
+    "captureLimitReached": "Vous avez atteint la limite de capture, les requêtes les plus anciennes seront désormais remplacées par les nouvelles."
+  },
+  "ezLoggerSettings": {
+    "instance": "Instance ezPAARSE",
+    "useNationalInstance": "Utiliser l'instance publique",
+    "nationalInstanceDesc": "L'instance publique est hébergée sur http://ezpaarse-preprod.couperin.org et fournit toujours la dernière version d'ezPAARSE.",
+    "customUrl": "URL de l'instance ezPAARSE",
+    "testConnection": "Tester la connexion",
+    "connectionSuccessful": "Connexion réussie. Version: ",
+    "name": "nom",
+    "value": "Valeur",
+    "suffix": "Suffixe",
+    "general": "General",
+    "autoNoiseFiltering": "Filtrage automatique du bruit (images, scripts...)",
+    "patchHyphens": "Patcher les tirets",
+    "patchHyphensDesc": "Si votre proxy remplaces les tirets par des points, cochez \"patcher les tirets\" pour dupliquer les lignes afin de générer toutes les URLs possibles.",
+    "headers": "Headers",
+    "proxySuffixes": "Suffixes de proxy"
   },
   "card": {
     "lastActivity": "Dernière activité",

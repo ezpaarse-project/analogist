@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer app enable-resize-watcher disable-route-watcher persistent :mini-variant="mini" v-model="drawer">
+  <v-navigation-drawer app fixed disable-route-watcher :mini-variant="mini" v-model="drawer">
     <v-list dark class="pa-1 red accent-3" v-if="!mini">
       <v-list-tile avatar tag="div">
         <v-list-tile-avatar>
@@ -78,6 +78,15 @@
         </v-list-tile-action>
         <v-list-tile-content>
           <v-list-tile-title>{{ $t('drawer.trelloBoard') }}</v-list-tile-title>
+        </v-list-tile-content>
+      </v-list-tile>
+
+      <v-list-tile router exact :to="{ path: '/ezlogger' }" ripple>
+        <v-list-tile-action>
+          <v-icon>mdi-file-find</v-icon>
+        </v-list-tile-action>
+        <v-list-tile-content>
+          <v-list-tile-title>{{ $t('drawer.ezLogger') }}</v-list-tile-title>
         </v-list-tile-content>
       </v-list-tile>
 

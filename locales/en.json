@@ -1,14 +1,52 @@
 {
   "ui": {
-    "back": "Back"
+    "back": "Back",
+    "search": "Search"
   },
   "drawer": {
     "platforms": "Platforms",
     "trelloBoard": "Trello board",
+    "ezLogger": "ezPAARSE Logger",
     "logout": "Logout",
     "notConnected": "Not connected",
     "login": "Login",
     "language": "Language"
+  },
+  "ezLogger": {
+    "title": "ezPAARSE Logger",
+    "consultationEvent": "Consultation event",
+    "requestDetails": "Request details",
+    "requestStatus": "Request status",
+    "requestType": "Request type",
+    "rtype": "Resource type",
+    "mime": "Resource format",
+    "noData": "No data",
+    "noResults": "No results",
+    "settings": "Settings",
+    "waitingForTraffic": "Waiting for traffic, let's browse the Internet !",
+    "analyze": "Analyze",
+    "clearAll": "Clear all",
+    "export": "Export",
+    "filter": "Filter",
+    "exportDesc": "Click below to export the traffic you captured as a standard log file. This file can be processed in ezPAARSE without any configuration.",
+    "captureLimitReached": "You reached the capture limit, the oldest requests will now be replaced by the new ones."
+  },
+  "ezLoggerSettings": {
+    "instance": "ezPAARSE instance",
+    "useNationalInstance": "Use the public instance",
+    "nationalInstanceDesc": "The public instance is hosted on http://ezpaarse-preprod.couperin.org and always provides the latest version of ezPAARSE.",
+    "customUrl": "URL of the ezPAARSE instance",
+    "testConnection": "Test connection",
+    "connectionSuccessful": "Connection successful. Version: ",
+    "name": "Name",
+    "value": "Value",
+    "suffix": "Suffix",
+    "general": "General",
+    "autoNoiseFiltering": "Automatic noise filtering (images, scripts...)",
+    "patchHyphens": "Patch hyphens",
+    "patchHyphensDesc": "If your proxy replaces dots with hyphens, check \"patch hyphens\" to duplicate lines in order to generate all possible URLs.",
+    "headers": "Headers",
+    "proxySuffixes": "Proxy suffixes"
   },
   "card": {
     "lastActivity": "Last activity",
@@ -24,7 +62,7 @@
     "manuallyVerified": "Has been manually verified",
     "publisherVerified": "Has been compared with the publisher's statistics",
     "whatIsCertification": "What is this certification?"
-    
+
   },
   "analyses": {
     "updated": "Updated",

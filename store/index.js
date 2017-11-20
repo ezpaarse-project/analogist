@@ -1,8 +1,12 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import api from './api'
+import ezlogger from './ezlogger'
 
 const store = () => new Vuex.Store({
+  modules: {
+    ezlogger
+  },
   state: {
     user: null,
     app: {},
