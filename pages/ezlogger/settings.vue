@@ -21,7 +21,7 @@
         </v-btn>
 
         <v-alert color="success" :value="connectionTest.version">{{ $t('ezLoggerSettings.connectionSuccessful') }} {{ connectionTest.version }}</v-alert>
-        <v-alert color="error" :value="connectionTest.error">{{ connectionTest.error }}</v-alert>
+        <v-alert color="error" :value="connectionTest.errorMessage">{{ connectionTest.errorMessage }}</v-alert>
       </v-card-text>
     </v-card>
 
@@ -165,7 +165,7 @@ export default {
       if (!ezpaarseUrl || this.connectionTest.loading) { return }
 
       this.connectionTest.loading = true
-      this.connectionTest.error = null
+      this.connectionTest.errorMessage = null
       this.connectionTest.version = null
 
       axios.get(`${ezpaarseUrl}/info/version`)
@@ -173,7 +173,7 @@ export default {
           this.connectionTest.loading = false
 
           if (response.status !== 200) {
-            this.connectionTest.error = new Error(`Invalid response: HTTP status ${response.status}`)
+            this.connectionTest.errorMessage = `Invalid response: HTTP status ${response.status}`
             return
           }
 
@@ -181,7 +181,7 @@ export default {
           const match = /^(\d+)\.(\d+)\.(\d+)$/.exec(body)
 
           if (!match) {
-            this.connectionTest.error = new Error('Couldn\'t determine ezPAARSE version')
+            this.connectionTest.errorMessage = 'Couldn\'t determine ezPAARSE version'
             return
           }
 
@@ -189,14 +189,14 @@ export default {
           const minorVersion = parseInt(match[2])
 
           if (majorVersion < 2 || (majorVersion === 2 && minorVersion < 9)) {
-            this.connectionTest.error = new Error(`Version: ${body} (required: 2.9.0 or greater)`)
+            this.connectionTest.errorMessage = `Version: ${body} (required: 2.9.0 or greater)`
             return
           }
 
           this.connectionTest.version = body
         }).catch(err => {
           this.connectionTest.loading = false
-          this.connectionTest.error = err
+          this.connectionTest.errorMessage = err.message
         })
     }
   }
