@@ -104,7 +104,9 @@ export default {
       return Object.entries(this.request.ec || {})
         .map(entry => ({ name: entry[0], value: entry[1] }))
         .filter(prop => {
-          return prop.name.toLowerCase().includes(search) || prop.value.toLowerCase().includes(search)
+          const name = prop.name || ''
+          const value = prop.value || ''
+          return name.toLowerCase().includes(search) || value.toLowerCase().includes(search)
         })
     }
   }
