@@ -25,6 +25,7 @@ module.exports = {
   },
   plugins: [
     { src: '~/plugins/ezlogger.js', ssr: false },
+    { src: '~/plugins/storeInit.js', ssr: false },
     '~/plugins/vuetify.js',
     '~/plugins/i18n.js'
   ],

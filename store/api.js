@@ -6,6 +6,10 @@ api.info = function () {
   return axios.get('/api').then(res => res.data)
 }
 
+api.getProfile = function () {
+  return axios.get('/api/auth/loggedin').then(res => res.data)
+}
+
 api.logout = function () {
   return axios.get('/api/auth/logout')
 }

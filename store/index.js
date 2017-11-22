@@ -22,10 +22,10 @@ const store = () => new Vuex.Store({
     drawer: true
   },
   actions: {
-    async nuxtServerInit ({ commit }, { req, app }) {
-      if (req.session.profile) {
-        commit('SET_USER', req.session.profile)
-      }
+    FETCH_PROFILE ({ commit }) {
+      return api.getProfile().then(profile => commit('SET_USER', profile))
+    },
+    FETCH_APP_INFO ({ commit }) {
       return api.info().then(info => commit('SET_APP_INFO', info))
     },
     LOGOUT ({ commit }) {
