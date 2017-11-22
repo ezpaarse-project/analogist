@@ -46,6 +46,7 @@ export default {
           method: req.method,
           type: req.type,
           statusCode: req.statusCode,
+          timeStamp: req.timeStamp,
           startDate: moment(req.timeStamp),
           status: 'pending',
           id: ++state.counter,

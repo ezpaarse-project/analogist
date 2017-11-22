@@ -140,7 +140,13 @@ export default {
       return Math.ceil(this.$store.state.ezlogger.requests.length / 20)
     },
     requests () {
-      return this.$store.state.ezlogger.requests.slice((this.page - 1) * 20, (this.page - 1) * 20 + 20)
+      return this.$store.state.ezlogger.requests
+        .sort((a, b) => {
+          if (a.status === 'analyzed') { return -1 }
+          if (b.status === 'analyzed') { return 1 }
+          return a.timeStamp < b.timeStamp ? 1 : -1
+        })
+        .slice((this.page - 1) * 20, (this.page - 1) * 20 + 20)
     },
     reachCaptureLimit () {
       return this.$store.state.ezlogger.requests.length >= this.$store.state.ezlogger.settings.captureLimit
