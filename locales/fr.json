@@ -37,7 +37,7 @@
     "nationalInstanceDesc": "L'instance publique est hébergée sur http://ezpaarse-preprod.couperin.org et fournit toujours la dernière version d'ezPAARSE.",
     "customUrl": "URL de l'instance ezPAARSE",
     "checkAvailability": "Vérifier la disponibilité",
-    "connectionSuccessful": "L'instance d'ezPAARSE est disponible.",
+    "connectionSuccessful": "L'instance ezPAARSE est disponible.",
     "version": "Version: {version}",
     "name": "nom",
     "value": "Valeur",
@@ -47,7 +47,12 @@
     "patchHyphens": "Patcher les tirets",
     "patchHyphensDesc": "Si votre proxy remplaces les tirets par des points, cochez \"patcher les tirets\" pour dupliquer les lignes afin de générer toutes les URLs possibles.",
     "headers": "Headers",
-    "proxySuffixes": "Suffixes de proxy"
+    "proxySuffixes": "Suffixes de proxy",
+    "error_no_response": "L'instance ezPAARSE est indisponible",
+    "error_invalid_status": "Réponse invalide : statut HTTP {status}",
+    "error_no_version": "Impossible de déterminer la version d'ezPAARSE",
+    "error_version_mistmatch": "Version incompatible : {version} (requis : 2.9.0 ou plus)",
+    "error_generic": "Une erreur inattendue est survenue"
   },
   "card": {
     "lastActivity": "Dernière activité",

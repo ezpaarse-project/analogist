@@ -24,7 +24,9 @@
           <div>{{ $t('ezLoggerSettings.connectionSuccessful') }}</div>
           <div>{{ $t('ezLoggerSettings.version', { version: connectionTest.version }) }}</div>
         </v-alert>
-        <v-alert color="error" :value="connectionTest.errorMessage">{{ connectionTest.errorMessage }}</v-alert>
+        <v-alert color="error" :value="true" v-if="connectionTest.errorMsg">
+          {{ $t(`ezLoggerSettings.${connectionTest.errorMsg}`, connectionTest.errorMeta) }}
+        </v-alert>
       </v-card-text>
     </v-card>
 
@@ -126,7 +128,8 @@ export default {
     return {
       connectionTest: {
         loading: false,
-        error: null,
+        errorMsg: null,
+        errorMeta: null,
         version: null
       }
     }
@@ -168,7 +171,8 @@ export default {
       if (!ezpaarseUrl || this.connectionTest.loading) { return }
 
       this.connectionTest.loading = true
-      this.connectionTest.errorMessage = null
+      this.connectionTest.errorMsg = null
+      this.connectionTest.errorMeta = null
       this.connectionTest.version = null
 
       axios.get(`${ezpaarseUrl}/info/version`)
@@ -176,7 +180,8 @@ export default {
           this.connectionTest.loading = false
 
           if (response.status !== 200) {
-            this.connectionTest.errorMessage = `Invalid response: HTTP status ${response.status}`
+            this.connectionTest.errorMsg = 'error_invalid_status'
+            this.connectionTest.errorMeta = { status: response.status }
             return
           }
 
@@ -184,7 +189,7 @@ export default {
           const match = /^(\d+)\.(\d+)\.(\d+)$/.exec(body)
 
           if (!match) {
-            this.connectionTest.errorMessage = 'Couldn\'t determine ezPAARSE version'
+            this.connectionTest.errorMsg = 'error_no_version'
             return
           }
 
@@ -192,14 +197,26 @@ export default {
           const minorVersion = parseInt(match[2])
 
           if (majorVersion < 2 || (majorVersion === 2 && minorVersion < 9)) {
-            this.connectionTest.errorMessage = `Version: ${body} (required: 2.9.0 or greater)`
+            this.connectionTest.errorMsg = 'error_version_mistmatch'
+            this.connectionTest.errorMeta = { version: body }
             return
           }
 
           this.connectionTest.version = body
         }).catch(err => {
           this.connectionTest.loading = false
-          this.connectionTest.errorMessage = err.message
+
+          if (err.response) {
+            // Got response but status falls out of 2xx
+            this.connectionTest.errorMsg = 'error_invalid_status'
+            this.connectionTest.errorMeta = { status: err.response.status }
+          } else if (err.request) {
+            // No response
+            this.connectionTest.errorMsg = 'error_no_response'
+          } else {
+            // Something happened
+            this.connectionTest.errorMsg = 'error_generic'
+          }
         })
     }
   }

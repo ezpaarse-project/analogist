@@ -47,7 +47,12 @@
     "patchHyphens": "Patch hyphens",
     "patchHyphensDesc": "If your proxy replaces dots with hyphens, check \"patch hyphens\" to duplicate lines in order to generate all possible URLs.",
     "headers": "Headers",
-    "proxySuffixes": "Proxy suffixes"
+    "proxySuffixes": "Proxy suffixes",
+    "error_no_response": "The ezPAARSE instance is not available",
+    "error_invalid_status": "Invalid response : HTTP status {status}",
+    "error_no_version": "Couldn't determine ezPAARSE version",
+    "error_version_mistmatch": "Incompatible version: {version} (required: 2.9.0 or greater)",
+    "error_generic": "An unexpected error occurred"
   },
   "card": {
     "lastActivity": "Last activity",
