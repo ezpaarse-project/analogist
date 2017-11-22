@@ -111,7 +111,6 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
 import { saveAs } from 'file-saver'
 import axios from '~/plugins/axios'
 
@@ -148,14 +147,17 @@ export default {
     }
   },
   methods: {
-    ...mapActions('ezlogger', [
-      'clearRequests',
-      'filterRequests'
-    ]),
+    clearRequests () {
+      this.$store.dispatch('ezlogger/clearRequests')
+      this.$store.dispatch('ezlogger/setPage', 1)
+    },
 
-    selectRequest (req) {
-      this.selected = req
-      this.showSelected = true
+    filterRequests () {
+      this.$store.dispatch('ezlogger/filterRequests')
+
+      if (this.page > this.nbPages) {
+        this.$store.dispatch('ezlogger/setPage', this.nbPages)
+      }
     },
 
     exportAsFile () {
