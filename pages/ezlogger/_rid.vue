@@ -102,10 +102,11 @@ export default {
       const search = this.search.toLowerCase()
 
       return Object.entries(this.request.ec || {})
-        .map(entry => ({ name: entry[0], value: entry[1] }))
-        .filter(prop => {
-          const name = prop.name || ''
-          const value = prop.value || ''
+        .map(entry => ({
+          name: (entry[0] || '').toString(),
+          value: (entry[1] || '').toString()
+        }))
+        .filter(({ name, value }) => {
           return name.toLowerCase().includes(search) || value.toLowerCase().includes(search)
         })
     }
