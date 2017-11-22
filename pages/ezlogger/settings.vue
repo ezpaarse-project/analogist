@@ -17,10 +17,13 @@
 
       <v-card-text>
         <v-btn @click.native="testConnection" :loading="connectionTest.loading">
-          <v-icon left>mdi-swap-vertical</v-icon> {{ $t('ezLoggerSettings.testConnection') }}
+          <v-icon left>mdi-swap-vertical</v-icon> {{ $t('ezLoggerSettings.checkAvailability') }}
         </v-btn>
 
-        <v-alert color="success" :value="connectionTest.version">{{ $t('ezLoggerSettings.connectionSuccessful') }} {{ connectionTest.version }}</v-alert>
+        <v-alert color="success" :value="connectionTest.version">
+          <div>{{ $t('ezLoggerSettings.connectionSuccessful') }}</div>
+          <div>{{ $t('ezLoggerSettings.version', { version: connectionTest.version }) }}</div>
+        </v-alert>
         <v-alert color="error" :value="connectionTest.errorMessage">{{ connectionTest.errorMessage }}</v-alert>
       </v-card-text>
     </v-card>
