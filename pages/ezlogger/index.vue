@@ -41,7 +41,7 @@
       </v-toolbar>
 
       <v-card-text>
-        <v-alert outline color="info" icon="mdi-information" :value="reachCaptureLimit">
+        <v-alert outline color="warning" icon="mdi-exclamation" :value="reachCaptureLimit">
           {{ $t('ezLogger.captureLimitReached') }}
         </v-alert>
 
