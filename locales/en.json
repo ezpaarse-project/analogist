@@ -28,6 +28,7 @@
     "clearAll": "Clear all",
     "export": "Export",
     "filter": "Filter",
+    "close": "Close",
     "exportDesc": "Click below to export the traffic you captured as a standard log file. This file can be processed in ezPAARSE without any configuration.",
     "captureLimitReached": "You reached the capture limit, the oldest requests will now be replaced by the new ones."
   },

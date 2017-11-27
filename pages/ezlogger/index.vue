@@ -103,7 +103,7 @@
         <v-card-actions>
           <v-spacer/>
           <v-btn color="primary" @click.stop="exportAsFile">{{ $t('ezLogger.export') }}</v-btn>
-          <v-btn color="primary" flat @click.stop="showExport = false">Close</v-btn>
+          <v-btn color="primary" flat @click.stop="showExport = false">{{ $t('ezLogger.close') }}</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
