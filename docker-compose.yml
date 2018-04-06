@@ -1,7 +1,7 @@
 version: '2'
 services:
   analogist:
-    image: ezpaarseproject/analogist:1.10.1
+    image: ezpaarseproject/analogist:1.10.2
     links:
       - analogistdb:mongodb
     ports:
