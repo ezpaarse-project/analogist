@@ -5,7 +5,7 @@ http://ang.couperin.org/
 
 ## Requirements
 
-- Node.js v6+
+- Node.js v8+
 - MongoDB v2.6+
 
 ## Configuration

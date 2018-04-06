@@ -1,4 +1,4 @@
-FROM node:6.10.3-wheezy
+FROM node:8.11.1-wheezy
 MAINTAINER ezPAARSE Team <ezpaarse@couperin.org>
 
 ENV NODE_ENV production
