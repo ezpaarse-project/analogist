@@ -1,7 +1,18 @@
 <template>
   <section>
     <v-card>
-      <v-toolbar class="secondary" dense dark card>
+      <v-toolbar class="secondary" dense dark card extended>
+        <v-text-field
+          slot="extension"
+          v-model="search"
+          @input="updatePage"
+          prepend-icon="mdi-magnify"
+          :label="$t('ui.search')"
+          single-line
+          class="mx-3"
+          flat
+        ></v-text-field>
+
         <v-toolbar-title>
           {{ $t('ezLogger.title') }}
         </v-toolbar-title>
@@ -58,7 +69,7 @@
       </v-card-text>
 
       <v-list v-if="requests.length" two-line>
-        <v-list-tile avatar router exact :to="{ name: 'ezlogger-rid', params: { rid: req.id } }" ripple v-for="(req, index) in requests" :key="index">
+        <v-list-tile avatar router exact :to="{ name: 'ezlogger-rid', params: { rid: req.id } }" ripple v-for="(req, index) in paginatedRequests" :key="index">
           <v-list-tile-avatar>
             <v-progress-circular v-if="req.status === 'processing'" indeterminate color="grey" />
             <v-icon v-else-if="req.status === 'pending'" class="grey white--text">mdi-clock</v-icon>
@@ -98,6 +109,7 @@
 
         <v-card-text>
           <p class="text-xs-justify">{{ $t('ezLogger.exportDesc') }}</p>
+          <p class="text-xs-justify">{{ $t('ezLogger.exportUseSearch') }}</p>
         </v-card-text>
 
         <v-card-actions>
@@ -113,6 +125,8 @@
 <script>
 import { saveAs } from 'file-saver'
 import axios from '~/plugins/axios'
+
+const perPage = 20
 
 export default {
   name: 'ezlogger',
@@ -136,17 +150,26 @@ export default {
       get () { return this.$store.state.ezlogger.page },
       set (value) { return this.$store.commit('ezlogger/setPage', value) }
     },
+    search: {
+      get () { return this.$store.state.ezlogger.search },
+      set (value) { return this.$store.commit('ezlogger/setSearch', value) }
+    },
     nbPages () {
-      return Math.ceil(this.$store.state.ezlogger.requests.length / 20)
+      return Math.ceil(this.requests.length / perPage)
+    },
+    paginatedRequests () {
+      return this.requests.slice((this.page - 1) * perPage, (this.page - 1) * perPage + perPage)
     },
     requests () {
+      const search = (this.search || '').toLowerCase()
+
       return this.$store.state.ezlogger.requests
+        .filter(req => req.url.toLowerCase().includes(search))
         .sort((a, b) => {
           if (a.status === 'analyzed') { return -1 }
           if (b.status === 'analyzed') { return 1 }
           return a.timeStamp < b.timeStamp ? 1 : -1
         })
-        .slice((this.page - 1) * 20, (this.page - 1) * 20 + 20)
     },
     reachCaptureLimit () {
       return this.$store.state.ezlogger.requests.length >= this.$store.state.ezlogger.settings.captureLimit
@@ -158,35 +181,45 @@ export default {
       this.$store.dispatch('ezlogger/setPage', 1)
     },
 
+    updatePage () {
+      if (this.page <= 0) {
+        this.$store.dispatch('ezlogger/setPage', 1)
+      } else if (this.page > this.nbPages) {
+        this.$store.dispatch('ezlogger/setPage', this.nbPages || 1)
+      }
+    },
+
     filterRequests () {
       this.$store.dispatch('ezlogger/filterRequests')
-
-      if (this.page > this.nbPages) {
-        this.$store.dispatch('ezlogger/setPage', this.nbPages)
-      }
+      this.updatePage()
     },
 
     exportAsFile () {
       const dateFormat  = 'DD/MMM/YYYY:HH:mm:ss Z'
-      const textContent = this.requests.map(req => {
-        // 127.0.0.1 - - [14/Mar/2014:09:39:18 -0700] “GET http://www.somedb.com:80/index.html HTTP/1.1” 200 1234
-        return `127.0.0.1 - - [${req.startDate.format(dateFormat)}] "${req.method} ${req.url} HTTP/1.1" ${req.statusCode} ${req.contentLength || 0}`
-      }).join('\r\n')
+      const textContent = this.requests
+        .sort((a, b) => a.timeStamp > b.timeStamp ? 1 : -1)
+        .map(req => {
+          // 127.0.0.1 - ezlogger [14/Mar/2014:09:39:18 -0700] “GET http://www.somedb.com:80/index.html HTTP/1.1” 200 1234
+          return `127.0.0.1 - ezlogger [${req.startDate.format(dateFormat)}] "${req.method} ${req.url} HTTP/1.1" ${req.statusCode} ${req.contentLength || 0}`
+        }).join('\r\n')
 
       saveAs(new Blob([textContent], { type: 'text/plain;charset=utf-8' }), 'export.log')
     },
 
     toLogLines (requests) {
-      return requests.map(req => {
-        return [
-          req.startDate.unix(),
-          req.method,
-          req.url,
-          req.statusCode,
-          req.contentLength || '-',
-          req.id
-        ].join(' ')
-      }).join('\r\n')
+      return requests
+        .sort((a, b) => a.timeStamp > b.timeStamp ? 1 : -1)
+        .map(req => {
+          return [
+            req.startDate.unix(),
+            'ezlogger',
+            req.method,
+            req.url,
+            req.statusCode,
+            req.contentLength || '-',
+            req.id
+          ].join(' ')
+        }).join('\r\n')
     },
 
     analyze () {
@@ -207,7 +240,7 @@ export default {
       const logs = this.toLogLines(pending)
       const headers = {
         'Accept': 'application/json',
-        'Log-Format-EZproxy': '%{timestamp}<[0-9]+> %m %U %s %{size}<[0-9\\-]+> %{ezid}<[0-9]+>'
+        'Log-Format-EZproxy': '%{timestamp}<[0-9]+> %u %m %U %s %{size}<[0-9\\-]+> %{ezid}<[0-9]+>'
       }
 
       this.settings.headers.forEach(h => {

@@ -17,6 +17,7 @@ export default {
   namespaced: true,
 
   state: {
+    search: '',
     settings: {},
     requests: [],
     counter: 0,
@@ -26,6 +27,10 @@ export default {
   actions: {
     setPage ({ commit }, page) {
       commit('setPage', page)
+    },
+
+    setSearch ({ commit }, search) {
+      commit('setSearch', search)
     },
 
     addRequest ({ commit, state }, req) {
@@ -47,7 +52,7 @@ export default {
           type: req.type,
           statusCode: req.statusCode,
           timeStamp: req.timeStamp,
-          startDate: moment(req.timeStamp),
+          startDate: moment(req.timeStamp).locale('en'),
           status: 'pending',
           id: ++state.counter,
           ec: null,
@@ -93,6 +98,7 @@ export default {
   },
 
   mutations: {
+    setSearch (state, search) { state.search = search },
     setPage (state, page) { state.page = page },
     setSettings (state, settings) { state.settings = settings },
 

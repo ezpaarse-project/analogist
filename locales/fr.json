@@ -30,6 +30,7 @@
     "filter": "Filtrer",
     "close": "Fermer",
     "exportDesc": "Cliquez ci-dessous pour exporter le trafic capturé sous la forme d'un fichier de log standard. Ce fichier peut être traité avec ezPAARSE sans aucune configuration.",
+    "exportUseSearch": "Veuillez noter que le champ de recherche est pris en compte.",
     "captureLimitReached": "Vous avez atteint la limite de capture, les requêtes les plus anciennes seront désormais remplacées par les nouvelles."
   },
   "ezLoggerSettings": {
