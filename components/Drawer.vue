@@ -90,17 +90,15 @@
         </v-list-tile-content>
       </v-list-tile>
 
-      <v-list-group>
-        <v-list-tile slot="item" v-if="!mini">
-          <v-list-tile-action>
-            <v-icon>mdi-translate</v-icon>
-          </v-list-tile-action>
+      <v-list-group
+        prepend-icon="mdi-translate"
+        append-icon="mdi-chevron-down"
+        v-if="!mini"
+      >
+        <v-list-tile slot="activator">
           <v-list-tile-content>
             <v-list-tile-title>{{ $t('drawer.language') }}</v-list-tile-title>
           </v-list-tile-content>
-          <v-list-tile-action>
-            <v-icon>mdi-chevron-down</v-icon>
-          </v-list-tile-action>
         </v-list-tile>
 
         <v-list-tile v-for="lang in locales" :key="lang.value" @click="$i18n.locale = lang.value">

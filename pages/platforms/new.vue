@@ -19,7 +19,7 @@
               <DomainChecker/>
             </v-container>
 
-            <v-btn primary @click.native="step++">{{ $t('creation.next') }}</v-btn>
+            <v-btn color="primary" @click.native="step++">{{ $t('creation.next') }}</v-btn>
           </v-stepper-content>
 
           <v-stepper-step step="2" :complete="step > 2" complete-icon="mdi-check">
@@ -40,7 +40,7 @@
               </v-layout>
             </v-container>
 
-            <v-btn primary :disabled="!form.longName || !form.shortName" @click.native="step++">{{ $t('creation.next') }}</v-btn>
+            <v-btn color="primary" :disabled="!form.longName || !form.shortName" @click.native="step++">{{ $t('creation.next') }}</v-btn>
             <v-btn flat @click.native="step--">{{ $t('creation.previous') }}</v-btn>
           </v-stepper-content>
 
@@ -59,7 +59,7 @@
               bottom
             ></v-select>
 
-            <v-btn primary :disabled="!form.idList" :loading="creating" @click.native="createCard()">{{ $t('creation.create') }}</v-btn>
+            <v-btn color="primary" :disabled="!form.idList" :loading="creating" @click.native="createCard()">{{ $t('creation.create') }}</v-btn>
             <v-btn flat @click.native="step--">{{ $t('creation.previous') }}</v-btn>
           </v-stepper-content>
         </v-stepper-items>

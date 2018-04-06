@@ -1,7 +1,7 @@
 <template>
   <section>
     <v-layout row justify-space-between>
-      <v-btn flat router exact router :to="{ name: 'platforms-cid-analyses-aid', params: { cid: $route.params.cid, aid: $route.params.aid } }"><v-icon left>mdi-arrow-left</v-icon>{{ $t('ui.back') }}</v-btn>
+      <v-btn flat router exact :to="{ name: 'platforms-cid-analyses-aid', params: { cid: $route.params.cid, aid: $route.params.aid } }"><v-icon left>mdi-arrow-left</v-icon>{{ $t('ui.back') }}</v-btn>
     </v-layout>
 
     <v-card>
@@ -35,7 +35,7 @@
                 :append-icon-cb="clearRtype"
                 autocomplete
               >
-                <template slot="item" scope="data">
+                <template slot="item" slot-scope="data">
                   <v-list-tile-content>
                     <v-list-tile-title v-html="data.item.code"></v-list-tile-title>
                     <v-list-tile-sub-title v-html="data.item.description"></v-list-tile-sub-title>
@@ -58,7 +58,7 @@
                 :append-icon-cb="clearMime"
                 autocomplete
               >
-                <template slot="item" scope="data">
+                <template slot="item" slot-scope="data">
                   <v-list-tile-content>
                     <v-list-tile-title v-html="data.item.code"></v-list-tile-title>
                     <v-list-tile-sub-title v-html="data.item.description"></v-list-tile-sub-title>
@@ -78,7 +78,7 @@
           <v-card-title class="headline">
             {{ $t('analyses.recognizedFields') }}
             <v-spacer/>
-            <v-btn primary fab small dark v-on:click.native="addEntryIn('identifiers')">
+            <v-btn color="primary" fab small dark v-on:click.native="addEntryIn('identifiers')">
               <v-icon>mdi-plus</v-icon>
             </v-btn>
           </v-card-title>
@@ -87,7 +87,7 @@
             :items="analysis.identifiers"
             hide-actions
           >
-            <template slot="headers" scope="props">
+            <template slot="headers" slot-scope="props">
               <tr>
                 <th>{{ $t('analyses.type') }}</th>
                 <th>{{ $t('analyses.value') }}</th>
@@ -95,7 +95,7 @@
               </tr>
             </template>
 
-            <template slot="items" scope="props">
+            <template slot="items" slot-scope="props">
               <td>
                 <v-select
                   :label="$t('analyses.type')"
@@ -109,7 +109,7 @@
                   single-line
                   autocomplete
                 >
-                  <template slot="item" scope="data">
+                  <template slot="item" slot-scope="data">
                     <v-list-tile-content>
                       <v-list-tile-title v-html="data.item.code"></v-list-tile-title>
                       <v-list-tile-sub-title v-html="data.item.description"></v-list-tile-sub-title>
@@ -140,7 +140,7 @@
           <v-card-title class="headline">
             {{ $t('analyses.pathParams') }}
             <v-spacer/>
-            <v-btn primary fab small dark v-on:click.native="addEntryIn('pathParams')">
+            <v-btn color="primary" fab small dark v-on:click.native="addEntryIn('pathParams')">
               <v-icon>mdi-plus</v-icon>
             </v-btn>
           </v-card-title>
@@ -149,7 +149,7 @@
             :items="analysis.pathParams"
             hide-actions
           >
-            <template slot="headers" scope="props">
+            <template slot="headers" slot-scope="props">
               <tr>
                 <th>{{ $t('analyses.value') }}</th>
                 <th>{{ $t('analyses.comment') }}</th>
@@ -157,7 +157,7 @@
               </tr>
             </template>
 
-            <template slot="items" scope="props">
+            <template slot="items" slot-scope="props">
               <td>
                 <v-text-field
                   v-model="props.item.value"
@@ -191,7 +191,7 @@
           <v-card-title class="headline">
             {{ $t('analyses.queryParams') }}
             <v-spacer/>
-            <v-btn primary fab small dark v-on:click.native="addEntryIn('queryParams')">
+            <v-btn color="primary" fab small dark v-on:click.native="addEntryIn('queryParams')">
               <v-icon>mdi-plus</v-icon>
             </v-btn>
           </v-card-title>
@@ -200,7 +200,7 @@
             :items="analysis.queryParams"
             hide-actions
           >
-            <template slot="headers" scope="props">
+            <template slot="headers" slot-scope="props">
               <tr>
                 <th>{{ $t('analyses.name') }}</th>
                 <th>{{ $t('analyses.value') }}</th>
@@ -209,7 +209,7 @@
               </tr>
             </template>
 
-            <template slot="items" scope="props">
+            <template slot="items" slot-scope="props">
               <td>
                 <v-text-field
                   v-model="props.item.name"
@@ -347,12 +347,10 @@ export default {
     clearMime (event) {
       this.analysis.mime = null
       this.handleChange()
-      event.stopPropagation()
     },
     clearRtype (event) {
       this.analysis.rtype = null
       this.handleChange()
-      event.stopPropagation()
     },
     addEntryIn (arrayName) {
       if (!Array.isArray(this.analysis[arrayName])) {

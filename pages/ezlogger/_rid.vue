@@ -58,7 +58,7 @@
         hide-headers
         hide-actions
       >
-        <template slot="items" scope="props">
+        <template slot="items" slot-scope="props">
           <th class="text-xs-left">{{ props.item.name }}</th>
           <td class="text-xs-left">{{ props.item.value }}</td>
         </template>

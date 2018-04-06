@@ -51,7 +51,7 @@
       </v-toolbar>
 
       <v-data-table :items="settings.headers" hide-actions hide-headers>
-        <template slot="items" scope="props">
+        <template slot="items" slot-scope="props">
           <td>
             <v-text-field
               v-model="props.item.name"
@@ -88,7 +88,7 @@
       </v-toolbar>
 
       <v-data-table :items="settings.proxySuffixes" hide-actions hide-headers>
-        <template slot="items" scope="props">
+        <template slot="items" slot-scope="props">
           <td>
             <v-text-field
               v-model="props.item.str"

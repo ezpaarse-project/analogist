@@ -4,8 +4,11 @@
   "description": "Nuxt.js project",
   "author": "Yannick Schurter <yannick.schurter@gmail.com>",
   "private": true,
+  "engines" : {
+    "node" : ">=8.0.0"
+  },
   "scripts": {
-    "dev": "nodemon -w server.js -w app.js -w nuxt.config.js -w api/ -w lib/ server.js",
+    "dev": "nodemon -w server.js -w app.js -w nuxt.config.js -w api/ -w lib/ -w store/ server.js",
     "build": "nuxt build",
     "start": "cross-env NODE_ENV=production node server.js",
     "precommit": "npm run lint",
@@ -31,11 +34,11 @@
     "mongodb": "^2.2.33",
     "morgan": "^1.9.0",
     "nodemailer": "^4.4.0",
-    "nuxt": "^1.0.0-rc11",
+    "nuxt": "^1.4.0",
     "request": "^2.83.0",
     "vue-i18n": "^7.3.2",
     "vuedraggable": "^2.15.0",
-    "vuetify": "^0.17.0"
+    "vuetify": "^1.0.13"
   },
   "devDependencies": {
     "chai": "^4.1.2",
