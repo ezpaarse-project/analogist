@@ -90,6 +90,15 @@
         </v-list-tile-content>
       </v-list-tile>
 
+      <v-list-tile v-if="user" router exact :to="{ path: '/badges' }" ripple>
+        <v-list-tile-action>
+          <v-icon>mdi-seal</v-icon>
+        </v-list-tile-action>
+        <v-list-tile-content>
+          <v-list-tile-title>{{ $t('drawer.badges') }}</v-list-tile-title>
+        </v-list-tile-content>
+      </v-list-tile>
+
       <v-list-group
         prepend-icon="mdi-translate"
         append-icon="mdi-chevron-down"
