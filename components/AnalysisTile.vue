@@ -1,5 +1,5 @@
 <template>
-  <v-list-tile avatar router :to="{ name: 'platforms-cid-analyses-aid', params: { cid: $route.params.cid, aid: analysis.id } }">
+  <v-list-tile :value="visited" avatar router :to="{ name: 'platforms-cid-analyses-aid', params: { cid: $route.params.cid, aid: analysis.id } }">
     <v-list-tile-avatar>
       <img v-if="updatedBy && updatedBy.avatarHash" :title="updatedBy.fullName" :src="'https://trello-avatars.s3.amazonaws.com/' + updatedBy.avatarHash + '/50.png'" alt="avatar" />
       <span v-else-if="updatedBy" class="icon blue-grey lighten-4" :title="updatedBy.fullName" v-text="updatedBy.initials" />
@@ -45,6 +45,9 @@ export default {
       } catch (e) {
         return null
       }
+    },
+    visited () {
+      return this.$store.state.lastVisitedAnalysis === this.analysis.id
     }
   },
   methods: {

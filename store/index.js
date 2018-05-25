@@ -19,7 +19,8 @@ const store = () => new Vuex.Store({
     searchText: '',
     searchLists: [],
     searchPage: 1,
-    drawer: true
+    drawer: true,
+    lastVisitedAnalysis: null
   },
   actions: {
     FETCH_PROFILE ({ commit }) {
@@ -90,8 +91,11 @@ const store = () => new Vuex.Store({
     SET_DRAWER ({ commit }, value) {
       commit('SET_DRAWER', value)
     },
-    SET_SEARCH_PAGE ({ commit, state }, value) {
+    SET_SEARCH_PAGE ({ commit }, value) {
       commit('SET_SEARCH_PAGE', value)
+    },
+    SET_VISITED_ANALYSIS ({ commit }, value) {
+      commit('SET_VISITED_ANALYSIS', value)
     }
   },
   mutations: {
@@ -133,6 +137,9 @@ const store = () => new Vuex.Store({
     },
     REMOVE_ANALYSIS (state, analysisID) {
       Vue.set(state, 'analyses', state.analyses.filter(a => a.id !== analysisID))
+    },
+    SET_VISITED_ANALYSIS (state, analysisID) {
+      Vue.set(state, 'lastVisitedAnalysis', analysisID)
     }
   }
 })

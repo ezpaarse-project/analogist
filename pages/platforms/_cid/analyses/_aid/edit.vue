@@ -299,6 +299,7 @@ export default {
     }
 
     store.dispatch('GET_ANALYSIS', params.aid)
+    store.dispatch('SET_VISITED_ANALYSIS', params.aid)
   },
   head () {
     return {
