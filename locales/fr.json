@@ -121,6 +121,9 @@
   },
   "badges": {
     "title": "Mes badges",
-    "issuedOn": "Émis le"
+    "issuedOn": "Émis le",
+    "noBadges": "Vous ne possédez encore aucun badges.",
+    "loadingBadges": "Chargement de vos badges ...",
+    "issues": "%{issues} badges ont déjà été attribués."
   }
 }

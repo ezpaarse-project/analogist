@@ -122,6 +122,9 @@
   },
   "badges": {
     "title": "My badges",
-    "issuedOn": "Issued on"
+    "issuedOn": "Issued on",
+    "noBadges": "You do not have any badges yet.",
+    "loadingBadges": "Loading your badges ...",
+    "issues": "%{issues} badges have already been awarded."
   }
 }

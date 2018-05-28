@@ -10,17 +10,17 @@
       <v-card-text>
         <v-container fluid grid-list-md>
           <v-layout row wrap justify-center>
-            <v-flex v-if="badges" v-for="badge in badges" :key="badge.id" xs12 sm2>
-              <img @click.stop="modal = true; currentBadge = badge" class="mx-auto badgeImage" :src="badge.image" width="60%">
-              <h4 class="badgeName">{{ badge.name }}</h4>
-            </v-flex>
-
-            <v-flex v-else>
-              <v-card color="blue white--text">
+            <v-flex xs12 sm12>
+              <v-card class="blue white--text">
                 <v-card-text>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi necessitatibus error aliquam! Praesentium obcaecati dolore perferendis, culpa deserunt recusandae neque aspernatur suscipit doloribus, facere cum doloremque delectus, reiciendis temporibus vel.
+                  {{ $t('badges.issues', { issues: metrics.issues }) }}
                 </v-card-text>
               </v-card>
+            </v-flex>
+
+            <v-flex xs12 sm2 v-if="badges" v-for="badge in badges" :key="badge.id"@click.stop="modal = true; currentBadge = badge" class="badge">
+              <img @click.stop="modal = true; currentBadge = badge" class="mx-auto badgeImage" :src="badge.image" width="60%">
+              <h4 class="badgeName">{{ badge.name }}</h4>
             </v-flex>
 
             <v-dialog v-if="modal" v-model="currentBadge" persistent max-width="600px">
@@ -45,6 +45,7 @@
                 </v-card-actions>
               </v-card>
             </v-dialog>
+            
           </v-layout>
         </v-container>
       </v-card-text>
@@ -63,27 +64,31 @@ export default {
   },
   head () {
     return {
-      title: 'Badges',
+      title: 'Badges'
     }
   },
-  data() {
+  data () {
     return {
       modal: false,
       currentBadge: null
     }
   },
-  async fetch({ store, redirect }) {
+  async fetch ({ store, redirect, app }) {
     try {
       await store.dispatch('FETCH_PROFILE')
     } catch (e) {
       return redirect('/')
     }
 
-    await store.dispatch('badges/getBadges', store.state.user.email)
+    await store.dispatch('badges/getMetrics')
+    await store.dispatch('badges/getBadges', { email: store.state.user.email, locale: app.i18n.locale })
   },
   computed: {
-    badges() {
+    badges () {
       return this.$store.state.badges.badges
+    },
+    metrics () {
+      return this.$store.state.badges.metrics
     },
     user () {
       return this.$store.state.user
@@ -93,11 +98,14 @@ export default {
 </script>
 
 <style scoped>
-.badgeImage {
+.badge {
+  cursor: pointer;
+}
+.badge .badgeImage {
   display: block; 
   margin: auto;
 }
-.badgeName {
+.badge .badgeName {
   text-align: center
 }
 </style>
