@@ -10,9 +10,9 @@
     "db": "analogist"
   },
   "trello": {
-    "key": "1fbb22dbae7df154e220b517a4f4acac",
-    "secret": "f58ea5fb38bce1d8257af61352a35efe2788b2b8fb6e353b89f609cd512b426f",
-    "boardId": "58fdab8b19266cf7cd79c1c6"
+    "key": "",
+    "secret": "",
+    "boardId": ""
   },
   "smtp": {
     "host": "localhost",
