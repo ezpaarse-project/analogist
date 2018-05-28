@@ -18,12 +18,12 @@
               </v-card>
             </v-flex>
 
-            <v-flex xs12 sm2 v-if="badges" v-for="badge in badges" :key="badge.id" @click.stop="currentBadge = badge" class="badge">
+            <v-flex xs12 sm2 v-if="badges" v-for="badge in badges" :key="badge.id" @click.stop="currentBadge = badge">
               <img class="mx-auto badgeImage" :src="badge.image" width="60%">
               <h4 class="badgeName">{{ badge.name }}</h4>
             </v-flex>
 
-            <v-dialog v-if="currentBadge" v-model="currentBadge" persistent max-width="600px">
+            <v-dialog v-if="currentBadge" v-model="currentBadge" max-width="600px">
               <v-card>
                 <v-container fluid grid-list-lg>
                   <v-layout row>
@@ -98,14 +98,13 @@ export default {
 </script>
 
 <style scoped>
-.badge {
-  cursor: pointer;
-}
-.badge .badgeImage {
+.badgeImage {
   display: block; 
   margin: auto;
+  cursor: pointer;
 }
-.badge .badgeName {
-  text-align: center
+.badgeName {
+  text-align: center;
+  cursor: pointer;
 }
 </style>
