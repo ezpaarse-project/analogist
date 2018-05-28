@@ -18,12 +18,12 @@
               </v-card>
             </v-flex>
 
-            <v-flex xs12 sm2 v-if="badges" v-for="badge in badges" :key="badge.id"@click.stop="modal = true; currentBadge = badge" class="badge">
-              <img @click.stop="modal = true; currentBadge = badge" class="mx-auto badgeImage" :src="badge.image" width="60%">
+            <v-flex xs12 sm2 v-if="badges" v-for="badge in badges" :key="badge.id" @click.stop="currentBadge = badge" class="badge">
+              <img class="mx-auto badgeImage" :src="badge.image" width="60%">
               <h4 class="badgeName">{{ badge.name }}</h4>
             </v-flex>
 
-            <v-dialog v-if="modal" v-model="currentBadge" persistent max-width="600px">
+            <v-dialog v-if="currentBadge" v-model="currentBadge" persistent max-width="600px">
               <v-card>
                 <v-container fluid grid-list-lg>
                   <v-layout row>
@@ -41,7 +41,7 @@
                   </v-layout>
                 </v-container>
                 <v-card-actions>
-                  <v-btn color="red" flat @click.stop="modal = false">{{ $t('ezLogger.close') }}</v-btn>
+                  <v-btn color="red" flat @click.stop="currentBadge = null">{{ $t('ezLogger.close') }}</v-btn>
                 </v-card-actions>
               </v-card>
             </v-dialog>
