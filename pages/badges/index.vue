@@ -11,7 +11,7 @@
         <v-container fluid grid-list-md>
           <v-layout row wrap justify-center>
             <v-flex xs12 sm12 v-if="metrics && ping">
-              <v-card class="blue white--text">
+              <v-card class="blue white--text mb-2">
                 <v-card-text>
                   {{ $t('badges.issues', { issues: metrics.issues }) }}
                 </v-card-text>
