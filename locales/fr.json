@@ -124,6 +124,7 @@
     "issuedOn": "Émis le",
     "noBadges": "Vous ne possédez encore aucun badges.",
     "loadingBadges": "Chargement de vos badges ...",
-    "issues": "%{issues} badges ont déjà été attribués."
+    "issues": "%{issues} badges ont déjà été attribués.",
+    "error": "Une erreur est survenue, nous ne pouvons pas récupérer vos badges pour le moment."
   }
 }

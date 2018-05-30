@@ -125,6 +125,7 @@
     "issuedOn": "Issued on",
     "noBadges": "You do not have any badges yet.",
     "loadingBadges": "Loading your badges ...",
-    "issues": "%{issues} badges have already been awarded."
+    "issues": "%{issues} badges have already been awarded.",
+    "error": "An error occurred, we can't recover your badges for the moment."
   }
 }

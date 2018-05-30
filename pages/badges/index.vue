@@ -10,7 +10,7 @@
       <v-card-text>
         <v-container fluid grid-list-md>
           <v-layout row wrap justify-center>
-            <v-flex xs12 sm12>
+            <v-flex xs12 sm12 v-if="metrics && ping">
               <v-card class="blue white--text">
                 <v-card-text>
                   {{ $t('badges.issues', { issues: metrics.issues }) }}
@@ -18,9 +18,25 @@
               </v-card>
             </v-flex>
 
-            <v-flex xs12 sm2 v-if="badges" v-for="badge in badges" :key="badge.id" @click.stop="currentBadge = badge">
+            <v-flex xs12 sm2 v-if="badges && ping" v-for="badge in badges" :key="badge.id" @click.stop="currentBadge = badge">
               <img class="mx-auto badgeImage" :src="badge.image" width="60%">
               <h4 class="badgeName">{{ badge.name }}</h4>
+            </v-flex>
+
+            <v-flex xs12 sm12 v-if="!ping">
+              <v-card class="red white--text">
+                <v-card-text>
+                  {{ $t('badges.error') }}
+                </v-card-text>
+              </v-card>
+            </v-flex>
+
+            <v-flex xs12 sm12>
+              <v-card>
+                <a href="https://openbadgefactory.com/" target="blank">
+                  <img src="@/static/obf_logo.jpeg" alt="OpenBadgeFactory" :class="{ 'error': !ping }" class="obfactory" align="right">
+                </a>
+              </v-card>
             </v-flex>
 
             <v-dialog v-if="currentBadge" v-model="currentBadge" max-width="600px">
@@ -80,8 +96,9 @@ export default {
       return redirect('/')
     }
 
+    await store.dispatch('badges/getPing')
+    await store.dispatch('badges/getBadges', { id: store.state.user.id, locale: app.i18n.locale })
     await store.dispatch('badges/getMetrics')
-    await store.dispatch('badges/getBadges', { email: store.state.user.email, locale: app.i18n.locale })
   },
   computed: {
     badges () {
@@ -89,6 +106,9 @@ export default {
     },
     metrics () {
       return this.$store.state.badges.metrics
+    },
+    ping () {
+      return this.$store.state.badges.ping
     },
     user () {
       return this.$store.state.user
@@ -106,5 +126,12 @@ export default {
 .badgeName {
   text-align: center;
   cursor: pointer;
+}
+img.obfactory {
+  width: 220px;
+}
+img.error {
+  filter: grayscale(100%);
+  opacity: 0.6;
 }
 </style>

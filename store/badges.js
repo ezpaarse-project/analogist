@@ -8,7 +8,8 @@ export default {
   namespaced: true,
   state: {
     badges: null,
-    metrics: null
+    metrics: null,
+    ping: null
   },
   mutations: {
     SET_BADGES (state, badges) {
@@ -16,13 +17,16 @@ export default {
     },
     SET_METRICS (state, metrics) {
       Vue.set(state, 'metrics', metrics)
+    },
+    SET_PING (state, ping) {
+      Vue.set(state, 'ping', ping)
     }
   },
   actions: {
     getBadges ({ commit }, params) {
       return axios({
         method: 'GET',
-        url: `${appUrl}/badges?email=${params.email}`
+        url: `${appUrl}/badges?id=${params.id}`
       }).then((res) => {
         if (res.data.status === 'success') {
           const badges = res.data.data
@@ -44,6 +48,19 @@ export default {
       }).then((res) => {
         if (res.data.status === 'success') {
           commit('SET_METRICS', res.data.data)
+        }
+      }).catch((response) => {
+        // eslint-disable-next-line
+        console.log(response)
+      })
+    },
+    getPing ({ commit }) {
+      return axios({
+        method: 'GET',
+        url: `${appUrl}/ping`
+      }).then((res) => {
+        if (res.data.status === 'success') {
+          commit('SET_PING', (res.data.data === 'pong'))
         }
       }).catch((response) => {
         // eslint-disable-next-line
