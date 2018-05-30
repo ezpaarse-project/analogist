@@ -70,6 +70,10 @@ api.getFields = function () {
   return axios.get(`/api/platforms/fields.json`).then(res => res.data)
 }
 
+api.moveCard = function (card, listID) {
+  return axios.put(`/api/trello/cards/${card.id}/idList`, { id: listID }).then(res => res.data)
+}
+
 api.addUserToCard = function (card, user) {
   return axios.post(`/api/trello/cards/${card.id}/members`, {
     id: user.id

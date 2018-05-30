@@ -85,6 +85,9 @@ const store = () => new Vuex.Store({
     ADD_CARD_MEMBER ({ commit }, { card, user }) {
       return api.addUserToCard(card, user)
     },
+    MOVE_CARD ({ commit }, { card, listID }) {
+      return api.moveCard(card, listID)
+    },
     UPDATE_SEARCH_TEXT ({ commit }, value) {
       return commit('SET_SEARCH_TEXT', value)
     },

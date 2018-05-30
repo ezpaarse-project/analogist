@@ -78,15 +78,32 @@
       </v-toolbar>
 
       <v-card-text>
-        <v-layout row>
-          <v-flex>
+        <v-layout row wrap>
+          <v-flex xs12 sm4>
             <div>{{ $t('card.lastActivity') }}</div>
             <strong>{{ lastActivity }}</strong>
           </v-flex>
-          <v-flex>
-            <div>{{ $t('card.status') }}</div>
-            <strong v-if="list">{{ list.name }}</strong>
-            <strong v-else>{{ $t('card.unknown') }}</strong>
+
+          <v-flex xs12 sm8>
+            <v-select
+              v-if="canEdit"
+              :items="trelloLists"
+              :label="$t('card.status')"
+              :disabled="movingCard"
+              :loading="movingCard"
+              :value="card.idList"
+              @input="onListChange"
+              append-icon="mdi-menu-down"
+              item-text="name"
+              item-value="id"
+              hide-details
+            ></v-select>
+
+            <template v-else>
+              <div>{{ $t('card.status') }}</div>
+              <strong v-if="list">{{ list.name }}</strong>
+              <strong v-else>{{ $t('card.unknown') }}</strong>
+            </template>
           </v-flex>
         </v-layout>
       </v-card-text>
@@ -138,7 +155,7 @@
 
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="error" :loading="deleting" @click.native="archivePlatform">{{ $t('ui.archive') }}</v-btn>
+          <v-btn color="error" :loading="deletingCard" @click.native="archivePlatform">{{ $t('ui.archive') }}</v-btn>
           <v-btn color="secondary" @click.native="deleteDialog = false">{{ $t('ui.cancel') }}</v-btn>
         </v-card-actions>
       </v-card>
@@ -210,7 +227,8 @@ export default {
     return {
       membersDialog: false,
       deleteDialog: false,
-      deleting: false
+      deletingCard: false,
+      movingCard: false
     }
   },
   computed: {
@@ -227,7 +245,7 @@ export default {
         if (!this.canEdit) { return }
 
         try {
-          this.$store.dispatch('REORDER_ANALYSES', { cardID: this.card.id, list })
+          await this.$store.dispatch('REORDER_ANALYSES', { cardID: this.card.id, list })
         } catch (e) {
           // eslint-disable-next-line
           console.error('Reorder failed', e)
@@ -244,11 +262,29 @@ export default {
     list () {
       return this.$store.state.trelloLists.find(l => this.card.idList === l.id)
     },
+    trelloLists () {
+      return this.$store.state.trelloLists
+    },
     lastActivity () {
       return moment(this.card.lastActivity).locale(this.$i18n.locale).fromNow()
     }
   },
   methods: {
+    async onListChange (idList) {
+      if (!this.canEdit) { return }
+      this.movingCard = true
+
+      try {
+        await this.$store.dispatch('MOVE_CARD', { card: this.card, listID: idList })
+        this.card.idList = idList
+      } catch (e) {
+        // eslint-disable-next-line
+        console.error('List update failed', e)
+        // TODO: handle error
+      }
+
+      this.movingCard = false
+    },
     async createAnalysis () {
       this.creating = true
 
@@ -272,7 +308,7 @@ export default {
       this.creating = false
     },
     async archivePlatform () {
-      this.deleting = true
+      this.deletingCard = true
 
       try {
         await this.$store.dispatch('ARCHIVE_CARD', this.card.id)
@@ -284,7 +320,7 @@ export default {
         // TODO: handle error
       }
 
-      this.deleting = false
+      this.deletingCard = false
     },
     generateTestFile () {
       if (!this.analyses) { return }

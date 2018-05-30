@@ -28,6 +28,15 @@ router.patch('/cards/:cid', (req, res, next) => {
   }, req.session.oauth.token).pipe(res)
 })
 
+/* Move a card into a list */
+router.put('/cards/:cid/idList', (req, res, next) => {
+  if (typeof req.body !== 'object' || !req.body.id) {
+    return res.status(400).end()
+  }
+
+  trello.moveCard(req.params.cid, req.body.id, req.session.oauth.token).pipe(res)
+})
+
 /* Put a user in the members of a card */
 router.post('/cards/:cid/members', (req, res, next) => {
   if (typeof req.body !== 'object' || !req.body.id) {
