@@ -58,10 +58,7 @@ router.post('/', (req, res, next) => {
 
 /* DELETE a platform */
 router.delete('/:cid', (req, res, next) => {
-  mongo.get('platforms').remove({ cardID: req.params.cid }, (err, result) => {
-    if (err) { return next(err) }
-    res.status(204).end()
-  })
+  trello.closeCard(req.params.cid, req.session.oauth.token).pipe(res)
 })
 
 /* GET the analyses of a platform. */

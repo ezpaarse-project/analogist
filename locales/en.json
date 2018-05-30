@@ -1,7 +1,11 @@
 {
   "ui": {
-    "back": "Back",
-    "search": "Search"
+    "back": "Retour",
+    "search": "Recherche",
+    "archive": "Archive",
+    "delete": "Delete",
+    "cancel": "Cancel",
+    "areYouSure": "Are you sure ?"
   },
   "drawer": {
     "platforms": "Platforms",
@@ -64,6 +68,8 @@
     "github": "Github",
     "homepage": "Homepage",
     "trello": "Trello card",
+    "archive": "Archive the platform",
+    "archiveDesc": "The platform will be archived and the analyses won't be visible anymore. To undo this action, restore the associated card from the Trello board.",
     "contributors": "Contributors",
     "humanCertification": "Human certification",
     "publisherCertification": "Publisher certification",

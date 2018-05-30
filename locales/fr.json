@@ -1,7 +1,11 @@
 {
   "ui": {
     "back": "Retour",
-    "search": "Recherche"
+    "search": "Recherche",
+    "archive": "Archiver",
+    "delete": "Supprimer",
+    "cancel": "Annuler",
+    "areYouSure": "Êtes-vous sûr ?"
   },
   "drawer": {
     "platforms": "Plateformes",
@@ -64,6 +68,8 @@
     "github": "Github",
     "homepage": "Page d'accueil",
     "trello": "Carte Trello",
+    "archive": "Archiver la plateforme",
+    "archiveDesc": "La plateforme sera archivée et les analyses ne seront plus visibles. Pour revenir en arrière, restaurez la carte associée depuis le tableau Trello.",
     "contributors": "Contributeurs",
     "humanCertification": "Certification humaine",
     "publisherCertification": "Certification éditeur",

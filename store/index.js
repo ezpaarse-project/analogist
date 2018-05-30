@@ -64,6 +64,9 @@ const store = () => new Vuex.Store({
     CREATE_CARD ({ commit }, card) {
       return api.createCard(card)
     },
+    ARCHIVE_CARD ({ commit }, cardID) {
+      return api.deletePlatform(cardID)
+    },
     SAVE_ANALYSIS ({ commit }, { cardID, analysis }) {
       if (analysis.id) {
         return api.updateAnalysis(cardID, analysis)

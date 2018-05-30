@@ -4,28 +4,6 @@
       <v-btn flat router exact :to="{ path: '/' }"><v-icon left>mdi-arrow-left</v-icon>{{ $t('ui.back') }}</v-btn>
     </v-layout>
 
-    <v-dialog v-model="membersDialog" max-width="600">
-      <v-card>
-        <v-card-title class="headline">
-          <span>{{ $t('card.contributors') }}</span>
-          <v-spacer></v-spacer>
-          <v-btn icon @click="membersDialog = false"><v-icon>mdi-close</v-icon></v-btn>
-        </v-card-title>
-
-        <v-list>
-          <v-list-tile v-for="member in card.members" v-bind:key="member.id" avatar :href="'https://trello.com/' + member.username">
-            <v-list-tile-avatar>
-              <img v-if="member.avatarHash" :src="'https://trello-avatars.s3.amazonaws.com/' + member.avatarHash + '/50.png'" alt="avatar">
-              <span v-else class="icon blue-grey lighten-4">{{ member.initials }}</span>
-            </v-list-tile-avatar>
-            <v-list-tile-content>
-              <v-list-tile-title v-text="member.fullName" />
-            </v-list-tile-content>
-          </v-list-tile>
-        </v-list>
-      </v-card>
-    </v-dialog>
-
     <v-card>
       <v-toolbar class="secondary" dark dense card>
         <v-toolbar-title>
@@ -76,12 +54,23 @@
                 <v-list-tile-title>{{ $t('card.trello') }}</v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
+
+            <v-divider></v-divider>
+
             <v-list-tile avatar @click="generateTestFile">
               <v-list-tile-avatar>
                 <v-icon>mdi-upload</v-icon>
               </v-list-tile-avatar>
               <v-list-tile-content>
                 <v-list-tile-title>{{ $t('analyses.export') }}</v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
+            <v-list-tile avatar @click="deleteDialog = true">
+              <v-list-tile-avatar>
+                <v-icon>mdi-archive</v-icon>
+              </v-list-tile-avatar>
+              <v-list-tile-content>
+                <v-list-tile-title>{{ $t('card.archive') }}</v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
           </v-list>
@@ -139,6 +128,43 @@
       </v-list>
     </v-card>
 
+    <v-dialog v-model="deleteDialog" max-width="400">
+      <v-card>
+        <v-card-title class="headline">{{ $t('ui.areYouSure') }}</v-card-title>
+
+        <v-card-text>
+          {{ $t('card.archiveDesc') }}
+        </v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="error" :loading="deleting" @click.native="archivePlatform">{{ $t('ui.archive') }}</v-btn>
+          <v-btn color="secondary" @click.native="deleteDialog = false">{{ $t('ui.cancel') }}</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+    <v-dialog v-model="membersDialog" max-width="600">
+      <v-card>
+        <v-card-title class="headline">
+          <span>{{ $t('card.contributors') }}</span>
+          <v-spacer></v-spacer>
+          <v-btn icon @click="membersDialog = false"><v-icon>mdi-close</v-icon></v-btn>
+        </v-card-title>
+
+        <v-list>
+          <v-list-tile v-for="member in card.members" v-bind:key="member.id" avatar :href="'https://trello.com/' + member.username">
+            <v-list-tile-avatar>
+              <img v-if="member.avatarHash" :src="'https://trello-avatars.s3.amazonaws.com/' + member.avatarHash + '/50.png'" alt="avatar">
+              <span v-else class="icon blue-grey lighten-4">{{ member.initials }}</span>
+            </v-list-tile-avatar>
+            <v-list-tile-content>
+              <v-list-tile-title v-text="member.fullName" />
+            </v-list-tile-content>
+          </v-list-tile>
+        </v-list>
+      </v-card>
+    </v-dialog>
   </section>
 </template>
 
@@ -182,7 +208,9 @@ export default {
   },
   data () {
     return {
-      membersDialog: false
+      membersDialog: false,
+      deleteDialog: false,
+      deleting: false
     }
   },
   computed: {
@@ -242,6 +270,21 @@ export default {
       }
 
       this.creating = false
+    },
+    async archivePlatform () {
+      this.deleting = true
+
+      try {
+        await this.$store.dispatch('ARCHIVE_CARD', this.card.id)
+        this.deleteDialog = false
+        this.$router.push('/')
+      } catch (e) {
+        // eslint-disable-next-line
+        console.error('Platform deletion failed', e)
+        // TODO: handle error
+      }
+
+      this.deleting = false
     },
     generateTestFile () {
       if (!this.analyses) { return }

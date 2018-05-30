@@ -62,6 +62,10 @@ api.getPlatform = function (cardID) {
   return axios.get(`/api/platforms/${cardID}`).then(res => res.data)
 }
 
+api.deletePlatform = function (cardID) {
+  return axios.delete(`/api/platforms/${cardID}`).then(res => res.data)
+}
+
 api.getFields = function () {
   return axios.get(`/api/platforms/fields.json`).then(res => res.data)
 }
