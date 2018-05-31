@@ -13,6 +13,11 @@ services:
       - ANG_TRELLO_SECRET
       - ANG_TRELLO_BOARDID
       - ANG_MONGO_HOST=mongodb
+      # les variables d'envrionnement pour les badges
+      - ANG_BADGE_ANALYSES_BRONZE
+      - ANG_BADGE_ANALYSES_SILVER
+      - ANG_BADGE_CONTRIBUTOR_BRONZE
+      - ANG_BADGE_CONTRIBUTOR_SILVER
       # les variables d'environnement pour que l'application puisse accéder à l'exterieur (ex: l'API trello)
       - http_proxy
       - https_proxy

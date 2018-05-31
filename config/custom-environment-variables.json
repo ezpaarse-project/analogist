@@ -24,5 +24,19 @@
   },
   "history": {
     "debounce_time": "ANG_HISTORY_DEBOUNCE"
+  },
+  "badges": {
+    "analysesBronze": {
+      "badgeId": "ANG_BADGE_ANALYSES_BRONZE"
+    },
+    "analysesSilver": {
+      "badgeId": "ANG_BADGE_ANALYSES_SILVER"
+    },
+    "contributorBronze": {
+      "badgeId": "ANG_BADGE_CONTRIBUTOR_BRONZE"
+    },
+    "contributorSilver": {
+      "badgeId": "ANG_BADGE_CONTRIBUTOR_SILVER"
+    }
   }
 }

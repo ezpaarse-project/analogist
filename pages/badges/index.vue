@@ -23,6 +23,14 @@
               <h4 class="badgeName">{{ badge.name }}</h4>
             </v-flex>
 
+            <v-flex v-if="badges === null">
+              <v-card class="blue-grey darken-1 white--text">
+                <v-card-text>
+                  {{ $t('badges.noBadges') }}
+                </v-card-text>
+              </v-card>
+            </v-flex>
+
             <v-flex xs12 sm12 v-if="!ping">
               <v-card class="red white--text">
                 <v-card-text>
