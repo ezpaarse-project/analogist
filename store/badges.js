@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import axios from 'axios'
+import api from './api'
 import moment from 'moment'
 
 const appUrl = 'http://localhost:4000'
@@ -24,12 +25,10 @@ export default {
   },
   actions: {
     getBadges ({ commit }, params) {
-      return axios({
-        method: 'GET',
-        url: `${appUrl}/badges?id=${params.id}`
-      }).then((res) => {
+      return api.getBadges().then((res) => {
+        console.log(res)
         if (res.data.status === 'success') {
-          const badges = res.data.data
+          const badges = res.data
 
           // eslint-disable-next-line
           badges.map(badge => ((badge.issued_on !== undefined) ? moment.unix(badge.issued_on).format((params.locale === 'fr') ?  'DD/MM/YYYY' : 'YYYY-MM-DD') : null))
@@ -42,12 +41,9 @@ export default {
       })
     },
     getMetrics ({ commit }) {
-      return axios({
-        method: 'GET',
-        url: `${appUrl}/metrics`
-      }).then((res) => {
+      return api.getMetrics().then((res) => {
         if (res.data.status === 'success') {
-          commit('SET_METRICS', res.data.data)
+          commit('SET_METRICS', res.data)
         }
       }).catch((response) => {
         // eslint-disable-next-line
@@ -55,12 +51,9 @@ export default {
       })
     },
     getPing ({ commit }) {
-      return axios({
-        method: 'GET',
-        url: `${appUrl}/ping`
-      }).then((res) => {
+      return api.getPing().then((res) => {
         if (res.data.status === 'success') {
-          commit('SET_PING', (res.data.data === 'pong'))
+          commit('SET_PING', (res.data === 'pong'))
         }
       }).catch((response) => {
         // eslint-disable-next-line

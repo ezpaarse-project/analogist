@@ -20,6 +20,7 @@ router.use(bodyParser.urlencoded({ extended: false }))
 router.use('/platforms', require('./platforms'))
 router.use('/trello', require('./trello'))
 router.use('/auth', require('./auth'))
+router.use('/badges', require('./badges'))
 
 // catch 404 and forward to error handler
 router.use((req, res, next) => {
