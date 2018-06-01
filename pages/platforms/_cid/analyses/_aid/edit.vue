@@ -276,7 +276,10 @@ export default {
   },
   async fetch ({ params, store, error, redirect }) {
     if (!store.state.user || !store.state.user.isAuthorized) {
-      return redirect(`/platforms/${params.cid}/analyses/${params.aid}`)
+      return redirect({
+        name: 'platforms-cid-analyses-aid',
+        params
+      })
     }
 
     try {

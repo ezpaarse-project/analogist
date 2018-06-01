@@ -294,7 +294,13 @@ export default {
           })
         }
 
-        this.$router.push(`/platforms/${this.card.id}/analyses/${analysis.id}/edit`)
+        this.$router.push({
+          name: 'platforms-cid-analyses-aid-edit',
+          params: {
+            cid: this.card.id,
+            aid: analysis.id
+          }
+        })
       } catch (e) {
         this.$store.dispatch('snacks/error', 'card.analysisCreationFailed')
       }
@@ -307,7 +313,7 @@ export default {
       try {
         await this.$store.dispatch('ARCHIVE_CARD', this.card.id)
         this.deleteDialog = false
-        this.$router.push('/')
+        this.$router.push({ path: '/' })
       } catch (e) {
         this.$store.dispatch('snacks/error', 'card.archivalFailed')
       }

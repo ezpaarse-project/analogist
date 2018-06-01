@@ -88,7 +88,7 @@ export default {
     const request = store.state.ezlogger.requests.find(req => req.id === params.rid)
 
     if (!request) {
-      return redirect('/ezlogger')
+      return redirect({ name: 'ezlogger' })
     }
 
     return {
