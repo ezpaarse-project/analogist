@@ -18,7 +18,7 @@
               </v-card>
             </v-flex>
 
-            <v-flex xs12 sm2 v-if="badges && ping" v-for="badge in badges" :key="badge.id" @click.stop="currentBadge = badge">
+            <v-flex xs12 sm2 v-if="badges && ping" v-for="badge in badges" :key="badge.id" @click.stop="currentBadge = badge" :class="{ 'notPossessed' : !badge.issued_on }">
               <img class="mx-auto badgeImage" :src="badge.image" width="60%">
               <h4 class="badgeName">{{ badge.name }}</h4>
             </v-flex>
@@ -59,7 +59,7 @@
                         <p class="headline">{{ currentBadge.name }}</p>
                         
                         <p>{{ currentBadge.description }}</p>
-                        <p>{{ $t('badges.issuedOn') }} : {{ currentBadge.issued_on }}</p>
+                        <p v-if="currentBadge.issued_on">{{ $t('badges.issuedOn') }} : {{ currentBadge.issued_on }}</p>
                       </div>
                     </v-flex>
                   </v-layout>
@@ -141,5 +141,14 @@ img.obfactory {
 img.error {
   filter: grayscale(100%);
   opacity: 0.6;
+}
+.notPossessed {
+  filter: grayscale(100%);
+  opacity: 0.6;
+  transition: all 0.5s ease-in-out;
+}
+.notPossessed:hover {
+  filter: grayscale(0%);
+  opacity: 1;
 }
 </style>

@@ -32,7 +32,7 @@ export default {
           const badges = res.data.data
 
           // eslint-disable-next-line
-          badges.map(badge => badge.issued_on = moment.unix(badge.issued_on).format((params.locale === 'fr') ?  'DD/MM/YYYY' : 'YYYY-MM-DD'))
+          badges.map(badge => ((badge.issued_on !== undefined) ? moment.unix(badge.issued_on).format((params.locale === 'fr') ?  'DD/MM/YYYY' : 'YYYY-MM-DD') : null))
 
           commit('SET_BADGES', badges)
         }
