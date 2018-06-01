@@ -12,9 +12,6 @@
 
     <v-list-tile-action>
       <v-list-tile-action-text v-if="analysis.updatedAt">{{ updatedAt }}</v-list-tile-action-text>
-      <v-btn v-if="canEdit" flat icon ripple :loading="deleting" @click.native.prevent="deleteAnalysis()">
-        <v-icon>mdi-delete</v-icon>
-      </v-btn>
     </v-list-tile-action>
   </v-list-tile>
 </template>
@@ -24,17 +21,9 @@ import moment from 'moment'
 
 export default {
   props: ['analysis', 'cardID'],
-  data () {
-    return {
-      deleting: false
-    }
-  },
   computed: {
     updatedAt () {
       return moment(this.analysis.updatedAt).locale(this.$i18n.locale).fromNow()
-    },
-    canEdit () {
-      return this.$store.state.user && this.$store.state.user.isAuthorized
     },
     card () {
       return this.$store.state.card
@@ -48,19 +37,6 @@ export default {
     },
     visited () {
       return this.$store.state.lastVisitedAnalysis === this.analysis.id
-    }
-  },
-  methods: {
-    async deleteAnalysis () {
-      this.deleting = true
-
-      try {
-        await this.$store.dispatch('DELETE_ANALYSIS', { cardID: this.cardID, analysisID: this.analysis.id })
-      } catch (e) {
-        this.$store.dispatch('snacks/error', 'analyses.deleteFailed')
-      }
-
-      this.deleting = false
     }
   }
 }
