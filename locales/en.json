@@ -3,6 +3,7 @@
     "back": "Retour",
     "search": "Recherche",
     "archive": "Archive",
+    "edit": "Edit",
     "delete": "Delete",
     "cancel": "Cancel",
     "areYouSure": "Are you sure ?"
@@ -101,6 +102,7 @@
     "notFound": "Analysis not found",
     "saved": "Analysis saved",
     "saveFailed": "Analysis saving failed",
+    "deleteDesc": "You are going to delete the analysis.",
     "deleteFailed": "Analysis deletion failed"
   },
   "cards": {

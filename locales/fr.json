@@ -3,6 +3,7 @@
     "back": "Retour",
     "search": "Recherche",
     "archive": "Archiver",
+    "edit": "Éditer",
     "delete": "Supprimer",
     "cancel": "Annuler",
     "areYouSure": "Êtes-vous sûr ?"
@@ -101,6 +102,7 @@
     "notFound": "Analyse introuvable",
     "saved": "Analyse sauvegardée",
     "saveFailed": "La sauvegarde de l'analyse a échoué",
+    "deleteDesc": "Vous êtes sur le point de supprimer l'analyse.",
     "deleteFailed": "La suppression de l'analyse a échoué"
   },
   "cards": {

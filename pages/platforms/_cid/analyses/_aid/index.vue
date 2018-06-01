@@ -10,10 +10,48 @@
           {{ card.name }}
         </v-toolbar-title>
 
-        <v-btn absolute fab bottom right class="pink" v-if="analysis && canEdit" :to="{ name: 'platforms-cid-analyses-aid-edit', params: { cid: $route.params.cid, aid: $route.params.aid } }">
-          <v-icon>mdi-pencil</v-icon>
-        </v-btn>
+        <v-spacer></v-spacer>
+
+        <v-menu v-if="analysis && canEdit">
+          <v-btn slot="activator" icon dark>
+            <v-icon>mdi-dots-vertical</v-icon>
+          </v-btn>
+          <v-list>
+            <v-list-tile avatar :to="{ name: 'platforms-cid-analyses-aid-edit', params: { cid: $route.params.cid, aid: $route.params.aid } }">
+              <v-list-tile-avatar>
+                <v-icon>mdi-pencil</v-icon>
+              </v-list-tile-avatar>
+              <v-list-tile-content>
+                <v-list-tile-title>{{ $t('ui.edit') }}</v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
+            <v-list-tile avatar @click="deleteDialog = true">
+              <v-list-tile-avatar>
+                <v-icon>mdi-delete</v-icon>
+              </v-list-tile-avatar>
+              <v-list-tile-content>
+                <v-list-tile-title>{{ $t('ui.delete') }}</v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
+          </v-list>
+        </v-menu>
       </v-toolbar>
+
+      <v-dialog v-model="deleteDialog" max-width="400">
+        <v-card>
+          <v-card-title class="headline">{{ $t('ui.areYouSure') }}</v-card-title>
+
+          <v-card-text>
+            {{ $t('analyses.deleteDesc') }}
+          </v-card-text>
+
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="error" :loading="deleting" @click.native="deleteAnalysis">{{ $t('ui.delete') }}</v-btn>
+            <v-btn color="secondary" @click.native="deleteDialog = false">{{ $t('ui.cancel') }}</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
 
       <template v-if="analysis">
         <v-card-text>
@@ -148,6 +186,12 @@ export default {
       title: `Analyses: ${this.card.name}`
     }
   },
+  data () {
+    return {
+      deleting: false,
+      deleteDialog: false
+    }
+  },
   computed: {
     card () {
       return this.$store.state.card
@@ -167,6 +211,24 @@ export default {
       } catch (e) {
         return null
       }
+    }
+  },
+  methods: {
+    async deleteAnalysis () {
+      this.deleting = true
+
+      try {
+        await this.$store.dispatch('DELETE_ANALYSIS', { cardID: this.card.id, analysisID: this.analysis.id })
+        this.deleteDialog = false
+        this.$router.push({
+          name: 'platforms-cid',
+          params: { cid: this.card.id }
+        })
+      } catch (e) {
+        this.$store.dispatch('snacks/error', 'analyses.deleteFailed')
+      }
+
+      this.deleting = false
     }
   }
 }
