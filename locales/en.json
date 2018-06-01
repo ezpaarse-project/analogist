@@ -75,8 +75,11 @@
     "publisherCertification": "Publisher certification",
     "manuallyVerified": "Has been manually verified",
     "publisherVerified": "Has been compared with the publisher's statistics",
-    "whatIsCertification": "What is this certification?"
-
+    "whatIsCertification": "What is this certification?",
+    "analysesReorderFailed": "Analyses reordering failed",
+    "listUpdateFailed": "Status update failed",
+    "analysisCreationFailed": "Analysis creation failed",
+    "archivalFailed": "Card archival failed"
   },
   "analyses": {
     "updated": "Updated",
@@ -96,7 +99,9 @@
     "pathParams": "Path parameters",
     "queryParams": "Query parameters",
     "notFound": "Analysis not found",
-    "saved": "Analysis saved"
+    "saved": "Analysis saved",
+    "saveFailed": "Analysis saving failed",
+    "deleteFailed": "Analysis deletion failed"
   },
   "cards": {
     "search": "Search",

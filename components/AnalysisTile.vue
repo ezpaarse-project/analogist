@@ -57,9 +57,7 @@ export default {
       try {
         await this.$store.dispatch('DELETE_ANALYSIS', { cardID: this.cardID, analysisID: this.analysis.id })
       } catch (e) {
-        // eslint-disable-next-line
-        console.error('Analysis deletion failed', e)
-        // TODO: handle error
+        this.$store.dispatch('snacks/error', 'analyses.deleteFailed')
       }
 
       this.deleting = false

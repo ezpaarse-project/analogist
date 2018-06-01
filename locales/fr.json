@@ -75,7 +75,11 @@
     "publisherCertification": "Certification éditeur",
     "manuallyVerified": "A été vérifiée manuellement",
     "publisherVerified": "A été comparée avec les statistiques de l'éditeur",
-    "whatIsCertification": "A quoi correspond cette certification ?"
+    "whatIsCertification": "A quoi correspond cette certification ?",
+    "analysesReorderFailed": "La réorganisation des analyses a échoué",
+    "listUpdateFailed": "Le changement de statut a échoué",
+    "analysisCreationFailed": "La création d'analyse a échoué",
+    "archivalFailed": "L'archivage de la carte a échoué"
   },
   "analyses": {
     "updated": "Mise à jour",
@@ -95,7 +99,9 @@
     "pathParams": "Éléments de l'URL",
     "queryParams": "Paramètres de la query",
     "notFound": "Analyse introuvable",
-    "saved": "Analyse sauvegardée"
+    "saved": "Analyse sauvegardée",
+    "saveFailed": "La sauvegarde de l'analyse a échoué",
+    "deleteFailed": "La suppression de l'analyse a échoué"
   },
   "cards": {
     "search": "Recherche",

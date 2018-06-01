@@ -255,14 +255,6 @@
         {{ $t('analyses.notFound') }}
       </v-card-text>
     </v-card>
-
-    <v-snackbar :timeout="1000" bottom right v-model="saved">
-      {{ $t('analyses.saved') }}
-    </v-snackbar>
-
-    <v-snackbar bottom right v-model="error">
-      {{ error }}
-    </v-snackbar>
   </section>
 </template>
 
@@ -279,8 +271,6 @@ export default {
       pendingChanges: false,
       dirty: false,
       saving: false,
-      saved: false,
-      error: null,
       fields: await api.getFields()
     }
   },
@@ -434,17 +424,14 @@ export default {
           })
         }
 
-        this.saved = true
         this.dirty = false
         this.saving = false
         this.$emit('saved')
+        this.$store.dispatch('snacks/success', 'analyses.saved')
       } catch (e) {
-        this.error = e
         this.saving = false
         this.pendingChanges = false
-        // eslint-disable-next-line
-        return console.error(e)
-        // TODO: handle error
+        this.$store.dispatch('snacks/error', 'analyses.saveFailed')
       }
     }
   }

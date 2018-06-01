@@ -247,9 +247,7 @@ export default {
         try {
           await this.$store.dispatch('REORDER_ANALYSES', { cardID: this.card.id, list })
         } catch (e) {
-          // eslint-disable-next-line
-          console.error('Reorder failed', e)
-          // TODO: handle error
+          this.$store.dispatch('snacks/error', 'card.analysesReorderFailed')
         }
       }
     },
@@ -278,9 +276,7 @@ export default {
         await this.$store.dispatch('MOVE_CARD', { card: this.card, listID: idList })
         this.card.idList = idList
       } catch (e) {
-        // eslint-disable-next-line
-        console.error('List update failed', e)
-        // TODO: handle error
+        this.$store.dispatch('snacks/error', 'card.listUpdateFailed')
       }
 
       this.movingCard = false
@@ -300,9 +296,7 @@ export default {
 
         this.$router.push(`/platforms/${this.card.id}/analyses/${analysis.id}/edit`)
       } catch (e) {
-        // eslint-disable-next-line
-        console.error('Analysis creation failed', e)
-        // TODO: handle error
+        this.$store.dispatch('snacks/error', 'card.analysisCreationFailed')
       }
 
       this.creating = false
@@ -315,9 +309,7 @@ export default {
         this.deleteDialog = false
         this.$router.push('/')
       } catch (e) {
-        // eslint-disable-next-line
-        console.error('Platform deletion failed', e)
-        // TODO: handle error
+        this.$store.dispatch('snacks/error', 'card.archivalFailed')
       }
 
       this.deletingCard = false
