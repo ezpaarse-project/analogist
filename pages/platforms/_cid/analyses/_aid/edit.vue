@@ -360,7 +360,7 @@ export default {
       if (this.saving) {
         this.pendingChanges = true
       }
-      changeTimeout = setTimeout(this.save, 2000)
+      changeTimeout = setTimeout(this.save, 5000)
     },
     filterFields (item, search) {
       if (typeof search !== 'string') { return true }
@@ -406,6 +406,7 @@ export default {
       if (!this.dirty) { return }
       if (this.saving) { return }
 
+      clearTimeout(changeTimeout)
       this.saving = true
 
       try {
