@@ -23,7 +23,9 @@ let historyID
 /**
  * Tests a complete scenario involving sequences of requests
  */
-describe('Routes', () => {
+describe('Routes', function () {
+  this.timeout(5000)
+
   before(done => {
     mongo.connect(mongoUrl, (err) => {
       if (err) { throw err }
