@@ -4,6 +4,7 @@ services:
     image: ezpaarseproject/analogist:1.10.2
     links:
       - analogistdb:mongodb
+      - opbadge
     ports:
       - "3000:3000"
     environment:
@@ -31,3 +32,12 @@ services:
       - ./data/db:/data/db
     command: --smallfiles
     restart: on-failure
+
+  opbadge:
+    image: manghao/ezpaarse-badge
+    environment:
+      - http_proxy
+      - https_proxy
+      - no_proxy
+    links:
+      - analogistdb:mongodb

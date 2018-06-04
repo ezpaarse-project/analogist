@@ -1,9 +1,6 @@
 import Vue from 'vue'
-import axios from 'axios'
 import api from './api'
 import moment from 'moment'
-
-const appUrl = 'http://localhost:4000'
 
 export default {
   namespaced: true,
@@ -26,8 +23,7 @@ export default {
   actions: {
     getBadges ({ commit }, params) {
       return api.getBadges().then((res) => {
-        console.log(res)
-        if (res.data.status === 'success') {
+        if (res.status === 'success') {
           const badges = res.data
 
           // eslint-disable-next-line
@@ -42,7 +38,7 @@ export default {
     },
     getMetrics ({ commit }) {
       return api.getMetrics().then((res) => {
-        if (res.data.status === 'success') {
+        if (res.status === 'success') {
           commit('SET_METRICS', res.data)
         }
       }).catch((response) => {
@@ -52,7 +48,7 @@ export default {
     },
     getPing ({ commit }) {
       return api.getPing().then((res) => {
-        if (res.data.status === 'success') {
+        if (res.status === 'success') {
           commit('SET_PING', (res.data === 'pong'))
         }
       }).catch((response) => {

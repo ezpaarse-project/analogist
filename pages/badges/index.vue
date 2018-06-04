@@ -18,17 +18,9 @@
               </v-card>
             </v-flex>
 
-            <v-flex xs12 sm2 v-if="badges && ping" v-for="badge in badges" :key="badge.id" @click.stop="currentBadge = badge" :class="{ 'notPossessed' : !badge.issued_on }">
+            <v-flex xs12 sm2 v-if="ping" v-for="badge in badges" :key="badge.id" @click.stop="currentBadge = badge" :class="{ 'notPossessed' : !badge.issued_on }">
               <img class="mx-auto badgeImage" :src="badge.image" width="60%">
               <h4 class="badgeName">{{ badge.name }}</h4>
-            </v-flex>
-
-            <v-flex v-if="badges === null">
-              <v-card class="blue-grey darken-1 white--text">
-                <v-card-text>
-                  {{ $t('badges.noBadges') }}
-                </v-card-text>
-              </v-card>
             </v-flex>
 
             <v-flex xs12 sm12 v-if="!ping">
