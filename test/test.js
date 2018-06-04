@@ -246,20 +246,4 @@ describe('Routes', () => {
         })
       })
   })
-
-  it(`DELETE /api/platforms/${cardID}`, done => {
-    request(app)
-      .delete(`/api/platforms/${cardID}`)
-      .expect(204)
-      .end((error) => {
-        expect(error).to.not.exist
-
-        mongo.get('platforms').findOne({ cardID: cardID }, (err, doc) => {
-          if (err) { throw err }
-
-          expect(doc).to.not.exist
-          done()
-        })
-      })
-  })
 })
