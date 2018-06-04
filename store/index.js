@@ -2,10 +2,12 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import api from './api'
 import ezlogger from './ezlogger'
+import snacks from './snacks'
 
 const store = () => new Vuex.Store({
   modules: {
-    ezlogger
+    ezlogger,
+    snacks
   },
   state: {
     user: null,
@@ -19,7 +21,8 @@ const store = () => new Vuex.Store({
     searchText: '',
     searchLists: [],
     searchPage: 1,
-    drawer: true
+    drawer: true,
+    lastVisitedAnalysis: null
   },
   actions: {
     FETCH_PROFILE ({ commit }) {
@@ -63,6 +66,9 @@ const store = () => new Vuex.Store({
     CREATE_CARD ({ commit }, card) {
       return api.createCard(card)
     },
+    ARCHIVE_CARD ({ commit }, cardID) {
+      return api.deletePlatform(cardID)
+    },
     SAVE_ANALYSIS ({ commit }, { cardID, analysis }) {
       if (analysis.id) {
         return api.updateAnalysis(cardID, analysis)
@@ -81,6 +87,9 @@ const store = () => new Vuex.Store({
     ADD_CARD_MEMBER ({ commit }, { card, user }) {
       return api.addUserToCard(card, user)
     },
+    MOVE_CARD ({ commit }, { card, listID }) {
+      return api.moveCard(card, listID)
+    },
     UPDATE_SEARCH_TEXT ({ commit }, value) {
       return commit('SET_SEARCH_TEXT', value)
     },
@@ -90,8 +99,11 @@ const store = () => new Vuex.Store({
     SET_DRAWER ({ commit }, value) {
       commit('SET_DRAWER', value)
     },
-    SET_SEARCH_PAGE ({ commit, state }, value) {
+    SET_SEARCH_PAGE ({ commit }, value) {
       commit('SET_SEARCH_PAGE', value)
+    },
+    SET_VISITED_ANALYSIS ({ commit }, value) {
+      commit('SET_VISITED_ANALYSIS', value)
     }
   },
   mutations: {
@@ -133,6 +145,9 @@ const store = () => new Vuex.Store({
     },
     REMOVE_ANALYSIS (state, analysisID) {
       Vue.set(state, 'analyses', state.analyses.filter(a => a.id !== analysisID))
+    },
+    SET_VISITED_ANALYSIS (state, analysisID) {
+      Vue.set(state, 'lastVisitedAnalysis', analysisID)
     }
   }
 })

@@ -1,7 +1,12 @@
 {
   "ui": {
-    "back": "Back",
-    "search": "Search"
+    "back": "Retour",
+    "search": "Recherche",
+    "archive": "Archive",
+    "edit": "Edit",
+    "delete": "Delete",
+    "cancel": "Cancel",
+    "areYouSure": "Are you sure ?"
   },
   "drawer": {
     "platforms": "Platforms",
@@ -64,13 +69,18 @@
     "github": "Github",
     "homepage": "Homepage",
     "trello": "Trello card",
+    "archive": "Archive the platform",
+    "archiveDesc": "The platform will be archived and the analyses won't be visible anymore. To undo this action, restore the associated card from the Trello board.",
     "contributors": "Contributors",
     "humanCertification": "Human certification",
     "publisherCertification": "Publisher certification",
     "manuallyVerified": "Has been manually verified",
     "publisherVerified": "Has been compared with the publisher's statistics",
-    "whatIsCertification": "What is this certification?"
-
+    "whatIsCertification": "What is this certification?",
+    "analysesReorderFailed": "Analyses reordering failed",
+    "listUpdateFailed": "Status update failed",
+    "analysisCreationFailed": "Analysis creation failed",
+    "archivalFailed": "Card archival failed"
   },
   "analyses": {
     "updated": "Updated",
@@ -90,7 +100,10 @@
     "pathParams": "Path parameters",
     "queryParams": "Query parameters",
     "notFound": "Analysis not found",
-    "saved": "Analysis saved"
+    "saved": "Analysis saved",
+    "saveFailed": "Analysis saving failed",
+    "deleteDesc": "You are going to delete the analysis.",
+    "deleteFailed": "Analysis deletion failed"
   },
   "cards": {
     "search": "Search",

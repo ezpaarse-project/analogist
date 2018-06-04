@@ -23,7 +23,9 @@ let historyID
 /**
  * Tests a complete scenario involving sequences of requests
  */
-describe('Routes', () => {
+describe('Routes', function () {
+  this.timeout(5000)
+
   before(done => {
     mongo.connect(mongoUrl, (err) => {
       if (err) { throw err }
@@ -242,22 +244,6 @@ describe('Routes', () => {
 
           expect(doc.history[1].analyses[0]).to.have.property('bar', 'foo')
 
-          done()
-        })
-      })
-  })
-
-  it(`DELETE /api/platforms/${cardID}`, done => {
-    request(app)
-      .delete(`/api/platforms/${cardID}`)
-      .expect(204)
-      .end((error) => {
-        expect(error).to.not.exist
-
-        mongo.get('platforms').findOne({ cardID: cardID }, (err, doc) => {
-          if (err) { throw err }
-
-          expect(doc).to.not.exist
           done()
         })
       })

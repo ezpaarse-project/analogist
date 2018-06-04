@@ -1,7 +1,12 @@
 {
   "ui": {
     "back": "Retour",
-    "search": "Recherche"
+    "search": "Recherche",
+    "archive": "Archiver",
+    "edit": "Éditer",
+    "delete": "Supprimer",
+    "cancel": "Annuler",
+    "areYouSure": "Êtes-vous sûr ?"
   },
   "drawer": {
     "platforms": "Plateformes",
@@ -64,12 +69,18 @@
     "github": "Github",
     "homepage": "Page d'accueil",
     "trello": "Carte Trello",
+    "archive": "Archiver la plateforme",
+    "archiveDesc": "La plateforme sera archivée et les analyses ne seront plus visibles. Pour revenir en arrière, restaurez la carte associée depuis le tableau Trello.",
     "contributors": "Contributeurs",
     "humanCertification": "Certification humaine",
     "publisherCertification": "Certification éditeur",
     "manuallyVerified": "A été vérifiée manuellement",
     "publisherVerified": "A été comparée avec les statistiques de l'éditeur",
-    "whatIsCertification": "A quoi correspond cette certification ?"
+    "whatIsCertification": "A quoi correspond cette certification ?",
+    "analysesReorderFailed": "La réorganisation des analyses a échoué",
+    "listUpdateFailed": "Le changement de statut a échoué",
+    "analysisCreationFailed": "La création d'analyse a échoué",
+    "archivalFailed": "L'archivage de la carte a échoué"
   },
   "analyses": {
     "updated": "Mise à jour",
@@ -89,7 +100,10 @@
     "pathParams": "Éléments de l'URL",
     "queryParams": "Paramètres de la query",
     "notFound": "Analyse introuvable",
-    "saved": "Analyse sauvegardée"
+    "saved": "Analyse sauvegardée",
+    "saveFailed": "La sauvegarde de l'analyse a échoué",
+    "deleteDesc": "Vous êtes sur le point de supprimer l'analyse.",
+    "deleteFailed": "La suppression de l'analyse a échoué"
   },
   "cards": {
     "search": "Recherche",
