@@ -36,6 +36,10 @@ services:
     environment:
       - http_proxy
       - https_proxy
-      - no_proxy
+      - OBF_CERT
+    volumes:
+      - ./ssl:/usr/src/app/app/ssl
+    ports:
+      - "4000:4000"
     links:
       - analogistdb:mongodb

@@ -38,6 +38,6 @@ services:
     environment:
       - http_proxy
       - https_proxy
-      - no_proxy
+      - OBF_CERT
     links:
       - analogistdb:mongodb
