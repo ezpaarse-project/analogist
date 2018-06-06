@@ -84,7 +84,7 @@ export default {
     }
   },
   methods: {
-    closeCard() {
+    closeCard () {
       this.currentBadge = null
     }
   }
