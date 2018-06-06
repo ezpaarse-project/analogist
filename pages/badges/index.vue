@@ -32,26 +32,7 @@
             </v-flex>
 
             <v-dialog v-if="currentBadge" v-model="currentBadge" max-width="600px">
-              <v-card>
-                <v-container fluid grid-list-lg>
-                  <v-layout row>
-                    <v-flex xs5>
-                      <v-card-media :src="currentBadge.image" height="100%" contain></v-card-media>
-                    </v-flex>
-                    <v-flex xs7>
-                      <div>
-                        <p class="headline">{{ currentBadge.name }}</p>
-                        
-                        <p>{{ currentBadge.description }}</p>
-                        <p v-if="currentBadge.issued_on">{{ $t('badges.issuedOn') }} : {{ currentBadge.issued_on }}</p>
-                      </div>
-                    </v-flex>
-                  </v-layout>
-                </v-container>
-                <v-card-actions>
-                  <v-btn color="red" flat @click.stop="currentBadge = null">{{ $t('ezLogger.close') }}</v-btn>
-                </v-card-actions>
-              </v-card>
+              <badge-card :badge="currentBadge" @closeCard="closeCard"></badge-card>
             </v-dialog>
             
           </v-layout>
@@ -62,13 +43,13 @@
 </template>
 
 <script>
-import CardTile from '~/components/CardTile'
+import BadgeCard from '~/components/BadgeCard'
 
 export default {
   name: 'badges',
   transition: 'slide-x-transition',
   components: {
-    CardTile
+    BadgeCard
   },
   head () {
     return {
@@ -100,6 +81,11 @@ export default {
     },
     user () {
       return this.$store.state.user
+    }
+  },
+  methods: {
+    closeCard() {
+      this.currentBadge = null
     }
   }
 }
