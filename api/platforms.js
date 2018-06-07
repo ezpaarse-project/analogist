@@ -155,12 +155,13 @@ router.put('/:cid/analyses/:aid', mw.updateHistory, (req, res, next) => {
           },
           { upsert: true },
           (err, result) => {
-            if (err) { return next(err) }
+            // eslint-disable-next-line
+            if (err) console.error(err)
+
+            badges.emit(config.badges.analysesBronze, req.params.cid, req.session.profile)
+            badges.emit(config.badges.analysesSilver, req.params.cid, req.session.profile)
           }
         )
-
-        badges.emit(config.badges.analysesBronze, req.params.cid, req.session.profile)
-        badges.emit(config.badges.analysesSilver, req.params.cid, req.session.profile)
       }
 
       res.status(200).json(result.value)
