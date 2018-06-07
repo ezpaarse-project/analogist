@@ -17,8 +17,6 @@ services:
       # les variables d'envrionnement pour les badges
       - ANG_BADGE_ANALYSES_BRONZE
       - ANG_BADGE_ANALYSES_SILVER
-      - ANG_BADGE_CONTRIBUTOR_BRONZE
-      - ANG_BADGE_CONTRIBUTOR_SILVER
       # les variables d'environnement pour que l'application puisse accéder à l'exterieur (ex: l'API trello)
       - http_proxy
       - https_proxy
@@ -34,7 +32,7 @@ services:
     restart: on-failure
 
   opbadge:
-    image: manghao/ezpaarse-badge
+    image: ezpaarseproject/ezpaarse-badge
     environment:
       - http_proxy
       - https_proxy

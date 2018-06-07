@@ -17,8 +17,6 @@ services:
       - ANG_MONGO_HOST=mongodb
       - ANG_BADGE_ANALYSES_BRONZE
       - ANG_BADGE_ANALYSES_SILVER
-      - ANG_BADGE_CONTRIBUTOR_BRONZE
-      - ANG_BADGE_CONTRIBUTOR_SILVER
       - http_proxy
       - https_proxy
       - no_proxy
@@ -32,7 +30,7 @@ services:
     command: --smallfiles
 
   opbadge:
-    image: manghao/ezpaarse-badge
+    image: ezpaarseproject/ezpaarse-badge
     environment:
       - http_proxy
       - https_proxy
