@@ -255,14 +255,6 @@
         {{ $t('analyses.notFound') }}
       </v-card-text>
     </v-card>
-
-    <v-snackbar :timeout="1000" bottom right v-model="saved">
-      {{ $t('analyses.saved') }}
-    </v-snackbar>
-
-    <v-snackbar bottom right v-model="error">
-      {{ error }}
-    </v-snackbar>
   </section>
 </template>
 
@@ -279,14 +271,15 @@ export default {
       pendingChanges: false,
       dirty: false,
       saving: false,
-      saved: false,
-      error: null,
       fields: await api.getFields()
     }
   },
   async fetch ({ params, store, error, redirect }) {
     if (!store.state.user || !store.state.user.isAuthorized) {
-      return redirect(`/platforms/${params.cid}/analyses/${params.aid}`)
+      return redirect({
+        name: 'platforms-cid-analyses-aid',
+        params
+      })
     }
 
     try {
@@ -299,6 +292,7 @@ export default {
     }
 
     store.dispatch('GET_ANALYSIS', params.aid)
+    store.dispatch('SET_VISITED_ANALYSIS', params.aid)
   },
   head () {
     return {
@@ -369,7 +363,7 @@ export default {
       if (this.saving) {
         this.pendingChanges = true
       }
-      changeTimeout = setTimeout(this.save, 2000)
+      changeTimeout = setTimeout(this.save, 5000)
     },
     filterFields (item, search) {
       if (typeof search !== 'string') { return true }
@@ -415,6 +409,7 @@ export default {
       if (!this.dirty) { return }
       if (this.saving) { return }
 
+      clearTimeout(changeTimeout)
       this.saving = true
 
       try {
@@ -433,17 +428,14 @@ export default {
           })
         }
 
-        this.saved = true
         this.dirty = false
         this.saving = false
         this.$emit('saved')
+        this.$store.dispatch('snacks/success', 'analyses.saved')
       } catch (e) {
-        this.error = e
         this.saving = false
         this.pendingChanges = false
-        // eslint-disable-next-line
-        return console.error(e)
-        // TODO: handle error
+        this.$store.dispatch('snacks/error', 'analyses.saveFailed')
       }
     }
   }

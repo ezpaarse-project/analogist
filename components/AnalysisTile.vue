@@ -1,5 +1,5 @@
 <template>
-  <v-list-tile avatar router :to="{ name: 'platforms-cid-analyses-aid', params: { cid: $route.params.cid, aid: analysis.id } }">
+  <v-list-tile :value="visited" avatar router :to="{ name: 'platforms-cid-analyses-aid', params: { cid: $route.params.cid, aid: analysis.id } }">
     <v-list-tile-avatar>
       <img v-if="updatedBy && updatedBy.avatarHash" :title="updatedBy.fullName" :src="'https://trello-avatars.s3.amazonaws.com/' + updatedBy.avatarHash + '/50.png'" alt="avatar" />
       <span v-else-if="updatedBy" class="icon blue-grey lighten-4" :title="updatedBy.fullName" v-text="updatedBy.initials" />
@@ -12,9 +12,6 @@
 
     <v-list-tile-action>
       <v-list-tile-action-text v-if="analysis.updatedAt">{{ updatedAt }}</v-list-tile-action-text>
-      <v-btn v-if="canEdit" flat icon ripple :loading="deleting" @click.native.prevent="deleteAnalysis()">
-        <v-icon>mdi-delete</v-icon>
-      </v-btn>
     </v-list-tile-action>
   </v-list-tile>
 </template>
@@ -24,17 +21,9 @@ import moment from 'moment'
 
 export default {
   props: ['analysis', 'cardID'],
-  data () {
-    return {
-      deleting: false
-    }
-  },
   computed: {
     updatedAt () {
       return moment(this.analysis.updatedAt).locale(this.$i18n.locale).fromNow()
-    },
-    canEdit () {
-      return this.$store.state.user && this.$store.state.user.isAuthorized
     },
     card () {
       return this.$store.state.card
@@ -45,21 +34,9 @@ export default {
       } catch (e) {
         return null
       }
-    }
-  },
-  methods: {
-    async deleteAnalysis () {
-      this.deleting = true
-
-      try {
-        await this.$store.dispatch('DELETE_ANALYSIS', { cardID: this.cardID, analysisID: this.analysis.id })
-      } catch (e) {
-        // eslint-disable-next-line
-        console.error('Analysis deletion failed', e)
-        // TODO: handle error
-      }
-
-      this.deleting = false
+    },
+    visited () {
+      return this.$store.state.lastVisitedAnalysis === this.analysis.id
     }
   }
 }
