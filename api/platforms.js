@@ -126,21 +126,6 @@ router.post('/:cid/analyses', mw.updateHistory, (req, res, next) => {
     (err, result) => {
       if (err) { return next(err) }
 
-      mongo.get('metrics').findOneAndUpdate(
-        { userId: req.session.profile.id },
-        {
-          $addToSet: { analyses: analysis.id },
-          $set: { lastModified: new Date() }
-        },
-        { upsert: true },
-        (err, result) => {
-          if (err) { return next(err) }
-        }
-      )
-
-      badges.emit(config.badges.analysesBronze, req.params.cid, req.session.profile)
-      badges.emit(config.badges.analysesSilver, req.params.cid, req.session.profile)
-
       res.status(201).json(analysis)
     }
   )
@@ -164,20 +149,22 @@ router.put('/:cid/analyses/:aid', mw.updateHistory, (req, res, next) => {
     (err, result) => {
       if (err) { return next(err) }
 
-      mongo.get('metrics').findOneAndUpdate(
-        { userId: req.session.profile.id },
-        {
-          $addToSet: { contributions: analysis.id },
-          $set: { lastModified: new Date() }
-        },
-        { upsert: true },
-        (err, result) => {
-          if (err) { return next(err) }
-        }
-      )
+      if (analysis.url && analysis.url.length > 0) {
+        mongo.get('metrics').findOneAndUpdate(
+          { userId: req.session.profile.id },
+          {
+            $addToSet: { analyses: analysis.id },
+            $set: { lastModified: new Date() }
+          },
+          { upsert: true },
+          (err, result) => {
+            if (err) { return next(err) }
+          }
+        )
 
-      badges.emit(config.badges.contributorBronze, req.params.cid, req.session.profile)
-      badges.emit(config.badges.contributorSilver, req.params.cid, req.session.profile)
+        badges.emit(config.badges.analysesBronze, req.params.cid, req.session.profile)
+        badges.emit(config.badges.analysesSilver, req.params.cid, req.session.profile)
+      }
 
       res.status(200).json(result.value)
     }
