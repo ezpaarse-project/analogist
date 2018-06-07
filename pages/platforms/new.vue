@@ -122,7 +122,10 @@ export default {
           desc
         })
 
-        this.$router.push(`/platforms/${card.id}`)
+        this.$router.push({
+          name: 'platforms-cid',
+          params: { cid: card.id }
+        })
       } catch (e) {
         this.error = e
       }
