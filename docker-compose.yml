@@ -43,5 +43,7 @@ services:
       - http_proxy
       - https_proxy
       - OBF_CERT
+    volumes:
+      - ./ssl:/usr/src/app/app/ssl
     links:
       - analogistdb:mongodb
