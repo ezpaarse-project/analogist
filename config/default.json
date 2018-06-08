@@ -27,6 +27,12 @@
   },
   "badges": {
     "host": "opbadge",
-    "port": "4000"
+    "port": "4000",
+    "analysesBronze": {
+      "criteria": 1
+    },
+    "analysesSilver": {
+      "criteria": 10
+    }
   }
 }
