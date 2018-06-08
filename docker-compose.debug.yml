@@ -24,7 +24,7 @@ services:
     command: npm run dev
 
   analogistdb:
-    image: mongo:3.4.4
+    image: mongo:3.6.5
     volumes:
       - ./data/db:/data/db
     command: --smallfiles
