@@ -3,9 +3,11 @@
 const router   = require('express').Router()
 const ObjectID = require('mongodb').ObjectID
 const request  = require('request')
+const config  = require('config')
 const trello   = require('../lib/trello.js')
 const mongo    = require('../lib/mongo.js')
 const mw       = require('../lib/middlewares.js')
+const badges   = require('../lib/badges.js')
 
 /**
  * Require authorization for all post/put/patch/delete routes
@@ -120,6 +122,7 @@ router.post('/:cid/analyses', mw.updateHistory, (req, res, next) => {
     { upsert: true },
     (err, result) => {
       if (err) { return next(err) }
+
       res.status(201).json(analysis)
     }
   )
@@ -142,6 +145,24 @@ router.put('/:cid/analyses/:aid', mw.updateHistory, (req, res, next) => {
     { returnOriginal: false },
     (err, result) => {
       if (err) { return next(err) }
+
+      if (analysis.url && analysis.url.length > 0) {
+        mongo.get('metrics').findOneAndUpdate(
+          { userId: req.session.profile.id },
+          {
+            $addToSet: { analyses: analysis.id },
+            $set: { lastModified: new Date() }
+          },
+          { upsert: true },
+          (err, result) => {
+            // eslint-disable-next-line
+            if (err) console.error(err)
+
+            badges.emit(config.badges.analysesBronze, req.params.cid, req.session.profile)
+            badges.emit(config.badges.analysesSilver, req.params.cid, req.session.profile)
+          }
+        )
+      }
 
       res.status(200).json(result.value)
     }

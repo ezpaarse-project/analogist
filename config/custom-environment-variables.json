@@ -24,5 +24,17 @@
   },
   "history": {
     "debounce_time": "ANG_HISTORY_DEBOUNCE"
+  },
+  "badges": {
+    "analysesBronze": {
+      "badgeId": "ANG_BADGE_ANALYSES_BRONZE_ID",
+      "name": "ANG_BADGE_ANALYSES_BRONZE_NAME",
+      "eventName": "ANG_BADGE_ANALYSES_BRONZE_EVENT"
+    },
+    "analysesSilver": {
+      "badgeId": "ANG_BADGE_ANALYSES_SILVER_ID",
+      "name": "ANG_BADGE_ANALYSES_SILVER_NAME",
+      "eventName": "ANG_BADGE_ANALYSES_SILVER_EVENT"
+    }
   }
 }

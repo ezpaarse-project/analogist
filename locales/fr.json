@@ -10,6 +10,7 @@
   },
   "drawer": {
     "platforms": "Plateformes",
+    "badges": "Mes badges",
     "trelloBoard": "Tableau Trello",
     "ezLogger": "ezPAARSE Logger",
     "logout": "Se déconnecter",
@@ -131,5 +132,12 @@
     "error": "Une erreur est survenue : {message}",
     "unsupported": "Le domaine <strong>{domainName}</strong> n'a pas encore de parseur associé.",
     "pleaseType": "Entrez un nom de domaine susceptible d'héberger des ressources."
+  },
+  "badges": {
+    "title": "Mes badges",
+    "issuedOn": "Émis le",
+    "loadingBadges": "Chargement de vos badges ...",
+    "issues": "%{issues} badges ont déjà été attribués.",
+    "error": "Une erreur est survenue, nous ne pouvons pas récupérer vos badges pour le moment."
   }
 }

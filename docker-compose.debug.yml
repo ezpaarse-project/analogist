@@ -7,6 +7,8 @@ services:
     working_dir: /app
     links:
       - analogistdb:mongodb
+      - opbadge
+      - maildev
     ports:
       - "3000:3000"
     environment:
@@ -14,9 +16,19 @@ services:
       - ANG_TRELLO_SECRET
       - ANG_TRELLO_BOARDID
       - ANG_MONGO_HOST=mongodb
+      - ANG_BADGE_ANALYSES_BRONZE_ID
+      - ANG_BADGE_ANALYSES_BRONZE_NAME
+      - ANG_BADGE_ANALYSES_BRONZE_EVENT
+      - ANG_BADGE_ANALYSES_SILVER_ID
+      - ANG_BADGE_ANALYSES_SILVER_NAME
+      - ANG_BADGE_ANALYSES_SILVER_EVENT
+      - ANG_NOTIFICATIONS_SENDER
+      - ANG_NOTIFICATIONS_RECEIVERS
+      - ANG_SMTP_HOST=maildev
+      - ANG_SMTP_PORT=25
       - http_proxy
       - https_proxy
-      - no_proxy
+      - no_proxy=localhost,127.0.0.1,opbadge,maildev
     tty: true
     command: npm run dev
 
@@ -25,3 +37,21 @@ services:
     volumes:
       - ./data/db:/data/db
     command: --smallfiles
+
+  opbadge:
+    image: ezpaarseproject/ezpaarse-badge
+    environment:
+      - http_proxy
+      - https_proxy
+      - OBF_CERT
+    volumes:
+      - ./ssl:/usr/src/app/app/ssl
+    ports:
+      - "4000:4000"
+    links:
+      - analogistdb:mongodb
+
+  maildev:
+    image: djfarrelly/maildev
+    ports:
+      - 1080:80

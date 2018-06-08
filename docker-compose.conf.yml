@@ -1,0 +1,12 @@
+version: '2'
+
+services:
+  opbadge:
+    image: ezpaarseproject/ezpaarse-badge
+    environment:
+      - http_proxy
+      - https_proxy
+      - OBF_CERT
+    volumes:
+      - ./ssl:/usr/src/app/app/ssl
+    command: npm run conf

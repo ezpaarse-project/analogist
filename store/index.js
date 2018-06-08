@@ -2,11 +2,13 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import api from './api'
 import ezlogger from './ezlogger'
+import badges from './badges'
 import snacks from './snacks'
 
 const store = () => new Vuex.Store({
   modules: {
     ezlogger,
+    badges,
     snacks
   },
   state: {

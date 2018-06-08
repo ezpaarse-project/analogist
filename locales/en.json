@@ -10,6 +10,7 @@
   },
   "drawer": {
     "platforms": "Platforms",
+    "badges": "My badges",
     "trelloBoard": "Trello board",
     "ezLogger": "ezPAARSE Logger",
     "logout": "Logout",
@@ -131,5 +132,12 @@
     "error": "An error occurred : {message}",
     "unsupported": "The domain <strong>{domainName}</strong> has no associated parser yet.",
     "pleaseType": "Enter a domain name that can host resources."
+  },
+  "badges": {
+    "title": "My badges",
+    "issuedOn": "Issued on",
+    "loadingBadges": "Loading your badges ...",
+    "issues": "%{issues} badges have already been awarded.",
+    "error": "An error occurred, we can't recover your badges for the moment."
   }
 }

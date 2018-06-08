@@ -4,6 +4,7 @@ services:
     image: ezpaarseproject/analogist:1.11.0
     links:
       - analogistdb:mongodb
+      - opbadge
     ports:
       - "3000:3000"
     environment:
@@ -13,10 +14,19 @@ services:
       - ANG_TRELLO_SECRET
       - ANG_TRELLO_BOARDID
       - ANG_MONGO_HOST=mongodb
+      # les variables d'envrionnement pour les badges
+      - ANG_BADGE_ANALYSES_BRONZE_ID
+      - ANG_BADGE_ANALYSES_BRONZE_NAME
+      - ANG_BADGE_ANALYSES_BRONZE_EVENT
+      - ANG_BADGE_ANALYSES_SILVER_ID
+      - ANG_BADGE_ANALYSES_SILVER_NAME
+      - ANG_BADGE_ANALYSES_SILVER_EVENT
+      - ANG_NOTIFICATIONS_SENDER
+      - ANG_NOTIFICATIONS_RECEIVERS
       # les variables d'environnement pour que l'application puisse accéder à l'exterieur (ex: l'API trello)
       - http_proxy
       - https_proxy
-      - no_proxy
+      - no_proxy=localhost,127.0.0.1,opbadge
     tty: true
     restart: on-failure
 
@@ -26,3 +36,12 @@ services:
       - ./data/db:/data/db
     command: --smallfiles
     restart: on-failure
+
+  opbadge:
+    image: ezpaarseproject/ezpaarse-badge
+    environment:
+      - http_proxy
+      - https_proxy
+      - OBF_CERT
+    links:
+      - analogistdb:mongodb
