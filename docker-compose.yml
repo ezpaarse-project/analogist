@@ -15,12 +15,18 @@ services:
       - ANG_TRELLO_BOARDID
       - ANG_MONGO_HOST=mongodb
       # les variables d'envrionnement pour les badges
-      - ANG_BADGE_ANALYSES_BRONZE
-      - ANG_BADGE_ANALYSES_SILVER
+      - ANG_BADGE_ANALYSES_BRONZE_ID
+      - ANG_BADGE_ANALYSES_BRONZE_NAME
+      - ANG_BADGE_ANALYSES_BRONZE_EVENT
+      - ANG_BADGE_ANALYSES_SILVER_ID
+      - ANG_BADGE_ANALYSES_SILVER_NAME
+      - ANG_BADGE_ANALYSES_SILVER_EVENT
+      - ANG_NOTIFICATIONS_SENDER
+      - ANG_NOTIFICATIONS_RECEIVERS
       # les variables d'environnement pour que l'application puisse accéder à l'exterieur (ex: l'API trello)
       - http_proxy
       - https_proxy
-      - no_proxy
+      - no_proxy=localhost,127.0.0.1,opbadge
     tty: true
     restart: on-failure
 
