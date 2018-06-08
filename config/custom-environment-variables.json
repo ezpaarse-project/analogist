@@ -27,16 +27,14 @@
   },
   "badges": {
     "analysesBronze": {
-      "badgeId": "ANG_BADGE_ANALYSES_BRONZE"
+      "badgeId": "ANG_BADGE_ANALYSES_BRONZE_ID",
+      "name": "ANG_BADGE_ANALYSES_BRONZE_NAME",
+      "eventName": "ANG_BADGE_ANALYSES_BRONZE_EVENT"
     },
     "analysesSilver": {
-      "badgeId": "ANG_BADGE_ANALYSES_SILVER"
-    },
-    "contributorBronze": {
-      "badgeId": "ANG_BADGE_CONTRIBUTOR_BRONZE"
-    },
-    "contributorSilver": {
-      "badgeId": "ANG_BADGE_CONTRIBUTOR_SILVER"
+      "badgeId": "ANG_BADGE_ANALYSES_SILVER_ID",
+      "name": "ANG_BADGE_ANALYSES_SILVER_NAME",
+      "eventName": "ANG_BADGE_ANALYSES_SILVER_EVENT"
     }
   }
 }
