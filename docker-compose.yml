@@ -50,3 +50,4 @@ services:
       - ./ssl:/usr/src/app/app/ssl
     links:
       - analogistdb:mongodb
+    restart: on-failure
