@@ -104,7 +104,8 @@
     "saved": "Analysis saved",
     "saveFailed": "Analysis saving failed",
     "deleteDesc": "You are going to delete the analysis.",
-    "deleteFailed": "Analysis deletion failed"
+    "deleteFailed": "Analysis deletion failed",
+    "testWithEzlogger": "Test with ezLogger"
   },
   "cards": {
     "search": "Search",

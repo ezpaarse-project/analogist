@@ -12,29 +12,26 @@
 
         <v-spacer></v-spacer>
 
-        <v-menu v-if="analysis && canEdit">
-          <v-btn slot="activator" icon dark>
-            <v-icon>mdi-dots-vertical</v-icon>
+        <v-tooltip bottom>
+          <v-btn icon slot="activator" :to="{ name: 'platforms-cid-analyses-aid-edit', params: { cid: $route.params.cid, aid: $route.params.aid } }">
+            <v-icon>mdi-pencil</v-icon>
           </v-btn>
-          <v-list>
-            <v-list-tile avatar :to="{ name: 'platforms-cid-analyses-aid-edit', params: { cid: $route.params.cid, aid: $route.params.aid } }">
-              <v-list-tile-avatar>
-                <v-icon>mdi-pencil</v-icon>
-              </v-list-tile-avatar>
-              <v-list-tile-content>
-                <v-list-tile-title>{{ $t('ui.edit') }}</v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
-            <v-list-tile avatar @click="deleteDialog = true">
-              <v-list-tile-avatar>
-                <v-icon>mdi-delete</v-icon>
-              </v-list-tile-avatar>
-              <v-list-tile-content>
-                <v-list-tile-title>{{ $t('ui.delete') }}</v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
-          </v-list>
-        </v-menu>
+          <span>{{ $t('ui.edit') }}</span>
+        </v-tooltip>
+
+        <v-tooltip bottom>
+          <v-btn icon slot="activator" @click="exportToEzlogger">
+            <v-icon>mdi-file-find</v-icon>
+          </v-btn>
+          <span>{{ $t('analyses.testWithEzlogger') }}</span>
+        </v-tooltip>
+
+        <v-tooltip bottom>
+          <v-btn icon slot="activator" @click="deleteDialog = true">
+            <v-icon>mdi-delete</v-icon>
+          </v-btn>
+          <span>{{ $t('ui.delete') }}</span>
+        </v-tooltip>
       </v-toolbar>
 
       <v-dialog v-model="deleteDialog" max-width="400">
@@ -214,6 +211,13 @@ export default {
     }
   },
   methods: {
+    exportToEzlogger () {
+      if (this.analysis && this.analysis.url) {
+        this.$store.dispatch('ezlogger/addRequestFromUrl', this.analysis.url)
+      }
+      this.$router.push({ name: 'ezlogger' })
+    },
+
     async deleteAnalysis () {
       this.deleting = true
 

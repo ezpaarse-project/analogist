@@ -64,6 +64,17 @@ export default {
         }
       })
     },
+
+    addRequestFromUrl ({ dispatch }, url) {
+      dispatch('addRequest', {
+        url,
+        method: 'GET',
+        type: 'main_frame',
+        statusCode: 200,
+        timeStamp: Date.now()
+      })
+    },
+
     clearRequests ({ commit }) {
       commit('clearRequests')
     },

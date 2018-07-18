@@ -104,7 +104,8 @@
     "saved": "Analyse sauvegardée",
     "saveFailed": "La sauvegarde de l'analyse a échoué",
     "deleteDesc": "Vous êtes sur le point de supprimer l'analyse.",
-    "deleteFailed": "La suppression de l'analyse a échoué"
+    "deleteFailed": "La suppression de l'analyse a échoué",
+    "testWithEzlogger": "Tester avec ezLogger"
   },
   "cards": {
     "search": "Recherche",

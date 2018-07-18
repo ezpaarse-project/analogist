@@ -65,6 +65,14 @@
                 <v-list-tile-title>{{ $t('analyses.export') }}</v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
+            <v-list-tile avatar @click="exportToEzlogger">
+              <v-list-tile-avatar>
+                <v-icon>mdi-file-find</v-icon>
+              </v-list-tile-avatar>
+              <v-list-tile-content>
+                <v-list-tile-title>{{ $t('analyses.testWithEzlogger') }}</v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
             <v-list-tile avatar @click="deleteDialog = true">
               <v-list-tile-avatar>
                 <v-icon>mdi-archive</v-icon>
@@ -319,6 +327,17 @@ export default {
       }
 
       this.deletingCard = false
+    },
+    exportToEzlogger () {
+      if (!this.analyses) { return }
+
+      this.analyses.forEach(analysis => {
+        if (analysis.url) {
+          this.$store.dispatch('ezlogger/addRequestFromUrl', analysis.url)
+        }
+      })
+
+      this.$router.push({ name: 'ezlogger' })
     },
     generateTestFile () {
       if (!this.analyses) { return }
