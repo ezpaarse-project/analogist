@@ -9,17 +9,20 @@ http://ang.couperin.org/
 - MongoDB v2.6+
 - OpenSSL
 
-## Configurations
+## Configuration
+
+### Trello interactions
 
 Before running anything, create a local config file `config/local.json` and provide the trello board to use and your API credentials. All defaults are visible in the the [default.json](https://github.com/ezpaarse-project/analogist/blob/master/config/default.json) file.
 
 You can also use **environment variables**, following [this mapping file](https://github.com/ezpaarse-project/analogist/blob/master/config/custom-environment-variables.json).
 
-> ### Badges
-> Generate your [**certificate signing request token**](https://openbadgefactory.com/) in **Admin tools &rarr; API key**, use your certificate in **OBF_CERT** (environment variable) and run this command :
-> ```
-> $ docker-compose -f docker-compose.conf.yml up
->```
+### Badges
+
+Generate your [**certificate signing request token**](https://openbadgefactory.com/) in **Admin tools &rarr; API key**, use your certificate in **OBF_CERT** (environment variable) and run this command :
+```
+$ docker-compose -f docker-compose.conf.yml up
+```
 
 ## Build Setup
 
