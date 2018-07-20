@@ -25,6 +25,7 @@
     "requestDetails": "Details de la requête",
     "requestStatus": "Statut de la requête",
     "requestType": "Type de requête",
+    "responseStatusCode": "Code d'état de la réponse",
     "rtype": "Type de ressource",
     "mime": "Format de ressource",
     "noData": "Pas de données",

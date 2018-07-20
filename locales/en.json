@@ -24,6 +24,7 @@
     "requestDetails": "Request details",
     "requestStatus": "Request status",
     "requestType": "Request type",
+    "responseStatusCode": "Response status code",
     "rtype": "Resource type",
     "mime": "Resource format",
     "noData": "No data",

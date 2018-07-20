@@ -85,6 +85,10 @@
                 <v-chip slot="activator" small label color="blue" text-color="white">{{ req.type }}</v-chip>
                 <span>{{ $t('ezLogger.requestType') }}</span>
               </v-tooltip>
+              <v-tooltip bottom v-if="req.statusCode">
+                <v-chip slot="activator" small label color="blue" text-color="white">{{ req.statusCode }}</v-chip>
+                <span>{{ $t('ezLogger.statusCode') }}</span>
+              </v-tooltip>
               <v-tooltip bottom v-if="req.ec && req.ec.rtype">
                 <v-chip slot="activator" small label color="green" text-color="white">{{ req.ec.rtype }}</v-chip>
                 <span>{{ $t('ezLogger.rtype') }}</span>
