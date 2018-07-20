@@ -331,6 +331,7 @@ export default {
     exportToEzlogger () {
       if (!this.analyses) { return }
 
+      this.$store.dispatch('ezlogger/clearRequests')
       this.analyses.forEach(analysis => {
         if (analysis.url) {
           this.$store.dispatch('ezlogger/addRequestFromUrl', analysis.url)

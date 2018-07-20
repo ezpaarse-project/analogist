@@ -212,6 +212,7 @@ export default {
   },
   methods: {
     exportToEzlogger () {
+      this.$store.dispatch('ezlogger/clearRequests')
       if (this.analysis && this.analysis.url) {
         this.$store.dispatch('ezlogger/addRequestFromUrl', this.analysis.url)
       }
