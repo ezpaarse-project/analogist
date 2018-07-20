@@ -65,7 +65,7 @@ router.delete('/:cid', (req, res, next) => {
 
 /* GET the analyses of a platform. */
 router.get('/:cid/analyses', (req, res, next) => {
-  mongo.get('platforms').findOne({ cardID: req.params.cid }, { analyses: 1 }, (err, doc) => {
+  mongo.get('platforms').findOne({ cardID: req.params.cid }, { projection: { analyses: 1 } }, (err, doc) => {
     if (err) { return next(err) }
     if (!doc) { return res.status(404).end() }
 
@@ -75,7 +75,7 @@ router.get('/:cid/analyses', (req, res, next) => {
 
 /* GET the history of a platform. */
 router.get('/:cid/history', (req, res, next) => {
-  mongo.get('platforms').findOne({ cardID: req.params.cid }, { history: 1 }, (err, doc) => {
+  mongo.get('platforms').findOne({ cardID: req.params.cid }, { projection: { history: 1 } }, (err, doc) => {
     if (err) { return next(err) }
     if (!doc) { return res.status(404).end() }
 
@@ -243,7 +243,7 @@ router.post('/:cid/history/:hid', (req, res, next) => {
 
   mongo.get('platforms').findOne(
     { cardID: req.params.cid, 'history.id': new ObjectID(req.params.hid) },
-    { 'history.$': 1, 'analyses': 1 },
+    { projection: { 'history.$': 1, 'analyses': 1 } },
     (err, platform) => {
       if (err) { return next(err) }
       if (!platform) { return res.status(404).end() }
