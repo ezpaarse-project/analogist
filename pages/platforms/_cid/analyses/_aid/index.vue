@@ -93,7 +93,7 @@
           <v-divider/>
           <v-subheader class="title mt-3">{{ $t('analyses.recognizedFields') }}</v-subheader>
 
-          <table class="datatable table">
+          <table class="v-datatable v-table">
             <thead>
               <tr class="text-xs-left">
                 <th>{{ $t('analyses.type') }}</th>
@@ -113,7 +113,7 @@
           <v-divider/>
           <v-subheader class="title mt-3">{{ $t('analyses.pathParams') }}</v-subheader>
 
-          <table class="datatable table">
+          <table class="v-datatable v-table">
             <thead>
               <tr class="text-xs-left">
                 <th>{{ $t('analyses.value') }}</th>
@@ -133,7 +133,7 @@
           <v-divider/>
           <v-subheader class="title mt-3">{{ $t('analyses.queryParams') }}</v-subheader>
 
-          <table class="datatable table">
+          <table class="v-datatable v-table">
             <thead>
               <tr class="text-xs-left">
                 <th>{{ $t('analyses.name') }}</th>

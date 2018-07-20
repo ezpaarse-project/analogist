@@ -22,7 +22,7 @@
 
           <v-layout wrap>
             <v-flex xs12 sm6 md4>
-              <v-select
+              <v-autocomplete
                 name="rtype"
                 :label="$t('analyses.type')"
                 :items="rtypes"
@@ -32,8 +32,7 @@
                 @input="handleChange"
                 v-model="analysis.rtype"
                 :append-icon="analysis.rtype ? 'mdi-close' : 'mdi-menu-down'"
-                :append-icon-cb="clearRtype"
-                autocomplete
+                @click:append="clearRtype"
               >
                 <template slot="item" slot-scope="data">
                   <v-list-tile-content>
@@ -41,11 +40,11 @@
                     <v-list-tile-sub-title v-html="data.item.description"></v-list-tile-sub-title>
                   </v-list-tile-content>
                 </template>
-              </v-select>
+              </v-autocomplete>
             </v-flex>
 
             <v-flex xs12 sm6 md4>
-              <v-select
+              <v-autocomplete
                 name="mime"
                 :label="$t('analyses.format')"
                 :items="mimes"
@@ -55,8 +54,7 @@
                 @input="handleChange"
                 v-model="analysis.mime"
                 :append-icon="analysis.mime ? 'mdi-close' : 'mdi-menu-down'"
-                :append-icon-cb="clearMime"
-                autocomplete
+                @click:append="clearMime"
               >
                 <template slot="item" slot-scope="data">
                   <v-list-tile-content>
@@ -64,14 +62,14 @@
                     <v-list-tile-sub-title v-html="data.item.description"></v-list-tile-sub-title>
                   </v-list-tile-content>
                 </template>
-              </v-select>
+              </v-autocomplete>
             </v-flex>
             <v-flex xs12 sm12 md4>
               <v-text-field @input="handleChange" name="unitid" :label="$t('analyses.unitid')" v-model="analysis.unitid"></v-text-field>
             </v-flex>
           </v-layout>
 
-          <v-text-field @input="handleChange" multi-line name="comment" :label="$t('analyses.comment')" v-model="analysis.comment"></v-text-field>
+          <v-textarea @input="handleChange" outline name="comment" :label="$t('analyses.comment')" v-model="analysis.comment"></v-textarea>
         </v-container>
 
         <v-card class="my-3">
@@ -97,7 +95,7 @@
 
             <template slot="items" slot-scope="props">
               <td>
-                <v-select
+                <v-autocomplete
                   :label="$t('analyses.type')"
                   :items="recognizedFields"
                   :filter="filterFields"
@@ -107,7 +105,6 @@
                   item-value="code"
                   append-icon="mdi-menu-down"
                   single-line
-                  autocomplete
                 >
                   <template slot="item" slot-scope="data">
                     <v-list-tile-content>
@@ -115,7 +112,7 @@
                       <v-list-tile-sub-title v-html="data.item.description"></v-list-tile-sub-title>
                     </v-list-tile-content>
                   </template>
-                </v-select>
+                </v-autocomplete>
               </td>
               <td>
                 <v-text-field
