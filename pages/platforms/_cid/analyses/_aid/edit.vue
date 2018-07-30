@@ -16,13 +16,14 @@
       </v-toolbar>
 
       <v-card-text v-if="analysis">
-        <v-container fluid grid-list-md>
-          <v-text-field @input="handleChange" name="title" :label="$t('analyses.title')" v-model="analysis.title"></v-text-field>
-          <v-text-field @input="handleChange" @change="parseUrl" name="url" :label="$t('analyses.url')" v-model="analysis.url"></v-text-field>
+        <v-container fluid grid-list-md pa-0>
+          <v-text-field box @input="handleChange" name="title" :label="$t('analyses.title')" v-model="analysis.title"></v-text-field>
+          <v-text-field box @input="handleChange" @change="parseUrl" name="url" :label="$t('analyses.url')" v-model="analysis.url"></v-text-field>
 
           <v-layout wrap>
             <v-flex xs12 sm6 md4>
               <v-autocomplete
+                box
                 name="rtype"
                 :label="$t('analyses.type')"
                 :items="rtypes"
@@ -45,6 +46,7 @@
 
             <v-flex xs12 sm6 md4>
               <v-autocomplete
+                box
                 name="mime"
                 :label="$t('analyses.format')"
                 :items="mimes"
@@ -65,11 +67,11 @@
               </v-autocomplete>
             </v-flex>
             <v-flex xs12 sm12 md4>
-              <v-text-field @input="handleChange" name="unitid" :label="$t('analyses.unitid')" v-model="analysis.unitid"></v-text-field>
+              <v-text-field box @input="handleChange" name="unitid" :label="$t('analyses.unitid')" v-model="analysis.unitid"></v-text-field>
             </v-flex>
           </v-layout>
 
-          <v-textarea @input="handleChange" outline name="comment" :label="$t('analyses.comment')" v-model="analysis.comment"></v-textarea>
+          <v-textarea @input="handleChange" box name="comment" :label="$t('analyses.comment')" v-model="analysis.comment"></v-textarea>
         </v-container>
 
         <v-card class="my-3">
