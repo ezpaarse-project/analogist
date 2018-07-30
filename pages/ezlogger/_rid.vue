@@ -17,7 +17,6 @@
           single-line
           full-width
           hide-details
-          :suffix="request.method"
           :value="request.url"
         >
           <template slot="prepend">
