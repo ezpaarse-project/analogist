@@ -225,6 +225,8 @@ export default {
 
       return error({ statusCode, message: statusCode === 404 ? 'Carte introuvable' : message })
     }
+
+    store.dispatch('SET_VISITED_PLATFORM', params.cid)
   },
   head () {
     return {

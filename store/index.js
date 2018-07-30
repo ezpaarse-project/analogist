@@ -24,7 +24,8 @@ const store = () => new Vuex.Store({
     searchLists: [],
     searchPage: 1,
     drawer: true,
-    lastVisitedAnalysis: null
+    lastVisitedAnalysis: null,
+    lastVisitedPlatform: null
   },
   actions: {
     FETCH_PROFILE ({ commit }) {
@@ -106,6 +107,9 @@ const store = () => new Vuex.Store({
     },
     SET_VISITED_ANALYSIS ({ commit }, value) {
       commit('SET_VISITED_ANALYSIS', value)
+    },
+    SET_VISITED_PLATFORM ({ commit }, value) {
+      commit('SET_VISITED_PLATFORM', value)
     }
   },
   mutations: {
@@ -150,6 +154,9 @@ const store = () => new Vuex.Store({
     },
     SET_VISITED_ANALYSIS (state, analysisID) {
       Vue.set(state, 'lastVisitedAnalysis', analysisID)
+    },
+    SET_VISITED_PLATFORM (state, cardID) {
+      Vue.set(state, 'lastVisitedPlatform', cardID)
     }
   }
 })

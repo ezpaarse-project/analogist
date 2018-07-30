@@ -20,6 +20,7 @@
   },
   "ezLogger": {
     "title": "ezPAARSE Logger",
+    "backToPlatform": "Retour à la plateforme",
     "settings": "Paramètres",
     "consultationEvent": "Évènement de consultation",
     "requestDetails": "Details de la requête",
