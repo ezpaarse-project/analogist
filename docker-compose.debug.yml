@@ -44,6 +44,11 @@ services:
       - http_proxy
       - https_proxy
       - OBF_CERT
+      - BADGE_MONGO_HOST
+      - BADGE_MONGO_PORT
+      - BADGE_MONGO_DB
+      - BADGE_LOGENTRY_CLIENT
+      - BADGE_LOGENTRY_ISSUER
     volumes:
       - ./ssl:/usr/src/app/app/ssl
     ports:
