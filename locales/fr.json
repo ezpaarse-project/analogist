@@ -6,7 +6,8 @@
     "edit": "Éditer",
     "delete": "Supprimer",
     "cancel": "Annuler",
-    "areYouSure": "Êtes-vous sûr ?"
+    "areYouSure": "Êtes-vous sûr ?",
+    "close": "Fermer"
   },
   "drawer": {
     "platforms": "Plateformes",
