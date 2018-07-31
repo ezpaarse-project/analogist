@@ -13,7 +13,7 @@
             <v-flex xs12 sm2 v-if="badges && ping" v-for="badge in badges" :key="badge.id" @click.stop="currentBadge = badge" :class="{ 'notPossessed' : !badge.issued_on }">
               <img class="mx-auto badgeImage" :src="badge.image" width="60%">
               <h4 class="badgeName" v-if="$i18n.locale === 'fr'">{{ badge.name }}</h4>
-              <h4 class="badgeName" v-else>{{ badge.alt_language.en.name }}</h4>
+              <h4 class="badgeName" v-else>{{ badge.alt_language[$i18n.locale].name }}</h4>
             </v-flex>
 
             <v-flex xs12 sm12 v-if="!ping">

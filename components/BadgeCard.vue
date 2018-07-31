@@ -8,10 +8,10 @@
         <v-flex xs7>
           <div>
             <p class="headline" v-if="$i18n.locale === 'fr'">{{ badge.name }}</p>
-            <p class="headline" v-else>{{ badge.alt_language.en.name }}</p>
+            <p class="headline" v-else>{{ badge.alt_language[$i18n.locale].name }}</p>
             
             <p v-if="$i18n.locale === 'fr'">{{ badge.description }}</p>
-            <p v-else>{{ badge.alt_language.en.description }}</p>
+            <p v-else>{{ badge.alt_language[$i18n.locale].description }}</p>
             <p v-if="badge.issued_on">{{ $t('badges.issuedOn') }} : {{ issued_on }}</p>
           </div>
         </v-flex>
