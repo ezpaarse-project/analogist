@@ -165,8 +165,4 @@ api.getPing = function (userId) {
   return axios.get(`/api/badges/ping`).then(res => res.data)
 }
 
-api.getMetrics = function (userId) {
-  return axios.get(`/api/badges/metrics`).then(res => res.data)
-}
-
 export default api

@@ -14,4 +14,12 @@ router.get('/ping', (req, res) => {
   request.get(`${url}/ping`).pipe(res)
 })
 
+router.get('/view/:userId/:badgeId/:language', (req, res) => {
+  request.get(`${url}/view?u=${req.params.userId}&b=${req.params.badgeId}&l=${req.params.language}`).pipe(res)
+})
+
+router.get('/embed/:userId/:badgeId/:language', (req, res) => {
+  request.get(`${url}/embed?u=${req.params.userId}&b=${req.params.badgeId}&l=${req.params.language}`).pipe(res)
+})
+
 module.exports = router

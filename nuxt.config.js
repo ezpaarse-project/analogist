@@ -49,8 +49,5 @@ module.exports = {
       'moment',
       'file-saver'
     ]
-  },
-  env: {
-    BADGE_URL: process.env.BADGE_URL || 'http://localhost:4000'
   }
 }

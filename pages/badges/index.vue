@@ -71,7 +71,6 @@ export default {
     }
 
     await store.dispatch('badges/getPing')
-    await store.dispatch('badges/getBadgeUrl')
     await store.dispatch('badges/getBadges', { id: store.state.user.id, locale: app.i18n.locale })
   },
   computed: {

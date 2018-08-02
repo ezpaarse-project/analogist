@@ -3,7 +3,7 @@
     <v-container fluid grid-list-lg>
       <v-layout row>
         <v-flex xs5>
-          <v-card-media :src="badge.image" height="100%" contain></v-card-media>
+          <v-card-media :src="badge.image" height="75%" contain></v-card-media>
         </v-flex>
         <v-flex xs7>
           <div class="badge">
@@ -36,30 +36,28 @@
         <v-list class="sharing-list">
           <v-list-tile>
             <v-list-tile-content>
-              <a :href="`https://www.facebook.com/sharer/sharer.php?u=${badgeUrl}/view?u=${userId}&b=${badge.id}&l=${$i18n.locale}`" target="_blank">
+              <a :href="`https://www.facebook.com/sharer/sharer.php?u=${viewUrl}`" target="_blank">
                 <v-icon>mdi-facebook-box</v-icon> Facebook
               </a>
             </v-list-tile-content>
           </v-list-tile>
           <v-list-tile>
             <v-list-tile-content>
-              <a :href="`https://twitter.com/intent/tweet?size=medium&count=none&text=${$i18n.locale === 'fr' ? badge.name : badge.alt_language[$i18n.locale].name}&url=${badgeUrl}/view?u=${userId}&b=${badge.id}&l=${$i18n.locale}&hashtags=ezPAARSE,AnalogIST`" target="_blank">
+              <a :href="`https://twitter.com/intent/tweet?size=medium&count=none&text=${this.$i18n.locale === 'fr' ? this.badge.name : this.badge.alt_language[this.i18n.locale].name}%20${viewUrl}&hashtags=ezPAARSE,AnalogIST`" target="_blank">
                 <v-icon>mdi-twitter-box</v-icon> Twitter
               </a>
             </v-list-tile-content>
           </v-list-tile>
           <v-list-tile>
             <v-list-tile-content>
-              <a :href="`https://plus.google.com/share?url=${badgeUrl}/view?u=${userId}&b=${badge.id}&l=${$i18n.locale}`" target="_blank">
+              <a :href="`https://plus.google.com/share?url=${viewUrl}`" target="_blank">
                 <v-icon>mdi-google-plus-box</v-icon> Google+
               </a>
             </v-list-tile-content>
           </v-list-tile>
           <v-list-tile>
             <v-list-tile-content>
-              <a :href="`https://www.linkedin.com/shareArticle?mini=true&url=${badgeUrl}/view?u=${userId}&b=${badge.id}&l=${$i18n.locale}&title=${$i18n.locale === 'fr' ? badge.name : badge.alt_language[$i18n.locale].name}&summary=AnalogIST%
-               ${$i18n.locale === 'fr' ? badge.name : badge.alt_language[$i18n.locale].name}&source=AnalogIST
-`" target="_blank">
+              <a :href="`https://www.linkedin.com/shareArticle?mini=true&url=${viewUrl}&source=AnalogIST`" target="_blank">
                 <v-icon>mdi-linkedin-box</v-icon> Linkedin
               </a>
             </v-list-tile-content>
@@ -90,8 +88,8 @@ export default {
     issued_on () {
       return this.badge.issued_on ? moment.unix(this.badge.issued_on).locale(this.$i18n.locale).format('LL') : null
     },
-    badgeUrl () {
-      return this.$store.state.badges.badgeUrl
+    viewUrl () {
+      return `http://${location.host}/api/badges/view/${this.userId}/${this.badge.id}/${this.$i18n.locale}&title=${this.$i18n.locale === 'fr' ? this.badge.name : this.badge.alt_language[this.i18n.locale].name}&summary=AnalogIST%20${this.$i18n.locale === 'fr' ? this.badge.name : this.badge.alt_language[this.$i18n.locale].name}`
     }
   },
   methods: {
