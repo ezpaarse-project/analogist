@@ -43,7 +43,7 @@
           </v-list-tile>
           <v-list-tile>
             <v-list-tile-content>
-              <a :href="`https://twitter.com/intent/tweet?size=medium&count=none&text=${this.$i18n.locale === 'fr' ? this.badge.name : this.badge.alt_language[this.i18n.locale].name}%20${viewUrl}&hashtags=ezPAARSE,AnalogIST`" target="_blank">
+              <a :href="`https://twitter.com/intent/tweet?size=medium&count=none&text=${$i18n.locale === 'fr' ? badge.name : badge.alt_language[$i18n.locale].name}%20${viewUrl}&hashtags=ezPAARSE,AnalogIST`" target="_blank">
                 <v-icon>mdi-twitter-box</v-icon> Twitter
               </a>
             </v-list-tile-content>
