@@ -6,7 +6,8 @@ export default {
   namespaced: true,
   state: {
     badges: null,
-    ping: null
+    ping: null,
+    badgeUrl: null
   },
   mutations: {
     SET_BADGES (state, badges) {
@@ -14,6 +15,9 @@ export default {
     },
     SET_PING (state, ping) {
       Vue.set(state, 'ping', ping)
+    },
+    SET_BADGE_URL (state, url) {
+      Vue.set(state, 'badgeUrl', url)
     }
   },
   actions: {
@@ -41,6 +45,9 @@ export default {
         // eslint-disable-next-line
         console.log(response)
       })
+    },
+    getBadgeUrl ({ commit }) {
+      commit('SET_BADGE_URL', process.env.BADGE_URL)
     }
   }
 }

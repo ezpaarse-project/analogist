@@ -7,14 +7,20 @@
         </v-flex>
         <v-flex xs7>
           <div class="badge">
-            <p class="headline" v-if="$i18n.locale === 'fr'">{{ badge.name }}</p>
-            <p class="headline" v-else>{{ badge.alt_language[$i18n.locale].name }}</p>
+            <p class="headline">
+              <span v-if="$i18n.locale === 'fr'">{{ badge.name }}</span>
+              <span v-else>{{ badge.alt_language[$i18n.locale].name }}</span>
+            </p>
             
-            <p v-if="$i18n.locale === 'fr'"><strong>Description</strong> : {{ badge.description }}</p>
-            <p v-else><strong>Description</strong> : {{ badge.alt_language[$i18n.locale].description }}</p>
-            
-            <p v-if="$i18n.locale === 'fr'"><strong>{{ $t('badges.criteria') }}</strong> : {{ badge.criteria }}</p>
-            <p v-else><strong>{{ $t('badges.criteria') }}</strong> : {{ badge.alt_language[$i18n.locale].criteria }}</p>
+            <p>
+              <strong>Description</strong> : <span v-if="$i18n.locale === 'fr'">{{ badge.description }}</span>
+              <span v-else>{{ badge.alt_language[$i18n.locale].description }}</span>
+            </p>
+
+            <p>
+              <strong>{{ $t('badges.criteria') }}</strong> : <span v-if="$i18n.locale === 'fr'">{{ badge.criteria }}</span>
+              <span v-else>{{ badge.alt_language[$i18n.locale].criteria }}</span>
+            </p>
 
             <p v-if="badge.issued_on"><strong>{{ $t('badges.issuedOn') }}</strong> : {{ issued_on }}</p>
           </div>
@@ -23,39 +29,45 @@
     </v-container>
 
     <v-card-actions>
-
-      <v-menu offset-y>
+      <v-menu offset-y v-if="badge.issued_on">
         <v-btn slot="activator" flat>
           <v-icon>mdi-share-variant</v-icon>
         </v-btn>
         <v-list class="sharing-list">
           <v-list-tile>
             <v-list-tile-content>
-              <a :href="`https://www.facebook.com/sharer/sharer.php?u=https://openbadgefactory.com/v1/badge/_/${badge.id}.png`" target="_blank">
+              <a :href="`https://www.facebook.com/sharer/sharer.php?u=${badgeUrl}/view?u=${userId}&b=${badge.id}&l=${$i18n.locale}`" target="_blank">
                 <v-icon>mdi-facebook-box</v-icon> Facebook
               </a>
             </v-list-tile-content>
           </v-list-tile>
           <v-list-tile>
             <v-list-tile-content>
-              <a :href="`https://twitter.com/intent/tweet?size=medium&count=none&text=${badge.name}&url=https://openbadgefactory.com/v1/badge/_/${badge.id}.png&hashtags=ezPAARSE,AnalogIST`" target="_blank">
+              <a :href="`https://twitter.com/intent/tweet?size=medium&count=none&text=${$i18n.locale === 'fr' ? badge.name : badge.alt_language[$i18n.locale].name}&url=${badgeUrl}/view?u=${userId}&b=${badge.id}&l=${$i18n.locale}&hashtags=ezPAARSE,AnalogIST`" target="_blank">
                 <v-icon>mdi-twitter-box</v-icon> Twitter
               </a>
             </v-list-tile-content>
           </v-list-tile>
           <v-list-tile>
             <v-list-tile-content>
-              <a :href="`https://plus.google.com/share?url=https://openbadgefactory.com/v1/badge/_/${badge.id}.png`" target="_blank">
+              <a :href="`https://plus.google.com/share?url=${badgeUrl}/view?u=${userId}&b=${badge.id}&l=${$i18n.locale}`" target="_blank">
                 <v-icon>mdi-google-plus-box</v-icon> Google+
               </a>
             </v-list-tile-content>
           </v-list-tile>
           <v-list-tile>
             <v-list-tile-content>
-              <a :href="`https://www.linkedin.com/shareArticle?mini=true&url=https://openbadgefactory.com/v1/badge/_/${badge.id}.png&title=${badge.name}&summary=AnalogIST%
-               ${badge.name}&source=AnalogIST
+              <a :href="`https://www.linkedin.com/shareArticle?mini=true&url=${badgeUrl}/view?u=${userId}&b=${badge.id}&l=${$i18n.locale}&title=${$i18n.locale === 'fr' ? badge.name : badge.alt_language[$i18n.locale].name}&summary=AnalogIST%
+               ${$i18n.locale === 'fr' ? badge.name : badge.alt_language[$i18n.locale].name}&source=AnalogIST
 `" target="_blank">
                 <v-icon>mdi-linkedin-box</v-icon> Linkedin
+              </a>
+            </v-list-tile-content>
+          </v-list-tile>
+          <v-list-tile>
+            <v-list-tile-content>
+              <a href="">
+                <v-icon>mdi-code-tags</v-icon> {{ $t('badges.embed') }}
               </a>
             </v-list-tile-content>
           </v-list-tile>
@@ -73,10 +85,13 @@
 import moment from 'moment'
 
 export default {
-  props: ['badge'],
+  props: ['badge', 'userId'],
   computed: {
     issued_on () {
       return this.badge.issued_on ? moment.unix(this.badge.issued_on).locale(this.$i18n.locale).format('LL') : null
+    },
+    badgeUrl () {
+      return this.$store.state.badges.badgeUrl
     }
   },
   methods: {

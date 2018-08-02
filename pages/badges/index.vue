@@ -33,7 +33,7 @@
             </v-flex>
 
             <v-dialog v-if="currentBadge" v-model="currentBadge" max-width="600px">
-              <badge-card :badge="currentBadge" @closeCard="closeCard"></badge-card>
+              <badge-card :badge="currentBadge" :userId="user.id" @closeCard="closeCard"></badge-card>
             </v-dialog>
             
           </v-layout>
@@ -71,6 +71,7 @@ export default {
     }
 
     await store.dispatch('badges/getPing')
+    await store.dispatch('badges/getBadgeUrl')
     await store.dispatch('badges/getBadges', { id: store.state.user.id, locale: app.i18n.locale })
   },
   computed: {
