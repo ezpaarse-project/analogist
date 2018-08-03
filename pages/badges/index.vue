@@ -3,8 +3,12 @@
     <v-card>
       <v-toolbar class="secondary" dense dark card>
         <v-toolbar-title>
-          {{ $t('badges.title') }}
+          {{ $t('badges.title') }} <v-chip color="grey lighten-2"><strong>{{badgesOwned}}</strong> / {{badges.length}}</v-chip>
         </v-toolbar-title>
+        <v-spacer></v-spacer>
+        <a href="https://blog.ezpaarse.org/2018/06/communication-les-badges-ezpaarse/" target="_blank">
+          <v-icon>mdi-help-circle</v-icon>
+        </a>
       </v-toolbar>
       
       <v-card-text>
@@ -76,6 +80,13 @@ export default {
   computed: {
     badges () {
       return this.$store.state.badges.badges
+    },
+    badgesOwned () {
+      let badgesOwend = 0
+      this.$store.state.badges.badges.forEach(badge => {
+        if (badge.issued_on) badgesOwend += 1
+      })
+      return badgesOwend
     },
     ping () {
       return this.$store.state.badges.ping
