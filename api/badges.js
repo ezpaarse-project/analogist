@@ -17,7 +17,7 @@ router.get('/ping', (req, res) => {
 router.get('/view/:userId/:badgeId/:language', (req, res) => {
   request.get(`${url}/view?u=${req.params.userId}&b=${req.params.badgeId}&l=${req.params.language}`, {
     headers: {
-      'X-Forwarded-For': req.headers.host
+      'X-Forwarded-For': 'http://vianalogist.intra.inist.fr:3000/'
     }
   }).pipe(res)
 })
