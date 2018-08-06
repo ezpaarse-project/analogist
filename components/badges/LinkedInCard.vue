@@ -31,7 +31,7 @@
                 <v-container>
                   <v-text-field readonly :value="badge.name" :label="$t('badges.certificationName')"></v-text-field>
                   <v-text-field readonly value="AnalogIST" :label="$t('badges.certificationAuthority')"></v-text-field>
-                  <v-text-field readonly :value="badge.licence" :label="$t('badges.licenceNumber')"></v-text-field>
+                  <v-text-field readonly :value="badge.licence" :label="$t('badges.licenseNumber')"></v-text-field>
                   <v-text-field readonly :value="issued_on" :label="$t('badges.timeRangeStart')"></v-text-field>
                   <span v-if="badge.expires_on">
                     <v-text-field readonly :value="expires_on" :label="$t('badges.timeRangeEnd')"></v-text-field>
