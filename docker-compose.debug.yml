@@ -49,6 +49,7 @@ services:
       - BADGE_MONGO_DB
       - BADGE_LOGENTRY_CLIENT=ezpaarse-badge
       - BADGE_LOGENTRY_ISSUER=AnalogIST
+      - BADGE_AUTHORITY=ANG
     volumes:
       - ./ssl:/usr/src/app/app/ssl
     ports:

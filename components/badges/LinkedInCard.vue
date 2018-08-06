@@ -60,15 +60,15 @@ export default {
   props: ['badge', 'userId'],
   data () {
     return {
-      activeTab: 'tab-share',
+      activeTab: 'tab-share'
     }
   },
   computed: {
     issued_on () {
-      return  moment.unix(this.badge.issued_on).format(this.$i18n.locale === 'fr' ? 'm / YYYY' : 'YYYY / m')
+      return moment.unix(this.badge.issued_on).format(this.$i18n.locale === 'fr' ? 'm / YYYY' : 'YYYY / m')
     },
     expires_on () {
-      return  moment.unix(this.badge.expires_on).format(this.$i18n.locale === 'fr' ? 'm / YYYY' : 'YYYY / m')
+      return moment.unix(this.badge.expires_on).format(this.$i18n.locale === 'fr' ? 'm / YYYY' : 'YYYY / m')
     },
     validationUrl () {
       return `http://${location.host}/api/badges/view/${this.userId}/${this.badge.id}/${this.$i18n.locale}&title=${this.$i18n.locale === 'fr' ? this.badge.name : this.badge.alt_language[this.$i18n.locale].name}&summary=AnalogIST%20${this.$i18n.locale === 'fr' ? this.badge.name : this.badge.alt_language[this.$i18n.locale].name}`

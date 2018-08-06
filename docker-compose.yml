@@ -51,6 +51,7 @@ services:
       - BADGE_MONGO_DB
       - BADGE_LOGENTRY_CLIENT
       - BADGE_LOGENTRY_ISSUER
+      - BADGE_AUTHORITY
     volumes:
       - ./ssl:/usr/src/app/app/ssl
     links:
