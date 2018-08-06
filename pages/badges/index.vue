@@ -6,15 +6,18 @@
           {{ $t('badges.title') }} <v-chip color="grey lighten-2"><strong>{{badgesOwned}}</strong> / {{badges.length}}</v-chip>
         </v-toolbar-title>
         <v-spacer></v-spacer>
-        <a href="https://blog.ezpaarse.org/2018/06/communication-les-badges-ezpaarse/" target="_blank">
-          <v-icon>mdi-help-circle</v-icon>
-        </a>
+        <v-tooltip bottom>
+          <a slot="activator" href="https://blog.ezpaarse.org/2018/06/communication-les-badges-ezpaarse/" target="_blank">
+            <v-icon>mdi-help-circle</v-icon>
+          </a>
+          <span>Informations</span>
+        </v-tooltip>
       </v-toolbar>
       
       <v-card-text>
         <v-container fluid grid-list-md>
           <v-layout row wrap justify-center>
-            <v-flex xs12 sm2 v-if="badges && ping" v-for="badge in badges" :key="badge.id" @click.stop="currentBadge = badge" :class="{ 'notPossessed' : !badge.issued_on }">
+            <v-flex xs12 sm2 v-if="badges && ping" v-for="badge in badges" :key="badge.id" @click="currentBadge = badge; linkedInModal = false" :class="{ 'notPossessed' : !badge.issued_on }">
               <img class="mx-auto badgeImage" :src="badge.image" width="60%">
               <h4 class="badgeName" v-if="$i18n.locale === 'fr'">{{ badge.name }}</h4>
               <h4 class="badgeName" v-else>{{ badge.alt_language[$i18n.locale].name }}</h4>
@@ -36,10 +39,13 @@
               </v-card>
             </v-flex>
 
-            <v-dialog v-if="currentBadge" v-model="currentBadge" max-width="600px">
-              <badge-card :badge="currentBadge" :userId="user.id" @closeCard="closeCard"></badge-card>
+            <v-dialog v-if="currentBadge && !linkedInModal" v-model="currentBadge" max-width="600px">
+              <badge-card :badge="currentBadge" :userId="user.id" @closeCard="closeCard" @linkedIn="linkedIn"></badge-card>
             </v-dialog>
-            
+          
+            <v-dialog v-if="linkedInModal && currentBadge" v-model="currentBadge" max-width="600px">
+              <linked-in-card :badge="currentBadge" :userId="user.id" @closeLinkedInCard="closeLinkedInCard"></linked-in-card>
+            </v-dialog>
           </v-layout>
         </v-container>
       </v-card-text>
@@ -48,13 +54,15 @@
 </template>
 
 <script>
-import BadgeCard from '~/components/BadgeCard'
+import BadgeCard from '~/components/badges/BadgeCard'
+import LinkedInCard from '~/components/badges/LinkedInCard'
 
 export default {
   name: 'badges',
   transition: 'slide-x-transition',
   components: {
-    BadgeCard
+    BadgeCard,
+    LinkedInCard
   },
   head () {
     return {
@@ -64,7 +72,8 @@ export default {
   data () {
     return {
       modal: false,
-      currentBadge: null
+      currentBadge: null,
+      linkedInModal: false
     }
   },
   async fetch ({ store, redirect, app }) {
@@ -97,6 +106,14 @@ export default {
   },
   methods: {
     closeCard () {
+      this.currentBadge = null
+      this.linkedInModal = false
+    },
+    linkedIn () {
+      this.linkedInModal = true
+    },
+    closeLinkedInCard () {
+      this.linkedInModal = false
       this.currentBadge = null
     }
   }

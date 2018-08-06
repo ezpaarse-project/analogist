@@ -57,24 +57,28 @@
           </v-list-tile>
           <v-list-tile>
             <v-list-tile-content>
-              <a :href="`https://www.linkedin.com/shareArticle?mini=true&url=${viewUrl}&source=AnalogIST`" target="_blank">
+              <a @click="linkedIn">
                 <v-icon>mdi-linkedin-box</v-icon> Linkedin
               </a>
             </v-list-tile-content>
           </v-list-tile>
           <v-list-tile>
             <v-list-tile-content>
-              <a>
-                <v-icon>mdi-code-tags</v-icon> {{ $t('badges.embed') }}
-              </a>
+              <v-tooltip bottom>
+                <a slot="activator" @click="copyEmbedObject">
+                  <v-icon>mdi-code-tags</v-icon> {{ $t('badges.embed') }}
+                </a>
+                <span>{{ $t('ezLogger.copyToClipboard') }}</span>
+              </v-tooltip>
             </v-list-tile-content>
           </v-list-tile>
         </v-list>
       </v-menu>
+      <v-text-field id="embed-input" class="embedInput" flat readonly solo single-line full-width hide-details :value="embedObject"></v-text-field>
 
       <v-spacer></v-spacer>
       
-      <v-btn color="red" flat @click.stop="closeCard">{{ $t('ezLogger.close') }}</v-btn>
+      <v-btn color="red" flat @click="closeCard">{{ $t('ezLogger.close') }}</v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -90,11 +94,26 @@ export default {
     },
     viewUrl () {
       return `http://${location.host}/api/badges/view/${this.userId}/${this.badge.id}/${this.$i18n.locale}&title=${this.$i18n.locale === 'fr' ? this.badge.name : this.badge.alt_language[this.$i18n.locale].name}&summary=AnalogIST%20${this.$i18n.locale === 'fr' ? this.badge.name : this.badge.alt_language[this.$i18n.locale].name}`
+    },
+    embedObject () {
+      return `<object data="http://${location.host}/api/badges/embed/${this.userId}/${this.badge.id}/${this.$i18n.locale}&title=${this.$i18n.locale === 'fr' ? this.badge.name : this.badge.alt_language[this.$i18n.locale].name}&summary=AnalogIST%20${this.$i18n.locale === 'fr' ? this.badge.name : this.badge.alt_language[this.$i18n.locale].name}" width="200px" height="300px"></object>`
     }
   },
   methods: {
     closeCard () {
       this.$emit('closeCard')
+    },
+    copyEmbedObject () {
+      try {
+        document.getElementById('embed-input').select()
+        document.execCommand('copy')
+      } catch (e) {
+        return this.$store.dispatch('snacks/error', 'ezLogger.urlCopyFailed')
+      }
+      this.$store.dispatch('snacks/success', 'badges.embedCopySuccess')
+    },
+    linkedIn () {
+      this.$emit('linkedIn')
     }
   }
 }
@@ -111,5 +130,11 @@ export default {
 }
 .badge p {
   text-align: justify
+}
+.embedInput {
+  opacity: 0; 
+  user-select: none; 
+  cursor: default; 
+  pointer-events: none;
 }
 </style>
