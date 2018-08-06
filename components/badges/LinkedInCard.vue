@@ -37,7 +37,7 @@
                     <v-text-field readonly :value="expires_on" :label="$t('badges.timeRangeEnd')"></v-text-field>
                   </span>
                   <span v-else>{{ $t('badges.thisCertificationDoesNotExpire') }}</span>
-                  <v-text-field readonly :value="validationUrl" :label="$t('badges.validationUrl')" class="mt-4"></v-text-field>
+                  <v-text-field readonly :value="validationUrl" :label="$t('badges.certificationURL')" class="mt-4"></v-text-field>
                 </v-container>
               </v-form>
             </div>
