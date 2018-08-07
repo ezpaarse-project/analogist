@@ -156,6 +156,7 @@
     "timeRangeEnd": "Time range (to)",
     "thisCertificationDoesNotExpire": "Mark : This certification does not expire",
     "certificationURL": "Validation url",
-    "copyPast": "Copy and paste the information into the corresponding fields."
+    "copyPast": "Copy and paste the information into the corresponding fields.",
+    "emitted": "You have obtained a badge"
   }
 }

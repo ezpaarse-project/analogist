@@ -435,6 +435,13 @@ export default {
         this.$store.dispatch('snacks/error', 'analyses.saveFailed')
       }
     }
+  },
+  mounted() {
+    this.$socket.emit('ON_ANALYSIS_EDITION', { userId : this.user.id })
+    
+    this.$socket.on('BADGE_EMITTED', (data) => {
+      if (data.emitted) this.$store.dispatch('snacks/success', 'badges.emitted')
+    })
   }
 }
 </script>

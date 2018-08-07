@@ -36,7 +36,10 @@
     "nodemailer": "^4.6.7",
     "nuxt": "^1.4.1",
     "request": "^2.87.0",
+    "socket.io": "^2.1.1",
+    "socket.io-client": "^2.1.1",
     "vue-i18n": "^8.0.0",
+    "vue-socket.io": "^2.1.1-b",
     "vuedraggable": "^2.16.0",
     "vuetify": "^1.1.7"
   },
