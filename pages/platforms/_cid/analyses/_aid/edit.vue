@@ -436,9 +436,9 @@ export default {
       }
     }
   },
-  mounted() {
-    this.$socket.emit('ON_ANALYSIS_EDITION', { userId : this.user.id })
-    
+  mounted () {
+    this.$socket.emit('ON_ANALYSIS_EDITION', { userId: this.user.id })
+
     this.$socket.on('BADGE_EMITTED', (data) => {
       if (data.emitted) this.$store.dispatch('snacks/success', 'badges.emitted')
     })

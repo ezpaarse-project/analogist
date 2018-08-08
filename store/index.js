@@ -4,12 +4,14 @@ import api from './api'
 import ezlogger from './ezlogger'
 import badges from './badges'
 import snacks from './snacks'
+import socket from './socket'
 
 const store = () => new Vuex.Store({
   modules: {
     ezlogger,
     badges,
-    snacks
+    snacks,
+    socket
   },
   state: {
     user: null,
