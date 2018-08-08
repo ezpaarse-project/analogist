@@ -71,7 +71,7 @@ export default {
       return moment.unix(this.badge.expires_on).format(this.$i18n.locale === 'fr' ? 'M / YYYY' : 'YYYY / M')
     },
     validationUrl () {
-      return `http://${location.host}/api/badges/view/${this.userId}/${this.badge.id}/${this.$i18n.locale}&title=${this.$i18n.locale === 'fr' ? this.badge.name : this.badge.alt_language[this.$i18n.locale].name}&summary=AnalogIST%20${this.$i18n.locale === 'fr' ? this.badge.name : this.badge.alt_language[this.$i18n.locale].name}`
+      return `http://${location.host}/api/badges/view/${this.userId}/${this.badge.id}/${this.$i18n.locale}&title=${this.$i18n.locale === 'fr' ? this.badge.name : this.badge.alt_language[this.$i18n.locale].name}`
     }
   },
   methods: {
