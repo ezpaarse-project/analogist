@@ -2,5 +2,5 @@ import Vue from 'vue'
 import VueSocketIO from 'vue-socket.io'
 
 export default ({ app }) => {
-  Vue.use(VueSocketIO, `:3000`, app.store['socket'])
+  Vue.use(VueSocketIO, window.location.host, app.store['socket'])
 }
