@@ -41,6 +41,15 @@ export default {
         // eslint-disable-next-line
         console.log(response)
       })
+    },
+    emit ({ commit }, data) {
+      return api.emit(data).then((res) => {
+        // eslint-disable-next-line
+        console.log(res)
+      }).catch((response) => {
+        // eslint-disable-next-line
+        console.log(response)
+      })
     }
   }
 }

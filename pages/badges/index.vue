@@ -1,68 +1,54 @@
 <template>
   <section>
     <v-card>
-      <v-toolbar class="secondary" dense dark card>
-        <v-toolbar-title>
+      <v-tabs v-model="activeTab" grow dark>
+        <v-tab to="#tab-badges" class="vTitle">
           {{ $t('badges.title') }} <v-chip color="grey lighten-2"><strong>{{badgesOwned}}</strong> / {{badges.length}}</v-chip>
-        </v-toolbar-title>
-        <v-spacer></v-spacer>
-        <v-tooltip bottom>
+          <v-spacer></v-spacer>
+        </v-tab>
+        <v-tab to="#tab-issue" class="vTitle" v-if="user.role">
+          {{ $t('badges.emitBadge') }}
+          <v-spacer></v-spacer>
+        </v-tab>
+      </v-tabs>
+      
+      <v-card-text>
+        <v-tabs-items v-model="activeTab">
+          <v-tab-item id="tab-badges">
+            <badges-view :badges="badges" :ping="ping" :user="user"></badges-view>
+          </v-tab-item>
+
+          <v-tab-item id="tab-issue">
+            <badge-issue :user="user" :trelloBoardMembers="trelloBoardMembers"></badge-issue>
+          </v-tab-item>
+        </v-tabs-items>
+
+        <a href="https://openbadgefactory.com/" target="blank">
+          <img src="@/static/obf_logo.jpeg" alt="OpenBadgeFactory" :class="{ 'error': !ping }" class="obfactory" align="right">
+        </a>
+              
+        <v-tooltip bottom v-if="user.role">
           <a slot="activator" href="https://blog.ezpaarse.org/2018/06/communication-les-badges-ezpaarse/" target="_blank">
             <v-icon>mdi-help-circle</v-icon>
           </a>
           <span>Informations</span>
         </v-tooltip>
-      </v-toolbar>
-      
-      <v-card-text>
-        <v-container fluid grid-list-md>
-          <v-layout row wrap justify-center>
-            <v-flex xs12 sm2 v-if="badges && ping" v-for="badge in badges" :key="badge.id" @click="currentBadge = badge; linkedInModal = false" :class="{ 'notPossessed' : !badge.issued_on }">
-              <img class="mx-auto badgeImage" :src="badge.image" width="60%">
-              <h4 class="badgeName" v-if="$i18n.locale === 'fr'">{{ badge.name }}</h4>
-              <h4 class="badgeName" v-else>{{ badge.alt_language[$i18n.locale].name }}</h4>
-            </v-flex>
 
-            <v-flex xs12 sm12 v-if="!ping">
-              <v-card class="red white--text">
-                <v-card-text>
-                  {{ $t('badges.error') }}
-                </v-card-text>
-              </v-card>
-            </v-flex>
-
-            <v-flex xs12 sm12>
-              <v-card>
-                <a href="https://openbadgefactory.com/" target="blank">
-                  <img src="@/static/obf_logo.jpeg" alt="OpenBadgeFactory" :class="{ 'error': !ping }" class="obfactory" align="right">
-                </a>
-              </v-card>
-            </v-flex>
-
-            <v-dialog v-if="currentBadge && !linkedInModal" v-model="currentBadge" max-width="600px">
-              <badge-card :badge="currentBadge" :userId="user.id" @closeCard="closeCard" @linkedIn="linkedIn"></badge-card>
-            </v-dialog>
-          
-            <v-dialog v-if="linkedInModal && currentBadge" v-model="currentBadge" max-width="600px">
-              <linked-in-card :badge="currentBadge" :userId="user.id" @closeLinkedInCard="closeLinkedInCard"></linked-in-card>
-            </v-dialog>
-          </v-layout>
-        </v-container>
       </v-card-text>
     </v-card>
   </section>
 </template>
 
 <script>
-import BadgeCard from '~/components/badges/BadgeCard'
-import LinkedInCard from '~/components/badges/LinkedInCard'
+import BadgesView from '~/components/badges/BadgesView'
+import BadgeIssue from '~/components/badges/BadgeIssue'
 
 export default {
   name: 'badges',
   transition: 'slide-x-transition',
   components: {
-    BadgeCard,
-    LinkedInCard
+    BadgesView,
+    BadgeIssue
   },
   head () {
     return {
@@ -71,9 +57,7 @@ export default {
   },
   data () {
     return {
-      modal: false,
-      currentBadge: null,
-      linkedInModal: false
+      activeTab: 'tab-badges'
     }
   },
   async fetch ({ store, redirect, app }) {
@@ -85,6 +69,7 @@ export default {
 
     await store.dispatch('badges/getPing')
     await store.dispatch('badges/getBadges', { id: store.state.user.id, locale: app.i18n.locale })
+    await store.dispatch('FETCH_TRELLO_BOARD_MEMBERS')
   },
   computed: {
     badges () {
@@ -102,33 +87,25 @@ export default {
     },
     user () {
       return this.$store.state.user
+    },
+    trelloBoardMembers () {
+      return this.$store.state.trelloBoardMembers
     }
   },
-  methods: {
-    closeCard () {
-      this.currentBadge = null
-      this.linkedInModal = false
-    },
-    linkedIn () {
-      this.linkedInModal = true
-    },
-    closeLinkedInCard () {
-      this.linkedInModal = false
-      this.currentBadge = null
-    }
+  mounted () {
+    this.$socket.on('BADGE_EMITTED', (data) => {
+      if (data.emitted) this.$store.dispatch('snacks/success', 'badges.emitted')
+    })
   }
 }
 </script>
 
 <style scoped>
-.badgeImage {
-  display: block; 
-  margin: auto;
-  cursor: pointer;
-}
-.badgeName {
-  text-align: center;
-  cursor: pointer;
+.vTitle {
+  text-transform: none;
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: .02em;
 }
 img.obfactory {
   width: 220px;
@@ -136,14 +113,5 @@ img.obfactory {
 img.error {
   filter: grayscale(100%);
   opacity: 0.6;
-}
-.notPossessed {
-  filter: grayscale(100%);
-  opacity: 0.6;
-  transition: all 0.5s ease-in-out;
-}
-.notPossessed:hover {
-  filter: grayscale(0%);
-  opacity: 1;
 }
 </style>

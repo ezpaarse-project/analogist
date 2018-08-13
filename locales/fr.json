@@ -157,6 +157,7 @@
     "thisCertificationDoesNotExpire": "Cocher : Cette certification n’expire pas",
     "certificationURL": "URL de validation",
     "copyPast": "Copier puis coller les informations dans les champs correspondant.",
-    "emitted": "Vous venez d'obtenir un badge"
+    "emitted": "Vous venez d'obtenir un badge",
+    "emitBadge": "Emettre un badge"
   }
 }

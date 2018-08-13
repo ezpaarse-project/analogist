@@ -157,6 +157,7 @@
     "thisCertificationDoesNotExpire": "Mark : This certification does not expire",
     "certificationURL": "Validation url",
     "copyPast": "Copy and paste the information into the corresponding fields.",
-    "emitted": "You have obtained a badge"
+    "emitted": "You have obtained a badge",
+    "emitBadge": "Emit a badge"
   }
 }

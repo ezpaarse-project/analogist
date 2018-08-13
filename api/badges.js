@@ -3,6 +3,7 @@
 const config = require('config')
 const router = require('express').Router()
 const request  = require('request')
+const badges = require('../lib/badges')
 
 const url = `http://${config.badges.host}:${config.badges.port}`
 
@@ -28,6 +29,10 @@ router.get('/embed/:userId/:badgeId/:language', (req, res) => {
       'angHost': `${req.protocol}://${req.get('x-forwarded-host') || req.connection.remoteAddress}`
     }
   }).pipe(res)
+})
+
+router.post('/emit', (req, res) => {
+  badges.emit(req.body.event, '', req.body.profile)
 })
 
 module.exports = router

@@ -51,4 +51,8 @@ router.get('/lists', (req, res, next) => {
   trello.getLists().pipe(res)
 })
 
+router.get('/members', (req, res) => {
+  trello.getBoardMemberships(req.session.oauth.token).pipe(res)
+})
+
 module.exports = router
