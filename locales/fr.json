@@ -160,6 +160,7 @@
     "emitted": "Vous venez d'obtenir un badge",
     "emitBadge": "Emettre un badge",
     "issued": "Vous venez d'emettre un badge",
-    "owned": "La personne possède déjà ce badge"
+    "owned": "La personne possède déjà ce badge",
+    "users": "Utilisateur(s)"
   }
 }

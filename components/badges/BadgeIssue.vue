@@ -3,7 +3,7 @@
     <v-layout row wrap>
      <v-flex xs12 sm6>
         <v-select
-          label="Utilisateur(s)"
+          :label="$t('badges.users')"
           :items="trelloBoardMembers"
           v-model="currentBoardMember"
           item-text="member.fullName"
@@ -21,7 +21,7 @@
 
       <v-flex xs12 sm6>
         <v-select
-          label="Badge (s)"
+          label="Badge(s)"
           :items="badges"
           v-model="currentBadge"
           item-text="name"
@@ -47,7 +47,7 @@
       </v-flex>
 
       <v-flex xs12 sm12>
-        <v-btn large block color="success" @click="emit">Emettre le badge</v-btn>
+        <v-btn large block color="success" @click="emit">{{$t('badges.emitBadge')}}</v-btn>
       </v-flex>
     </v-layout>
   </v-container>
@@ -66,6 +66,10 @@ export default {
   methods: {
     emit () {
       this.$socket.emit('ADD_TO_ROOM', { userId: this.currentBoardMember.idMember })
+
+      this.email = null
+      this.currentBadge = null
+      this.currentBoardMember = null
 
       this.$store.dispatch('badges/emit', {
         event: {
