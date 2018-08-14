@@ -50,49 +50,17 @@
         <v-btn large block color="success" @click="emit">Emettre le badge</v-btn>
       </v-flex>
     </v-layout>
-    <pre>{{currentBoardMember}}</pre>
-    <pre>{{currentBadge}}</pre>
   </v-container>
 </template>
 
 <script>
 export default {
-  props: ['user', 'trelloBoardMembers'],
+  props: ['user', 'trelloBoardMembers', 'badges'],
   data () {
     return {
       currentBoardMember: null,
       currentBadge: null,
-      email: null,
-      badges: [
-        {
-          name: 'Analyse bronze',
-          badgeId: 'PB0V36aFMQaVX'
-        },
-        {
-          name: 'Analyse argent',
-          badgeId: 'PB0VFWaFMQaW4'
-        },
-        {
-          name: 'Analyse or',
-          badgeId: 'PB0V36aFMQaVX'
-        },
-        {
-          name: 'Contributeur bronze',
-          badgeId: ''
-        },
-        {
-          name: 'Contributeur argent',
-          badgeId: ''
-        },
-        {
-          name: 'Contributeur or',
-          badgeId: ''
-        },
-        {
-          name: 'ezTeam',
-          badgeId: ''
-        }
-      ]
+      email: null
     }
   },
   methods: {
@@ -101,7 +69,7 @@ export default {
 
       this.$store.dispatch('badges/emit', {
         event: {
-          badgeId: this.currentBadge.badgeId,
+          badgeId: this.currentBadge.id,
           name: this.currentBadge.name
         },
         profile: {

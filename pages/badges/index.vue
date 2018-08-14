@@ -19,7 +19,7 @@
           </v-tab-item>
 
           <v-tab-item id="tab-issue">
-            <badge-issue :user="user" :trelloBoardMembers="trelloBoardMembers"></badge-issue>
+            <badge-issue :user="user" :trelloBoardMembers="trelloBoardMembers" :badges="badges"></badge-issue>
           </v-tab-item>
         </v-tabs-items>
 
