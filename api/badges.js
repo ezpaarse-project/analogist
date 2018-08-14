@@ -32,7 +32,7 @@ router.get('/embed/:userId/:badgeId/:language', (req, res) => {
 })
 
 router.post('/emit', (req, res) => {
-  badges.emit(req.body.event, '', req.body.profile)
+  badges.emit(req.body.event, req.body.profile, false)
 })
 
 module.exports = router

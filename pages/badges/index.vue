@@ -94,7 +94,11 @@ export default {
   },
   mounted () {
     this.$socket.on('BADGE_EMITTED', (data) => {
-      if (data.emitted) this.$store.dispatch('snacks/success', 'badges.emitted')
+      if (data.emitted) this.$store.dispatch('snacks/success', 'badges.issued')
+    })
+    
+    this.$socket.on('BADGE_ALREADY_OWNED', () => {
+      this.$store.dispatch('snacks/info', 'badges.owned')
     })
   }
 }

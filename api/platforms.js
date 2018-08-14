@@ -158,8 +158,8 @@ router.put('/:cid/analyses/:aid', mw.updateHistory, (req, res, next) => {
             // eslint-disable-next-line
             if (err) console.error(err)
 
-            badges.emit(config.badges.analysesBronze, req.params.cid, req.session.profile)
-            badges.emit(config.badges.analysesSilver, req.params.cid, req.session.profile)
+            badges.emit(config.badges.analysesBronze, req.session.profile, true)
+            badges.emit(config.badges.analysesSilver, req.session.profile, true)
           }
         )
       }

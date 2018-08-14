@@ -158,6 +158,8 @@
     "certificationURL": "URL de validation",
     "copyPast": "Copier puis coller les informations dans les champs correspondant.",
     "emitted": "Vous venez d'obtenir un badge",
-    "emitBadge": "Emettre un badge"
+    "emitBadge": "Emettre un badge",
+    "issued": "Vous venez d'emettre un badge",
+    "owned": "La personne possède déjà ce badge"
   }
 }
