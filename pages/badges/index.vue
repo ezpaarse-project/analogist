@@ -1,55 +1,54 @@
 <template>
   <section>
     <v-card>
-      <v-toolbar class="secondary" dense dark card>
-        <v-toolbar-title>
-          {{ $t('badges.title') }}
-        </v-toolbar-title>
-      </v-toolbar>
-
+      <v-tabs v-model="activeTab" grow dark>
+        <v-tab to="#tab-badges" class="vTitle">
+          {{ $t('badges.title') }} <v-chip color="grey lighten-2"><strong>{{badgesOwned}}</strong> / {{badges.length}}</v-chip>
+          <v-spacer></v-spacer>
+        </v-tab>
+        <v-tab to="#tab-issue" class="vTitle" v-if="user.role">
+          {{ $t('badges.emitBadge') }}
+          <v-spacer></v-spacer>
+        </v-tab>
+      </v-tabs>
+      
       <v-card-text>
-        <v-container fluid grid-list-md>
-          <v-layout row wrap justify-center>
-            <v-flex xs12 sm2 v-if="badges && ping" v-for="badge in badges" :key="badge.id" @click.stop="currentBadge = badge" :class="{ 'notPossessed' : !badge.issued_on }">
-              <img class="mx-auto badgeImage" :src="badge.image" width="60%">
-              <h4 class="badgeName">{{ badge.name }}</h4>
-            </v-flex>
+        <v-tabs-items v-model="activeTab">
+          <v-tab-item id="tab-badges">
+            <badges-view :badges="badges" :ping="ping" :user="user"></badges-view>
+          </v-tab-item>
 
-            <v-flex xs12 sm12 v-if="!ping">
-              <v-card class="red white--text">
-                <v-card-text>
-                  {{ $t('badges.error') }}
-                </v-card-text>
-              </v-card>
-            </v-flex>
+          <v-tab-item id="tab-issue">
+            <badge-issue :user="user" :trelloBoardMembers="trelloBoardMembers" :badges="badges"></badge-issue>
+          </v-tab-item>
+        </v-tabs-items>
 
-            <v-flex xs12 sm12>
-              <v-card>
-                <a href="https://openbadgefactory.com/" target="blank">
-                  <img src="@/static/obf_logo.jpeg" alt="OpenBadgeFactory" :class="{ 'error': !ping }" class="obfactory" align="right">
-                </a>
-              </v-card>
-            </v-flex>
+        <a href="https://openbadgefactory.com/" target="blank">
+          <img src="@/static/obf_logo.jpeg" alt="OpenBadgeFactory" :class="{ 'error': !ping }" class="obfactory" align="right">
+        </a>
+              
+        <v-tooltip bottom v-if="user.role">
+          <v-btn flat icon="true" slot="activator" href="https://blog.ezpaarse.org/2018/06/communication-les-badges-ezpaarse/" target="_blank">
+            <v-icon>mdi-help-circle</v-icon>
+          </v-btn>
+          <span>Informations</span>
+        </v-tooltip>
 
-            <v-dialog v-if="currentBadge" v-model="currentBadge" max-width="600px">
-              <badge-card :badge="currentBadge" @closeCard="closeCard"></badge-card>
-            </v-dialog>
-            
-          </v-layout>
-        </v-container>
       </v-card-text>
     </v-card>
   </section>
 </template>
 
 <script>
-import BadgeCard from '~/components/BadgeCard'
+import BadgesView from '~/components/badges/BadgesView'
+import BadgeIssue from '~/components/badges/BadgeIssue'
 
 export default {
   name: 'badges',
   transition: 'slide-x-transition',
   components: {
-    BadgeCard
+    BadgesView,
+    BadgeIssue
   },
   head () {
     return {
@@ -58,8 +57,7 @@ export default {
   },
   data () {
     return {
-      modal: false,
-      currentBadge: null
+      activeTab: 'tab-badges'
     }
   },
   async fetch ({ store, redirect, app }) {
@@ -71,35 +69,51 @@ export default {
 
     await store.dispatch('badges/getPing')
     await store.dispatch('badges/getBadges', { id: store.state.user.id, locale: app.i18n.locale })
+    await store.dispatch('FETCH_TRELLO_BOARD_MEMBERS')
   },
   computed: {
     badges () {
       return this.$store.state.badges.badges
+    },
+    badgesOwned () {
+      let badgesOwend = 0
+      this.$store.state.badges.badges.forEach(badge => {
+        if (badge.issued_on) badgesOwend += 1
+      })
+      return badgesOwend
     },
     ping () {
       return this.$store.state.badges.ping
     },
     user () {
       return this.$store.state.user
+    },
+    trelloBoardMembers () {
+      return this.$store.state.trelloBoardMembers
     }
   },
-  methods: {
-    closeCard () {
-      this.currentBadge = null
-    }
+  mounted () {
+    this.$socket.on('BADGE_EMITTED', (data) => {
+      if (data.emitted) return this.$store.dispatch('snacks/success', 'badges.emitted')
+    })
+
+    this.$socket.on('BADGE_EMITTED_MANUALLY', (data) => {
+      if (data.emitted) return this.$store.dispatch('snacks/success', 'badges.issued')
+    })
+
+    this.$socket.on('BADGE_ALREADY_OWNED', () => {
+      this.$store.dispatch('snacks/info', 'badges.owned')
+    })
   }
 }
 </script>
 
 <style scoped>
-.badgeImage {
-  display: block; 
-  margin: auto;
-  cursor: pointer;
-}
-.badgeName {
-  text-align: center;
-  cursor: pointer;
+.vTitle {
+  text-transform: none;
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: .02em;
 }
 img.obfactory {
   width: 220px;
@@ -107,14 +121,5 @@ img.obfactory {
 img.error {
   filter: grayscale(100%);
   opacity: 0.6;
-}
-.notPossessed {
-  filter: grayscale(100%);
-  opacity: 0.6;
-  transition: all 0.5s ease-in-out;
-}
-.notPossessed:hover {
-  filter: grayscale(0%);
-  opacity: 1;
 }
 </style>

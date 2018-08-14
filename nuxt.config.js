@@ -27,7 +27,8 @@ module.exports = {
     { src: '~/plugins/ezlogger.js', ssr: false },
     { src: '~/plugins/storeInit.js', ssr: false },
     '~/plugins/vuetify.js',
-    '~/plugins/i18n.js'
+    '~/plugins/i18n.js',
+    '~/plugins/socket.js'
   ],
   /*
   ** Global CSS
@@ -47,7 +48,8 @@ module.exports = {
       'vue-i18n',
       'vuedraggable',
       'moment',
-      'file-saver'
+      'file-saver',
+      '~/node_modules/vue-socket.io'
     ]
   }
 }

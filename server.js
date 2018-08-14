@@ -38,6 +38,9 @@ function startApp () {
       : `port ${addr.port}`
     console.log(`Listening on ${bind}`)
   }
+
+  const io = require('./lib/socket').connect(server)
+  io.on()
 }
 
 /**

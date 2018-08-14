@@ -154,19 +154,23 @@ function extendCard (card, platform) {
   return card
 }
 
+api.getBoardMembers = function () {
+  return axios.get(`/api/trello/members`).then(res => res.data)
+}
+
 /**
  * Badges
  */
-api.getBadges = function (userId) {
-  return axios.get(`/api/badges/`).then(res => res.data)
+api.getBadges = function () {
+  return axios.get(`/api/badges`).then(res => res.data)
 }
 
-api.getPing = function (userId) {
+api.getPing = function () {
   return axios.get(`/api/badges/ping`).then(res => res.data)
 }
 
-api.getMetrics = function (userId) {
-  return axios.get(`/api/badges/metrics`).then(res => res.data)
+api.emit = function (data) {
+  return axios.post(`/api/badges/emit`, data).then(res => res.data)
 }
 
 export default api

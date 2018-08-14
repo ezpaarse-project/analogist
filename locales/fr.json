@@ -146,6 +146,27 @@
     "issuedOn": "Émis le",
     "loadingBadges": "Chargement de vos badges ...",
     "issues": "%{issues} badges ont déjà été attribués.",
-    "error": "Une erreur est survenue, nous ne pouvons pas récupérer vos badges pour le moment."
+    "error": "Une erreur est survenue, nous ne pouvons pas récupérer vos badges pour le moment.",
+    "criteria": "Critères",
+    "embed": "Intégrer",
+    "embedCopySuccess": "Code HTML copié",
+    "shareOnLinkedIn": "Partager sur LinkedIn",
+    "addCertification": "Mettez en avant votre expérience sur AnalogIST.",
+    "shareInYourNetwork": "Partagez le badge dans votre réseau comme une mise à jour.",
+    "share": "Partager",
+    "shareCertification": "Ajouter une certification",
+    "certificationName": "Nom de la certification",
+    "certificationAuthority": "Autorité de certification",
+    "licenseNumber": "Numéro de licence",
+    "timeRangeStart": "Période de temps (de)",
+    "timeRangeEnd": "Période de temps (à)",
+    "thisCertificationDoesNotExpire": "Cocher : Cette certification n’expire pas",
+    "certificationURL": "URL de validation",
+    "copyPast": "Copier puis coller les informations dans les champs correspondant.",
+    "emitted": "Vous venez d'obtenir un badge",
+    "emitBadge": "Emettre un badge",
+    "issued": "Vous venez d'emettre un badge",
+    "owned": "La personne possède déjà ce badge",
+    "users": "Utilisateur(s)"
   }
 }

@@ -146,6 +146,27 @@
     "issuedOn": "Issued on",
     "loadingBadges": "Loading your badges ...",
     "issues": "%{issues} badges have already been awarded.",
-    "error": "An error occurred, we can't recover your badges for the moment."
+    "error": "An error occurred, we can't recover your badges for the moment.",
+    "criteria": "Criteria",
+    "embed": "Embed",
+    "embedCopySuccess": "HTML code has been copying",
+    "shareOnLinkedIn": "Share on LinkedIn",
+    "addCertification": "Highlight your experience on AnalogIST.",
+    "shareInYourNetwork": "Share the badge in your network as an update.",
+    "share": "Share",
+    "shareCertification": "Add certification",
+    "certificationName": "Certification name",
+    "certificationAuthority": "Certification authority",
+    "licenseNumber": "Licence number",
+    "timeRangeStart": "Time range (from)",
+    "timeRangeEnd": "Time range (to)",
+    "thisCertificationDoesNotExpire": "Mark : This certification does not expire",
+    "certificationURL": "Validation url",
+    "copyPast": "Copy and paste the information into the corresponding fields.",
+    "emitted": "You have obtained a badge",
+    "emitBadge": "Emit a badge",
+    "issued": "You have issued a badge",
+    "owned": "The person already has this badge",
+    "users": "User(s)"
   }
 }

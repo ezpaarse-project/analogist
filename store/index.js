@@ -4,12 +4,14 @@ import api from './api'
 import ezlogger from './ezlogger'
 import badges from './badges'
 import snacks from './snacks'
+import socket from './socket'
 
 const store = () => new Vuex.Store({
   modules: {
     ezlogger,
     badges,
-    snacks
+    snacks,
+    socket
   },
   state: {
     user: null,
@@ -25,6 +27,7 @@ const store = () => new Vuex.Store({
     searchPage: 1,
     drawer: true,
     lastVisitedAnalysis: null,
+    trelloBoardMembers: [],
     lastVisitedPlatform: null
   },
   actions: {
@@ -108,6 +111,9 @@ const store = () => new Vuex.Store({
     SET_VISITED_ANALYSIS ({ commit }, value) {
       commit('SET_VISITED_ANALYSIS', value)
     },
+    FETCH_TRELLO_BOARD_MEMBERS ({ commit }) {
+      return api.getBoardMembers().then(members => commit('SET_TRELLO_BOARD_MEMBERS', members))
+    },
     SET_VISITED_PLATFORM ({ commit }, value) {
       commit('SET_VISITED_PLATFORM', value)
     }
@@ -154,6 +160,9 @@ const store = () => new Vuex.Store({
     },
     SET_VISITED_ANALYSIS (state, analysisID) {
       Vue.set(state, 'lastVisitedAnalysis', analysisID)
+    },
+    SET_TRELLO_BOARD_MEMBERS (state, trelloBoardMembers) {
+      Vue.set(state, 'trelloBoardMembers', trelloBoardMembers)
     },
     SET_VISITED_PLATFORM (state, cardID) {
       Vue.set(state, 'lastVisitedPlatform', cardID)
