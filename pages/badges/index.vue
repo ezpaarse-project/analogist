@@ -28,9 +28,9 @@
         </a>
               
         <v-tooltip bottom v-if="user.role">
-          <a slot="activator" href="https://blog.ezpaarse.org/2018/06/communication-les-badges-ezpaarse/" target="_blank">
+          <v-btn flat icon="true" slot="activator" href="https://blog.ezpaarse.org/2018/06/communication-les-badges-ezpaarse/" target="_blank">
             <v-icon>mdi-help-circle</v-icon>
-          </a>
+          </v-btn>
           <span>Informations</span>
         </v-tooltip>
 
