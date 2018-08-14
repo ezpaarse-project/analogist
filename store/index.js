@@ -27,7 +27,8 @@ const store = () => new Vuex.Store({
     searchPage: 1,
     drawer: true,
     lastVisitedAnalysis: null,
-    trelloBoardMembers: []
+    trelloBoardMembers: [],
+    lastVisitedPlatform: null
   },
   actions: {
     FETCH_PROFILE ({ commit }) {
@@ -112,6 +113,9 @@ const store = () => new Vuex.Store({
     },
     FETCH_TRELLO_BOARD_MEMBERS ({ commit }) {
       return api.getBoardMembers().then(members => commit('SET_TRELLO_BOARD_MEMBERS', members))
+    },
+    SET_VISITED_PLATFORM ({ commit }, value) {
+      commit('SET_VISITED_PLATFORM', value)
     }
   },
   mutations: {
@@ -159,6 +163,9 @@ const store = () => new Vuex.Store({
     },
     SET_TRELLO_BOARD_MEMBERS (state, trelloBoardMembers) {
       Vue.set(state, 'trelloBoardMembers', trelloBoardMembers)
+    },
+    SET_VISITED_PLATFORM (state, cardID) {
+      Vue.set(state, 'lastVisitedPlatform', cardID)
     }
   }
 })

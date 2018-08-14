@@ -1,5 +1,9 @@
 <template>
   <section>
+    <v-btn v-if="lastVisitedPlatform" flat router exact :to="{ name: 'platforms-cid', params: { cid: lastVisitedPlatform } }">
+      <v-icon left>mdi-arrow-left</v-icon>{{ $t('ezLogger.backToPlatform') }}
+    </v-btn>
+
     <v-card>
       <v-toolbar class="secondary" dense dark card extended>
         <v-text-field
@@ -87,7 +91,7 @@
               </v-tooltip>
               <v-tooltip bottom v-if="req.statusCode">
                 <v-chip slot="activator" small label color="blue" text-color="white">{{ req.statusCode }}</v-chip>
-                <span>{{ $t('ezLogger.statusCode') }}</span>
+                <span>{{ $t('ezLogger.responseStatusCode') }}</span>
               </v-tooltip>
               <v-tooltip bottom v-if="req.ec && req.ec.rtype">
                 <v-chip slot="activator" small label color="green" text-color="white">{{ req.ec.rtype }}</v-chip>
@@ -147,6 +151,9 @@ export default {
     }
   },
   computed: {
+    lastVisitedPlatform () {
+      return this.$store.state.lastVisitedPlatform
+    },
     settings () {
       return this.$store.state.ezlogger.settings
     },

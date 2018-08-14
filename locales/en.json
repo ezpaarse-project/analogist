@@ -6,7 +6,8 @@
     "edit": "Edit",
     "delete": "Delete",
     "cancel": "Cancel",
-    "areYouSure": "Are you sure ?"
+    "areYouSure": "Are you sure ?",
+    "close": "Close"
   },
   "drawer": {
     "platforms": "Platforms",
@@ -20,8 +21,10 @@
   },
   "ezLogger": {
     "title": "ezPAARSE Logger",
+    "backToPlatform": "Back to the platform",
     "consultationEvent": "Consultation event",
     "requestDetails": "Request details",
+    "requestMethod": "Request method",
     "requestStatus": "Request status",
     "requestType": "Request type",
     "responseStatusCode": "Response status code",
@@ -38,7 +41,10 @@
     "close": "Close",
     "exportDesc": "Click below to export the traffic you captured as a standard log file. This file can be processed in ezPAARSE without any configuration.",
     "exportUseSearch": "Please note that the search field is taken into account.",
-    "captureLimitReached": "You reached the capture limit, the oldest requests will now be replaced by the new ones."
+    "captureLimitReached": "You reached the capture limit, the oldest requests will now be replaced by the new ones.",
+    "urlCopyFailed": "Copy failed",
+    "urlCopySuccess": "URL copied",
+    "copyToClipboard": "Copy to clipboard"
   },
   "ezLoggerSettings": {
     "instance": "ezPAARSE instance",
