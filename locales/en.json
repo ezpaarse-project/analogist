@@ -34,6 +34,7 @@
     "noResults": "No results",
     "settings": "Settings",
     "waitingForTraffic": "Waiting for traffic, let's browse the Internet !",
+    "getTheExtension": "Nothing shows up ? Download the <a href=\"{url}\" target=\"_blank\">ezPAARSE Logger</a> extension !",
     "analyze": "Analyze",
     "clearAll": "Clear all",
     "export": "Export",

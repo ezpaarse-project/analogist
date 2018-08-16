@@ -34,6 +34,7 @@
     "noData": "Pas de données",
     "noResults": "Aucun résultat",
     "waitingForTraffic": "En attente de trafic, il est temps de parcourir le web !",
+    "getTheExtension": "Rien ne s'affiche ? Téléchargez l'extension <a href=\"{url}\" target=\"_blank\">ezPAARSE Logger</a> !",
     "analyze": "Analyser",
     "clearAll": "Nettoyer tout",
     "export": "Exporter",

@@ -107,7 +107,8 @@
       </v-list>
 
       <v-card-text v-else class="text-xs-center">
-        {{ $t('ezLogger.waitingForTraffic') }}
+        <p>{{ $t('ezLogger.waitingForTraffic') }}</p>
+        <p class="muted" v-html="$t('ezLogger.getTheExtension', { url: extensionUrl })"></p>
       </v-card-text>
     </v-card>
 
@@ -147,7 +148,8 @@ export default {
   data () {
     return {
       processing: false,
-      showExport: false
+      showExport: false,
+      extensionUrl: 'https://github.com/ezpaarse-project/ezpaarse-logger-extension#installation'
     }
   },
   computed: {
@@ -284,3 +286,11 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+  p.muted {
+    color: grey;
+    font-size: 0.95em;
+  }
+</style>
+
