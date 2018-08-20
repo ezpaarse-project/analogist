@@ -20,7 +20,9 @@ router.delete('*', mw.authorize)
 /* GET rtype/mime/rid fields. */
 router.get('/fields.json', (req, res, next) => {
   const fieldsUrl = 'http://raw.githubusercontent.com/ezpaarse-project/ezpaarse-platforms/master/fields.json'
-  request.get(fieldsUrl).pipe(res)
+  request.get(fieldsUrl)
+    .on('response', response => response.pipe(res))
+    .on('error', next)
 })
 
 /* GET all platforms. */
@@ -55,12 +57,16 @@ router.post('/', (req, res, next) => {
   card.lastModified = new Date()
   card.idMembers = [req.session.profile.id]
 
-  trello.createCard(card, req.session.oauth.token).pipe(res)
+  trello.createCard(card, req.session.oauth.token)
+    .on('response', response => response.pipe(res))
+    .on('error', next)
 })
 
 /* DELETE a platform */
 router.delete('/:cid', (req, res, next) => {
-  trello.closeCard(req.params.cid, req.session.oauth.token).pipe(res)
+  trello.closeCard(req.params.cid, req.session.oauth.token)
+    .on('response', response => response.pipe(res))
+    .on('error', next)
 })
 
 /* GET the analyses of a platform. */

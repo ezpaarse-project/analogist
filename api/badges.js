@@ -7,28 +7,34 @@ const badges = require('../lib/badges')
 
 const url = `http://${config.badges.host}:${config.badges.port}`
 
-router.get('/', (req, res) => {
-  request.get(`${url}/badges?id=${req.session.profile.id}`).pipe(res)
+router.get('/', (req, res, next) => {
+  request.get(`${url}/badges?id=${req.session.profile.id}`)
+    .on('response', response => response.pipe(res))
+    .on('error', next)
 })
 
-router.get('/ping', (req, res) => {
-  request.get(`${url}/ping`).pipe(res)
+router.get('/ping', (req, res, next) => {
+  request.get(`${url}/ping`)
+    .on('response', response => response.pipe(res))
+    .on('error', next)
 })
 
-router.get('/view/:userId/:badgeId/:language', (req, res) => {
+router.get('/view/:userId/:badgeId/:language', (req, res, next) => {
   request.get(`${url}/view?u=${req.params.userId}&b=${req.params.badgeId}&l=${req.params.language}`, {
     headers: {
       'angHost': `${req.protocol}://${req.get('x-forwarded-host') || req.connection.remoteAddress}`
     }
-  }).pipe(res)
+  }).on('response', response => response.pipe(res))
+    .on('error', next)
 })
 
-router.get('/embed/:userId/:badgeId/:language', (req, res) => {
+router.get('/embed/:userId/:badgeId/:language', (req, res, next) => {
   request.get(`${url}/embed?u=${req.params.userId}&b=${req.params.badgeId}&l=${req.params.language}`, {
     headers: {
       'angHost': `${req.protocol}://${req.get('x-forwarded-host') || req.connection.remoteAddress}`
     }
-  }).pipe(res)
+  }).on('response', response => response.pipe(res))
+    .on('error', next)
 })
 
 router.post('/emit', (req, res) => {
