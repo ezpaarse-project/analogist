@@ -11,11 +11,30 @@ http://ang.couperin.org/
 
 ## Configuration
 
-### Trello interactions
-
 Before running anything, create a local config file `config/local.json` and provide the trello board to use and your API credentials. All defaults are visible in the the [default.json](https://github.com/ezpaarse-project/analogist/blob/master/config/default.json) file.
 
 You can also use **environment variables**, following [this mapping file](https://github.com/ezpaarse-project/analogist/blob/master/config/custom-environment-variables.json).
+
+### Typical env file
+```bash
+# Trello interactions
+export ANG_TRELLO_BOARDID=
+export ANG_TRELLO_KEY=
+export ANG_TRELLO_SECRET=
+
+# Mailing
+export ANG_NOTIFICATIONS_RECEIVERS=
+export ANG_NOTIFICATIONS_SENDER=
+export ANG_SMTP_HOST=
+
+# Badges
+export ANG_BADGE_ANALYSES_BRONZE_ID=
+export ANG_BADGE_ANALYSES_BRONZE_NAME="Analyste Bronze"
+export ANG_BADGE_ANALYSES_BRONZE_EVENT="analyse"
+export ANG_BADGE_ANALYSES_SILVER_ID=
+export ANG_BADGE_ANALYSES_SILVER_NAME="Analyste Argent"
+export ANG_BADGE_ANALYSES_SILVER_EVENT="analyse"
+```
 
 ### Badges
 
