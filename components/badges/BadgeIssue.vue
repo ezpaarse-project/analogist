@@ -47,7 +47,7 @@
       </v-flex>
 
       <v-flex xs12 sm12>
-        <v-btn large block color="success" @click="emit">{{$t('badges.emitBadge')}}</v-btn>
+        <v-btn large block color="success" @click="emit" :disabled="!email || !currentBadge || !currentBoardMember">{{$t('badges.emitBadge')}}</v-btn>
       </v-flex>
     </v-layout>
   </v-container>
@@ -67,10 +67,6 @@ export default {
     emit () {
       this.$socket.emit('ADD_TO_ROOM', { userId: this.currentBoardMember.idMember })
 
-      this.email = null
-      this.currentBadge = null
-      this.currentBoardMember = null
-
       this.$store.dispatch('badges/emit', {
         event: {
           badgeId: this.currentBadge.id,
@@ -82,6 +78,10 @@ export default {
           email: this.email
         }
       })
+
+      this.email = null
+      this.currentBadge = null
+      this.currentBoardMember = null
     }
   }
 }
