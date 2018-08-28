@@ -73,7 +73,7 @@
                 <v-list-tile-title>{{ $t('analyses.testWithEzlogger') }}</v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
-            <v-list-tile avatar @click="deleteDialog = true">
+            <v-list-tile avatar v-if="canEdit" @click="deleteDialog = true">
               <v-list-tile-avatar>
                 <v-icon>mdi-archive</v-icon>
               </v-list-tile-avatar>

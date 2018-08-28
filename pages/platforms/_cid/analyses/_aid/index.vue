@@ -13,7 +13,7 @@
         <v-spacer></v-spacer>
 
         <v-tooltip bottom>
-          <v-btn icon slot="activator" :to="{ name: 'platforms-cid-analyses-aid-edit', params: { cid: $route.params.cid, aid: $route.params.aid } }">
+          <v-btn icon slot="activator" v-if="canEdit" :to="{ name: 'platforms-cid-analyses-aid-edit', params: { cid: $route.params.cid, aid: $route.params.aid } }">
             <v-icon>mdi-pencil</v-icon>
           </v-btn>
           <span>{{ $t('ui.edit') }}</span>
@@ -27,7 +27,7 @@
         </v-tooltip>
 
         <v-tooltip bottom>
-          <v-btn icon slot="activator" @click="deleteDialog = true">
+          <v-btn icon slot="activator" v-if="canEdit" @click="deleteDialog = true">
             <v-icon>mdi-delete</v-icon>
           </v-btn>
           <span>{{ $t('ui.delete') }}</span>

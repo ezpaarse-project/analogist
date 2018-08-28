@@ -94,8 +94,12 @@ export default {
       title: 'Nouvelle plateforme'
     }
   },
-  async fetch ({ store }) {
+  async fetch ({ store, redirect }) {
     await store.dispatch('FETCH_TRELLO_LISTS')
+
+    if (!store.state.user || !store.state.user.isAuthorized) {
+      redirect('/')
+    }
   },
   computed: {
     lists () {
