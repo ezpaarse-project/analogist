@@ -7,7 +7,7 @@
           :items="trelloBoardMembers"
           :label="$t('badges.users')"
           persistent-hint
-          no-data-text="Euh... vous cherchez qui ?!"
+          :no-data-text="$t('badges.userNotFound')"
           single-line
           return-object
           item-text="member.fullName"
@@ -30,7 +30,7 @@
           :items="badges"
           label="Badge(s)"
           persistent-hint
-          no-data-text="Aucun badge trouvé avec ce nom."
+          :no-data-text="$t('badges.badgeNotFound')"
           single-line
           return-object
           item-text="name"

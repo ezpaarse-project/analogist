@@ -167,6 +167,8 @@
     "emitBadge": "Emit a badge",
     "issued": "You have issued a badge",
     "owned": "The person already has this badge",
-    "users": "User(s)"
+    "users": "User(s)",
+    "userNotFound": "Nobody matches that name.",
+    "badgeNotFound": "No badge found with that name."
   }
 }
