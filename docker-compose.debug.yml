@@ -39,7 +39,7 @@ services:
     command: --smallfiles
 
   opbadge:
-    image: ezpaarseproject/ezpaarse-badge
+    image: ezpaarseproject/ezpaarse-badge:1.0.1
     environment:
       - http_proxy=http://proxyout.inist.fr:8080
       - https_proxy=http://proxyout.inist.fr:8080
