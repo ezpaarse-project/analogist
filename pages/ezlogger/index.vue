@@ -256,6 +256,10 @@ export default {
         'Log-Format-EZproxy': '%{timestamp}<[0-9]+> %u %m %U %s %{size}<[0-9\\-]+> %{ezid}<[0-9]+>'
       }
 
+      if (this.settings.forceParser) {
+        headers['Force-Parser'] = this.settings.forceParser
+      }
+
       this.settings.headers.forEach(h => {
         headers[h.name] = h.value
       })

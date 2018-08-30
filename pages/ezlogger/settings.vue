@@ -44,6 +44,40 @@
 
     <v-card class="mb-4">
       <v-toolbar card dense dark class="secondary">
+        <v-toolbar-title>{{ $t('ezLoggerSettings.defaultParser') }}</v-toolbar-title>
+      </v-toolbar>
+
+      <v-card-text>
+        <p>{{ $t('ezLoggerSettings.defaultParserDesc') }}</p>
+        <v-autocomplete
+          :loading="loadingParsers"
+          :items="parsers"
+          :search-input.sync="parserSearch"
+          :filter="filterParsers"
+          v-model="forceParser"
+          :label="$t('ezLoggerSettings.parserName')"
+          append-icon="mdi-menu-down"
+          clear-icon="mdi-close"
+          item-text="longname"
+          item-value="name"
+          cache-items
+          clearable
+          hide-no-data
+          hide-details
+          solo
+        >
+          <template slot="item" slot-scope="{ item, tile }">
+            <v-list-tile-content>
+              <v-list-tile-title v-text="item.longname"></v-list-tile-title>
+              <v-list-tile-sub-title v-text="item.name"></v-list-tile-sub-title>
+            </v-list-tile-content>
+          </template>
+        </v-autocomplete>
+      </v-card-text>
+    </v-card>
+
+    <v-card class="mb-4">
+      <v-toolbar card dense dark class="secondary">
         <v-toolbar-title>{{ $t('ezLoggerSettings.headers') }}</v-toolbar-title>
         <v-btn @click.native="addHeader" class="pink" dark small absolute bottom right fab>
           <v-icon>mdi-plus</v-icon>
@@ -131,7 +165,10 @@ export default {
         errorMsg: null,
         errorMeta: null,
         version: null
-      }
+      },
+      parsers: [],
+      parserSearch: '',
+      loadingParsers: false
     }
   },
   computed: {
@@ -153,6 +190,28 @@ export default {
     ezpaarseUrl: {
       get () { return this.$store.state.ezlogger.settings.ezpaarseUrl },
       set (value) { return this.$store.commit('ezlogger/setEzpaarseUrl', value) }
+    },
+    forceParser: {
+      get () { return this.$store.state.ezlogger.settings.forceParser },
+      set (value) { return this.$store.commit('ezlogger/setForceParser', value) }
+    }
+  },
+  watch: {
+    async parserSearch (val) {
+      if ((!val && !this.forceParser) || this.parsers.length > 0) { return }
+      this.loadingParsers = true
+
+      const ezpaarseUrl = this.getEzpaarseUrl()
+
+      try {
+        const { data } = await axios.get(`${ezpaarseUrl}/info/platforms`)
+        if (!Array.isArray(data)) { throw new Error('invalid response') }
+        this.parsers = data
+      } catch (e) {
+        this.$store.dispatch('snacks/error', 'ezLoggerSettings.failedToFetchParsers')
+      }
+
+      this.loadingParsers = false
     }
   },
   methods: {
@@ -163,10 +222,24 @@ export default {
       'removeProxy',
       'saveSettings'
     ]),
-    testConnection: function () {
-      const ezpaarseUrl = this.preprod
+    getEzpaarseUrl () {
+      return this.preprod
         ? 'http://ezpaarse-preprod.couperin.org'
         : this.ezpaarseUrl
+    },
+    filterParsers (item, queryText) {
+      const search = queryText.toLowerCase()
+      if (!search) { return true }
+
+      const { name, longname } = item
+
+      if (name && name.toLowerCase().includes(search)) { return true }
+      if (longname && longname.toLowerCase().includes(search)) { return true }
+
+      return false
+    },
+    testConnection () {
+      const ezpaarseUrl = this.getEzpaarseUrl()
 
       if (!ezpaarseUrl || this.connectionTest.loading) { return }
 

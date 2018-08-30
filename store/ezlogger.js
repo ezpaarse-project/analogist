@@ -105,7 +105,8 @@ export default {
     setAutoRemoveNoise ({ commit }, value) { commit('setAutoRemoveNoise', value) },
     setPatchHyphens ({ commit }, value) { commit('setPatchHyphens', value) },
     setPreprod ({ commit }, value) { commit('setPreprod', value) },
-    setEzpaarseUrl ({ commit }, value) { commit('setEzpaarseUrl', value) }
+    setEzpaarseUrl ({ commit }, value) { commit('setEzpaarseUrl', value) },
+    setForceParser ({ commit }, value) { commit('setForceParser', value) }
   },
 
   mutations: {
@@ -126,7 +127,8 @@ export default {
     setAutoRemoveNoise (state, value) { state.settings.autoRemoveNoise = value },
     setPatchHyphens (state, value) { state.settings.patchHyphens = value },
     setPreprod (state, value) { state.settings.preprod = value },
-    setEzpaarseUrl (state, value) { state.settings.ezpaarseUrl = value }
+    setEzpaarseUrl (state, value) { state.settings.ezpaarseUrl = value },
+    setForceParser (state, value) { state.settings.forceParser = value }
   }
 }
 
