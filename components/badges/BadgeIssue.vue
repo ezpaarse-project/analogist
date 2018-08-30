@@ -2,39 +2,54 @@
   <v-container fluid grid-list-md>
     <v-layout row wrap>
      <v-flex xs12 sm6>
-        <v-select
-          :label="$t('badges.users')"
-          :items="trelloBoardMembers"
+        <v-autocomplete
           v-model="currentBoardMember"
-          item-text="member.fullName"
-          append-icon="mdi-account"
+          :items="trelloBoardMembers"
+          :label="$t('badges.users')"
+          persistent-hint
+          :no-data-text="$t('badges.userNotFound')"
           single-line
           return-object
+          item-text="member.fullName"
+          append-icon="mdi-chevron-down"
         >
           <template slot="item" slot-scope="data">
+            <v-list-tile-avatar>
+              <img v-if="data.item.member.avatarHash" :src="`${data.item.member.avatarUrl}/50.png`">
+              <span  v-else>
+                <v-avatar color="blue-grey lighten-4">
+                  <span class="white--text headline"><small>{{data.item.member.initials}}</small></span>
+                </v-avatar>
+              </span>
+            </v-list-tile-avatar>
             <v-list-tile-content>
               <v-list-tile-title v-html="data.item.member.fullName"></v-list-tile-title>
             </v-list-tile-content>
           </template>
-        </v-select>
+        </v-autocomplete>
       </v-flex>
-
+      
       <v-flex xs12 sm6>
-        <v-select
-          label="Badge(s)"
-          :items="badges"
+        <v-autocomplete
           v-model="currentBadge"
-          item-text="name"
-          append-icon="mdi-seal"
+          :items="badges"
+          label="Badge(s)"
+          persistent-hint
+          :no-data-text="$t('badges.badgeNotFound')"
           single-line
           return-object
+          item-text="name"
+          append-icon="mdi-chevron-down"
         >
           <template slot="item" slot-scope="data">
+            <v-list-tile-avatar>
+              <img :src="data.item.image">
+            </v-list-tile-avatar>
             <v-list-tile-content>
               <v-list-tile-title v-html="data.item.name"></v-list-tile-title>
             </v-list-tile-content>
           </template>
-        </v-select>
+        </v-autocomplete>
       </v-flex>
 
       <v-flex xs12 sm12>

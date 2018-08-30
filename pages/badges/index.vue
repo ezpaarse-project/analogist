@@ -27,7 +27,7 @@
           <img src="@/static/obf_logo.jpeg" alt="OpenBadgeFactory" :class="{ 'error': !ping }" class="obfactory" align="right">
         </a>
               
-        <v-tooltip bottom v-if="user.role">
+        <v-tooltip bottom>
           <v-btn flat :icon="true" slot="activator" href="https://blog.ezpaarse.org/2018/06/communication-les-badges-ezpaarse/" target="_blank">
             <v-icon>mdi-help-circle</v-icon>
           </v-btn>
