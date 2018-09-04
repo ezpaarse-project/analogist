@@ -169,6 +169,10 @@ api.getPing = function () {
   return axios.get(`/api/badges/ping`).then(res => res.data)
 }
 
+api.getMetrics = function () {
+  return axios.get(`/api/badges/metrics`).then(res => res.data)
+}
+
 api.emit = function (data) {
   return axios.post(`/api/badges/emit`, data).then(res => res.data)
 }

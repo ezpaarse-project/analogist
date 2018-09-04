@@ -12,23 +12,23 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - ANG_TRELLO_KEY=1fbb22dbae7df154e220b517a4f4acac
-      - ANG_TRELLO_SECRET=f58ea5fb38bce1d8257af61352a35efe2788b2b8fb6e353b89f609cd512b426f
-      - ANG_TRELLO_BOARDID=58fdab8b19266cf7cd79c1c6
+      - ANG_TRELLO_KEY
+      - ANG_TRELLO_SECRET
+      - ANG_TRELLO_BOARDID
       - ANG_MONGO_HOST=mongodb
-      - ANG_BADGE_ANALYSES_BRONZE_ID=PB0V36aFMQaVX
-      - ANG_BADGE_ANALYSES_BRONZE_NAME='Analyse bronze'
-      - ANG_BADGE_ANALYSES_BRONZE_EVENT=analyse
-      - ANG_BADGE_ANALYSES_SILVER_ID=PB0VFWaFMQaW4
-      - ANG_BADGE_ANALYSES_SILVER_NAME='Analyse argent'
-      - ANG_BADGE_ANALYSES_SILVER_EVENT=analyse
-      - ANG_NOTIFICATIONS_SENDER='AnalogIST <analogist@inist.fr>'
-      - ANG_NOTIFICATIONS_RECEIVERS='dominique.lechaudel@gmail.com,frederic.truong@inist.fr,sylvie.franck@inist.fr,yannick.schurter@inist.fr,stephane.gully@inist.fr,steven.wilmouth@inist.fr'
-      - ANG_SMTP_HOST=maildev
-      - ANG_SMTP_PORT=25
-      - http_proxy=http://proxyout.inist.fr:8080
-      - https_proxy=http://proxyout.inist.fr:8080
-      - no_proxy=localhost,127.0.0.1,opbadge,maildev
+      - ANG_BADGE_ANALYSES_BRONZE_ID
+      - ANG_BADGE_ANALYSES_BRONZE_NAME
+      - ANG_BADGE_ANALYSES_BRONZE_EVENT
+      - ANG_BADGE_ANALYSES_SILVER_ID
+      - ANG_BADGE_ANALYSES_SILVER_NAME
+      - ANG_BADGE_ANALYSES_SILVER_EVENT
+      - ANG_SMTP_HOST
+      - ANG_SMTP_PORT
+      - ANG_NOTIFICATIONS_SENDER
+      - ANG_NOTIFICATIONS_RECEIVERS
+      - http_proxy
+      - https_proxy
+      - no_proxy=localhost,127.0.0.1,opbadge
     tty: true
     command: npm run dev
 
@@ -39,17 +39,17 @@ services:
     command: --smallfiles
 
   opbadge:
-    image: ezpaarseproject/ezpaarse-badge:1.0.1
+    image: ezpaarseproject/ezpaarse-badge:1.0.2
     environment:
-      - http_proxy=http://proxyout.inist.fr:8080
-      - https_proxy=http://proxyout.inist.fr:8080
-      - OBF_CERT=thDJqDKuOgBpABJHlGH764Huh0h5YMaHiV9qUgO9MGIuMsvwCng03ENdxdQQpkMOWS2zNIjgIPbqxh/WdqYMrerTaq6mFaaowe6kv54/9vzYm53BijDU8hn5x3x99TTzlexfR5KUZMEZVUyBANGxdhZTRjrbmcIDuj5wDpwu6iKQ9uS1kog6AkgxhwO0+4yksg/BNtmyejyCdAhXMGG7jii4tr25IX3bdbVH/5DoP/bZzSmtzWsSpCxBq5rkMtbx10v8wVyGxY1hPd11PQC7f47y88O56R3WexqQiDf7FR++OxjyM4PCIAiDbaYzJ/KTNfkhsmI1SxTHMd7ksdqYuw==
+      - http_proxy
+      - https_proxy
+      - OBF_CERT
       - BADGE_MONGO_HOST=mongodb
       - BADGE_MONGO_PORT
       - BADGE_MONGO_DB
-      - BADGE_LOGENTRY_CLIENT=ezpaarse-badge
-      - BADGE_LOGENTRY_ISSUER=AnalogIST
-      - BADGE_AUTHORITY=ANG
+      - BADGE_LOGENTRY_CLIENT
+      - BADGE_LOGENTRY_ISSUER
+      - BADGE_AUTHORITY
     volumes:
       - ./ssl:/usr/src/app/app/ssl
     ports:
