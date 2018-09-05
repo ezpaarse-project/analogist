@@ -13,17 +13,17 @@
           item-text="member.fullName"
           append-icon="mdi-chevron-down"
         >
-          <template slot="item" slot-scope="data">
+          <template slot="items" slot-scope="{ item }">
             <v-list-tile-avatar>
-              <img v-if="data.item.member.avatarHash" :src="`${data.item.member.avatarUrl}/50.png`">
+              <img v-if="item.member.avatarHash" :src="`${item.member.avatarUrl}/50.png`">
               <span  v-else>
                 <v-avatar color="blue-grey lighten-4">
-                  <span class="white--text headline"><small>{{data.item.member.initials}}</small></span>
+                  <span class="white--text headline"><small>{{item.member.initials}}</small></span>
                 </v-avatar>
               </span>
             </v-list-tile-avatar>
             <v-list-tile-content>
-              <v-list-tile-title v-html="data.item.member.fullName"></v-list-tile-title>
+              <v-list-tile-title v-html="item.member.fullName"></v-list-tile-title>
             </v-list-tile-content>
           </template>
         </v-autocomplete>
@@ -41,12 +41,12 @@
           item-text="name"
           append-icon="mdi-chevron-down"
         >
-          <template slot="item" slot-scope="data">
+          <template slot="items" slot-scope="{ item }">
             <v-list-tile-avatar>
-              <img :src="data.item.image">
+              <img :src="item.image">
             </v-list-tile-avatar>
             <v-list-tile-content>
-              <v-list-tile-title v-html="data.item.name"></v-list-tile-title>
+              <v-list-tile-title v-html="item.name"></v-list-tile-title>
             </v-list-tile-content>
           </template>
         </v-autocomplete>

@@ -10,6 +10,10 @@
           {{ $t('badges.emitBadge') }}
           <v-spacer></v-spacer>
         </v-tab>
+        <v-tab to="#tab-infos" class="vTitle" v-if="user.role">
+          Informations
+          <v-spacer></v-spacer>
+        </v-tab>
       </v-tabs>
       
       <v-card-text>
@@ -18,8 +22,12 @@
             <badges-view :badges="badges" :ping="ping" :user="user"></badges-view>
           </v-tab-item>
 
-          <v-tab-item id="tab-issue">
+          <v-tab-item id="tab-issue" v-if="user.role">
             <badge-issue :user="user" :trelloBoardMembers="trelloBoardMembers" :badges="badges"></badge-issue>
+          </v-tab-item>
+
+          <v-tab-item id="tab-infos" v-if="user.role">
+            <badges-infos :metrics="metrics"></badges-infos>
           </v-tab-item>
         </v-tabs-items>
 
@@ -42,13 +50,15 @@
 <script>
 import BadgesView from '~/components/badges/BadgesView'
 import BadgeIssue from '~/components/badges/BadgeIssue'
+import BadgesInfos from '~/components/badges/BadgesInfos'
 
 export default {
   name: 'badges',
   transition: 'slide-x-transition',
   components: {
     BadgesView,
-    BadgeIssue
+    BadgeIssue,
+    BadgesInfos
   },
   head () {
     return {
@@ -69,6 +79,7 @@ export default {
 
     await store.dispatch('badges/getPing')
     await store.dispatch('badges/getBadges', { id: store.state.user.id, locale: app.i18n.locale })
+    await store.dispatch('badges/getMetrics')
     await store.dispatch('FETCH_TRELLO_BOARD_MEMBERS')
   },
   computed: {
@@ -90,6 +101,9 @@ export default {
     },
     trelloBoardMembers () {
       return this.$store.state.trelloBoardMembers
+    },
+    metrics () {
+      return this.$store.state.badges.metrics
     }
   },
   mounted () {

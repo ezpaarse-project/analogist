@@ -1,7 +1,7 @@
 {
   "ui": {
-    "back": "Retour",
-    "search": "Recherche",
+    "back": "Back",
+    "search": "Search",
     "archive": "Archive",
     "edit": "Edit",
     "delete": "Delete",
@@ -149,8 +149,6 @@
   "badges": {
     "title": "My badges",
     "issuedOn": "Issued on",
-    "loadingBadges": "Loading your badges ...",
-    "issues": "%{issues} badges have already been awarded.",
     "error": "An error occurred, we can't recover your badges for the moment.",
     "criteria": "Criteria",
     "embed": "Embed",
@@ -174,6 +172,7 @@
     "owned": "The person already has this badge",
     "users": "User(s)",
     "userNotFound": "Nobody matches that name.",
-    "badgeNotFound": "No badge found with that name."
+    "badgeNotFound": "No badge found with that name.",
+    "searchNotFound": "Your search for {search} found no results."
   }
 }

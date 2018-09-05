@@ -19,6 +19,12 @@ router.get('/ping', (req, res, next) => {
     .on('error', next)
 })
 
+router.get('/metrics', (req, res, next) => {
+  request.get(`${url}/metrics`)
+    .on('response', response => response.pipe(res))
+    .on('error', next)
+})
+
 router.get('/view/:userId/:badgeId/:language', (req, res, next) => {
   request.get(`${url}/view?u=${req.params.userId}&b=${req.params.badgeId}&l=${req.params.language}`, {
     headers: {
