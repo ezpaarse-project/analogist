@@ -63,7 +63,7 @@
 
     <v-list class="pt-0">
       <v-divider/>
-      <v-list-tile router exact :to="{ path: '/' }" ripple>
+      <v-list-tile router :to="{ path: '/' }" ripple>
         <v-list-tile-action>
           <v-icon>mdi-file-powerpoint-box</v-icon>
         </v-list-tile-action>
@@ -81,7 +81,7 @@
         </v-list-tile-content>
       </v-list-tile>
 
-      <v-list-tile router exact :to="{ path: '/ezlogger' }" ripple>
+      <v-list-tile router :to="{ path: '/ezlogger' }" ripple>
         <v-list-tile-action>
           <v-icon>mdi-file-find</v-icon>
         </v-list-tile-action>
@@ -90,9 +90,9 @@
         </v-list-tile-content>
       </v-list-tile>
 
-      <v-list-tile v-if="user" router exact :to="{ path: '/badges' }" ripple>
+      <v-list-tile v-if="user" router :to="{ path: '/badges' }" ripple>
         <v-list-tile-action>
-          <v-icon>mdi-seal</v-icon>
+          <logo-open-badge></logo-open-badge>
         </v-list-tile-action>
         <v-list-tile-content>
           <v-list-tile-title>{{ $t('drawer.badges') }}</v-list-tile-title>
@@ -140,7 +140,10 @@
 </template>
 
 <script>
+import LogoOpenBadge from '~/components/badges/LogoOpenBadge'
+
 export default {
+  components: { LogoOpenBadge },
   data () {
     return {
       mini: false,
