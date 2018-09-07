@@ -122,7 +122,7 @@
         <v-subheader>Certifications</v-subheader>
 
         <v-list>
-          <v-list-tile v-if="card.humanCertified" avatar href="http://blog.ezpaarse.org/2017/06/certification-h-et-p-des-plateformes-traitees-dans-ezpaarse/" target="_blank">
+          <v-list-tile v-if="card.humanCertified" avatar href="https://blog.ezpaarse.org/2017/06/certification-h-et-p-des-plateformes-traitees-dans-ezpaarse/" target="_blank">
             <v-list-tile-avatar>
               <img src="~/assets/img/certif_h.png">
             </v-list-tile-avatar>
@@ -131,7 +131,7 @@
             </v-list-tile-content>
           </v-list-tile>
 
-          <v-list-tile v-if="card.publisherCertified" avatar href="http://blog.ezpaarse.org/2017/06/certification-h-et-p-des-plateformes-traitees-dans-ezpaarse/" target="_blank">
+          <v-list-tile v-if="card.publisherCertified" avatar href="https://blog.ezpaarse.org/2017/06/certification-h-et-p-des-plateformes-traitees-dans-ezpaarse/" target="_blank">
             <v-list-tile-avatar>
               <img src="~/assets/img/certif_p.png">
             </v-list-tile-avatar>
