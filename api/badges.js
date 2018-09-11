@@ -1,9 +1,10 @@
 'use strict'
 
-const config = require('config')
-const router = require('express').Router()
-const request  = require('request')
-const badges = require('../lib/badges')
+const config      = require('config')
+const router      = require('express').Router()
+const request     = require('request')
+const badges      = require('../lib/badges')
+const cors        = require('cors')
 
 const url = `http://${config.badges.host}:${config.badges.port}`
 
@@ -19,7 +20,7 @@ router.get('/ping', (req, res, next) => {
     .on('error', next)
 })
 
-router.get('/metrics', (req, res, next) => {
+router.get('/metrics', cors(), (req, res, next) => {
   request.get(`${url}/metrics`)
     .on('response', response => response.pipe(res))
     .on('error', next)

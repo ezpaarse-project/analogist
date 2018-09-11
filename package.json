@@ -22,6 +22,7 @@
     "body-parser": "^1.18.3",
     "config": "^1.30.0",
     "connect-mongo": "^2.0.1",
+    "cors": "^2.8.4",
     "cross-env": "^5.2.0",
     "deep-equal": "^1.0.1",
     "es6-promise": "^4.2.4",
