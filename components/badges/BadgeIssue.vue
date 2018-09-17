@@ -16,7 +16,7 @@
           <template slot="items" slot-scope="{ item }">
             <v-list-tile-avatar>
               <img v-if="item.member.avatarHash" :src="`${item.member.avatarUrl}/50.png`">
-              <span  v-else>
+              <span v-else>
                 <v-avatar color="blue-grey lighten-4">
                   <span class="white--text headline"><small>{{item.member.initials}}</small></span>
                 </v-avatar>

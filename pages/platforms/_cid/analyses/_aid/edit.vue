@@ -415,6 +415,10 @@ export default {
       try {
         do {
           this.pendingChanges = false
+
+          // remove white space
+          this.analysis.url = this.analysis.url.trim()
+
           await this.$store.dispatch('SAVE_ANALYSIS', {
             cardID: this.card.id,
             analysis: this.analysis
