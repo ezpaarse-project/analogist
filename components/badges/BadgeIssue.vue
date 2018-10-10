@@ -32,7 +32,7 @@
       <v-flex xs12 sm6>
         <v-autocomplete
           v-model="currentBadge"
-          :items="badges"
+          :items="badges.badges"
           label="Badge(s)"
           persistent-hint
           :no-data-text="$t('badges.badgeNotFound')"

@@ -3,7 +3,7 @@
     <v-card>
       <v-tabs v-model="activeTab" grow dark>
         <v-tab to="#tab-badges" class="vTitle">
-          {{ $t('badges.title') }} <v-chip color="grey lighten-2"><strong>{{badgesOwned}}</strong> / {{badges.length}}</v-chip>
+          {{ $t('badges.title') }} <v-chip color="grey lighten-2"><strong>{{badgesOwned}}</strong> / {{badges.badges.length}}</v-chip>
           <v-spacer></v-spacer>
         </v-tab>
         <v-tab to="#tab-issue" class="vTitle" v-if="user.role">
@@ -67,7 +67,8 @@ export default {
   },
   data () {
     return {
-      activeTab: 'tab-badges'
+      activeTab: 'tab-badges',
+      shareBadge: false
     }
   },
   async fetch ({ store, redirect, app }) {
@@ -88,7 +89,7 @@ export default {
     },
     badgesOwned () {
       let badgesOwend = 0
-      this.$store.state.badges.badges.forEach(badge => {
+      this.$store.state.badges.badges.badges.forEach(badge => {
         if (badge.issued_on) badgesOwend += 1
       })
       return badgesOwend

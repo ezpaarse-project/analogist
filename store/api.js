@@ -177,4 +177,8 @@ api.emit = function (data) {
   return axios.post(`/api/badges/emit`, data).then(res => res.data)
 }
 
+api.setVisiblity = function (data) {
+  return axios.put(`/api/badges/visibility`, data).then(res => res.data)
+}
+
 export default api

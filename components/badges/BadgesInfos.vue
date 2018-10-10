@@ -27,7 +27,6 @@
               <span v-if="$i18n.locale === 'fr'">{{ item.badge.name }}</span>
               <span v-else>{{ item.badge.alt_language[$i18n.locale].name }}</span>
             </td>
-            <td class="text-xs-left">{{ item.issues.obf }}</td>
             <td class="text-xs-left">{{ item.issues.app }}</td>
           </template>
           <v-alert slot="no-results" :value="true" color="info" icon="mdi-alert-circle">
@@ -56,11 +55,6 @@ export default {
           align: 'left',
           sortable: false,
           value: 'badge.name'
-        },
-        {
-          text: 'OpenBadgeFactory',
-          align: 'left',
-          value: 'issues.obf'
         },
         {
           text: 'AnalogIST',

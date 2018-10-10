@@ -18,6 +18,9 @@ export default {
     },
     SET_METRICS (state, metrics) {
       Vue.set(state, 'metrics', metrics)
+    },
+    SET_VISIBILITY (state, visibility) {
+      Vue.set(state, 'badges.visibility', visibility)
     }
   },
   actions: {
@@ -25,9 +28,8 @@ export default {
       return api.getBadges().then((res) => {
         if (res.status === 'success') {
           const badges = res.data
-
           // eslint-disable-next-line
-          badges.map(badge => ((badge.issued_on !== undefined) ? moment.unix(badge.issued_on).format((params.locale === 'fr') ?  'DD/MM/YYYY' : 'YYYY-MM-DD') : null))
+          badges.badges.map(badge => ((badge.issued_on !== undefined) ? moment.unix(badge.issued_on).format((params.locale === 'fr') ?  'DD/MM/YYYY' : 'YYYY-MM-DD') : null))
 
           commit('SET_BADGES', badges)
         }
@@ -60,6 +62,14 @@ export default {
       return api.emit(data).then((res) => {
         // eslint-disable-next-line
         console.log(res)
+      }).catch((response) => {
+        // eslint-disable-next-line
+        console.log(response)
+      })
+    },
+    setVisiblity ({ commit }, visibility) {
+      return api.setVisiblity({ visibility }).then((res) => {
+        if (res.status === 'success') commit('SET_VISIBILITY', visibility)
       }).catch((response) => {
         // eslint-disable-next-line
         console.log(response)
