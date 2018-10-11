@@ -58,4 +58,9 @@ router.put('/visibility', (req, res, next) => {
     .on('error', next)
 })
 
+router.get('/users/:badgeId', (req, res, next) => {
+  request.get(`${url}/users?id=${req.params.badgeId}`).on('response', response => response.pipe(res))
+    .on('error', next)
+})
+
 module.exports = router

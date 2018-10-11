@@ -158,6 +158,10 @@ api.getBoardMembers = function () {
   return axios.get(`/api/trello/members`).then(res => res.data)
 }
 
+api.getMember = function (memberId) {
+  return axios.get(`/api/trello/member/${memberId}`).then(res => res.data)
+}
+
 /**
  * Badges
  */
@@ -179,6 +183,10 @@ api.emit = function (data) {
 
 api.setVisiblity = function (data) {
   return axios.put(`/api/badges/visibility`, data).then(res => res.data)
+}
+
+api.getUsers = function (data) {
+  return axios.get(`/api/badges/users/${data.badgeId}`).then(res => res.data)
 }
 
 export default api

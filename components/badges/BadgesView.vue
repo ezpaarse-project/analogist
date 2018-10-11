@@ -4,12 +4,12 @@
       <v-switch
         style="float: right"
         label="Être visible des autres"
-        v-model="badges.visibility"
+        v-model="visibility"
         @change="setVisiblity"
       ></v-switch>
     </v-flex>
     
-    <v-flex xs12 sm2 v-if="badges && ping" v-for="badge in badges.badges" :key="badge.id" @click="currentBadge = badge; linkedInModal = false" :class="{ 'notPossessed' : !badge.issued_on }">
+    <v-flex xs12 sm2 v-if="badges && ping" v-for="badge in badges" :key="badge.id" @click="currentBadge = badge; linkedInModal = false" :class="{ 'notPossessed' : !badge.issued_on }">
       <img class="mx-auto badgeImage" :src="badge.image" width="60%">
       <h4 class="badgeName" v-if="$i18n.locale === 'fr'">{{ badge.name }}</h4>
       <h4 class="badgeName" v-else>{{ badge.alt_language[$i18n.locale].name }}</h4>
@@ -38,7 +38,7 @@ import BadgeCard from '~/components/badges/BadgeCard'
 import LinkedInCard from '~/components/badges/LinkedInCard'
 
 export default {
-  props: ['badges', 'ping', 'user'],
+  props: ['badges', 'visibility', 'ping', 'user'],
   components: {
     BadgeCard,
     LinkedInCard
@@ -64,7 +64,7 @@ export default {
       this.currentBadge = null
     },
     setVisiblity () {
-      this.$store.dispatch('badges/setVisiblity', this.badges.visibility)
+      this.$store.dispatch('badges/setVisiblity', this.visibility)
     }
   }
 }

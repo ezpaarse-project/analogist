@@ -173,6 +173,7 @@
     "users": "User(s)",
     "userNotFound": "Nobody matches that name.",
     "badgeNotFound": "No badge found with that name.",
-    "searchNotFound": "Your search for {search} found no results."
+    "searchNotFound": "Your search for {search} found no results.",
+    "community": "Community"
   }
 }
