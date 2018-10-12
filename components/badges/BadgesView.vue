@@ -3,7 +3,7 @@
     <v-flex xs12 sm12>
       <v-switch
         style="float: right"
-        label="Être visible des autres"
+        label="Public"
         v-model="visibility"
         @change="setVisiblity"
       ></v-switch>

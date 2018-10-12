@@ -19,14 +19,14 @@
       <v-card-text>
         <v-tabs-items v-model="activeTab">
           <v-tab-item id="tab-badges">
-            <badges-view :badges="badges" :visibility="visibility" :ping="ping" :user="user"></badges-view>
+            <badges-view :badges="badges" :badgesOwned="badgesOwned" :visibility="visibility" :ping="ping" :user="user"></badges-view>
           </v-tab-item>
 
           <v-tab-item id="tab-issue" v-if="user.role">
             <badge-issue :user="user" :trelloBoardMembers="trelloBoardMembers" :badges="badges"></badge-issue>
           </v-tab-item>
 
-          <v-tab-item id="tab-infos" v-if="user.role">
+          <v-tab-item id="tab-infos">
             <badges-infos :metrics="metrics"></badges-infos>
           </v-tab-item>
         </v-tabs-items>

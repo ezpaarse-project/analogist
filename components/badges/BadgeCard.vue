@@ -26,16 +26,6 @@
           </div>
         </v-flex>        
       </v-layout>
-      <v-flex xs12 sm12 v-if="users && members">
-        <p v-for="user in users" :key="user">
-          <v-chip>
-            <v-avatar>
-              <img :src="`${getUserInfos(user).member.avatarUrl}/50.png`" alt="trevor">
-            </v-avatar>
-            {{ getUserInfos(user).member.fullName }}
-          </v-chip>
-        </p>
-      </v-flex>
     </v-card-text>
 
     <v-card-actions>
@@ -88,13 +78,6 @@
         <span>{{ $t('badges.share') }}</span>
       </v-tooltip>
 
-      <v-tooltip bottom>
-        <v-btn icon flat slot="activator" @click="getUsers">
-          <v-icon>mdi-account-group</v-icon>
-        </v-btn>
-        <span>{{ $t('badges.community') }}</span>
-      </v-tooltip>
-
       <v-text-field id="embed-input" class="embedInput" flat readonly solo single-line full-width hide-details :value="embedObject"></v-text-field>
 
       <v-spacer></v-spacer>
@@ -118,12 +101,6 @@ export default {
     },
     embedObject () {
       return `<object data="http://${location.host}/api/badges/embed/${this.userId}/${this.badge.id}/${this.$i18n.locale}" width="200px" height="300px"></object>`
-    },
-    users () {
-      return this.$store.state.badges.users
-    },
-    members () {
-      return this.$store.state.badges.members
     }
   },
   methods: {
@@ -141,14 +118,6 @@ export default {
     },
     linkedIn () {
       this.$emit('linkedIn')
-    },
-    getUsers () {
-      this.$store.dispatch('badges/getUsers', this.badge.id)
-    },
-    getUserInfos (user) {
-      return this.$store.state.badges.members.find(member => {
-        return member.idMember === user
-      })
     }
   }
 }
