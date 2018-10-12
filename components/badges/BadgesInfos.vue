@@ -41,7 +41,12 @@
             <v-flex xs2 sm2 :key="getUserInfos(user).idMember">
               <v-list-tile avatar>
                 <v-list-tile-avatar>
-                  <img :src="`${getUserInfos(user).member.avatarUrl}/50.png`">
+                  <img v-if="getUserInfos(user).member.avatarHash" :src="`${getUserInfos(user).member.avatarUrl}/50.png`">
+                  <span v-else>
+                    <v-avatar color="blue-grey lighten-4">
+                      <span class="white--text headline"><small>{{getUserInfos(user).member.initials}}</small></span>
+                    </v-avatar>
+                  </span>
                 </v-list-tile-avatar>
 
                 <v-list-tile-content>
