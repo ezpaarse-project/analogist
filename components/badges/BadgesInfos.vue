@@ -20,44 +20,47 @@
         :pagination.sync="pagination"
         class="elevation-1"
       >
-        <template slot="items" slot-scope="{ item }">
-          <tr @click="currentBadge = item.badge; getUsers()">
+        <template slot="items" slot-scope="props">
+          <tr @click="currentBadge = props.item.badge; getUsers()">
             <td>
-              <img :src="item.badge.img" class="badgeImage">
-              <span v-if="$i18n.locale === 'fr'">{{ item.badge.name }}</span>
-              <span v-else>{{ item.badge.alt_language[$i18n.locale].name }}</span>
+              <img :src="props.item.badge.img" class="badgeImage">
+              <span v-if="$i18n.locale === 'fr'">{{ props.item.badge.name }}</span>
+              <span v-else>{{ props.item.badge.alt_language[$i18n.locale].name }}</span>
             </td>
-            <td class="text-xs-left">{{ item.issues.app }}</td>
+            <td class="text-xs-left">{{ props.item.issues.app }}</td>
           </tr>
+          <v-card flat v-if="currentBadge && users && members && currentBadge.id == props.item.badge.id && getUserInfos(users[0])">
+            <v-card-text>
+              <v-list class="mt-1" justify-center>
+                <v-layout row wrap justify-left>
+                  <template v-for="user in users">
+                    <v-flex :key="getUserInfos(user).idMember">
+                      <v-list-tile avatar>
+                        <v-list-tile-avatar>
+                          <img v-if="getUserInfos(user).member.avatarHash" :src="`${getUserInfos(user).member.avatarUrl}/50.png`">
+                          <span v-else>
+                            <v-avatar color="blue-grey lighten-4">
+                              <span class="white--text headline"><small>{{getUserInfos(user).member.initials}}</small></span>
+                            </v-avatar>
+                          </span>
+                        </v-list-tile-avatar>
+
+                        <v-list-tile-content>
+                          <v-list-tile-title v-html="getUserInfos(user).member.fullName"></v-list-tile-title>
+                          <v-list-tile-sub-title v-html="getUserInfos(user).member.fullName"></v-list-tile-sub-title>
+                        </v-list-tile-content>
+                      </v-list-tile>
+                    </v-flex>
+                  </template>
+                </v-layout>
+              </v-list>
+            </v-card-text>
+          </v-card>
         </template>
         <v-alert slot="no-results" :value="true" color="info" icon="mdi-alert-circle">
           {{ $t('badges.searchNotFound', {search}) }}
         </v-alert>
       </v-data-table>
-
-      <v-list v-if="currentBadge && users && members" class="mt-1">
-        <v-layout row wrap>
-          <template v-for="user in users">
-            <v-flex xs2 sm2 :key="getUserInfos(user).idMember">
-              <v-list-tile avatar>
-                <v-list-tile-avatar>
-                  <img v-if="getUserInfos(user).member.avatarHash" :src="`${getUserInfos(user).member.avatarUrl}/50.png`">
-                  <span v-else>
-                    <v-avatar color="blue-grey lighten-4">
-                      <span class="white--text headline"><small>{{getUserInfos(user).member.initials}}</small></span>
-                    </v-avatar>
-                  </span>
-                </v-list-tile-avatar>
-
-                <v-list-tile-content>
-                  <v-list-tile-title v-html="getUserInfos(user).member.fullName"></v-list-tile-title>
-                  <v-list-tile-sub-title v-html="getUserInfos(user).member.fullName"></v-list-tile-sub-title>
-                </v-list-tile-content>
-              </v-list-tile>
-            </v-flex>
-          </template>
-        </v-layout>
-      </v-list>
     </v-flex>
   </v-layout>
 </template>

@@ -174,6 +174,6 @@
     "userNotFound": "Personne ne correspond à ce nom.",
     "badgeNotFound": "Aucun badge trouvé avec ce nom.",
     "searchNotFound": "Votre recherche pour {search} ne donne aucun résultat.",
-    "community": "Communauté"
+    "private": "Privé"
   }
 }

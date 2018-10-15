@@ -3,7 +3,7 @@
     <v-flex xs12 sm12>
       <v-switch
         style="float: right"
-        label="Public"
+        :label="visibility ? 'Public' : $t('badges.private')"
         v-model="visibility"
         @change="setVisiblity"
       ></v-switch>
