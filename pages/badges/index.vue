@@ -27,7 +27,7 @@
           </v-tab-item>
 
           <v-tab-item id="tab-infos">
-            <badges-infos :metrics="metrics"></badges-infos>
+            <badges-infos :metrics="metrics" :user="user"></badges-infos>
           </v-tab-item>
         </v-tabs-items>
 

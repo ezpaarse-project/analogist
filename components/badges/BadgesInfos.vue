@@ -8,7 +8,6 @@
         single-line
       ></v-text-field>
     </v-flex>
-    
     <v-flex xs12 sm12>
       <v-data-table
         :headers="headers"
@@ -21,7 +20,7 @@
         class="elevation-1"
       >
         <template slot="items" slot-scope="props">
-          <tr @click="currentBadge = props.item.badge; getUsers()">
+          <tr @click="getUsers(props.item.badge)">
             <td>
               <img :src="props.item.badge.img" class="badgeImage">
               <span v-if="$i18n.locale === 'fr'">{{ props.item.badge.name }}</span>
@@ -47,7 +46,7 @@
 
                         <v-list-tile-content>
                           <v-list-tile-title v-html="getUserInfos(user).member.fullName"></v-list-tile-title>
-                          <v-list-tile-sub-title v-html="getUserInfos(user).member.fullName"></v-list-tile-sub-title>
+                          <v-list-tile-sub-title v-html="getUserInfos(user).issuedOn"></v-list-tile-sub-title>
                         </v-list-tile-content>
                       </v-list-tile>
                     </v-flex>
@@ -66,8 +65,10 @@
 </template>
 
 <script>
+import moment from 'moment'
+
 export default {
-  props: ['metrics'],
+  props: ['metrics', 'user'],
   data () {
     return {
       search: '',
@@ -101,13 +102,21 @@ export default {
     }
   },
   methods: {
-    getUsers () {
-      this.$store.dispatch('badges/getUsers', this.currentBadge.id)
+    getUsers (badge) {
+      if (!this.user.isAuthorized) return
+      
+      this.currentBadge = badge
+
+      if (!this.users || !this.members) {
+        this.$store.dispatch('badges/getUsers', badge.id)
+      }
     },
     getUserInfos (user) {
-      return this.$store.state.badges.members.find(member => {
-        return member.idMember === user
+      const member = this.$store.state.badges.members.find(member => {
+        return member.idMember === user.userId
       })
+      if (member) member.issuedOn = moment.unix(user.issuedOn).locale(this.$i18n.locale).format('LL')
+      return member
     }
   }
 }
