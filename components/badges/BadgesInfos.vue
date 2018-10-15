@@ -104,14 +104,13 @@ export default {
   methods: {
     getUsers (badge) {
       if (!this.user.isAuthorized) return
-      
-      this.currentBadge = badge
 
-      if (!this.users || !this.members) {
-        this.$store.dispatch('badges/getUsers', badge.id)
-      }
+      this.currentBadge = badge
+      this.$store.dispatch('badges/getUsers', badge.id)
     },
     getUserInfos (user) {
+      if (!user) return
+      
       const member = this.$store.state.badges.members.find(member => {
         return member.idMember === user.userId
       })
