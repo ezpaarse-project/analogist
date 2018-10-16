@@ -12,9 +12,8 @@
           <v-flex xs12 sm12>
             <v-switch
               style="float: right"
-              :label="visibility ? 'Public' : $t('badges.private')"
+              :label="visibility ? $t('badges.private') : $t('badges.public')"
               v-model="visibility"
-              @change="setVisiblity"
             ></v-switch>
           </v-flex>
           
@@ -108,8 +107,9 @@ export default {
       }
       return badgesOwend
     },
-    visibility () {
-      return this.$store.state.badges.visibility
+    visibility: {
+      get () { return this.$store.state.badges.visibility },
+      set (newVal) { this.$store.dispatch('badges/setVisiblity', newVal) }
     },
     ping () {
       return this.$store.state.badges.ping
@@ -129,9 +129,6 @@ export default {
     closeLinkedInCard () {
       this.linkedInModal = false
       this.currentBadge = null
-    },
-    setVisiblity () {
-      this.$store.dispatch('badges/setVisiblity', this.visibility)
     }
   }
 }

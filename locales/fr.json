@@ -174,7 +174,8 @@
     "userNotFound": "Personne ne correspond à ce nom.",
     "badgeNotFound": "Aucun badge trouvé avec ce nom.",
     "searchNotFound": "Votre recherche pour {search} ne donne aucun résultat.",
-    "private": "Privé",
+    "private": "Rendre mon profil privé",
+    "public": "Rendre mon profil public",
     "pingError": "Les services OpenBadgeFactory sont actuellement indisponible, il n'est donc pas possible d'émettre des badges !",
     "list": "Liste des badges"
   }
