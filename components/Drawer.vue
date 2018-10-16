@@ -90,14 +90,36 @@
         </v-list-tile-content>
       </v-list-tile>
 
-      <v-list-tile v-if="user" router :to="{ path: '/badges' }" ripple>
-        <v-list-tile-action>
-          <logo-open-badge></logo-open-badge>
-        </v-list-tile-action>
-        <v-list-tile-content>
-          <v-list-tile-title>{{ $t('drawer.badges') }}</v-list-tile-title>
-        </v-list-tile-content>
-      </v-list-tile>
+      <v-list-group
+        append-icon="mdi-chevron-down"
+      >
+        <v-list-tile slot="activator">
+          <v-list-tile-action>
+            <logo-open-badge></logo-open-badge>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>OpenBadge</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+
+        <v-list-tile v-if="user" router :to="{ path: '/badges/view' }" ripple>
+          <v-list-tile-content>
+            <v-list-tile-title>{{ $t('drawer.badges') }}</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+
+        <v-list-tile v-if="user && user.role === 'admin'" router :to="{ path: '/badges/emit' }" ripple>
+          <v-list-tile-content>
+            <v-list-tile-title>{{ $t('badges.emitBadge') }}</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+
+        <v-list-tile router :to="{ path: '/badges/list' }" ripple>
+          <v-list-tile-content>
+            <v-list-tile-title>{{ $t('badges.list') }}</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+      </v-list-group>
 
       <v-list-group
         prepend-icon="mdi-translate"
