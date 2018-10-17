@@ -32,7 +32,7 @@
               <template slot="items" slot-scope="props">
                 <tr @click="getUsers(props.item.badge)">
                   <td>
-                    <img :src="props.item.badge.img" class="badgeImage">
+                    <img :src="props.item.badge.image" class="badgeImage">
                     <span v-if="$i18n.locale === 'fr'">{{ props.item.badge.name }}</span>
                     <span v-else>{{ props.item.badge.alt_language[$i18n.locale].name }}</span>
                   </td>
