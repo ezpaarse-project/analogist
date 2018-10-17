@@ -26,6 +26,7 @@
     "debounce_time": "ANG_HISTORY_DEBOUNCE"
   },
   "badges": {
+    "issuer": "ANG_BADGE_ISSUER",
     "analysesBronze": {
       "badgeId": "ANG_BADGE_ANALYSES_BRONZE_ID",
       "name": "ANG_BADGE_ANALYSES_BRONZE_NAME",
