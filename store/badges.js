@@ -37,8 +37,12 @@ export default {
       return api.getBadges().then((res) => {
         if (res.status === 'success') {
           const badges = res.data
-          // eslint-disable-next-line
-          badges.badges.map(badge => ((badge.issued_on !== undefined) ? moment.unix(badge.issued_on).format((params.locale === 'fr') ?  'DD/MM/YYYY' : 'YYYY-MM-DD') : null))
+          badges.badges.map(badge => {
+            if (badge.issued_on) {
+              return moment.unix(badge.issued_on).format((params.locale === 'fr') ? 'DD/MM/YYYY' : 'YYYY-MM-DD')
+            }
+            return null
+          })
 
           commit('SET_BADGES', badges.badges)
           commit('SET_VISIBILITY', badges.visibility)
