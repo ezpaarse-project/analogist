@@ -69,3 +69,4 @@ npm test
 # Run lint
 npm run lint
 ```
+# LangsTools

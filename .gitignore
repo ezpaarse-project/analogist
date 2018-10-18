@@ -12,3 +12,6 @@ dist
 
 # Mongo volume
 data
+
+# OBF certificates
+ssl

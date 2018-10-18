@@ -173,6 +173,10 @@
     "users": "User(s)",
     "userNotFound": "Nobody matches that name.",
     "badgeNotFound": "No badge found with that name.",
-    "searchNotFound": "Your search for {search} found no results."
+    "searchNotFound": "Your search for {search} found no results.",
+    "private": "Make my profile private",
+    "public": "Make my profile public",
+    "errorPing": "OpenBadgeFactory services are currently unavailable, so it is not possible to issue badges!",
+    "list": "Badges list"
   }
 }

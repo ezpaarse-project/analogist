@@ -48,4 +48,20 @@ router.post('/emit', (req, res) => {
   badges.emit(req.body.event, req.body.profile, false)
 })
 
+router.put('/visibility', (req, res, next) => {
+  request.put(`${url}/visibility`, {
+    json: {
+      visibility: req.body.visibility,
+      userId: req.session.profile.id
+    }
+  }).on('response', response => response.pipe(res))
+    .on('error', next)
+})
+
+router.get('/users/:badgeId', (req, res, next) => {
+  request.get(`${url}/users?id=${req.params.badgeId}`)
+    .on('response', response => response.pipe(res))
+    .on('error', next)
+})
+
 module.exports = router

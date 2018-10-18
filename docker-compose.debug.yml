@@ -22,6 +22,7 @@ services:
       - ANG_BADGE_ANALYSES_SILVER_ID
       - ANG_BADGE_ANALYSES_SILVER_NAME
       - ANG_BADGE_ANALYSES_SILVER_EVENT
+      - ANG_BADGE_ISSUER
       - ANG_SMTP_HOST
       - ANG_SMTP_PORT
       - ANG_NOTIFICATIONS_SENDER
@@ -39,7 +40,7 @@ services:
     command: --smallfiles
 
   opbadge:
-    image: ezpaarseproject/ezpaarse-badge:1.0.3
+    image: ezpaarseproject/ezpaarse-badge:1.1.0
     environment:
       - http_proxy
       - https_proxy

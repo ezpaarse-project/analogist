@@ -6,6 +6,9 @@ export default {
   namespaced: true,
   state: {
     badges: null,
+    visibility: false,
+    users: null,
+    members: null,
     ping: null,
     metrics: null
   },
@@ -18,6 +21,15 @@ export default {
     },
     SET_METRICS (state, metrics) {
       Vue.set(state, 'metrics', metrics)
+    },
+    SET_VISIBILITY (state, visibility) {
+      Vue.set(state, 'visibility', visibility)
+    },
+    SET_USERS (state, users) {
+      Vue.set(state, 'users', users)
+    },
+    SET_MEMBERS (state, members) {
+      Vue.set(state, 'members', members)
     }
   },
   actions: {
@@ -25,11 +37,15 @@ export default {
       return api.getBadges().then((res) => {
         if (res.status === 'success') {
           const badges = res.data
+          badges.badges.map(badge => {
+            if (badge.issued_on) {
+              return moment.unix(badge.issued_on).format((params.locale === 'fr') ? 'DD/MM/YYYY' : 'YYYY-MM-DD')
+            }
+            return null
+          })
 
-          // eslint-disable-next-line
-          badges.map(badge => ((badge.issued_on !== undefined) ? moment.unix(badge.issued_on).format((params.locale === 'fr') ?  'DD/MM/YYYY' : 'YYYY-MM-DD') : null))
-
-          commit('SET_BADGES', badges)
+          commit('SET_BADGES', badges.badges)
+          commit('SET_VISIBILITY', badges.visibility)
         }
       }).catch((response) => {
         // eslint-disable-next-line
@@ -38,9 +54,7 @@ export default {
     },
     getPing ({ commit }) {
       return api.getPing().then((res) => {
-        if (res.status === 'success') {
-          commit('SET_PING', (res.data === 'pong'))
-        }
+        if (res.status === 'success') commit('SET_PING', (res.data === 'pong'))
       }).catch((response) => {
         // eslint-disable-next-line
         console.log(response)
@@ -48,9 +62,7 @@ export default {
     },
     getMetrics ({ commit }) {
       return api.getMetrics().then((res) => {
-        if (res.status === 'success') {
-          commit('SET_METRICS', res.data.metrics)
-        }
+        if (res.status === 'success') commit('SET_METRICS', res.data.metrics)
       }).catch((response) => {
         // eslint-disable-next-line
         console.log(response)
@@ -60,6 +72,31 @@ export default {
       return api.emit(data).then((res) => {
         // eslint-disable-next-line
         console.log(res)
+      }).catch((response) => {
+        // eslint-disable-next-line
+        console.log(response)
+      })
+    },
+    setVisiblity ({ commit }, visibility) {
+      return api.setVisiblity({ visibility }).then((res) => {
+        if (res.status === 'success') commit('SET_VISIBILITY', visibility)
+      }).catch((response) => {
+        // eslint-disable-next-line
+        console.log(response)
+      })
+    },
+    getUsers ({ commit, state }, badgeId) {
+      return api.getUsers({ badgeId }).then((res) => {
+        if (res.status === 'success') {
+          commit('SET_USERS', res.data)
+
+          return api.getBoardMembers().then((res) => {
+            commit('SET_MEMBERS', res)
+          }).catch((response) => {
+            // eslint-disable-next-line
+            console.log(response)
+          })
+        }
       }).catch((response) => {
         // eslint-disable-next-line
         console.log(response)
