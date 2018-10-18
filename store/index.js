@@ -52,7 +52,7 @@ const store = () => new Vuex.Store({
         })
     },
     FETCH_TRELLO_LISTS ({ commit }) {
-      return api.getLists().then(items => commit('SET_TRELLO_LISTS', items))
+      return api.getLists().then(items => commit('SET_TRELLO_LISTS', Array.isArray(items) ? items : []))
     },
     GET_ANALYSIS ({ commit, state }, analysisID) {
       const analysis = (state.analyses || []).find(a => a.id === analysisID)

@@ -101,6 +101,10 @@ api.checkDomain = function (domain) {
  */
 api.getExtendedCards = function () {
   return api.getCards().then(cards => {
+    if (!Array.isArray(cards)) {
+      cards = []
+    }
+
     return api.getPlatforms().then(platforms => {
       const platformsMap = new Map()
       platforms.forEach(p => {
