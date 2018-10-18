@@ -21,7 +21,7 @@
               item-text="member.fullName"
               append-icon="mdi-chevron-down"
             >
-              <template slot="items" slot-scope="{ item }">
+              <template slot="item" slot-scope="{ item }">
                 <v-list-tile-avatar>
                 <img v-if="item.member.avatarHash" :src="`${item.member.avatarUrl}/50.png`">
                 <span v-else>
@@ -37,7 +37,7 @@
               </template>
             </v-autocomplete>
           </v-flex>
-            
+
           <v-flex xs12 sm6 pl-2>
               <v-autocomplete
                 v-model="currentBadge"
@@ -50,7 +50,7 @@
                 item-text="name"
                 append-icon="mdi-chevron-down"
               >
-              <template slot="items" slot-scope="{ item }">
+              <template slot="item" slot-scope="{ item }">
                 <v-list-tile-avatar>
                 <img :src="item.image">
                 </v-list-tile-avatar>
