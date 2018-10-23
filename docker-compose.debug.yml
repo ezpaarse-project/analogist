@@ -40,7 +40,7 @@ services:
     command: --smallfiles
 
   opbadge:
-    image: ezpaarseproject/ezpaarse-badge:1.1.1
+    image: ezpaarseproject/ezpaarse-badge:1.1.2
     environment:
       - http_proxy
       - https_proxy
