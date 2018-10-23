@@ -2,7 +2,7 @@ version: '2'
 
 services:
   opbadge:
-    image: ezpaarseproject/ezpaarse-badge:1.1.0
+    image: ezpaarseproject/ezpaarse-badge:1.1.1
     environment:
       - http_proxy
       - https_proxy
