@@ -169,8 +169,8 @@ api.getMember = function (memberId) {
 /**
  * Badges
  */
-api.getBadges = function () {
-  return axios.get(`/api/badges`).then(res => res.data)
+api.getBadges = function (userId) {
+  return axios.get(`/api/badges?id=${userId}`).then(res => res.data)
 }
 
 api.getPing = function () {
