@@ -9,7 +9,7 @@
 
       <v-card-text>
         <v-layout row wrap v-if="ping">
-          <v-flex xs12 sm6 pr-2>
+          <v-flex :class="{ 'sm-12 sm-6 pr-2': badges }">
             <v-autocomplete
               v-model="currentBoardMember"
               :items="trelloBoardMembers"
@@ -23,40 +23,43 @@
             >
               <template slot="item" slot-scope="{ item }">
                 <v-list-tile-avatar>
-                <img v-if="item.member.avatarHash" :src="`${item.member.avatarUrl}/50.png`">
-                <span v-else>
+                  <img v-if="item.member.avatarHash" :src="`${item.member.avatarUrl}/50.png`">
+                  <span v-else>
                     <v-avatar color="blue-grey lighten-4">
-                    <span class="white--text headline"><small>{{item.member.initials}}</small></span>
+                      <span class="white--text headline"><small>{{item.member.initials}}</small></span>
                     </v-avatar>
-                </span>
+                  </span>
                 </v-list-tile-avatar>
                 <v-list-tile-content>
-                <v-list-tile-title v-html="item.member.fullName"></v-list-tile-title>
+                  <v-list-tile-title v-html="item.member.fullName"></v-list-tile-title>
                 <v-list-tile-sub-title v-html="item.member.username"></v-list-tile-sub-title>
                 </v-list-tile-content>
               </template>
             </v-autocomplete>
           </v-flex>
 
-          <v-flex xs12 sm6 pl-2>
-              <v-autocomplete
-                v-model="currentBadge"
-                :items="badges"
-                label="Badge(s)"
-                persistent-hint
-                :no-data-text="$t('badges.badgeNotFound')"
-                single-line
-                return-object
-                item-text="name"
-                append-icon="mdi-chevron-down"
-              >
+          <v-flex xs12 sm6 pl-2 v-if="badges">
+            <v-autocomplete
+              v-model="currentBadge"
+              :items="badges"
+              label="Badge(s)"
+              persistent-hint
+              :no-data-text="$t('badges.badgeNotFound')"
+              single-line
+              return-object
+              item-text="name"
+              append-icon="mdi-chevron-down"
+            >
               <template slot="item" slot-scope="{ item }">
-                <v-list-tile-avatar>
-                <img :src="item.image">
-                </v-list-tile-avatar>
-                <v-list-tile-content>
-                <v-list-tile-title v-html="item.name"></v-list-tile-title>
-                </v-list-tile-content>
+                <template>
+                  <v-list-tile-avatar :class="{ 'isOwn': item.issued_on }">
+                    <img :src="item.image">
+                  </v-list-tile-avatar>
+                  <v-list-tile-content :class="{ 'isOwn': item.issued_on }">
+                    <v-list-tile-title v-html="item.name"></v-list-tile-title>
+                    <v-list-tile-sub-title v-if="item.issued_on">{{issuedOn(item.issued_on)}}</v-list-tile-sub-title>
+                  </v-list-tile-content>
+                </template>
               </template>
             </v-autocomplete>
           </v-flex>
@@ -98,12 +101,15 @@
 </template>
 
 <script>
+import moment from 'moment'
+
 export default {
   data () {
     return {
       currentBoardMember: null,
       currentBadge: null,
-      email: null
+      email: null,
+      badges: null
     }
   },
   async fetch ({ store, redirect, app }) {
@@ -114,18 +120,19 @@ export default {
     }
 
     await store.dispatch('badges/getPing')
-    await store.dispatch('badges/getBadges', { id: store.state.user.id, locale: app.i18n.locale })
     await store.dispatch('FETCH_TRELLO_BOARD_MEMBERS')
   },
   watch: {
     user: function () {
       if (!this.user) return this.$router.push('/badges/list')
+    },
+    currentBoardMember: function () {
+      this.$store.dispatch('badges/getBadges', { id: this.currentBoardMember.idMember, locale: this.$i18n.locale }).then(res => {
+        this.badges = this.$store.state.badges.badges
+      })
     }
   },
   computed: {
-    badges () {
-      return this.$store.state.badges.badges
-    },
     ping () {
       return this.$store.state.badges.ping
     },
@@ -168,6 +175,9 @@ export default {
       this.email = null
       this.currentBadge = null
       this.currentBoardMember = null
+    },
+    issuedOn (date) {
+      return date ? moment.unix(date).locale(this.$i18n.locale).format('LL') : null
     }
   }
 }
@@ -178,6 +188,10 @@ img.obfactory {
   width: 220px;
 }
 img.error {
+  filter: grayscale(100%);
+  opacity: 0.6;
+}
+.isOwn {
   filter: grayscale(100%);
   opacity: 0.6;
 }

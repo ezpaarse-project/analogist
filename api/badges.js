@@ -9,7 +9,7 @@ const cors        = require('cors')
 const url = `http://${config.badges.host}:${config.badges.port}`
 
 router.get('/', (req, res, next) => {
-  request.get(`${url}/badges?id=${req.session.profile.id}`)
+  request.get(`${url}/badges?id=${req.query.id}`)
     .on('response', response => response.pipe(res))
     .on('error', next)
 })

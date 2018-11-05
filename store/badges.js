@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import api from './api'
-import moment from 'moment'
 
 export default {
   namespaced: true,
@@ -10,7 +9,8 @@ export default {
     users: null,
     members: null,
     ping: null,
-    metrics: null
+    metrics: null,
+    userBadges: null
   },
   mutations: {
     SET_BADGES (state, badges) {
@@ -30,19 +30,16 @@ export default {
     },
     SET_MEMBERS (state, members) {
       Vue.set(state, 'members', members)
+    },
+    SET_USER_BADGES (state, badges) {
+      Vue.set(state, 'userBadges', badges)
     }
   },
   actions: {
     getBadges ({ commit }, params) {
-      return api.getBadges().then((res) => {
+      return api.getBadges(params.id).then((res) => {
         if (res.status === 'success') {
           const badges = res.data
-          badges.badges.map(badge => {
-            if (badge.issued_on) {
-              return moment.unix(badge.issued_on).format((params.locale === 'fr') ? 'DD/MM/YYYY' : 'YYYY-MM-DD')
-            }
-            return null
-          })
 
           commit('SET_BADGES', badges.badges)
           commit('SET_VISIBILITY', badges.visibility)
