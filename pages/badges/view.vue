@@ -18,7 +18,7 @@
           </v-flex>
           
           <v-flex xs12 sm2 v-if="badges.badges && ping" v-for="badge in badges.badges" :key="badge.id" @click="currentBadge = badge; linkedInModal = false" :class="{ 'notPossessed' : !badge.issued_on }">
-            <img class="mx-auto badgeImage" :src="badge.image" width="60%">
+            <img class="mx-auto badgeImage" :src="badge.image">
             <h4 class="badgeName" v-if="$i18n.locale === 'fr'">{{ badge.name }}</h4>
             <h4 class="badgeName" v-else>{{ badge.alt_language[$i18n.locale].name }}</h4>
           </v-flex>
