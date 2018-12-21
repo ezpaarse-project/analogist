@@ -126,10 +126,11 @@ export default {
     user: function () {
       if (!this.user) return this.$router.push('/badges/list')
     },
-    currentBoardMember: function () {
-      this.$store.dispatch('badges/getBadges', { id: this.currentBoardMember.idMember, locale: this.$i18n.locale }).then(res => {
-        this.badges = this.$store.state.badges.badges
-      })
+    currentBoardMember: async function () {
+      if (!this.currentBoardMember) { return }
+
+      await this.$store.dispatch('badges/getBadges', { id: this.currentBoardMember.idMember, locale: this.$i18n.locale })
+      this.badges = this.$store.state.badges.badges
     }
   },
   computed: {
