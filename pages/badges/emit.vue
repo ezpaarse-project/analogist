@@ -108,8 +108,7 @@ export default {
     return {
       currentBoardMember: null,
       currentBadge: null,
-      email: null,
-      badges: null
+      email: null
     }
   },
   async fetch ({ store, redirect, app }) {
@@ -121,21 +120,27 @@ export default {
 
     await store.dispatch('badges/getPing')
     await store.dispatch('FETCH_TRELLO_BOARD_MEMBERS')
+
+    if (store.state.badges && store.state.badges.ping) {
+      await store.dispatch('badges/getBadges', { locale: app.i18n.locale })
+    }
   },
   watch: {
     user: function () {
       if (!this.user) return this.$router.push('/badges/list')
     },
     currentBoardMember: async function () {
-      if (!this.currentBoardMember) { return }
-
-      await this.$store.dispatch('badges/getBadges', { id: this.currentBoardMember.idMember, locale: this.$i18n.locale })
-      this.badges = this.$store.state.badges.badges
+      if (this.currentBoardMember) {
+        await this.$store.dispatch('badges/getBadges', { id: this.currentBoardMember.idMember, locale: this.$i18n.locale })
+      }
     }
   },
   computed: {
     ping () {
       return this.$store.state.badges.ping
+    },
+    badges () {
+      return this.$store.state.badges.badges
     },
     user () {
       return this.$store.state.user
