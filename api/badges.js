@@ -31,8 +31,11 @@ router.get('/view/:userId/:badgeId/:language', (req, res, next) => {
     headers: {
       'angHost': `${req.protocol}://${req.get('x-forwarded-host') || req.connection.remoteAddress}`
     }
-  }).on('response', response => response.pipe(res))
-    .on('error', next)
+  }).on('response', response => {
+    res.charset = 'UTF-8'
+    res.type('html')
+    return response.pipe(res)
+  }).on('error', next)
 })
 
 router.get('/embed/:userId/:badgeId/:language', (req, res, next) => {
@@ -40,8 +43,11 @@ router.get('/embed/:userId/:badgeId/:language', (req, res, next) => {
     headers: {
       'angHost': `${req.protocol}://${req.get('x-forwarded-host') || req.connection.remoteAddress}`
     }
-  }).on('response', response => response.pipe(res))
-    .on('error', next)
+  }).on('response', response => {
+    res.charset = 'UTF-8'
+    res.type('html')
+    return response.pipe(res)
+  }).on('error', next)
 })
 
 router.post('/emit', (req, res) => {
