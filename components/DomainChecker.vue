@@ -14,7 +14,9 @@
     </v-layout>
 
     <p v-if="checking">{{ $t('domainCheck.checking') }}</p>
-    <p v-else-if="parser" v-html="$t('domainCheck.supported', { domainName, trello: parser.manifest.trello, cardName: parser.manifest.longname })"></p>
+    <template v-else-if="parsers && parsers.length > 0">
+      <p v-for="parser in parsers" :key="parser.platform" v-html="$t('domainCheck.supported', { domainName, trello: parser.manifest.trello, cardName: parser.manifest.longname })"></p>
+    </template>
     <p v-else-if="error">{{ $t('domainCheck.error', { message: error.message }) }}</p>
     <p v-else-if="domainName" v-html="$t('domainCheck.unsupported', { domainName })"></p>
     <p v-else>{{ $t('domainCheck.pleaseType') }}</p>
@@ -28,7 +30,7 @@ export default {
       domainName: '',
       domainInput: '',
       checking: false,
-      parser: null,
+      parsers: null,
       error: null
     }
   },
@@ -38,12 +40,12 @@ export default {
 
       this.checking = true
       this.domainName = domain
-      this.parser = null
+      this.parsers = null
       this.error = null
 
       try {
         const res = await this.$store.dispatch('CHECK_DOMAIN', this.domainName)
-        this.parser = res
+        this.parsers = res
       } catch (e) {
         this.error = e
       }
