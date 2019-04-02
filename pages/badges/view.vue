@@ -12,12 +12,14 @@
           <v-flex xs12 sm12>
             <v-switch
               style="float: right"
-              :label="visibility ? $t('badges.private') : $t('badges.public')"
+              :label="visibility ? $t('badges.public') : $t('badges.private')"
               v-model="visibility"
             ></v-switch>
           </v-flex>
-          
-          <v-flex xs12 sm2 v-if="badges.badges && ping" v-for="badge in badges.badges" :key="badge.id" @click="currentBadge = badge; linkedInModal = false" :class="{ 'notPossessed' : !badge.issued_on }">
+        </v-layout>
+
+        <v-layout v-if="badges && badges.badges && ping" row wrap justify-center>
+          <v-flex xs12 sm2 v-for="badge in badges.badges" :key="badge.id" @click="currentBadge = badge; linkedInModal = false" :class="{ 'notPossessed' : !badge.issued_on }">
             <img class="mx-auto badgeImage" :src="badge.image">
             <h4 class="badgeName" v-if="$i18n.locale === 'fr'">{{ badge.name }}</h4>
             <h4 class="badgeName" v-else>{{ badge.alt_language[$i18n.locale].name }}</h4>
