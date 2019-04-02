@@ -3,7 +3,7 @@
     <v-card-text>
       <v-layout row>
         <v-flex xs5 sm5>
-          <v-card-media :src="badge.image" height="60%" contain></v-card-media>
+          <img class="mx-auto badgeImage" :src="badge.image">
         </v-flex>
         <v-flex xs7 sm12>
           <div class="badge">
@@ -140,5 +140,9 @@ export default {
   user-select: none; 
   cursor: default; 
   pointer-events: none;
+}
+.badgeImage {
+  display: block; 
+  margin: auto;
 }
 </style>

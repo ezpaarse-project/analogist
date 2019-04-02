@@ -48,8 +48,7 @@ module.exports = {
       'vue-i18n',
       'vuedraggable',
       'moment',
-      'file-saver',
-      '~/node_modules/vue-socket.io'
+      'file-saver'
     ]
   }
 }

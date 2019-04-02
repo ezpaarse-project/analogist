@@ -149,19 +149,6 @@ export default {
       return this.$store.state.trelloBoardMembers
     }
   },
-  mounted () {
-    this.$socket.on('BADGE_EMITTED', (data) => {
-      if (data.emitted) return this.$store.dispatch('snacks/success', 'badges.emitted')
-    })
-
-    this.$socket.on('BADGE_EMITTED_MANUALLY', (data) => {
-      if (data.emitted) return this.$store.dispatch('snacks/success', 'badges.issued')
-    })
-
-    this.$socket.on('BADGE_ALREADY_OWNED', () => {
-      this.$store.dispatch('snacks/info', 'badges.owned')
-    })
-  },
   methods: {
     emit () {
       this.$socket.emit('ADD_TO_ROOM', { userId: this.currentBoardMember.idMember })
