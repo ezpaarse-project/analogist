@@ -97,10 +97,10 @@ export default {
       return this.badge.issued_on ? moment.unix(this.badge.issued_on).locale(this.$i18n.locale).format('LL') : null
     },
     viewUrl () {
-      return `http://${location.host}/api/badges/view/${this.userId}/${this.badge.id}/${this.$i18n.locale}`
+      return `http://${location.host}/api/badges/view/${this.badge.uuid}/${this.$i18n.locale}`
     },
     embedObject () {
-      return `<object data="http://${location.host}/api/badges/embed/${this.userId}/${this.badge.id}/${this.$i18n.locale}" width="200px" height="300px"></object>`
+      return `<object data="http://${location.host}/api/badges/embed/${this.badge.uuid}/${this.$i18n.locale}" width="200px" height="300px"></object>`
     }
   },
   methods: {
