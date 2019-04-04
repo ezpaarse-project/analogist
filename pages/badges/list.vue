@@ -9,7 +9,7 @@
 
       <v-card-text>
         <v-layout row wrap>
-          <v-flex xs12 sm12>
+          <v-flex xs12 sm12 v-if="metrics">
             <v-text-field
               v-model="search"
               append-icon="mdi-magnify"
@@ -20,6 +20,7 @@
 
           <v-flex xs12 sm12 mb-3>
             <v-data-table
+              v-if="metrics"
               :headers="headers"
               :items="metrics"
               item-key="badge.id"
@@ -70,6 +71,12 @@
                 {{ $t('badges.searchNotFound', {search}) }}
               </v-alert>
             </v-data-table>
+
+            <v-card class="red white--text" v-else>
+              <v-card-text>
+                {{ $t('badges.noMetrics') }}
+              </v-card-text>
+            </v-card>
           </v-flex>
         </v-layout>
 

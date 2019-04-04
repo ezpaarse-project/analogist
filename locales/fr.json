@@ -176,7 +176,8 @@
     "searchNotFound": "Votre recherche pour {search} ne donne aucun résultat.",
     "private": "Profil privé",
     "public": "Profil public",
-    "pingError": "Les services OpenBadgeFactory sont actuellement indisponible, il n'est donc pas possible d'émettre des badges !",
-    "list": "Liste des badges"
+    "pingError": "Il est impossible d'émettre des badges pour le moment (le serveur de badges ou OpenBadgeFactory ne repond pas) !",
+    "list": "Liste des badges",
+    "noMetrics": "La liste des badges n'a pu être chargée !"
   }
 }

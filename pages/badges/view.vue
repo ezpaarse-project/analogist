@@ -3,12 +3,12 @@
     <v-card>
       <v-toolbar class="secondary" dense dark card>
         <v-toolbar-title>
-          {{ $t('badges.title') }} <v-chip color="grey lighten-2"><strong>{{badgesOwned}}</strong> / {{badges.badges.length}}</v-chip>
+          {{ $t('badges.title') }} <v-chip v-if="badges && badges.badges" color="grey lighten-2"><strong>{{badgesOwned}}</strong> / {{badges.badges.length}}</v-chip>
         </v-toolbar-title>
       </v-toolbar>
       
       <v-card-text>
-        <v-layout row wrap justify-center>
+        <v-layout row wrap justify-center v-if="badges && badges.badges">
           <v-flex xs12 sm12>
             <v-switch
               style="float: right"
@@ -40,6 +40,16 @@
           <v-dialog v-if="linkedInModal && currentBadge" v-model="currentBadge" max-width="600px">
             <linked-in-card :badge="currentBadge" :userId="user.id" @closeLinkedInCard="closeLinkedInCard"></linked-in-card>
           </v-dialog>
+        </v-layout>
+
+        <v-layout v-else>
+          <v-flex xs12 sm12 mb-2>
+            <v-card class="red white--text">
+              <v-card-text>
+                {{ $t('badges.noMetrics') }}
+              </v-card-text>
+            </v-card>
+          </v-flex>
         </v-layout>
 
         <a href="https://openbadgefactory.com/" target="blank">

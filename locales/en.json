@@ -176,7 +176,8 @@
     "searchNotFound": "Your search for {search} found no results.",
     "private": "Profile private",
     "public": "Profile public",
-    "errorPing": "OpenBadgeFactory services are currently unavailable, so it is not possible to issue badges!",
-    "list": "Badges list"
+    "errorPing": "So it is not possible to issue badges!",
+    "list": "Badges list",
+    "noMetrics": "So it is not possible to load the badges list!"
   }
 }
