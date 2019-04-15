@@ -42,7 +42,7 @@ services:
     restart: on-failure
 
   opbadge:
-    image: ezpaarseproject/ezpaarse-badge:1.1.11
+    image: ezpaarseproject/ezpaarse-badge:1.1.12
     environment:
       - http_proxy
       - https_proxy
