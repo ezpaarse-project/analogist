@@ -179,5 +179,9 @@
     "pingError": "Il est impossible d'émettre des badges pour le moment (le serveur de badges ou OpenBadgeFactory ne repond pas) !",
     "list": "Liste des badges",
     "noMetrics": "La liste des badges n'a pu être chargée !"
+  },
+  "theme": {
+    "dark": "Thème sombre",
+    "light": "Thème clair"
   }
 }

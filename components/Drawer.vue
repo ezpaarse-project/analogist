@@ -1,34 +1,5 @@
 <template>
-  <v-navigation-drawer app fixed disable-route-watcher :mini-variant="mini" v-model="drawer">
-    <v-list dark class="pa-1 red accent-3" v-if="!mini">
-      <v-list-tile avatar tag="div">
-        <v-list-tile-avatar>
-          <img src="~/assets/img/logo-white.svg" />
-        </v-list-tile-avatar>
-        <v-list-tile-content>
-          <v-list-tile-title>AnalogIST</v-list-tile-title>
-          <v-list-tile-sub-title>
-            <v-menu>
-              <span flat slot="activator">
-                Version: {{ appVersion }} <v-icon dark>mdi-menu-down</v-icon>
-              </span>
-              <v-list>
-                <v-list-tile href="https://github.com/ezpaarse-project/analogist#readme" target="_blank">
-                  <v-list-tile-action>
-                    <v-icon>mdi-github-box</v-icon>
-                  </v-list-tile-action>
-
-                  <v-list-tile-content>
-                    GitHub
-                  </v-list-tile-content>
-                </v-list-tile>
-              </v-list>
-            </v-menu>
-          </v-list-tile-sub-title>
-        </v-list-tile-content>
-      </v-list-tile>
-    </v-list>
-
+  <v-navigation-drawer app fixed clipped left disable-route-watcher :mini-variant="mini" v-model="drawer">
     <v-layout row justify-center v-if="!mini">
       <v-btn icon target="_blank" v-for="link in links" :title="link.title" :href="link.href" :key="link.icon">
         <v-icon>{{ link.icon }}</v-icon>
@@ -156,7 +127,44 @@
           <v-list-tile-title>{{ $t('drawer.logout') }}</v-list-tile-title>
         </v-list-tile-content>
       </v-list-tile>
+    </v-list>
 
+    <v-list class="bottomList">
+       <v-list-tile>
+        <v-list-tile-content class="text-xs-center">
+          <v-list-tile-sub-title>
+              <v-tooltip top>
+                <template>
+                  <v-btn small flat icon slot="activator" @click="dark = !dark">
+                    <v-icon v-if="dark">mdi-white-balance-sunny</v-icon>
+                    <v-icon v-else>mdi-weather-night</v-icon>
+                  </v-btn>
+                </template>
+                <span v-if="dark">{{ $t('theme.light') }}</span>
+                <span v-else>{{ $t('theme.dark') }}</span>
+              </v-tooltip>
+          </v-list-tile-sub-title>
+        </v-list-tile-content>
+      </v-list-tile>
+      
+      <v-list-tile>
+        <v-list-tile-content class="text-xs-center">
+          <v-list-tile-sub-title v-if="appVersion">
+            <v-btn
+              small
+              outline
+              class="ma-0"
+              href="https://github.com/ezpaarse-project/analogist#readme"
+              target="_blank"
+            >
+              Version: {{ appVersion }}
+              <v-icon right>
+                mdi-github-circle
+              </v-icon>
+            </v-btn>
+          </v-list-tile-sub-title>
+        </v-list-tile-content>
+      </v-list-tile>
     </v-list>
   </v-navigation-drawer>
 </template>
@@ -203,6 +211,10 @@ export default {
     },
     loginUrl () {
       return `/api/auth/connect/trello?callback=/api/auth/callback${this.$route.fullPath}`
+    },
+    dark: {
+      get () { return this.$store.state.dark },
+      set (newVal) { this.$store.dispatch('SET_DARK', newVal) }
     }
   },
   methods: {
@@ -215,4 +227,10 @@ export default {
 
 <style scoped>
   a { color: inherit }
+  .bottomList {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
 </style>

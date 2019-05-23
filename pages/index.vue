@@ -6,7 +6,7 @@
           {{ $t('cards.platforms') }} ({{ cards.length }})
         </v-toolbar-title>
 
-        <v-btn absolute fab bottom right class="pink" v-if="canEdit" :to="{ name: 'platforms-new' }">
+        <v-btn absolute fab bottom right color="primary" v-if="canEdit" :to="{ name: 'platforms-new' }">
           <v-icon>mdi-plus</v-icon>
         </v-btn>
       </v-toolbar>

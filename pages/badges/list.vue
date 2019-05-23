@@ -81,7 +81,7 @@
         </v-layout>
 
         <a href="https://openbadgefactory.com/" target="blank">
-          <img src="@/static/obf_logo.jpeg" alt="OpenBadgeFactory" :class="{ 'error': !ping }" class="obfactory" align="right">
+          <img src="@/static/obf_logo.png" alt="OpenBadgeFactory" :class="{ 'error': !ping }" class="obfactory" align="right">
         </a>
               
         <v-tooltip bottom>
