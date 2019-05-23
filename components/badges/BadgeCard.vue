@@ -35,44 +35,21 @@
             <v-icon>mdi-share-variant</v-icon>
           </v-btn>
           <v-list class="sharing-list">
-            <v-list-tile>
-              <v-list-tile-content>
-                <a :href="`https://www.facebook.com/sharer/sharer.php?u=${viewUrl}`" target="_blank">
-                  <v-icon>mdi-facebook-box</v-icon> Facebook
-                </a>
-              </v-list-tile-content>
+            <v-list-tile router :href="`https://www.facebook.com/sharer/sharer.php?u=${viewUrl}`" target="_blank">
+              <v-icon>mdi-facebook-box</v-icon> Facebook
             </v-list-tile>
-            <v-list-tile>
-              <v-list-tile-content>
-                <a :href="`https://twitter.com/intent/tweet?size=medium&count=none&text=${$i18n.locale === 'fr' ? badge.name : badge.alt_language[$i18n.locale].name}%20${viewUrl}&hashtags=AnalogIST,ezMESURE,ezTEAM,openbadge&via=ezpaarse`" target="_blank">
-                  <v-icon>mdi-twitter-box</v-icon> Twitter
-                </a>
-              </v-list-tile-content>
+            <v-list-tile :href="`https://twitter.com/intent/tweet?size=medium&count=none&text=${$i18n.locale === 'fr' ? badge.name : badge.alt_language[$i18n.locale].name}%20${viewUrl}&hashtags=AnalogIST,ezMESURE,ezTEAM,openbadge&via=ezpaarse`" target="_blank">
+              <v-icon>mdi-twitter-box</v-icon> Twitter
             </v-list-tile>
-            <v-list-tile>
-              <v-list-tile-content>
-                <a :href="`https://plus.google.com/share?url=${viewUrl}`" target="_blank">
-                  <v-icon>mdi-google-plus-box</v-icon> Google+
-                </a>
-              </v-list-tile-content>
+            <v-list-tile @click="linkedIn">
+              <v-icon>mdi-linkedin-box</v-icon> Linkedin
             </v-list-tile>
-            <v-list-tile>
-              <v-list-tile-content>
-                <a @click="linkedIn">
-                  <v-icon>mdi-linkedin-box</v-icon> Linkedin
-                </a>
-              </v-list-tile-content>
-            </v-list-tile>
-            <v-list-tile>
-              <v-list-tile-content>
-                <v-tooltip bottom>
-                  <a slot="activator" @click="copyEmbedObject">
-                    <v-icon>mdi-code-tags</v-icon> {{ $t('badges.embed') }}
-                  </a>
-                  <span>{{ $t('ezLogger.copyToClipboard') }}</span>
-                </v-tooltip>
-              </v-list-tile-content>
-            </v-list-tile>
+            <v-tooltip bottom>
+              <v-list-tile slot="activator" @click="copyEmbedObject">
+                <v-icon>mdi-code-tags</v-icon> {{ $t('badges.embed') }}
+              </v-list-tile>
+              <span>{{ $t('ezLogger.copyToClipboard') }}</span>
+            </v-tooltip>
           </v-list>
         </v-menu>
         <span>{{ $t('badges.share') }}</span>

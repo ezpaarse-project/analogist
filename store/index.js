@@ -28,7 +28,8 @@ const store = () => new Vuex.Store({
     drawer: true,
     lastVisitedAnalysis: null,
     trelloBoardMembers: [],
-    lastVisitedPlatform: null
+    lastVisitedPlatform: null,
+    dark: false
   },
   actions: {
     FETCH_PROFILE ({ commit }) {
@@ -116,6 +117,9 @@ const store = () => new Vuex.Store({
     },
     SET_VISITED_PLATFORM ({ commit }, value) {
       commit('SET_VISITED_PLATFORM', value)
+    },
+    SET_DARK ({ commit }, value) {
+      commit('SET_DARK', value)
     }
   },
   mutations: {
@@ -166,6 +170,9 @@ const store = () => new Vuex.Store({
     },
     SET_VISITED_PLATFORM (state, cardID) {
       Vue.set(state, 'lastVisitedPlatform', cardID)
+    },
+    SET_DARK (state, value) {
+      Vue.set(state, 'dark', value)
     }
   }
 })

@@ -179,5 +179,9 @@
     "errorPing": "So it is not possible to issue badges!",
     "list": "Badges list",
     "noMetrics": "So it is not possible to load the badges list!"
+  },
+  "theme": {
+    "dark": "Dark theme",
+    "light": "Light theme"
   }
 }

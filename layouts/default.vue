@@ -1,5 +1,5 @@
 <template>
-  <v-app id="analogist">
+  <v-app id="analogist" :dark="dark">
     <AppDrawer/>
     <AppHeader/>
     <v-content>
@@ -21,6 +21,11 @@ export default {
     AppHeader,
     AppDrawer,
     Snackbar
+  },
+  computed: {
+    dark () {
+      return this.$store.state.dark
+    }
   }
 }
 </script>
