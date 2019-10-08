@@ -18,7 +18,7 @@
     "version": "npm run patch-version && git add docker-compose.yml"
   },
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.18.1",
     "body-parser": "^1.18.3",
     "config": "^1.30.0",
     "connect-mongo": "^2.0.1",
