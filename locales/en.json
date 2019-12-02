@@ -10,6 +10,7 @@
     "close": "Close"
   },
   "drawer": {
+    "home": "Home",
     "platforms": "Platforms",
     "badges": "My badges",
     "trelloBoard": "Trello board",
@@ -120,6 +121,7 @@
     "testWithEzlogger": "Test with ezLogger"
   },
   "cards": {
+    "home": "Home",
     "search": "Search",
     "name": "Name",
     "status": "Status",

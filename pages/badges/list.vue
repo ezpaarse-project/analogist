@@ -39,33 +39,31 @@
                   </td>
                   <td class="text-xs-left">{{ props.item.issues.app }}</td>
                 </tr>
-                <v-card flat v-if="currentBadge && users && members && currentBadge.id == props.item.badge.id && getUserInfos(users[0])">
-                  <v-card-text>
-                    <v-list class="mt-1" justify-center>
-                      <v-layout row wrap justify-left>
-                        <template v-for="user in users">
-                          <v-flex :key="getUserInfos(user).idMember">
-                            <v-list-tile avatar>
-                              <v-list-tile-avatar>
-                                <img v-if="getUserInfos(user).member.avatarHash" :src="`${getUserInfos(user).member.avatarUrl}/50.png`">
-                                <span v-else>
-                                  <v-avatar color="blue-grey lighten-4">
-                                    <span class="white--text headline"><small>{{getUserInfos(user).member.initials}}</small></span>
-                                  </v-avatar>
-                                </span>
-                              </v-list-tile-avatar>
+                <tr>
+                  <td colspan="2" v-if="currentBadge && users && members && currentBadge.id == props.item.badge.id && getUserInfos(users[0])">
+                    <v-layout row wrap justify-center>
+                      <template v-for="user in users">
+                        <div :key="getUserInfos(user).idMember" class="pt-2 pb-2">
+                          <v-list-tile avatar>
+                            <v-list-tile-avatar>
+                              <img v-if="getUserInfos(user).member.avatarHash" :src="`${getUserInfos(user).member.avatarUrl}/50.png`">
+                              <span v-else>
+                                <v-avatar color="blue-grey lighten-4">
+                                  <span class="white--text headline"><small>{{getUserInfos(user).member.initials}}</small></span>
+                                </v-avatar>
+                              </span>
+                            </v-list-tile-avatar>
 
-                              <v-list-tile-content>
-                                <v-list-tile-title v-html="getUserInfos(user).member.fullName"></v-list-tile-title>
-                                <v-list-tile-sub-title v-html="getUserInfos(user).issuedOn"></v-list-tile-sub-title>
-                              </v-list-tile-content>
-                            </v-list-tile>
-                          </v-flex>
-                        </template>
-                      </v-layout>
-                    </v-list>
-                  </v-card-text>
-                </v-card>
+                            <v-list-tile-content>
+                              <v-list-tile-title v-html="getUserInfos(user).member.fullName"></v-list-tile-title>
+                              <v-list-tile-sub-title v-html="getUserInfos(user).issuedOn"></v-list-tile-sub-title>
+                            </v-list-tile-content>
+                          </v-list-tile>
+                        </div>
+                      </template>
+                    </v-layout>
+                  </td>
+                </tr>
               </template>
               <v-alert slot="no-results" :value="true" color="info" icon="mdi-alert-circle">
                 {{ $t('badges.searchNotFound', {search}) }}

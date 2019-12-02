@@ -9,25 +9,34 @@
     <v-divider/>
 
     <v-list class="pa-1">
-      <v-list-tile v-if="mini" @click="mini = !mini">
-        <v-list-tile-action>
-          <v-icon light>mdi-chevron-right</v-icon>
-        </v-list-tile-action>
-      </v-list-tile>
-
-      <v-list-tile avatar tag="div">
+      <v-list-tile avatar tag="div" v-if="!user" :href="loginUrl">
         <v-list-tile-avatar>
-          <img v-if="avatarUrl" :src="avatarUrl" />
-          <v-icon large v-else>mdi-account-circle</v-icon>
+          <v-icon large>mdi-account-circle</v-icon>
         </v-list-tile-avatar>
         <v-list-tile-content>
-          <v-list-tile-title v-if="user">{{ user.fullName }}</v-list-tile-title>
-          <v-list-tile-title v-else>{{ $t('drawer.notConnected') }}</v-list-tile-title>
+          <v-list-tile-title>{{ $t('drawer.login') }}</v-list-tile-title>
+        </v-list-tile-content>
+      </v-list-tile>
+
+      <v-list-tile avatar tag="div" v-else>
+        <v-list-tile-avatar>
+          <v-avatar size="36" color="grey lighten-1">
+            <img v-if="user && user.avatarHash" :title="user.fullName" :src="'https://trello-avatars.s3.amazonaws.com/' + user.avatarHash + '/50.png'" alt="avatar" />
+            <span v-else-if="user" class="subtitle-1 white--text" :title="user.fullName" v-text="user.initials" />
+          </v-avatar>
+        </v-list-tile-avatar>
+        <v-list-tile-content>
+          <v-list-tile-title>{{ user.fullName }}</v-list-tile-title>
         </v-list-tile-content>
         <v-list-tile-action>
-          <v-btn icon @click="mini = !mini">
-            <v-icon>mdi-chevron-left</v-icon>
-          </v-btn>
+          <v-tooltip right>
+            <template>
+              <v-btn flat icon slot="activator" @click="logout">
+                <v-icon>mdi-logout</v-icon>
+              </v-btn>
+            </template>
+            <span>{{ $t('drawer.logout') }}</span>
+          </v-tooltip>
         </v-list-tile-action>
       </v-list-tile>
     </v-list>
@@ -35,6 +44,15 @@
     <v-list class="pt-0">
       <v-divider/>
       <v-list-tile router :to="{ path: '/' }" ripple>
+        <v-list-tile-action>
+          <v-icon>mdi-home</v-icon>
+        </v-list-tile-action>
+        <v-list-tile-content>
+          <v-list-tile-title>{{ $t('drawer.home') }}</v-list-tile-title>
+        </v-list-tile-content>
+      </v-list-tile>
+
+      <v-list-tile router :to="{ path: '/platforms' }" ripple>
         <v-list-tile-action>
           <v-icon>mdi-file-powerpoint-box</v-icon>
         </v-list-tile-action>
@@ -109,24 +127,6 @@
           </v-list-tile-content>
         </v-list-tile>
       </v-list-group>
-
-      <v-list-tile v-if="!user" :href="loginUrl">
-        <v-list-tile-action>
-          <v-icon>mdi-login</v-icon>
-        </v-list-tile-action>
-        <v-list-tile-content>
-          <v-list-tile-title>{{ $t('drawer.login') }}</v-list-tile-title>
-        </v-list-tile-content>
-      </v-list-tile>
-
-      <v-list-tile v-else @click="logout">
-        <v-list-tile-action>
-          <v-icon>mdi-logout</v-icon>
-        </v-list-tile-action>
-        <v-list-tile-content>
-          <v-list-tile-title>{{ $t('drawer.logout') }}</v-list-tile-title>
-        </v-list-tile-content>
-      </v-list-tile>
     </v-list>
 
     <v-list class="bottomList">
@@ -182,7 +182,7 @@ export default {
         { name: 'English', value: 'en' }
       ],
       links: [
-        { icon: 'mdi-home', href: 'http://www.ezpaarse.org/' },
+        { icon: 'mdi-home-variant', href: 'http://www.ezpaarse.org/' },
         { icon: 'mdi-email', href: 'mailto:ezpaarse@couperin.org' },
         { icon: 'mdi-twitter-box', href: 'https://twitter.com/ezpaarse' },
         { icon: 'mdi-comment-text-outline', href: 'http://blog.ezpaarse.org/' },

@@ -10,6 +10,7 @@
     "close": "Fermer"
   },
   "drawer": {
+    "home": "Accueil",
     "platforms": "Plateformes",
     "badges": "Mes badges",
     "trelloBoard": "Tableau Trello",
@@ -120,6 +121,7 @@
     "testWithEzlogger": "Tester avec ezLogger"
   },
   "cards": {
+    "home": "AnalogIST",
     "search": "Recherche",
     "name": "Nom",
     "status": "Statut",

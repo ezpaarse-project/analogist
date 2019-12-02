@@ -3,147 +3,80 @@
     <v-card>
       <v-toolbar class="secondary" dense dark card>
         <v-toolbar-title>
-          {{ $t('cards.platforms') }} ({{ cards.length }})
+          {{ $t('cards.home') }}
         </v-toolbar-title>
-
-        <v-btn absolute fab bottom right color="primary" v-if="canEdit" :to="{ name: 'platforms-new' }">
-          <v-icon>mdi-plus</v-icon>
-        </v-btn>
       </v-toolbar>
 
       <v-card-text>
-        <v-container fluid grid-list-md>
-          <v-layout row wrap>
-            <v-flex xs12 sm6>
-              <v-text-field
-                @input="checkPage"
-                :label="$t('cards.search')"
-                v-model="searchText"
-                append-icon="mdi-magnify"
-                hide-details
-                single-line
-              />
-            </v-flex>
-            <v-flex xs12 sm6>
-              <v-select
-                @input="checkPage"
-                :label="$t('cards.status')"
-                :items="lists"
-                v-model="searchLists"
-                item-text="name"
-                item-value="id"
-                append-icon="mdi-tag"
-                hide-details
-                single-line
-                multiple
-              >
-                <template slot="item" slot-scope="data">
-                  <v-list-tile-content>
-                    <v-list-tile-title v-html="data.item.name"></v-list-tile-title>
-                  </v-list-tile-content>
-                </template>
-              </v-select>
-            </v-flex>
-          </v-layout>
+        <v-container fluid grid-list-md class="headline">
+          <div class="text-xs-center">
+            <p>
+              <img src="~/assets/img/logo-analogist.png">
+            </p>
+            <v-chip-group>
+              <v-chip pill>
+                <v-avatar left color="primary white--text">
+                  <span v-text="infos.platforms || '—'"></span>
+                </v-avatar>
+                <span>plateformes</span>
+              </v-chip>
+
+              <v-chip pill>
+                <v-avatar left color="primary white--text">
+                  <span v-text="infos.analyses || '—'"></span>
+                </v-avatar>
+                <span>analyses</span>
+              </v-chip>
+
+              <v-chip pill>
+                <v-avatar left color="primary white--text">
+                  <span v-text="trelloBoardMembers || '—'"></span>
+                </v-avatar>
+                <span>contributeurs</span>
+              </v-chip>
+
+              <v-chip pill>
+                <v-avatar left color="primary white--text">
+                  <span v-text="badges || '—'"></span>
+                </v-avatar>
+                <span>badges</span>
+              </v-chip>
+            </v-chip-group>
+          </div>
+
+          <p><span class="font-weight-bold">AnalogIST</span> est l'espace collaboratif où sont réunies toutes les analyses de plateformes (pré-requises pour la création de parseurs pour ezPAARSE). </p>
         </v-container>
-
-        <div class="text-xs-center pt-3">
-          <v-pagination
-            prev-icon="mdi-chevron-left"
-            next-icon="mdi-chevron-right"
-            :length="nbPages"
-            v-model="searchPage"
-            :total-visible="5"
-          />
-        </div>
       </v-card-text>
-
-      <v-list three-line>
-        <CardTile v-for="card in paginatedCards" :key="card.id" :card="card"></CardTile>
-      </v-list>
     </v-card>
   </section>
 </template>
 
 <script>
-import CardTile from '~/components/CardTile'
-
 export default {
-  name: 'platforms',
+  name: 'analogist',
   transition: 'slide-x-transition',
-  components: {
-    CardTile
-  },
   head () {
     return {
-      title: 'Platforms'
+      title: 'Analogist'
     }
   },
   async fetch ({ store }) {
-    await store.dispatch('FETCH_TRELLO_LISTS')
     await store.dispatch('FETCH_CARDS')
-  },
-  methods: {
-    checkPage () {
-      if (this.searchPage <= 0 || this.searchPage > this.nbPages) {
-        this.$store.dispatch('SET_SEARCH_PAGE', 1)
-      }
-    }
+    await store.dispatch('FETCH_TRELLO_BOARD_MEMBERS')
+    await store.dispatch('badges/getMetrics')
   },
   computed: {
-    searchText: {
-      get () {
-        return this.$store.state.searchText
-      },
-      set (newValue) {
-        this.$store.dispatch('UPDATE_SEARCH_TEXT', newValue)
+    infos () {
+      return {
+        platforms: this.$store.state.cards.length,
+        analyses: this.$store.state.cards.reduce((a, b) => (a + (b.platform ? b.platform.analyses.length : 0)), 0)
       }
     },
-    searchLists: {
-      get () {
-        return this.$store.state.searchLists
-      },
-      set (newValue) {
-        this.$store.dispatch('UPDATE_SEARCH_LISTS', newValue)
-      }
+    trelloBoardMembers () {
+      return this.$store.state.trelloBoardMembers.length
     },
-    searchPage: {
-      get () {
-        return this.$store.state.searchPage
-      },
-      set (newValue) {
-        this.$store.dispatch('SET_SEARCH_PAGE', newValue)
-      }
-    },
-    nbPages () {
-      return Math.ceil(this.cards.length / 20) || 1
-    },
-    lists () {
-      return this.$store.state.trelloLists
-    },
-    canEdit () {
-      return this.$store.state.user && this.$store.state.user.isAuthorized
-    },
-    cards () {
-      const search = this.searchText.toLowerCase()
-      const lists = this.searchLists
-
-      return this.$store.state.cards
-        .filter(card => {
-          if (!card.name.toLowerCase().includes(search)) {
-            return false
-          }
-
-          if (lists.length && lists.indexOf(card.idList) === -1) {
-            return false
-          }
-
-          return true
-        })
-        .sort((a, b) => a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1)
-    },
-    paginatedCards () {
-      return this.cards.slice((this.searchPage - 1) * 20, (this.searchPage - 1) * 20 + 20)
+    badges () {
+      return this.$store.state.badges.metrics.reduce((a, b) => (a + b.issues.app), 0)
     }
   }
 }
