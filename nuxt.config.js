@@ -35,7 +35,6 @@ module.exports = {
   */
   css: [
     '~/assets/css/main.css',
-    'mdi/css/materialdesignicons.min.css',
     'vuetify/dist/vuetify.min.css'
   ],
   /*

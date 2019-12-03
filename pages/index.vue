@@ -29,6 +29,13 @@
 
             <v-chip pill>
               <v-avatar left color="primary white--text">
+                <span v-text="parsers || '—'"></span>
+              </v-avatar>
+              <span>{{ $t('home.parsers') }}</span>
+            </v-chip>
+
+            <v-chip pill>
+              <v-avatar left color="primary white--text">
                 <span v-text="trelloBoardMembers || '—'"></span>
               </v-avatar>
               <span>{{ $t('home.contributors') }}</span>
@@ -39,13 +46,6 @@
                 <span v-text="badges || '—'"></span>
               </v-avatar>
               <span>{{ $t('home.badges') }}</span>
-            </v-chip>
-
-            <v-chip pill>
-              <v-avatar left color="primary white--text">
-                <span v-text="parsers || '—'"></span>
-              </v-avatar>
-              <span>{{ $t('home.parsers') }}</span>
             </v-chip>
           </div>
 
