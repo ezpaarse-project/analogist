@@ -182,6 +182,13 @@
     "list": "Badges list",
     "noMetrics": "So it is not possible to load the badges list!"
   },
+  "home": {
+    "identifiedPlatforms": "identified platforms",
+    "analyses": "analyses",
+    "contributors": "contributors",
+    "badges": "badges",
+    "parsers": "parsers"
+  },
   "theme": {
     "dark": "Dark theme",
     "light": "Light theme"

@@ -1,7 +1,7 @@
 <template>
   <section>
     <v-layout row justify-space-between>
-      <v-btn flat router exact :to="{ path: '/' }"><v-icon left>mdi-arrow-left</v-icon>{{ $t('ui.back') }}</v-btn>
+      <v-btn flat router exact :to="{ path: '/platforms' }"><v-icon left>mdi-arrow-left</v-icon>{{ $t('ui.back') }}</v-btn>
     </v-layout>
 
     <v-card>
@@ -122,21 +122,53 @@
         <v-subheader>Certifications</v-subheader>
 
         <v-list>
-          <v-list-tile v-if="card.humanCertified" avatar href="https://blog.ezpaarse.org/2017/06/certification-h-et-p-des-plateformes-traitees-dans-ezpaarse/" target="_blank">
+          <v-list-tile v-if="card.humanCertified" avatar>
             <v-list-tile-avatar>
               <img src="~/assets/img/certif_h.png">
             </v-list-tile-avatar>
             <v-list-tile-content>
-              <v-list-tile-title>{{ $t('card.manuallyVerified') }}</v-list-tile-title>
+              <v-list-tile-title style="height: 32px;">
+                <v-chip v-if="!user" small color="#F4B48B" label text-color="white">
+                  {{ new Date().getFullYear() }}
+                </v-chip>
+                <v-menu offset-y v-else>
+                  <v-btn small slot="activator" class="dateBtn" color="#F4B48B" dark depressed>
+                    {{ new Date().getFullYear() }}<v-icon>mdi-menu-down</v-icon>
+                  </v-btn>
+                  <v-list>
+                    <v-list-tile v-for="(item, index) in years" :key="index" @click="">
+                      <v-list-tile-title>{{ item }}</v-list-tile-title>
+                    </v-list-tile>
+                  </v-list>
+                </v-menu>
+
+                 - <a href="https://blog.ezpaarse.org/2017/06/certification-h-et-p-des-plateformes-traitees-dans-ezpaarse/" target="_blank">{{ $t('card.manuallyVerified') }}</a>
+              </v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
 
-          <v-list-tile v-if="card.publisherCertified" avatar href="https://blog.ezpaarse.org/2017/06/certification-h-et-p-des-plateformes-traitees-dans-ezpaarse/" target="_blank">
+          <v-list-tile v-if="card.publisherCertified" avatar>
             <v-list-tile-avatar>
               <img src="~/assets/img/certif_p.png">
             </v-list-tile-avatar>
             <v-list-tile-content>
-              <v-list-tile-title>{{ $t('card.publisherVerified') }}</v-list-tile-title>
+              <v-list-tile-title style="height: 32px;">
+                <v-chip v-if="!user" small color="#5AB9C1" label text-color="white">
+                  {{ new Date().getFullYear() }}
+                </v-chip>
+                <v-menu offset-y v-else>
+                  <v-btn small slot="activator" class="dateBtn" color="#5AB9C1" dark depressed>
+                    {{ new Date().getFullYear() }}<v-icon>mdi-menu-down</v-icon>
+                  </v-btn>
+                  <v-list>
+                    <v-list-tile v-for="(item, index) in years" :key="index" @click="">
+                      <v-list-tile-title>{{ item }}</v-list-tile-title>
+                    </v-list-tile>
+                  </v-list>
+                </v-menu>
+
+                 - <a href="https://blog.ezpaarse.org/2017/06/certification-h-et-p-des-plateformes-traitees-dans-ezpaarse/" target="_blank">{{ $t('card.publisherVerified') }}</a>
+              </v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
         </v-list>
@@ -181,7 +213,7 @@
           <v-list-tile v-for="member in card.members" v-bind:key="member.id" avatar :href="'https://trello.com/' + member.username">
             <v-list-tile-avatar>
               <img v-if="member.avatarHash" :src="'https://trello-avatars.s3.amazonaws.com/' + member.avatarHash + '/50.png'" alt="avatar">
-              <span v-else class="icon blue-grey lighten-4">{{ member.initials }}</span>
+              <span v-else-if="member.initials" class="icon blue-grey lighten-4">{{ member.initials }}</span>
             </v-list-tile-avatar>
             <v-list-tile-content>
               <v-list-tile-title v-text="member.fullName" />
@@ -275,6 +307,10 @@ export default {
     },
     lastActivity () {
       return moment(this.card.lastActivity).locale(this.$i18n.locale).fromNow()
+    },
+    years () {
+      const currentYear = new Date().getFullYear()
+      return [currentYear - 2, currentYear - 1, currentYear]
     }
   },
   methods: {
@@ -323,7 +359,7 @@ export default {
       try {
         await this.$store.dispatch('ARCHIVE_CARD', this.card.id)
         this.deleteDialog = false
-        this.$router.push({ path: '/' })
+        this.$router.push({ path: '/platforms' })
       } catch (e) {
         this.$store.dispatch('snacks/error', 'card.archivalFailed')
       }
@@ -386,3 +422,13 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.dateBtn {
+  min-width: 70px;
+  max-width: 70px;
+  min-height: 24px;
+  max-height: 24px;
+  padding: 0 0 0 8px;
+}
+</style>

@@ -4,6 +4,7 @@
       <v-avatar size="36" color="grey lighten-1">
         <img v-if="updatedBy && updatedBy.avatarHash" :title="updatedBy.fullName" :src="'https://trello-avatars.s3.amazonaws.com/' + updatedBy.avatarHash + '/50.png'" alt="avatar" />
         <span v-else-if="updatedBy" class="subtitle-1 white--text" :title="updatedBy.fullName" v-text="updatedBy.initials" />
+        <v-icon v-else>mdi-account-question</v-icon>
       </v-avatar>
     </v-list-tile-avatar>
 

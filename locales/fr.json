@@ -182,6 +182,13 @@
     "list": "Liste des badges",
     "noMetrics": "La liste des badges n'a pu être chargée !"
   },
+  "home": {
+    "identifiedPlatforms": "plateformes recensées",
+    "analyses": "analyses",
+    "contributors": "contributuers",
+    "badges": "badges",
+    "parsers": "parseurs"
+  },
   "theme": {
     "dark": "Thème sombre",
     "light": "Thème clair"
