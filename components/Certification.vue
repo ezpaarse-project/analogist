@@ -32,7 +32,7 @@
       </v-list-tile-avatar>
       <v-list-tile-content>
         <v-list-tile-title style="height: 35px;">
-          <v-chip v-if="!user || (card.certifications && !card.certifications.h)" style="height: 28px;" label color="#5AB9C1" text-color="white">
+          <v-chip v-if="!user || (card.certifications && !card.certifications.h)" style="height: 32px;" label color="#5AB9C1" text-color="white">
             {{ card.certifications.p || years[0] }}
           </v-chip>
           <v-menu offset-y v-else>
