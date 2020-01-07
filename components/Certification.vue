@@ -46,7 +46,7 @@
               </v-list-tile>
             </v-list>
           </v-menu>
-          <span v-if="card.certifications.p"> - <a href="https://blog.ezpaarse.org/2017/06/certification-h-et-p-des-plateformes-traitees-dans-ezpaarse/" target="_blank">{{ $t('card.manuallyVerified') }}</a></span>
+          <span v-if="card.certifications.p"> - <a href="https://blog.ezpaarse.org/2017/06/certification-h-et-p-des-plateformes-traitees-dans-ezpaarse/" target="_blank">{{ $t('card.publisherVerified') }}</a></span>
           <span v-else> - <a href="https://blog.ezpaarse.org/2020/01/tutoriels-procedure-de-certification-h-et-p-dans-analogist" target="_blank">{{ $t('certifications.notCertified') }}</a></span>
         </v-list-tile-title>
       </v-list-tile-content>
