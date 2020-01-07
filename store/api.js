@@ -193,4 +193,12 @@ api.getUsers = function (data) {
   return axios.get(`/api/badges/users/${data.badgeId}`).then(res => res.data)
 }
 
+api.getCertifications = function (cId) {
+  return axios.get(`/api/certifications/${cId}`).then(res => res.data)
+}
+
+api.updateCertifications = function (cId, certifications) {
+  return axios.patch(`/api/certifications/${cId}`, { certifications }).then(res => res.data)
+}
+
 export default api

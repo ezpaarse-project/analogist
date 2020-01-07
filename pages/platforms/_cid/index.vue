@@ -122,55 +122,7 @@
         <v-subheader>Certifications</v-subheader>
 
         <v-list>
-          <v-list-tile v-if="card.humanCertified" avatar>
-            <v-list-tile-avatar>
-              <img src="~/assets/img/certif_h.png">
-            </v-list-tile-avatar>
-            <v-list-tile-content>
-              <v-list-tile-title style="height: 32px;">
-                <v-chip v-if="!user" small color="#F4B48B" label text-color="white">
-                  {{ new Date().getFullYear() }}
-                </v-chip>
-                <v-menu offset-y v-else>
-                  <v-btn small slot="activator" class="dateBtn" color="#F4B48B" dark depressed>
-                    {{ new Date().getFullYear() }}<v-icon>mdi-menu-down</v-icon>
-                  </v-btn>
-                  <v-list>
-                    <v-list-tile v-for="(item, index) in years" :key="index" @click="">
-                      <v-list-tile-title>{{ item }}</v-list-tile-title>
-                    </v-list-tile>
-                  </v-list>
-                </v-menu>
-
-                 - <a href="https://blog.ezpaarse.org/2017/06/certification-h-et-p-des-plateformes-traitees-dans-ezpaarse/" target="_blank">{{ $t('card.manuallyVerified') }}</a>
-              </v-list-tile-title>
-            </v-list-tile-content>
-          </v-list-tile>
-
-          <v-list-tile v-if="card.publisherCertified" avatar>
-            <v-list-tile-avatar>
-              <img src="~/assets/img/certif_p.png">
-            </v-list-tile-avatar>
-            <v-list-tile-content>
-              <v-list-tile-title style="height: 32px;">
-                <v-chip v-if="!user" small color="#5AB9C1" label text-color="white">
-                  {{ new Date().getFullYear() }}
-                </v-chip>
-                <v-menu offset-y v-else>
-                  <v-btn small slot="activator" class="dateBtn" color="#5AB9C1" dark depressed>
-                    {{ new Date().getFullYear() }}<v-icon>mdi-menu-down</v-icon>
-                  </v-btn>
-                  <v-list>
-                    <v-list-tile v-for="(item, index) in years" :key="index" @click="">
-                      <v-list-tile-title>{{ item }}</v-list-tile-title>
-                    </v-list-tile>
-                  </v-list>
-                </v-menu>
-
-                 - <a href="https://blog.ezpaarse.org/2017/06/certification-h-et-p-des-plateformes-traitees-dans-ezpaarse/" target="_blank">{{ $t('card.publisherVerified') }}</a>
-              </v-list-tile-title>
-            </v-list-tile-content>
-          </v-list-tile>
+          <Certification :card="card" />
         </v-list>
 
         <v-divider/>
@@ -228,6 +180,7 @@
 <script>
 import moment from 'moment'
 import AnalysisTile from '~/components/AnalysisTile'
+import Certification from '~/components/Certification'
 import draggable from 'vuedraggable'
 import { saveAs } from 'file-saver'
 
@@ -244,6 +197,7 @@ export default {
   transition: 'slide-x-transition',
   components: {
     AnalysisTile,
+    Certification,
     draggable
   },
   async fetch ({ params, store, error }) {
@@ -251,6 +205,7 @@ export default {
 
     try {
       await store.dispatch('FETCH_CARD', params.cid)
+      await store.dispatch('certifications/FETCH_CERTIFICATION', params.cid)
     } catch (e) {
       const statusCode = e.response && e.response.status
       const message    = e.response && e.response.statusText
@@ -307,10 +262,6 @@ export default {
     },
     lastActivity () {
       return moment(this.card.lastActivity).locale(this.$i18n.locale).fromNow()
-    },
-    years () {
-      const currentYear = new Date().getFullYear()
-      return [currentYear - 2, currentYear - 1, currentYear]
     }
   },
   methods: {
@@ -422,13 +373,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-.dateBtn {
-  min-width: 70px;
-  max-width: 70px;
-  min-height: 24px;
-  max-height: 24px;
-  padding: 0 0 0 8px;
-}
-</style>

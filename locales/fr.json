@@ -192,5 +192,8 @@
   "theme": {
     "dark": "Thème sombre",
     "light": "Thème clair"
+  },
+  "certifications": {
+    "notCertified": "Cette plateforme ne possède pas encore de certification"
   }
 }

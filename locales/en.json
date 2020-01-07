@@ -192,5 +192,8 @@
   "theme": {
     "dark": "Dark theme",
     "light": "Light theme"
+  },
+  "certifications": {
+    "notCertified": "This platform is not yet certified"
   }
 }

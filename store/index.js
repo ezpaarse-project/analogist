@@ -5,13 +5,15 @@ import ezlogger from './ezlogger'
 import badges from './badges'
 import snacks from './snacks'
 import socket from './socket'
+import certifications from './certifications'
 
 const store = () => new Vuex.Store({
   modules: {
     ezlogger,
     badges,
     snacks,
-    socket
+    socket,
+    certifications
   },
   state: {
     user: null,
