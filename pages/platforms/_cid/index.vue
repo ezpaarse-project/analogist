@@ -205,7 +205,6 @@ export default {
 
     try {
       await store.dispatch('FETCH_CARD', params.cid)
-      await store.dispatch('certifications/FETCH_CERTIFICATION', params.cid)
     } catch (e) {
       const statusCode = e.response && e.response.status
       const message    = e.response && e.response.statusText

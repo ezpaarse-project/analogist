@@ -7,8 +7,12 @@
     </v-list-tile-content>
     <v-list-tile-action>
       <v-list-tile-action-text>{{ updatedAt }}</v-list-tile-action-text>
-      <img class="cert-icon" src="~/assets/img/certif_h.png" v-if="card.humanCertified" :title="$t('card.humanCertification')">
-      <img class="cert-icon" src="~/assets/img/certif_p.png" v-if="card.publisherCertified" :title="$t('card.publisherCertification')">
+      <v-list-tile-avatar class="cert-icon" size="24" v-if="card.certifications.h" color="#F4B48B">
+        <span class="white--text">H</span>
+      </v-list-tile-avatar>
+      <v-list-tile-avatar class="cert-icon" size="24" v-if="card.certifications.p" color="#5AB9C1">
+        <span class="white--text">P</span>
+      </v-list-tile-avatar>
     </v-list-tile-action>
   </v-list-tile>
 </template>

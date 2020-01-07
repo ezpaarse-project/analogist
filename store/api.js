@@ -105,6 +105,12 @@ api.getExtendedCards = function () {
       cards = []
     }
 
+    cards.forEach((card) => {
+      api.getCertifications(card.id).then((res) => {
+        card.certifications = res
+      })
+    })
+
     return api.getPlatforms().then(platforms => {
       const platformsMap = new Map()
       platforms.forEach(p => {
@@ -121,9 +127,17 @@ api.getExtendedCards = function () {
  */
 api.getExtendedCard = function (cardID) {
   return api.getCard(cardID).then(card => {
-    return api.getPlatform(cardID).then(platform => {
-      return extendCard(card, platform)
-    }).catch(err => {
+    return api.getCertifications(cardID).then((res) => {
+      if (res) {
+        card.certifications = res
+      }
+
+      return api.getPlatform(cardID).then(platform => {
+        return extendCard(card, platform)
+      }).catch(err => {
+        return err.response && err.response.status === 404 ? extendCard(card) : err
+      })
+    }).catch((err) => {
       return err.response && err.response.status === 404 ? extendCard(card) : err
     })
   })

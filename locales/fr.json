@@ -194,6 +194,7 @@
     "light": "Thème clair"
   },
   "certifications": {
-    "notCertified": "Cette plateforme ne possède pas encore de certification"
+    "notCertified": "Cette plateforme ne possède pas encore de certification",
+    "publisherCertificationsError": "La certification H est nécessaire pour pour pouvoir certifier P la plateforme"
   }
 }

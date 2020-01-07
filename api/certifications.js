@@ -10,7 +10,7 @@ router.post('*', mw.authorize)
 router.get('/:cid', (req, res, next) => {
   mongo.get('certifications').findOne({ cardId: req.params.cid }, (err, doc) => {
     if (err) { return next(err) }
-    if (!doc) { return res.status(200).end() }
+    if (!doc) { return res.status(200).json({ h: null, p: null }) }
 
     res.status(200).json(doc.certifications)
   })
