@@ -65,13 +65,13 @@ export default {
       return this.card.platform && this.card.platform.certifications
     },
     humanCertified () {
-      return this.certified ? this.card.platform.certifications.humanCertified : '—'
+      return this.certified ? this.card.platform.certifications.humanCertified : null
     },
     humanCertification () {
       return this.card.platform.certifications.humanCertified
     },
     publisherCertified () {
-      return this.certified ? this.card.platform.certifications.publisherCertified : '—'
+      return this.certified ? this.card.platform.certifications.publisherCertified : null
     },
     publisherCertification () {
       return this.card.platform.certifications.publisherCertified
