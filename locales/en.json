@@ -196,6 +196,8 @@
   },
   "certifications": {
     "notCertified": "This platform is not yet certified",
-    "publisherCertificationsError": "H certification is required to be able to certify P the platform"
+    "publisherCertificationsError": "H certification is required to be able to certify P the platform",
+    "human": "Human",
+    "publisher": "Publisher"
   }
 }
