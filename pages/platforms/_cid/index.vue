@@ -116,13 +116,12 @@
         </v-layout>
       </v-card-text>
 
-
-      <template v-if="card.humanCertified || card.publisherCertified">
+      <template>
         <v-divider/>
         <v-subheader>Certifications</v-subheader>
 
         <v-list>
-          <Certification :card="card" />
+          <Certification />
         </v-list>
 
         <v-divider/>

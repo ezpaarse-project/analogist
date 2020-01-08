@@ -26,6 +26,7 @@ const store = () => new Vuex.Store({
     trelloLists: [],
     searchText: '',
     searchLists: [],
+    searchCertifications: [],
     searchPage: 1,
     drawer: true,
     lastVisitedAnalysis: null,
@@ -105,6 +106,9 @@ const store = () => new Vuex.Store({
     UPDATE_SEARCH_LISTS ({ commit }, value) {
       return commit('SET_SEARCH_LISTS', value)
     },
+    UPDATE_SEARCH_CERTIFICATIONS ({ commit }, value) {
+      return commit('SET_SEARCH_CERTIFICATIONS', value)
+    },
     SET_DRAWER ({ commit }, value) {
       commit('SET_DRAWER', value)
     },
@@ -160,6 +164,9 @@ const store = () => new Vuex.Store({
     },
     SET_SEARCH_LISTS (state, searchLists) {
       Vue.set(state, 'searchLists', searchLists)
+    },
+    SET_SEARCH_CERTIFICATIONS (state, searchCertifications) {
+      Vue.set(state, 'searchCertifications', searchCertifications)
     },
     REMOVE_ANALYSIS (state, analysisID) {
       Vue.set(state, 'analyses', state.analyses.filter(a => a.id !== analysisID))

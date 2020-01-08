@@ -8,9 +8,9 @@ router.patch('*', mw.authorize)
 router.post('*', mw.authorize)
 
 router.get('/:cid', (req, res, next) => {
-  mongo.get('certifications').findOne({ cardId: req.params.cid }, (err, doc) => {
+  mongo.get('platforms').findOne({ cardID: req.params.cid }, (err, doc) => {
     if (err) { return next(err) }
-    if (!doc) { return res.status(200).json({ h: null, p: null }) }
+    if (!doc) { return res.status(200).json({ humanCertified: null, publisherCertified: null }) }
 
     res.status(200).json(doc.certifications)
   })
@@ -18,7 +18,7 @@ router.get('/:cid', (req, res, next) => {
 
 /* PATCH certifications of a platform */
 router.patch('/:cid', (req, res, next) => {
-  mongo.get('certifications').findOneAndUpdate({ cardId: req.params.cid }, {
+  mongo.get('platforms').findOneAndUpdate({ cardID: req.params.cid }, {
     $set: {
       certifications: req.body.certifications,
       lastModified: new Date()

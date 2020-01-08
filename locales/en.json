@@ -125,7 +125,8 @@
     "search": "Search",
     "name": "Name",
     "status": "Status",
-    "platforms": "Platforms"
+    "platforms": "Platforms",
+    "certifications": "Certifications"
   },
   "creation": {
     "newPlatform": "New platform",

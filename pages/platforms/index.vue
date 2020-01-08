@@ -14,7 +14,7 @@
       <v-card-text>
         <v-container fluid grid-list-md>
           <v-layout row wrap>
-            <v-flex xs12 sm6>
+            <v-flex xs12 sm5>
               <v-text-field
                 @input="checkPage"
                 :label="$t('cards.search')"
@@ -24,7 +24,7 @@
                 single-line
               />
             </v-flex>
-            <v-flex xs12 sm6>
+            <v-flex xs12 sm5>
               <v-select
                 @input="checkPage"
                 :label="$t('cards.status')"
@@ -33,6 +33,26 @@
                 item-text="name"
                 item-value="id"
                 append-icon="mdi-tag"
+                hide-details
+                single-line
+                multiple
+              >
+                <template slot="item" slot-scope="data">
+                  <v-list-tile-content>
+                    <v-list-tile-title v-html="data.item.name"></v-list-tile-title>
+                  </v-list-tile-content>
+                </template>
+              </v-select>
+            </v-flex>
+            <v-flex xs12 sm2>
+              <v-select
+                @input="checkPage"
+                :label="$t('cards.certifications')"
+                :items="certifications"
+                v-model="searchCertifications"
+                item-text="name"
+                item-value="id"
+                append-icon="mdi-certificate"
                 hide-details
                 single-line
                 multiple
@@ -107,6 +127,14 @@ export default {
         this.$store.dispatch('UPDATE_SEARCH_LISTS', newValue)
       }
     },
+    searchCertifications: {
+      get () {
+        return this.$store.state.searchCertifications
+      },
+      set (newValue) {
+        this.$store.dispatch('UPDATE_SEARCH_CERTIFICATIONS', newValue)
+      }
+    },
     searchPage: {
       get () {
         return this.$store.state.searchPage
@@ -121,12 +149,25 @@ export default {
     lists () {
       return this.$store.state.trelloLists
     },
+    certifications () {
+      return [
+        {
+          id: 'humanCertified',
+          name: 'Humain'
+        },
+        {
+          id: 'publisherCertified',
+          name: 'Editeur'
+        }
+      ]
+    },
     canEdit () {
       return this.$store.state.user && this.$store.state.user.isAuthorized
     },
     cards () {
       const search = this.searchText.toLowerCase()
       const lists = this.searchLists
+      const certifications = this.searchCertifications
 
       return this.$store.state.cards
         .filter(card => {
@@ -136,6 +177,12 @@ export default {
 
           if (lists.length && lists.indexOf(card.idList) === -1) {
             return false
+          }
+
+          if (certifications.length) {
+            return certifications.some(certification => {
+              return card.platform && card.platform.certifications && card.platform.certifications[certification]
+            })
           }
 
           return true

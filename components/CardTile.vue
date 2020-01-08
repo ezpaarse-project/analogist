@@ -7,10 +7,10 @@
     </v-list-tile-content>
     <v-list-tile-action>
       <v-list-tile-action-text>{{ updatedAt }}</v-list-tile-action-text>
-      <v-list-tile-avatar class="cert-icon" size="24" v-if="card.certifications.h" color="#F4B48B">
+      <v-list-tile-avatar class="cert-icon" size="24" v-if="humanCertified" color="#F4B48B">
         <span class="white--text">H</span>
       </v-list-tile-avatar>
-      <v-list-tile-avatar class="cert-icon" size="24" v-if="card.certifications.p" color="#5AB9C1">
+      <v-list-tile-avatar class="cert-icon" size="24" v-if="publisherCertified" color="#5AB9C1">
         <span class="white--text">P</span>
       </v-list-tile-avatar>
     </v-list-tile-action>
@@ -21,7 +21,7 @@
 import moment from 'moment'
 
 export default {
-  props: ['card'],
+  props: [ 'card' ],
   computed: {
     updatedAt () {
       return moment(this.card.lastActivity).locale(this.$i18n.locale).fromNow()
@@ -38,6 +38,18 @@ export default {
     },
     list () {
       return this.$store.state.trelloLists.find(l => this.card.idList === l.id)
+    },
+    humanCertified () {
+      return this.card.platform && this.card.platform.certifications.humanCertified
+    },
+    humanCertification () {
+      return this.card.platform.certifications.humanCertified
+    },
+    publisherCertified () {
+      return this.card.platform && this.card.platform.certifications.publisherCertified
+    },
+    publisherCertification () {
+      return this.card.platform.certifications.publisherCertified
     }
   }
 }
