@@ -37,10 +37,12 @@
                 single-line
                 multiple
               >
-                <template slot="item" slot-scope="data">
-                  <v-list-tile-content>
-                    <v-list-tile-title v-html="data.item.name"></v-list-tile-title>
-                  </v-list-tile-content>
+                <template slot="selection" slot-scope="{ item, index }">
+                  <span v-if="index === 0">{{ item.name }}</span>
+                  <span
+                    v-if="index === 1"
+                    class="grey--text caption"
+                  >&nbsp;(+{{ searchLists.length - 1 }} {{ $t('others') }})</span>
                 </template>
               </v-select>
             </v-flex>
@@ -57,11 +59,6 @@
                 single-line
                 multiple
               >
-                <template slot="item" slot-scope="data">
-                  <v-list-tile-content>
-                    <v-list-tile-title v-html="data.item.name"></v-list-tile-title>
-                  </v-list-tile-content>
-                </template>
               </v-select>
             </v-flex>
           </v-layout>
@@ -153,11 +150,11 @@ export default {
       return [
         {
           id: 'humanCertified',
-          name: 'Humain'
+          name: this.$t('certifications.human')
         },
         {
           id: 'publisherCertified',
-          name: 'Editeur'
+          name: this.$t('certifications.publisher')
         }
       ]
     },

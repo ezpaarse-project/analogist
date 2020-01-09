@@ -126,7 +126,7 @@
     "name": "Name",
     "status": "Status",
     "platforms": "Platforms",
-    "certifications": "Certifications"
+    "certifications": "Certification"
   },
   "creation": {
     "newPlatform": "New platform",
@@ -199,5 +199,6 @@
     "publisherCertificationsError": "H certification is required to be able to certify P the platform",
     "human": "Human",
     "publisher": "Publisher"
-  }
+  },
+  "others": "others"
 }
