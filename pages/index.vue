@@ -95,7 +95,7 @@ export default {
     infos () {
       return {
         platforms: this.$store.state.cards.length,
-        analyses: this.$store.state.cards.reduce((a, b) => (a + (b.platform ? b.platform.analyses.length : 0)), 0)
+        analyses: this.$store.state.cards.reduce((a, b) => (a + ((b.platform && b.platform.analyses) ? b.platform.analyses.length : 0)), 0)
       }
     },
     trelloBoardMembers () {
