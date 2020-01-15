@@ -34,7 +34,6 @@ module.exports = {
   ** Plugins to load before mounting the App
   */
   plugins: [
-    { src: '~/plugins/vuetify.js', ssr: false },
     { src: '~/plugins/ezlogger.js', ssr: false },
     { src: '~/plugins/storeInit.js', ssr: false },
     { src: '~/plugins/i18n.js', ssr: false },
