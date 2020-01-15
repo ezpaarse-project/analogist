@@ -1,95 +1,109 @@
 <template>
   <section>
-    <v-layout row justify-space-between>
-      <v-btn flat router exact :to="{ path: '/platforms' }"><v-icon left>mdi-arrow-left</v-icon>{{ $t('ui.back') }}</v-btn>
+    <v-layout>
+      <v-btn text router exact :to="{ path: '/platforms' }" class="mb-2 body-2">
+        <v-icon left>mdi-arrow-left</v-icon>{{ $t('ui.back') }}
+      </v-btn>
     </v-layout>
 
     <v-card>
-      <v-toolbar class="secondary" dark dense card>
-        <v-toolbar-title>
-          {{ card.name }}
-        </v-toolbar-title>
+      <v-toolbar class="secondary" dark dense elevation="0">
+        <v-toolbar-title>{{ card.name }}</v-toolbar-title>
 
         <v-spacer></v-spacer>
 
         <v-tooltip bottom>
-          <v-btn icon slot="activator" v-if="canEdit" @click="createAnalysis"><v-icon>mdi-plus</v-icon></v-btn>
+          <template v-slot:activator="{ on }">
+            <v-btn icon v-on="on" v-if="canEdit" @click="createAnalysis">
+              <v-icon>mdi-plus</v-icon>
+            </v-btn>
+          </template>
           <span>{{ $t('analyses.new') }}</span>
         </v-tooltip>
 
-        <v-menu>
-          <v-btn slot="activator" icon dark>
-            <v-icon>mdi-dots-vertical</v-icon>
-          </v-btn>
+        <v-menu
+          left
+          bottom
+        >
+          <template v-slot:activator="{ on }">
+            <v-btn icon v-on="on">
+              <v-icon>mdi-dots-vertical</v-icon>
+            </v-btn>
+          </template>
+
           <v-list>
-            <v-list-tile avatar v-if="card.members.length > 0" @click="membersDialog = true">
-              <v-list-tile-avatar>
-                <v-icon>mdi-account-multiple</v-icon>
-              </v-list-tile-avatar>
-              <v-list-tile-content>
-                <v-list-tile-title>{{ $t('card.contributors') }}</v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
-            <v-list-tile avatar v-if="card.githubUrl" :href="card.githubUrl" target="_blank">
-              <v-list-tile-avatar>
-                <v-icon>mdi-github-box</v-icon>
-              </v-list-tile-avatar>
-              <v-list-tile-content>
-                <v-list-tile-title>{{ $t('card.github') }}</v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
-            <v-list-tile avatar v-if="card.homeUrl" :href="card.homeUrl" target="_blank">
-              <v-list-tile-avatar>
-                <v-icon>mdi-home</v-icon>
-              </v-list-tile-avatar>
-              <v-list-tile-content>
-                <v-list-tile-title>{{ $t('card.homepage') }}</v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
-            <v-list-tile avatar v-if="card.url" :href="card.url" target="_blank">
-              <v-list-tile-avatar>
-                <v-icon>mdi-trello</v-icon>
-              </v-list-tile-avatar>
-              <v-list-tile-content>
-                <v-list-tile-title>{{ $t('card.trello') }}</v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
+            <v-list-item-group>
+              <v-list-item v-if="card.members.length > 0" @click="membersDialog = true">
+                <v-list-item-avatar>
+                  <v-icon>mdi-account-multiple</v-icon>
+                </v-list-item-avatar>
+                <v-list-item-content>
+                  <v-list-item-title v-text="$t('card.contributors')"></v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+              <v-list-item v-if="card.githubUrl" :href="card.githubUrl" target="_blank">
+                <v-list-item-avatar>
+                  <v-icon>mdi-github-box</v-icon>
+                </v-list-item-avatar>
+                <v-list-item-content>
+                  <v-list-item-title v-text="$t('card.github')"></v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+              <v-list-item v-if="card.homeUrl" :href="card.homeUrl" target="_blank">
+                <v-list-item-avatar>
+                  <v-icon>mdi-home</v-icon>
+                </v-list-item-avatar>
+                <v-list-item-content>
+                  <v-list-item-title v-text="$t('card.homepage')"></v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+              <v-list-item v-if="card.url" :href="card.url" target="_blank">
+                <v-list-item-avatar>
+                  <v-icon>mdi-trello</v-icon>
+                </v-list-item-avatar>
+                <v-list-item-content>
+                  <v-list-item-title v-text="$t('card.trello')"></v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </v-list-item-group>
 
             <v-divider></v-divider>
 
-            <v-list-tile avatar @click="generateTestFile">
-              <v-list-tile-avatar>
-                <v-icon>mdi-upload</v-icon>
-              </v-list-tile-avatar>
-              <v-list-tile-content>
-                <v-list-tile-title>{{ $t('analyses.export') }}</v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
-            <v-list-tile avatar @click="exportToEzlogger">
-              <v-list-tile-avatar>
-                <v-icon>mdi-file-find</v-icon>
-              </v-list-tile-avatar>
-              <v-list-tile-content>
-                <v-list-tile-title>{{ $t('analyses.testWithEzlogger') }}</v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
-            <v-list-tile avatar v-if="canEdit" @click="deleteDialog = true">
-              <v-list-tile-avatar>
-                <v-icon>mdi-archive</v-icon>
-              </v-list-tile-avatar>
-              <v-list-tile-content>
-                <v-list-tile-title>{{ $t('card.archive') }}</v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
+            <v-list-item-group>
+              <v-list-item @click="generateTestFile">
+                <v-list-item-avatar>
+                  <v-icon>mdi-upload</v-icon>
+                </v-list-item-avatar>
+                <v-list-item-content>
+                  <v-list-item-title v-text="$t('analyses.export')"></v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+              <v-list-item @click="exportToEzlogger">
+                <v-list-item-avatar>
+                  <v-icon>mdi-file-find</v-icon>
+                </v-list-item-avatar>
+                <v-list-item-content>
+                  <v-list-item-title v-text="$t('analyses.testWithEzlogger')"></v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+              <v-list-item v-if="canEdit" @click="deleteDialog = true">
+                <v-list-item-avatar>
+                  <v-icon>mdi-archive</v-icon>
+                </v-list-item-avatar>
+                <v-list-item-content>
+                  <v-list-item-title v-text="$t('analyses.archive')"></v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </v-list-item-group>
           </v-list>
         </v-menu>
       </v-toolbar>
 
       <v-card-text>
-        <v-layout row wrap>
+        <v-layout row wrap class="pl-3 pr-3">
           <v-flex xs12 sm4>
-            <div>{{ $t('card.lastActivity') }}</div>
-            <strong>{{ lastActivity }}</strong>
+            <div class="black--text font-weight-regular">{{ $t('card.lastActivity') }}</div>
+            <div class="black--text font-weight-medium">{{ lastActivity }}</div>
           </v-flex>
 
           <v-flex xs12 sm8>
@@ -117,17 +131,17 @@
       </v-card-text>
 
       <template>
-        <v-divider/>
+        <v-divider></v-divider>
         <v-subheader>Certifications</v-subheader>
 
         <v-list>
           <Certification />
         </v-list>
 
-        <v-divider/>
+        <v-divider></v-divider>
       </template>
 
-      <v-divider/>
+      <v-divider></v-divider>
 
       <v-list two-line>
         <draggable v-model="analyses">
@@ -161,15 +175,15 @@
         </v-card-title>
 
         <v-list>
-          <v-list-tile v-for="member in card.members" v-bind:key="member.id" avatar :href="'https://trello.com/' + member.username">
-            <v-list-tile-avatar>
+          <v-list-item v-for="member in card.members" v-bind:key="member.id" avatar :href="'https://trello.com/' + member.username">
+            <v-list-item-avatar>
               <img v-if="member.avatarHash" :src="'https://trello-avatars.s3.amazonaws.com/' + member.avatarHash + '/50.png'" alt="avatar">
               <span v-else-if="member.initials" class="icon blue-grey lighten-4">{{ member.initials }}</span>
-            </v-list-tile-avatar>
-            <v-list-tile-content>
-              <v-list-tile-title v-text="member.fullName" />
-            </v-list-tile-content>
-          </v-list-tile>
+            </v-list-item-avatar>
+            <v-list-item-content>
+              <v-list-item-title v-text="member.fullName" />
+            </v-list-item-content>
+          </v-list-item>
         </v-list>
       </v-card>
     </v-dialog>

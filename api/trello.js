@@ -69,4 +69,10 @@ router.get('/members', (req, res, next) => {
     .on('error', next)
 })
 
+router.get('/member/:id', (req, res, next) => {
+  trello.getMember(req.params.id)
+    .on('response', response => response.pipe(res))
+    .on('error', next)
+})
+
 module.exports = router

@@ -1,10 +1,11 @@
 <template>
   <v-app id="analogist" :dark="dark">
-    <AppDrawer/>
-    <AppHeader/>
+    <AppDrawer />
+    <AppHeader />
+
     <v-content>
       <v-container fluid>
-        <nuxt/>
+        <nuxt class="pa-3" />
         <Snackbar/>
       </v-container>
     </v-content>

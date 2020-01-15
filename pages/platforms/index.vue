@@ -1,10 +1,8 @@
 <template>
   <section>
     <v-card>
-      <v-toolbar class="secondary" dense dark card>
-        <v-toolbar-title>
-          {{ $t('cards.platforms') }} ({{ cards.length }})
-        </v-toolbar-title>
+      <v-toolbar class="secondary" dense dark flat>
+        <v-toolbar-title>{{ $t('cards.platforms') }} ({{ cards.length }})</v-toolbar-title>
 
         <v-btn absolute fab bottom right color="primary" v-if="canEdit" :to="{ name: 'platforms-new' }">
           <v-icon>mdi-plus</v-icon>
@@ -64,7 +62,7 @@
           </v-layout>
         </v-container>
 
-        <div class="text-xs-center pt-3">
+        <div class="text-center pt-3">
           <v-pagination
             prev-icon="mdi-chevron-left"
             next-icon="mdi-chevron-right"

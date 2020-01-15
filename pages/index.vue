@@ -1,17 +1,15 @@
 <template>
   <section>
     <v-card>
-      <v-toolbar class="secondary" dense dark card>
-        <v-toolbar-title>
-          {{ $t('cards.home') }}
-        </v-toolbar-title>
+      <v-toolbar class="secondary" dense dark flat>
+        <v-toolbar-title>{{ $t('cards.home') }}</v-toolbar-title>
       </v-toolbar>
 
       <v-card-text>
         <v-container fluid grid-list-md style="font-size: 1.2em;">
-          <div class="text-xs-center">
+          <div class="text-center">
             <p>
-              <img src="~/assets/img/logo-analogist.png">
+              <img src="@/static/logo-analogist.png">
             </p>
             <v-chip pill>
               <v-avatar left color="primary white--text">

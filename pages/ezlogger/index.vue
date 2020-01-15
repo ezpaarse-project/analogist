@@ -1,11 +1,13 @@
 <template>
   <section>
-    <v-btn v-if="lastVisitedPlatform" flat router exact :to="{ name: 'platforms-cid', params: { cid: lastVisitedPlatform } }">
+    <v-btn class="mb-2 body-2" v-if="lastVisitedPlatform" text router exact :to="{ name: 'platforms-cid', params: { cid: lastVisitedPlatform } }">
       <v-icon left>mdi-arrow-left</v-icon>{{ $t('ezLogger.backToPlatform') }}
     </v-btn>
 
     <v-card>
-      <v-toolbar class="secondary" dense dark card extended>
+      <v-toolbar class="secondary" dense dark flat extended>
+        <v-toolbar-title>{{ $t('ezLogger.title') }}</v-toolbar-title>
+
         <v-text-field
           slot="extension"
           v-model="search"
@@ -17,50 +19,56 @@
           flat
         ></v-text-field>
 
-        <v-toolbar-title>
-          {{ $t('ezLogger.title') }}
-        </v-toolbar-title>
-
         <v-spacer></v-spacer>
 
         <v-tooltip bottom>
-          <v-btn icon slot="activator" @click="analyze" :loading="processing">
-            <v-icon>mdi-file-find</v-icon>
-          </v-btn>
+          <template v-slot:activator="{ on }">
+            <v-btn icon v-on="on" @click="analyze" :loading="processing">
+              <v-icon>mdi-file-find</v-icon>
+            </v-btn>
+          </template>
           <span>{{ $t('ezLogger.analyze') }}</span>
         </v-tooltip>
         <v-tooltip bottom>
-          <v-btn icon slot="activator" @click="clearRequests">
-            <v-icon>mdi-notification-clear-all</v-icon>
-          </v-btn>
+          <template v-slot:activator="{ on }">
+            <v-btn icon v-on="on" @click="clearRequests">
+              <v-icon>mdi-notification-clear-all</v-icon>
+            </v-btn>
+          </template>
           <span>{{ $t('ezLogger.clearAll') }}</span>
         </v-tooltip>
         <v-tooltip bottom>
-          <v-btn icon slot="activator" @click="showExport = true">
-            <v-icon>mdi-upload</v-icon>
-          </v-btn>
+          <template v-slot:activator="{ on }">
+            <v-btn icon v-on="on" @click="showExport = true">
+              <v-icon>mdi-upload</v-icon>
+            </v-btn>
+          </template>
           <span>{{ $t('ezLogger.export') }}</span>
         </v-tooltip>
         <v-tooltip bottom>
-          <v-btn icon slot="activator" @click="filterRequests">
-            <v-icon>mdi-filter-variant</v-icon>
-          </v-btn>
+          <template v-slot:activator="{ on }">
+            <v-btn icon v-on="on" @click="filterRequests">
+              <v-icon>mdi-filter-variant</v-icon>
+            </v-btn>
+          </template>
           <span>{{ $t('ezLogger.filter') }}</span>
         </v-tooltip>
         <v-tooltip bottom>
-          <v-btn icon slot="activator" router exact :to="{ name: 'ezlogger-settings' }">
-            <v-icon>mdi-settings</v-icon>
-          </v-btn>
+          <template v-slot:activator="{ on }">
+            <v-btn icon v-on="on" router exact :to="{ name: 'ezlogger-settings' }">
+              <v-icon>mdi-settings</v-icon>
+            </v-btn>
+          </template>
           <span>{{ $t('ezLogger.settings') }}</span>
         </v-tooltip>
       </v-toolbar>
 
       <v-card-text>
-        <v-alert outline color="warning" icon="mdi-exclamation" :value="reachCaptureLimit">
+        <v-alert color="warning" icon="mdi-exclamation" :value="reachCaptureLimit">
           {{ $t('ezLogger.captureLimitReached') }}
         </v-alert>
 
-        <div class="text-xs-center pt-3">
+        <div class="text-center pt-3">
           <v-pagination
             prev-icon="mdi-chevron-left"
             next-icon="mdi-chevron-right"
@@ -73,18 +81,18 @@
       </v-card-text>
 
       <v-list v-if="requests.length" two-line>
-        <v-list-tile avatar router exact :to="{ name: 'ezlogger-rid', params: { rid: req.id } }" ripple v-for="(req, index) in paginatedRequests" :key="index">
-          <v-list-tile-avatar>
+        <v-list-item router exact :to="{ name: 'ezlogger-rid', params: { rid: req.id } }" ripple v-for="(req, index) in paginatedRequests" :key="index">
+          <v-list-item-avatar>
             <v-progress-circular v-if="req.status === 'processing'" indeterminate color="grey" />
             <v-icon v-else-if="req.status === 'pending'" class="grey white--text">mdi-clock</v-icon>
             <v-icon v-else-if="req.status === 'analyzed'" class="green white--text">mdi-lightbulb-on</v-icon>
             <v-icon v-else-if="req.status === 'rejected'" class="orange white--text">mdi-lightbulb</v-icon>
             <v-icon v-else-if="req.status === 'error'" class="red white--text">mdi-alert-circle-outline</v-icon>
-          </v-list-tile-avatar>
+          </v-list-item-avatar>
 
-          <v-list-tile-content>
-            <v-list-tile-title>{{ req.method }} {{ req.url }}</v-list-tile-title>
-            <v-list-tile-sub-title>
+          <v-list-item-content>
+            <v-list-item-title>{{ req.method }} {{ req.url }}</v-list-item-title>
+            <v-list-item-subtitle>
               <v-tooltip bottom v-if="req.type">
                 <v-chip slot="activator" small label color="blue" text-color="white">{{ req.type }}</v-chip>
                 <span>{{ $t('ezLogger.requestType') }}</span>
@@ -101,12 +109,12 @@
                 <v-chip slot="activator" small label color="green" text-color="white">{{ req.ec.mime }}</v-chip>
                 <span>{{ $t('ezLogger.mime') }}</span>
               </v-tooltip>
-            </v-list-tile-sub-title>
-          </v-list-tile-content>
-        </v-list-tile>
+            </v-list-item-subtitle>
+          </v-list-item-content>
+        </v-list-item>
       </v-list>
 
-      <v-card-text v-else class="text-xs-center">
+      <v-card-text v-else class="text-center">
         <p>{{ $t('ezLogger.waitingForTraffic') }}</p>
         <p class="muted" v-html="$t('ezLogger.getTheExtension', { url: extensionUrl })"></p>
       </v-card-text>
@@ -117,14 +125,14 @@
         <v-card-title class="headline" v-html="$t('ezLogger.export')"></v-card-title>
 
         <v-card-text>
-          <p class="text-xs-justify">{{ $t('ezLogger.exportDesc') }}</p>
-          <p class="text-xs-justify">{{ $t('ezLogger.exportUseSearch') }}</p>
+          <p class="text-justify">{{ $t('ezLogger.exportDesc') }}</p>
+          <p class="text-justify">{{ $t('ezLogger.exportUseSearch') }}</p>
         </v-card-text>
 
         <v-card-actions>
           <v-spacer/>
           <v-btn color="primary" @click.stop="exportAsFile">{{ $t('ezLogger.export') }}</v-btn>
-          <v-btn color="primary" flat @click.stop="showExport = false">{{ $t('ezLogger.close') }}</v-btn>
+          <v-btn color="primary" text @click.stop="showExport = false">{{ $t('ezLogger.close') }}</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>

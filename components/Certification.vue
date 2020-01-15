@@ -1,55 +1,136 @@
 <template>
   <span>
-    <v-list-tile>
-      <v-list-tile-avatar color="#F4B48B">
+    <v-list-item>
+      <v-list-item-avatar color="#F4B48B">
         <span class="white--text headline">H</span>
-      </v-list-tile-avatar>
-      <v-list-tile-content>
-        <v-list-tile>
+      </v-list-item-avatar>
+      <v-list-item-content>
+        <v-list-item-title>
           <v-menu open-on-hover offset-y>
-            <v-btn small slot="activator" class="white--text" color="#F4B48B" depressed :disabled="!user">
-              <span v-if="humanCertified">{{ humanCertification}}</span>
-              <span v-else>{{ years[0] }}</span>
-            </v-btn>
+            <template v-slot:activator="{ on }">
+              <v-btn small v-on="on" class="white--text" color="#F4B48B" depressed :disabled="!user">
+                <span v-if="humanCertified">{{ humanCertification}}</span>
+                <span v-else>{{ years[0] }}</span>
+              </v-btn>
+            </template>
             <v-list v-if="user">
-              <v-list-tile v-for="(item, index) in years" :key="index">
-                <v-list-tile-title class="pointer" @click="certify(item, 'humanCertified')">{{ item }}</v-list-tile-title>
-              </v-list-tile>
+              <v-list-item v-for="(item, index) in years" :key="index">
+                <v-list-item-title class="pointer" @click="dialog = !dialog; certification = 'humanCertified'" v-if="user.role !== 'admin'">{{ item }}</v-list-item-title>
+                <v-list-item-title class="pointer" @click="certify(item, 'humanCertified')" v-else>{{ item }}</v-list-item-title>
+              </v-list-item>
             </v-list>
           </v-menu>
           <span v-if="humanCertified"> - <a href="https://blog.ezpaarse.org/2017/06/certification-h-et-p-des-plateformes-traitees-dans-ezpaarse/" target="_blank">{{ $t('card.manuallyVerified') }}</a></span>
           <span v-else> - <a href="https://blog.ezpaarse.org/2020/01/tutoriels-procedure-de-certification-h-et-p-dans-analogist" target="_blank">{{ $t('certifications.notCertified') }}</a></span>
-        </v-list-tile>
-      </v-list-tile-content>
-    </v-list-tile>
+        </v-list-item-title>
+      </v-list-item-content>
+    </v-list-item>
 
-    <v-list-tile>
-      <v-list-tile-avatar color="#5AB9C1">
+    <v-list-item>
+      <v-list-item-avatar color="#5AB9C1">
         <span class="white--text headline">P</span>
-      </v-list-tile-avatar>
-      <v-list-tile-content>
-        <v-list-tile>
+      </v-list-item-avatar>
+      <v-list-item-content>
+        <v-list-item-title>
           <v-menu open-on-hover offset-y>
-            <v-btn small slot="activator" class="white--text" color="#5AB9C1" depressed :disabled="!user || !humanCertified">
-              <span v-if="publisherCertified">{{ publisherCertification}}</span>
-              <span v-else>{{ years[0] }}</span>
-            </v-btn>
+            <template v-slot:activator="{ on }">
+              <v-btn small v-on="on" class="white--text" color="#5AB9C1" depressed :disabled="!user || !humanCertified">
+                <span v-if="publisherCertified">{{ publisherCertification}}</span>
+                <span v-else>{{ years[0] }}</span>
+              </v-btn>
+            </template>
             <v-list v-if="user && humanCertified">
-              <v-list-tile v-for="(item, index) in years" :key="index">
-                <v-list-tile-title class="pointer" @click="certify(item, 'publisherCertified')">{{ item }}</v-list-tile-title>
-              </v-list-tile>
+              <v-list-item v-for="(item, index) in years" :key="index">
+                <v-list-item-title class="pointer" @click="dialog = !dialog; certification = 'publisherCertified'" v-if="user.role !== 'admin'">{{ item }}</v-list-item-title>
+                <v-list-item-title class="pointer" @click="certify(item, 'publisherCertified')" v-else>{{ item }}</v-list-item-title>
+              </v-list-item>
             </v-list>
           </v-menu>
           <span v-if="publisherCertified"> - <a href="https://blog.ezpaarse.org/2017/06/certification-h-et-p-des-plateformes-traitees-dans-ezpaarse/" target="_blank">{{ $t('card.publisherVerified') }}</a></span>
           <span v-else> - <a href="https://blog.ezpaarse.org/2020/01/tutoriels-procedure-de-certification-h-et-p-dans-analogist" target="_blank">{{ $t('certifications.notCertified') }}</a></span>
-        </v-list-tile>
-      </v-list-tile-content>
-    </v-list-tile>
+        </v-list-item-title>
+      </v-list-item-content>
+    </v-list-item>
+
+    <v-dialog
+      v-model="dialog"
+      width="500"
+    >
+       <v-card>
+        <v-card-title
+          dark
+          class="headline"
+          primary-title
+        >
+          Certification
+        </v-card-title>
+
+        <v-divider></v-divider>
+
+        <v-card-text>
+          <v-layout  wrap>
+            <v-flex xs12 sm12>
+              <v-textarea
+                name="input-7-1"
+                label="Commentaire"
+                v-model="comment"
+              ></v-textarea>
+            </v-flex>
+
+            <v-flex xs12 sm6 pr-1 v-if="certification === 'publisherCertified'">
+              <v-text-field
+                v-model="ezpaarse"
+                type="number"
+                placeholder="ex: 9092"
+                label="Total rapport JR1 ezPAARSE"
+              ></v-text-field>
+            </v-flex>
+            <v-flex xs12 sm6 pl-1 v-if="certification === 'publisherCertified'">
+              <v-text-field
+                v-model="editor"
+                type="number"
+                placeholder="ex: 9571"
+                label="Total rapport JR1 Éditeur"
+              ></v-text-field>
+            </v-flex>
+            
+            <v-flex xs12 sm12>
+              <v-text-field
+                type="file"
+                label="Justificatif (falcultatif)"
+              ></v-text-field>
+            </v-flex>
+          </v-layout>
+        </v-card-text>
+
+        <v-divider></v-divider>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="primary"
+            flat
+            @click="dialog = false"
+          >
+            Valider
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </span>
 </template>
 
 <script>
 export default {
+  data () {
+    return {
+      dialog: false,
+      comment: '',
+      certification: null,
+      ezpaarse: null,
+      editor: null
+    }
+  },
   computed: {
     card () {
       return this.$store.state.card
@@ -79,6 +160,8 @@ export default {
   },
   methods: {
     certify (year, certification) {
+      if (this.user.role !== 'admin') { return }
+
       if (year) {
         const certifications = this.certified || { humanCertified: null, publisherCertified: null }
         certifications[certification] = year === '—' ? null : year

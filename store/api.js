@@ -189,8 +189,8 @@ api.setVisiblity = function (data) {
   return axios.put(`/api/badges/visibility`, data).then(res => res.data)
 }
 
-api.getUsers = function (data) {
-  return axios.get(`/api/badges/users/${data.badgeId}`).then(res => res.data)
+api.getUsers = function (badgeId) {
+  return axios.get(`/api/badges/users/${badgeId}`).then(res => res.data)
 }
 
 api.updateCertifications = function (cId, certifications) {

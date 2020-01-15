@@ -200,5 +200,7 @@
     "human": "Humain",
     "publisher": "Editeur"
   },
-  "others": "autres"
+  "others": "autres",
+  "errorGeneric": "Une erreur inattendue est survenue",
+  "mustBeConnected": "Vous devez être connecté pour accéder aux informations"
 }

@@ -1,20 +1,24 @@
 <template>
-  <v-list-tile avatar ripple router :to="{ name: 'platforms-cid', params: { cid: card.id }}">
-    <v-list-tile-content>
-      <v-list-tile-title>{{ card.name }}</v-list-tile-title>
-      <v-list-tile-sub-title>{{ listName }}</v-list-tile-sub-title>
-      <v-list-tile-sub-title>{{ $t('card.nbAnalyses', { n: nbAnalyses }) }}</v-list-tile-sub-title>
-    </v-list-tile-content>
-    <v-list-tile-action>
-      <v-list-tile-action-text>{{ updatedAt }}</v-list-tile-action-text>
-      <v-list-tile-avatar class="cert-icon" size="24" v-if="humanCertified" color="#F4B48B">
-        <span class="white--text">H</span>
-      </v-list-tile-avatar>
-      <v-list-tile-avatar class="cert-icon" size="24" v-if="publisherCertified" color="#5AB9C1">
-        <span class="white--text">P</span>
-      </v-list-tile-avatar>
-    </v-list-tile-action>
-  </v-list-tile>
+  <v-list-item ripple router :to="{ name: 'platforms-cid', params: { cid: card.id }}">
+    <v-list-item-content>
+      <v-list-item-title>{{ card.name }}</v-list-item-title>
+      <v-list-item-subtitle>{{ listName }}</v-list-item-subtitle>
+      <v-list-item-subtitle>{{ $t('card.nbAnalyses', { n: nbAnalyses }) }}</v-list-item-subtitle>
+    </v-list-item-content>
+    <v-list-item-action>
+      <v-list-item-subtitle class="caption">{{ updatedAt }}</v-list-item-subtitle>
+      <span>
+        <v-list-item-avatar class="cert-icon" size="24" v-if="humanCertified" color="#F4B48B">
+          <span class="white--text">H</span>
+        </v-list-item-avatar>
+      </span>
+      <span>
+        <v-list-item-avatar class="cert-icon" size="24" v-if="publisherCertified" color="#5AB9C1">
+          <span class="white--text">P</span>
+        </v-list-item-avatar>
+      </span>
+    </v-list-item-action>
+  </v-list-item>
 </template>
 
 <script>

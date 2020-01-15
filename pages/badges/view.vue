@@ -1,14 +1,14 @@
 <template>
   <section>
     <v-card>
-      <v-toolbar class="secondary" dense dark card>
+      <v-toolbar class="secondary" dense dark flat>
         <v-toolbar-title>
           {{ $t('badges.title') }} <v-chip v-if="badges && badges.badges" color="grey lighten-2"><strong>{{badgesOwned}}</strong> / {{badges.badges.length}}</v-chip>
         </v-toolbar-title>
       </v-toolbar>
       
       <v-card-text>
-        <v-layout row wrap justify-center v-if="badges && badges.badges">
+        <v-layout wrap justify-center v-if="badges && badges.badges">
           <v-flex xs12 sm12>
             <v-switch
               style="float: right"
@@ -18,7 +18,7 @@
           </v-flex>
         </v-layout>
 
-        <v-layout v-if="badges && badges.badges && ping" row wrap justify-center>
+        <v-layout v-if="badges && badges.badges && ping" wrap justify-center>
           <v-flex xs12 sm2 v-for="badge in badges.badges" :key="badge.id" @click="currentBadge = badge; linkedInModal = false" :class="{ 'notPossessed' : !badge.issued_on }">
             <img class="mx-auto badgeImage" :src="badge.image">
             <h4 class="badgeName" v-if="$i18n.locale === 'fr'">{{ badge.name }}</h4>
@@ -57,9 +57,11 @@
         </a>
               
         <v-tooltip bottom>
-          <v-btn flat :icon="true" slot="activator" href="https://blog.ezpaarse.org/2018/06/communication-les-badges-ezpaarse/" target="_blank">
-            <v-icon>mdi-help-circle</v-icon>
-          </v-btn>
+          <template v-slot:activator="{ on }">
+            <v-btn text v-on="on" icon href="https://blog.ezpaarse.org/2018/06/communication-les-badges-ezpaarse/" target="_blank">
+              <v-icon>mdi-help-circle</v-icon>
+            </v-btn>
+          </template>
           <span>Informations</span>
         </v-tooltip>
       </v-card-text>
@@ -98,8 +100,17 @@ export default {
       return redirect('/')
     }
 
-    await store.dispatch('badges/getPing')
-    await store.dispatch('badges/getBadges', { id: store.state.user.id, locale: app.i18n.locale })
+    try {
+      await store.dispatch('badges/getPing')
+    } catch (e) {
+      await store.dispatch('snacks/error', 'badges.pingError')
+    }
+
+    try {
+      await store.dispatch('badges/getBadges', { id: store.state.user.id, locale: app.i18n.locale })
+    } catch (e) {
+      await store.dispatch('snacks/error', 'badges.noMetrics')
+    }
   },
   watch: {
     user: function () {
