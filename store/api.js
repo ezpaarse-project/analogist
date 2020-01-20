@@ -166,6 +166,10 @@ api.getMember = function (memberId) {
   return axios.get(`/api/trello/member/${memberId}`).then(res => res.data)
 }
 
+api.becomeMember = function () {
+  return axios.post('/api/auth/membership').then(res => res.data)
+}
+
 /**
  * Badges
  */
@@ -193,8 +197,15 @@ api.getUsers = function (badgeId) {
   return axios.get(`/api/badges/users/${badgeId}`).then(res => res.data)
 }
 
+/**
+ * Certfificaitions
+ */
 api.updateCertifications = function (cId, certifications) {
   return axios.patch(`/api/certifications/${cId}`, { certifications }).then(res => res.data)
+}
+
+api.sendRequest = function (data) {
+  return axios.post(`/api/certifications/${data.cardId}`, data).then(res => res.data)
 }
 
 export default api

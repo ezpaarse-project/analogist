@@ -1,8 +1,8 @@
 <template>
   <v-navigation-drawer v-model="drawer" app clipped fixed disable-route-watcher width="300">
     <v-list class="text-center">
-      <v-btn class="black--text ml-2 mr-2" icon target="_blank" v-for="link in links" :title="link.title" :href="link.href" :key="link.icon">
-        <v-icon>{{ link.icon }}</v-icon>
+      <v-btn class="ml-2 mr-2" icon target="_blank" v-for="link in links" :title="link.title" :href="link.href" :key="link.icon">
+        <v-icon dark>{{ link.icon }}</v-icon>
       </v-btn>
     </v-list>
 
@@ -25,6 +25,20 @@
         </v-list-item-avatar>
         <v-list-item-content>
           <v-list-item-title class="subtitle-2 font-weight-regular" v-text="user.fullName"></v-list-item-title>
+          <v-list-item-subtitle v-if="!canEdit">
+            <v-dialog v-model="becomeMemberDialog" max-width="600">
+              <template v-slot:activator="{ on }">
+                <v-btn x-small v-on="on" color="blue darken-1" dark v-html="$t('drawer.newUserButton')"></v-btn>
+              </template>
+              <v-card>
+                <v-card-title class="headline" v-html="$t('drawer.newUser')"></v-card-title>
+                <v-card-text class="text-center">
+                  <p v-html="$t('drawer.newUserText')"></p>
+                  <v-btn color="green darken-1" dark @click="newUserRequest" v-html="$t('drawer.becomeMember')"></v-btn>
+                </v-card-text>
+              </v-card>
+            </v-dialog>
+          </v-list-item-subtitle>
         </v-list-item-content>
         <v-list-item-icon>
           <v-tooltip right>
@@ -127,12 +141,12 @@
         <v-flex xs12 mb-5>
           <v-tooltip top>
             <template v-slot:activator="{ on }">
-              <v-btn small text icon v-on="on" @click="dark = !dark">
-                <v-icon v-if="dark">mdi-white-balance-sunny</v-icon>
+              <v-btn small text icon v-on="on" @click="$vuetify.theme.dark = !$vuetify.theme.dark">
+                <v-icon v-if="$vuetify.theme.dark">mdi-white-balance-sunny</v-icon>
                 <v-icon v-else>mdi-weather-night</v-icon>
               </v-btn>
             </template>
-            <span v-if="dark">{{ $t('theme.light') }}</span>
+            <span v-if="$vuetify.theme.dark">{{ $t('theme.light') }}</span>
             <span v-else>{{ $t('theme.dark') }}</span>
           </v-tooltip>
         </v-flex>
@@ -173,7 +187,8 @@ export default {
         { icon: 'mdi-twitter-box', href: 'https://twitter.com/ezpaarse' },
         { icon: 'mdi-comment-text-outline', href: 'http://blog.ezpaarse.org/' },
         { icon: 'mdi-youtube', href: 'https://www.youtube.com/channel/UCcR-0UE9WjYiwS4fMG2T4tQ' }
-      ]
+      ],
+      becomeMemberDialog: false
     }
   },
   computed: {
@@ -198,17 +213,22 @@ export default {
     loginUrl () {
       return `/api/auth/connect/trello?callback=/api/auth/callback${this.$route.fullPath}`
     },
-    dark: {
-      get () { return this.$store.state.dark },
-      set (newVal) { this.$store.dispatch('SET_DARK', newVal) }
-    },
     page () {
       return this.$route.query.page
+    },
+    canEdit () {
+      return this.$store.state.user && this.$store.state.user.isAuthorized
     }
   },
   methods: {
     logout () {
       this.$store.dispatch('LOGOUT')
+    },
+    newUserRequest () {
+      this.$store.dispatch('BECOME_MEMBER')
+        .then(() => this.$store.dispatch('snacks/success', 'drawer.becomeMemberSuccess'))
+        .catch(() => this.$store.dispatch('snacks/error', 'errorGeneric'))
+      this.becomeMemberDialog = false
     }
   }
 }

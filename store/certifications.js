@@ -5,6 +5,9 @@ export default {
   actions: {
     UPDATE ({ commit }, data) {
       return api.updateCertifications(data.cId, data.certifications)
+    },
+    SEND_REQUEST ({ commit }, data) {
+      return api.sendRequest(data)
     }
   }
 }

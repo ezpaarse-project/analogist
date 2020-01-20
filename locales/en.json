@@ -18,7 +18,12 @@
     "logout": "Logout",
     "notConnected": "Not connected",
     "login": "Login",
-    "language": "Language"
+    "language": "Language",
+    "newUserButton": "New user ?",
+    "newUser": "New AnalogIST user ?",
+    "newUserText": "In order to contribute to platform analysis for AnalogIST, you must be a member of the <a href=\"https://trello.com/b/wEaLnz8d\" target=\"_blank\">tableau trello</a> dedicated to platform management.",
+    "becomeMember": "Become a member",
+    "becomeMemberSuccess": "Your request will be processed as soon as possible"
   },
   "ezLogger": {
     "title": "ezPAARSE Logger",
@@ -197,10 +202,34 @@
   "certifications": {
     "notCertified": "This platform is not yet certified",
     "publisherCertificationsError": "H certification is required to be able to certify P the platform",
+    "notification": "Your request has just been sent to us, it will be processed as soon as possible",
     "human": "Human",
-    "publisher": "Publisher"
+    "publisher": "Publisher",
+    "close": "Close",
+    "send": "Send",
+    "form": {
+      "objects": {
+        "addOrModify": "Add / modify certification",
+        "delete": "Delete certification",
+        "approved": "Approved certification"
+      },
+      "object": "Object *",
+      "establishment": "Establishment *",
+      "comment": "Comment *",
+      "totalEzpaarse": "Total JR1 report ezPAARSE *",
+      "totalEditor": "Total JR1 report Editor *",
+      "attachement": "Attachement",
+      "requiredFields": "(*) required fields"
+    },
+    "formError": {
+      "object": "An object is required",
+      "establishment": "Establishment name is required",
+      "comment": "Comment is required.",
+      "totalValue": "The total is required.",
+      "date": "One year of certification is required"
+    }
   },
   "others": "others",
   "errorGeneric": "An unexpected error has occurred",
-  "mustBeConnected": "Vous devez être connecté pour accéder aux informations"
+  "mustBeConnected": "You must be logged in to access the information"
 }

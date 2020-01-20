@@ -193,7 +193,7 @@
 <script>
 import moment from 'moment'
 import AnalysisTile from '~/components/AnalysisTile'
-import Certification from '~/components/Certification'
+import Certification from '~/components/certifications/Certification'
 import draggable from 'vuedraggable'
 import { saveAs } from 'file-saver'
 

@@ -5,3 +5,10 @@
 .mdi.icon {
   line-height: 1
 }
+.pointer {
+  text-align: center;
+  cursor: pointer;
+}
+.dateLbl {
+  width: 80px !important;
+}

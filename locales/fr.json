@@ -18,7 +18,12 @@
     "logout": "Se déconnecter",
     "notConnected": "Non connecté",
     "login": "Se connecter",
-    "language": "Langue"
+    "language": "Langue",
+    "newUserButton": "Nouvel utilisateur ?",
+    "newUser": "Nouvel utilisateur AnalogIST ?",
+    "newUserText": "Pour pouvoir contribuer à l'analyse des plateformes pour AnalogIST, vous devez être membre du <a href=\"https://trello.com/b/wEaLnz8d\" target=\"_blank\">tableau trello</a> dédié a la gestion des plateformes.",
+    "becomeMember": "Devenir membre",
+    "becomeMemberSuccess": "Votre demande sera traitée dans les plus bref délais"
   },
   "ezLogger": {
     "title": "ezPAARSE Logger",
@@ -197,8 +202,32 @@
   "certifications": {
     "notCertified": "Cette plateforme ne possède pas encore de certification",
     "publisherCertificationsError": "La certification H est nécessaire pour pour pouvoir certifier P la plateforme",
+    "notification": "Votre demande vient de nous être envoyée, elle sera traitée dans les plus bref délais",
     "human": "Humain",
-    "publisher": "Editeur"
+    "publisher": "Editeur",
+    "close": "Fermer",
+    "send": "Envoyer",
+    "form": {
+      "objects": {
+        "addOrModify": "Ajouter / modifier une certification",
+        "delete": "Retirer une certification",
+        "approved": "Approuver une certification"
+      },
+      "object": "Objet *",
+      "establishment": "Etablissement *",
+      "comment": "Commentaire *",
+      "totalEzpaarse": "Total rapport JR1 ezPAARSE *",
+      "totalEditor": "Total rapport JR1 Editeur *",
+      "attachement": "Pièce jointe",
+      "requiredFields": "(*) champs obligatoires"
+    },
+    "formError": {
+      "object": "Un objet est requis",
+      "establishment": "Le nom de l'établissement est requis",
+      "comment": "Un commentaire est requis",
+      "totalValue": "Le total est requis",
+      "date": "Une année de certification est requise"
+    }
   },
   "others": "autres",
   "errorGeneric": "Une erreur inattendue est survenue",

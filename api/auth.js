@@ -5,7 +5,7 @@ const router = require('express').Router()
 const Grant  = require('grant-express')
 const mw     = require('../lib/middlewares')
 const trello = require('../lib/trello')
-const mailer = require('../lib/mailer')
+const { sendMail, generateMail } = require('../lib/mailer')
 
 router.use('/connect/trello', (req, res, next) => {
   req.query.host = req.query.host || req.headers['x-forwarded-host'] || req.headers.host
@@ -86,19 +86,19 @@ router.post('/membership', mw.updateUserProfile, (req, res, next) => {
     }
 
     const profile = req.session.profile
-    let html = `<a href="https://trello.com/${profile.username}">${profile.fullName}</a>`
-    html += ' souhaite devenir membre du board '
-    html += `<a href="https://trello.com/b/${board.id}">${board.name}</a>`
 
-    mailer()
-      .from(config.notifications.sender)
-      .to(config.notifications.receivers)
-      .subject(`Demande AnalogIST (${profile.fullName})`)
-      .html(html)
-      .send(err => {
-        if (err) { return next(err) }
-        res.status(200).end()
+    return sendMail({
+      from: config.notifications.sender,
+      to: config.notifications.receivers,
+      subject: `Demande AnalogIST (${profile.fullName})`,
+      ...generateMail('newUser', {
+        fullName: profile.fullName,
+        username: profile.username,
+        boarId: board.id,
+        boardName: board.name
       })
+    }).then(() => res.status(204).end())
+      .catch(() => res.status(500).json({ status: 'error' }))
   })
 })
 

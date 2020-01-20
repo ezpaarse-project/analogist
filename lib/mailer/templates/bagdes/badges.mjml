@@ -1,0 +1,25 @@
+{% extends "layout.mjml" %}
+
+{% block title %}
+<mj-title>Émission d'un badge pour {{ fullName }}</mj-title>
+{% endblock %}
+
+{% block content %}
+
+<mj-section>
+  <mj-column>
+    <mj-text>
+      <p>Bonjour,</p>
+      <p>
+        Le badge <strong>{{ eventName }}</strong> à été attribué à <strong>{{ fullName }}</strong> le <strong>{{ issueTime }}</strong> via <strong>{{ issuer }}</strong>.
+      </p>
+    </mj-text>
+
+    <mj-text>
+      <p>Cordialement,</p>
+      <p>L'équipe ezMESURE.</p>
+    </mj-text>
+  </mj-column>
+</mj-section>
+
+{% endblock %}
