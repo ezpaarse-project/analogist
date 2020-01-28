@@ -8,7 +8,18 @@
 
     <v-card>
       <v-toolbar class="secondary" dark dense elevation="0">
-        <v-toolbar-title>{{ card.name }}</v-toolbar-title>
+        <v-toolbar-title>
+          <v-tooltip right v-if="card.closed">
+            <template v-slot:activator="{ on }">
+              <span v-on="on">
+                <v-icon size="24" class="mb-1">mdi-archive</v-icon>
+                {{ card.name }}
+              </span>
+            </template>
+            <span v-text="$t('card.archived')"></span>
+          </v-tooltip>
+          <span v-else v-text="card.name"></span>
+        </v-toolbar-title>
 
         <v-spacer></v-spacer>
 
@@ -86,12 +97,20 @@
                   <v-list-item-title v-text="$t('analyses.testWithEzlogger')"></v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
-              <v-list-item v-if="canEdit" @click="deleteDialog = true">
+              <v-list-item v-if="canEdit && !card.closed" @click="deleteDialog = true">
                 <v-list-item-avatar>
-                  <v-icon>mdi-archive</v-icon>
+                  <v-icon>mdi-archive-arrow-down</v-icon>
                 </v-list-item-avatar>
                 <v-list-item-content>
-                  <v-list-item-title v-text="$t('analyses.archive')"></v-list-item-title>
+                  <v-list-item-title v-text="$t('card.archive')"></v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+              <v-list-item v-if="canEdit && card.closed" @click="deleteDialog = true">
+                <v-list-item-avatar>
+                  <v-icon>mdi-archive-arrow-up</v-icon>
+                </v-list-item-avatar>
+                <v-list-item-content>
+                  <v-list-item-title v-text="$t('card.unarchive')"></v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
             </v-list-item-group>
@@ -102,8 +121,8 @@
       <v-card-text>
         <v-layout row wrap class="pl-3 pr-3">
           <v-flex xs12 sm4>
-            <div class="black--text font-weight-regular">{{ $t('card.lastActivity') }}</div>
-            <div class="black--text font-weight-medium">{{ lastActivity }}</div>
+            <div class="font-weight-regular">{{ $t('card.lastActivity') }}</div>
+            <div class="font-weight-medium">{{ lastActivity }}</div>
           </v-flex>
 
           <v-flex xs12 sm8>
@@ -155,12 +174,16 @@
         <v-card-title class="headline">{{ $t('ui.areYouSure') }}</v-card-title>
 
         <v-card-text>
-          {{ $t('card.archiveDesc') }}
+          <span v-text="$t('card.archiveDesc')" v-if="!card.closed"></span>
+          <span v-text="$t('card.unarchiveDesc')" v-if="card.closed"></span>
         </v-card-text>
 
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="error" :loading="deletingCard" @click.native="archivePlatform">{{ $t('ui.archive') }}</v-btn>
+          <v-btn color="error" :loading="deletingCard" @click.native="archivePlatform">
+            <span v-text="$t('card.archive')" v-if="!card.closed"></span>
+            <span v-text="$t('card.unarchive')" v-if="card.closed"></span>
+          </v-btn>
           <v-btn color="secondary" @click.native="deleteDialog = false">{{ $t('ui.cancel') }}</v-btn>
         </v-card-actions>
       </v-card>
@@ -320,11 +343,19 @@ export default {
       this.deletingCard = true
 
       try {
-        await this.$store.dispatch('ARCHIVE_CARD', this.card.id)
+        if (!this.card.closed) {
+          await this.$store.dispatch('ARCHIVE_CARD', this.card.id)
+        } else {
+          await this.$store.dispatch('UNARCHIVE_CARD', this.card.id)
+        }
         this.deleteDialog = false
         this.$router.push({ path: '/platforms' })
       } catch (e) {
-        this.$store.dispatch('snacks/error', 'card.archivalFailed')
+        if (!this.card.closed) {
+          this.$store.dispatch('snacks/error', 'card.archivalFailed')
+        } else {
+          this.$store.dispatch('snacks/error', 'card.unarchivalFailed')
+        }
       }
 
       this.deletingCard = false

@@ -147,7 +147,6 @@
 
 <script>
 import { mapState, mapActions } from 'vuex'
-import axios from '~/plugins/axios'
 
 export default {
   name: 'settings',
@@ -206,7 +205,7 @@ export default {
       const ezpaarseUrl = this.getEzpaarseUrl()
 
       try {
-        const { data } = await axios.get(`${ezpaarseUrl}/info/platforms`)
+        const { data } = await this.$axios.get(`${ezpaarseUrl}/info/platforms`)
         if (!Array.isArray(data)) { throw new Error('invalid response') }
         this.parsers = data
       } catch (e) {
@@ -250,7 +249,7 @@ export default {
       this.connectionTest.errorMeta = null
       this.connectionTest.version = null
 
-      axios.get(`${ezpaarseUrl}/info/version`)
+      this.$axios.get(`${ezpaarseUrl}/info/version`)
         .then(response => {
           this.connectionTest.loading = false
 

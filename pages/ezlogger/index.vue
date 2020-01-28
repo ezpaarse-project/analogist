@@ -141,7 +141,6 @@
 
 <script>
 import { saveAs } from 'file-saver'
-import axios from '~/plugins/axios'
 
 const perPage = 20
 
@@ -272,7 +271,7 @@ export default {
         headers[h.name] = h.value
       })
 
-      axios.post(ezpaarseUrl, logs, { headers })
+      this.$axios.post(ezpaarseUrl, logs, { headers })
         .then(response => {
           if (response.status !== 200) {
             throw new Error('Got status', response.status)

@@ -19,22 +19,24 @@
       </v-list-item>
 
       <v-list-item v-else>
-        <v-list-item-avatar>
-          <img v-if="user && user.avatarHash" :title="user.fullName" :src="'https://trello-avatars.s3.amazonaws.com/' + user.avatarHash + '/50.png'" alt="avatar" />
-          <span v-else-if="user" class="subtitle-1 white--text" :title="user.fullName" v-text="user.initials" />
+        <v-list-item-avatar v-if="user.avatarHash">
+          <img :title="user.fullName" :src="'https://trello-avatars.s3.amazonaws.com/' + user.avatarHash + '/50.png'" alt="Avatar" />
+        </v-list-item-avatar>
+        <v-list-item-avatar color="blue-grey lighten-4" v-if="!user.avatarHash">
+          <span class="white--text headline" v-text="user.initials"></span>
         </v-list-item-avatar>
         <v-list-item-content>
           <v-list-item-title class="subtitle-2 font-weight-regular" v-text="user.fullName"></v-list-item-title>
           <v-list-item-subtitle v-if="!canEdit">
             <v-dialog v-model="becomeMemberDialog" max-width="600">
               <template v-slot:activator="{ on }">
-                <v-btn x-small v-on="on" color="blue darken-1" dark v-html="$t('drawer.newUserButton')"></v-btn>
+                <v-btn x-small v-on="on" color="blue darken-1" dark v-text="$t('drawer.newUserButton')"></v-btn>
               </template>
               <v-card>
-                <v-card-title class="headline" v-html="$t('drawer.newUser')"></v-card-title>
-                <v-card-text class="text-center">
+                <v-card-text class="text-center py-3">
+                  <p class="headline" v-text="$t('drawer.newUser')"></p>
                   <p v-html="$t('drawer.newUserText')"></p>
-                  <v-btn color="green darken-1" dark @click="newUserRequest" v-html="$t('drawer.becomeMember')"></v-btn>
+                  <v-btn color="green darken-1" dark @click="newUserRequest" v-text="$t('drawer.becomeMember')"></v-btn>
                 </v-card-text>
               </v-card>
             </v-dialog>
@@ -107,17 +109,33 @@
           </v-list-item-icon>
         </v-list-item>
 
-        <v-list-item v-if="user && user.role === 'admin'" router :to="{ path: '/badges/emit' }" ripple>
-          <v-list-item-title class="subtitle-2 font-weight-regular">{{ $t('badges.emitBadge') }}</v-list-item-title>
-          <v-list-item-icon>
-            <v-icon>mdi-send</v-icon>
-          </v-list-item-icon>
-        </v-list-item>
-
         <v-list-item router :to="{ path: '/badges/list' }" ripple>
           <v-list-item-title class="subtitle-2 font-weight-regular">{{ $t('badges.list') }}</v-list-item-title>
           <v-list-item-icon>
             <v-icon>mdi-format-list-bulleted-square</v-icon>
+          </v-list-item-icon>
+        </v-list-item>
+      </v-list-group>
+
+      <v-list-group v-if="user && user.role === 'admin'" no-action append-icon="mdi-chevron-down" :value="$nuxt.$route.name.indexOf('admin') !== -1">
+        <template v-slot:activator>
+          <v-list-item-icon>
+            <v-icon>mdi-settings</v-icon>
+          </v-list-item-icon>
+          <v-list-item-title class="subtitle-2 font-weight-regular">Administration</v-list-item-title>
+        </template>
+
+        <v-list-item v-if="user && user.role === 'admin'" router :to="{ path: '/admin/certifications' }" ripple>
+          <v-list-item-title class="subtitle-2 font-weight-regular">Certifications</v-list-item-title>
+          <v-list-item-icon>
+            <v-icon>mdi-wallet-membership</v-icon>
+          </v-list-item-icon>
+        </v-list-item>
+
+        <v-list-item v-if="user && user.role === 'admin'" router :to="{ path: '/admin/emit' }" ripple>
+          <v-list-item-title class="subtitle-2 font-weight-regular">{{ $t('badges.emitBadge') }}</v-list-item-title>
+          <v-list-item-icon>
+            <v-icon>mdi-send</v-icon>
           </v-list-item-icon>
         </v-list-item>
       </v-list-group>

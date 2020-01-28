@@ -25,6 +25,7 @@
             ref="form"
             v-model="valid"
             lazy-validation
+            enctype="multipart/form-data"
           >
             <v-layout  wrap class="my-2">
               <v-flex xs12 sm12>
@@ -82,10 +83,20 @@
               </v-flex>
               
               <v-flex xs12 sm12>
-                <v-file-input ref="attachement" v-on:change="handleAttachement" :label="$t('certifications.form.attachement')"></v-file-input>
+                <v-file-input
+                  ref="attachement"
+                  id="attachement"
+                  name="attachement"
+                  show-size
+                  v-model="form.attachement"
+                  :label="$t('certifications.form.attachement')"
+                  :rules="[v => v && v.size < 2000000 || $t('certifications.formError.attachement')]"
+                  :hint="$t('certifications.form.attachementSize')"
+                  persistent-hint
+                ></v-file-input>
               </v-flex>
 
-              <v-flex xs12 sm12>
+              <v-flex xs12 sm12 mt-3>
                 <p class="caption" v-text="$t('certifications.form.requiredFields')"></p>
               </v-flex>
             </v-layout>
@@ -97,7 +108,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="primary" text @click="certify()" :disabled="!valid">{{ $t('certifications.send') }}</v-btn>
-          <v-btn color="primary" text @click="closeDialog">{{ $t('certifications.close') }}</v-btn>
+          <v-btn text @click="closeDialog">{{ $t('certifications.close') }}</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -121,7 +132,7 @@ export default {
         object: null,
         establishment: null,
         comment: null,
-        attachement: null,
+        attachement: [],
         values: {
           ezpaarse: null,
           editor: null
@@ -188,9 +199,6 @@ export default {
       this.disableObject = true
       this.form.object = this.objects[0].name
     },
-    handleAttachement () {
-      this.form.attachement = this.$refs.attachement.files
-    },
     certify () {
       if (!this.$refs.form.validate()) {
         this.valid = false
@@ -201,18 +209,25 @@ export default {
         return this.$store.dispatch('snacks/error', 'certifications.formError.date')
       }
 
+      const formData = new FormData()
+      formData.append('attachement', this.form.attachement)
+
+      this.form.attachement = this.form.attachement.name
+
       const request = {
         cardName: this.card.name,
         cardId: this.card.id,
         user: {
           userId: this.user.id,
-          email: this.user.email
+          email: this.user.email,
+          fullName: this.user.fullName
         },
         form: { ...this.form, year: this.year },
         certification: this.certification
       }
+      formData.append('request', JSON.stringify(request))
 
-      this.$store.dispatch('certifications/SEND_REQUEST', request)
+      this.$store.dispatch('certifications/SEND_REQUEST', { cardId: this.card.id, formData })
         .then((res) => {
           this.$store.dispatch('FETCH_CARD', this.card.id).catch((err) => {
             if (err) {

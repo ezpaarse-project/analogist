@@ -88,8 +88,11 @@
     "github": "Github",
     "homepage": "Page d'accueil",
     "trello": "Carte Trello",
+    "archived": "Plateforme archivée",
     "archive": "Archiver la plateforme",
-    "archiveDesc": "La plateforme sera archivée et les analyses ne seront plus visibles. Pour revenir en arrière, restaurez la carte associée depuis le tableau Trello.",
+    "unarchive": "Désarchiver la plateforme",
+    "archiveDesc": "La plateforme sera archivée et les analyses ne seront plus visibles.",
+    "unarchiveDesc": "La plateforme sera désarchivée et les analyses seront de nouveaux visibles",
     "contributors": "Contributeurs",
     "humanCertification": "Certification humaine",
     "publisherCertification": "Certification éditeur",
@@ -99,7 +102,8 @@
     "analysesReorderFailed": "La réorganisation des analyses a échoué",
     "listUpdateFailed": "Le changement de statut a échoué",
     "analysisCreationFailed": "La création d'analyse a échoué",
-    "archivalFailed": "L'archivage de la carte a échoué"
+    "archivalFailed": "L'archivage de la carte a échoué",
+    "unarchivalFailed": "Le désarchivage de la carte a échoué"
   },
   "analyses": {
     "updated": "Mise à jour",
@@ -131,7 +135,8 @@
     "name": "Nom",
     "status": "Statut",
     "platforms": "Plateformes",
-    "certifications": "Certification"
+    "certifications": "Certification",
+    "displayAllPlatforms": "Afficher toutes les plateformes"
   },
   "creation": {
     "newPlatform": "Nouvelle plateforme",
@@ -205,6 +210,8 @@
     "notification": "Votre demande vient de nous être envoyée, elle sera traitée dans les plus bref délais",
     "human": "Humain",
     "publisher": "Editeur",
+    "desc": "Décroissant",
+    "asc": "Croissant",
     "close": "Fermer",
     "send": "Envoyer",
     "form": {
@@ -219,6 +226,7 @@
       "totalEzpaarse": "Total rapport JR1 ezPAARSE *",
       "totalEditor": "Total rapport JR1 Editeur *",
       "attachement": "Pièce jointe",
+      "attachementSize": "Taille max. 2 Mo",
       "requiredFields": "(*) champs obligatoires"
     },
     "formError": {
@@ -226,7 +234,8 @@
       "establishment": "Le nom de l'établissement est requis",
       "comment": "Un commentaire est requis",
       "totalValue": "Le total est requis",
-      "date": "Une année de certification est requise"
+      "date": "Une année de certification est requise",
+      "attachement": "La taille de la pièce jointe doit être inférieure à 2 Mo !"
     }
   },
   "others": "autres",

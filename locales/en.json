@@ -88,8 +88,11 @@
     "github": "Github",
     "homepage": "Homepage",
     "trello": "Trello card",
+    "archived": "Archived platform",
     "archive": "Archive the platform",
-    "archiveDesc": "The platform will be archived and the analyses won't be visible anymore. To undo this action, restore the associated card from the Trello board.",
+    "unarchive": "Désarchiver la plateforme",
+    "archiveDesc": "The platform will be archived and the analyses won't be visible anymore.",
+    "unarchiveDesc": "The platform will be unarchived and the analyses will be visible again.",
     "contributors": "Contributors",
     "humanCertification": "Human certification",
     "publisherCertification": "Publisher certification",
@@ -99,7 +102,8 @@
     "analysesReorderFailed": "Analyses reordering failed",
     "listUpdateFailed": "Status update failed",
     "analysisCreationFailed": "Analysis creation failed",
-    "archivalFailed": "Card archival failed"
+    "archivalFailed": "Card archival failed",
+    "unarchivalFailed": "The de-archiving of the card has failed"
   },
   "analyses": {
     "updated": "Updated",
@@ -131,7 +135,8 @@
     "name": "Name",
     "status": "Status",
     "platforms": "Platforms",
-    "certifications": "Certification"
+    "certifications": "Certification",
+    "displayAllPlatforms": "Display all platforms"
   },
   "creation": {
     "newPlatform": "New platform",
@@ -205,6 +210,8 @@
     "notification": "Your request has just been sent to us, it will be processed as soon as possible",
     "human": "Human",
     "publisher": "Publisher",
+    "desc": "Descending",
+    "asc": "Ascending",
     "close": "Close",
     "send": "Send",
     "form": {
@@ -219,6 +226,7 @@
       "totalEzpaarse": "Total JR1 report ezPAARSE *",
       "totalEditor": "Total JR1 report Editor *",
       "attachement": "Attachement",
+      "attachementSize": "Maximum size 2 Mo",
       "requiredFields": "(*) required fields"
     },
     "formError": {
@@ -226,7 +234,8 @@
       "establishment": "Establishment name is required",
       "comment": "Comment is required.",
       "totalValue": "The total is required.",
-      "date": "One year of certification is required"
+      "date": "One year of certification is required",
+      "attachement": "Attachement size should be less than 2 MB!"
     }
   },
   "others": "others",

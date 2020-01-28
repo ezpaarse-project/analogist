@@ -107,7 +107,7 @@ export default {
   filters: {
     issueDate (date, locale) {
       if (!date) return '-'
-      return moment.unix(date).locale(locale).format('LL')
+      return moment(date).locale(locale).format('LL')
     }
   },
   data () {

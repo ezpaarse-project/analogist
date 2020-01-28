@@ -35,6 +35,7 @@ module.exports = {
   ** Plugins to load before mounting the App
   */
   plugins: [
+    { src: '~/plugins/axios.js', ssr: false },
     { src: '~/plugins/ezlogger.js', ssr: false },
     { src: '~/plugins/storeInit.js', ssr: false },
     { src: '~/plugins/i18n.js', ssr: false },
@@ -49,12 +50,17 @@ module.exports = {
   /*
   ** Nuxt.js modules
   */
-  modules: [],
+  modules: [
+    '@nuxtjs/axios',
+    '@nuxtjs/auth'
+  ],
   /*
   ** Axios module configuration
   ** See https://axios.nuxtjs.org/options
   */
-  axios: {},
+  axios: {
+    proxy: true
+  },
   /*
   ** Auth configuration
   ** See https://auth.nuxtjs.org/

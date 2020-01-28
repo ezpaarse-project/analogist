@@ -20,6 +20,7 @@
                 append-icon="mdi-magnify"
                 hide-details
                 single-line
+                clearable
               />
             </v-flex>
             <v-flex xs12 sm5>
@@ -34,6 +35,7 @@
                 hide-details
                 single-line
                 multiple
+                clearable
               >
                 <template slot="selection" slot-scope="{ item, index }">
                   <span v-if="index === 0">{{ item.name }}</span>
@@ -56,8 +58,18 @@
                 hide-details
                 single-line
                 multiple
+                clearable
               >
               </v-select>
+            </v-flex>
+
+            <v-flex xs12 sm12>
+              <v-checkbox
+                v-model="displayAllCards"
+                :label="$t('cards.displayAllPlatforms')"
+                color="primary"
+                hide-details
+              ></v-checkbox>
             </v-flex>
           </v-layout>
         </v-container>
@@ -94,6 +106,11 @@ export default {
       title: 'Platforms'
     }
   },
+  data () {
+    return {
+      displayAll: false
+    }
+  },
   async fetch ({ store }) {
     await store.dispatch('FETCH_TRELLO_LISTS')
     await store.dispatch('FETCH_CARDS')
@@ -111,7 +128,7 @@ export default {
         return this.$store.state.searchText
       },
       set (newValue) {
-        this.$store.dispatch('UPDATE_SEARCH_TEXT', newValue)
+        this.$store.dispatch('UPDATE_SEARCH_TEXT', newValue || '')
       }
     },
     searchLists: {
@@ -119,7 +136,15 @@ export default {
         return this.$store.state.searchLists
       },
       set (newValue) {
-        this.$store.dispatch('UPDATE_SEARCH_LISTS', newValue)
+        this.$store.dispatch('UPDATE_SEARCH_LISTS', newValue || [])
+      }
+    },
+    displayAllCards: {
+      get () {
+        return this.$store.state.displayAllCards
+      },
+      set (newValue) {
+        this.$store.dispatch('DISPLAY_ALL_CARDS', newValue || false)
       }
     },
     searchCertifications: {
@@ -127,7 +152,7 @@ export default {
         return this.$store.state.searchCertifications
       },
       set (newValue) {
-        this.$store.dispatch('UPDATE_SEARCH_CERTIFICATIONS', newValue)
+        this.$store.dispatch('UPDATE_SEARCH_CERTIFICATIONS', newValue || [])
       }
     },
     searchPage: {

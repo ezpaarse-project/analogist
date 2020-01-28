@@ -24,9 +24,11 @@ const store = () => new Vuex.Store({
     analysis: null,
     cards: [],
     trelloLists: [],
+    displayAllCards: false,
     searchText: '',
     searchLists: [],
     searchCertifications: [],
+    searchDateOrder: 'desc',
     searchPage: 1,
     drawer: true,
     lastVisitedAnalysis: null,
@@ -78,6 +80,9 @@ const store = () => new Vuex.Store({
     ARCHIVE_CARD ({ commit }, cardID) {
       return api.deletePlatform(cardID)
     },
+    UNARCHIVE_CARD ({ commit }, cardID) {
+      return api.addPlatform(cardID)
+    },
     SAVE_ANALYSIS ({ commit }, { cardID, analysis }) {
       if (analysis.id) {
         return api.updateAnalysis(cardID, analysis)
@@ -108,6 +113,9 @@ const store = () => new Vuex.Store({
     UPDATE_SEARCH_CERTIFICATIONS ({ commit }, value) {
       return commit('SET_SEARCH_CERTIFICATIONS', value)
     },
+    UPDATE_SEARCH_DATE_ORDER ({ commit }, value) {
+      return commit('SET_SEARCH_DATE_ORDER', value)
+    },
     SET_DRAWER ({ commit }, value) {
       commit('SET_DRAWER', value)
     },
@@ -125,6 +133,9 @@ const store = () => new Vuex.Store({
     },
     BECOME_MEMBER () {
       return api.becomeMember()
+    },
+    DISPLAY_ALL_CARDS ({ commit }, value) {
+      commit('DISPLAY_ALL_CARDS', value)
     }
   },
   mutations: {
@@ -167,6 +178,9 @@ const store = () => new Vuex.Store({
     SET_SEARCH_CERTIFICATIONS (state, searchCertifications) {
       Vue.set(state, 'searchCertifications', searchCertifications)
     },
+    SET_SEARCH_DATE_ORDER (state, searchDateOrder) {
+      Vue.set(state, 'searchDateOrder', searchDateOrder)
+    },
     REMOVE_ANALYSIS (state, analysisID) {
       Vue.set(state, 'analyses', state.analyses.filter(a => a.id !== analysisID))
     },
@@ -178,6 +192,9 @@ const store = () => new Vuex.Store({
     },
     SET_VISITED_PLATFORM (state, cardID) {
       Vue.set(state, 'lastVisitedPlatform', cardID)
+    },
+    DISPLAY_ALL_CARDS (state, value) {
+      Vue.set(state, 'displayAllCards', value)
     }
   }
 })

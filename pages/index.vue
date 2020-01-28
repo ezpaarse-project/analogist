@@ -67,8 +67,6 @@
 </template>
 
 <script>
-import axios from '~/plugins/axios'
-
 export default {
   name: 'analogist',
   transition: 'slide-x-transition',
@@ -77,8 +75,8 @@ export default {
       title: 'Analogist'
     }
   },
-  async asyncData () {
-    const { data } = await axios.get('http://ezpaarse-preprod.couperin.org/info/platforms')
+  async asyncData ({ $axios }) {
+    const { data } = await $axios.get('http://ezpaarse-preprod.couperin.org/info/platforms')
     if (!Array.isArray(data)) { throw new Error('invalid response') }
     return {
       parsers: data.length

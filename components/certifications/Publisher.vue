@@ -1,7 +1,7 @@
 <template>
   <v-list-item>
     <v-list-item-avatar color="#5AB9C1">
-      <span class="white--text headline">{{ name }}</span>
+      <span class="white--text headline" v-text="name"></span>
     </v-list-item-avatar>
     <v-list-item-content>
       <v-list-item-title>
@@ -22,6 +22,18 @@
         <span v-else> - <a href="https://blog.ezpaarse.org/2020/01/tutoriels-procedure-de-certification-h-et-p-dans-analogist" target="_blank">{{ $t('certifications.notCertified') }}</a></span>
       </v-list-item-title>
     </v-list-item-content>
+    <v-spacer></v-spacer>
+
+    <v-btn
+      v-if="user && user.role === 'admin'"
+      class="my-2"
+      small
+      :loading="loading"
+      :disabled="loading"
+      @click="loading = true"
+    >
+      Historique
+    </v-btn>
   </v-list-item>
 </template>
 
@@ -30,7 +42,9 @@ export default {
   props: [ 'years' ],
   data () {
     return {
-      name: 'P'
+      name: 'P',
+      loading: false,
+      loader: null
     }
   },
   computed: {

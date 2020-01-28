@@ -1,6 +1,13 @@
-import axios from '~/plugins/axios'
+let axios = null
 
 const api = {}
+
+api.setInstance = function (instance) {
+  if (!axios) {
+    axios = instance
+  }
+  return axios
+}
 
 api.info = function () {
   return axios.get('/api').then(res => res.data)
@@ -64,6 +71,10 @@ api.getPlatform = function (cardID) {
 
 api.deletePlatform = function (cardID) {
   return axios.delete(`/api/platforms/${cardID}`).then(res => res.data)
+}
+
+api.addPlatform = function (cardID) {
+  return axios.patch(`/api/platforms/${cardID}`).then(res => res.data)
 }
 
 api.getFields = function () {
@@ -200,12 +211,27 @@ api.getUsers = function (badgeId) {
 /**
  * Certfificaitions
  */
-api.updateCertifications = function (cId, certifications) {
-  return axios.patch(`/api/certifications/${cId}`, { certifications }).then(res => res.data)
+api.getCertificationsEvents = function () {
+  return axios.get('/api/certifications/').then(res => res.data)
 }
 
-api.sendRequest = function (data) {
-  return axios.post(`/api/certifications/${data.cardId}`, data).then(res => res.data)
+api.sendRequest = function (cardId, data) {
+  return axios({
+    method: 'POST',
+    url: `/api/certifications/${cardId}`,
+    data,
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  }).then(res => res.data)
+}
+
+api.acceptCertification = function (id) {
+  return axios.post(`/api/certifications/${id}/accept`).then(res => res.data)
+}
+
+api.refuseCertification = function (id) {
+  return axios.post(`/api/certifications/${id}/refuse`).then(res => res.data)
 }
 
 export default api

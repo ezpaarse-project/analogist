@@ -1,7 +1,18 @@
 <template>
-  <v-list-item ripple router :to="{ name: 'platforms-cid', params: { cid: card.id }}">
+  <v-list-item ripple router :to="{ name: 'platforms-cid', params: { cid: card.id }}" v-if="!card.closed || displayAllCards">
     <v-list-item-content>
-      <v-list-item-title>{{ card.name }}</v-list-item-title>
+      <v-list-item-title>
+        <v-tooltip right v-if="card.closed">
+          <template v-slot:activator="{ on }">
+            <span v-on="on">
+              <v-icon size="24" class="mb-1">mdi-archive</v-icon>
+              {{ card.name }}
+            </span>
+          </template>
+          <span v-text="$t('card.archived')"></span>
+        </v-tooltip>
+        <span v-else v-text="card.name"></span>
+      </v-list-item-title>
       <v-list-item-subtitle>{{ listName }}</v-list-item-subtitle>
       <v-list-item-subtitle>{{ $t('card.nbAnalyses', { n: nbAnalyses }) }}</v-list-item-subtitle>
     </v-list-item-content>
@@ -25,8 +36,11 @@
 import moment from 'moment'
 
 export default {
-  props: [ 'card' ],
+  props: ['card'],
   computed: {
+    displayAllCards () {
+      return this.$store.state.displayAllCards
+    },
     updatedAt () {
       return moment(this.card.lastActivity).locale(this.$i18n.locale).fromNow()
     },

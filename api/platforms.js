@@ -69,6 +69,13 @@ router.delete('/:cid', (req, res, next) => {
     .on('error', next)
 })
 
+/* PATCH a platform */
+router.patch('/:cid', (req, res, next) => {
+  trello.uncloseCard(req.params.cid, req.session.oauth.token)
+    .on('response', response => response.pipe(res))
+    .on('error', next)
+})
+
 /* GET the analyses of a platform. */
 router.get('/:cid/analyses', (req, res, next) => {
   mongo.get('platforms').findOne({ cardID: req.params.cid }, { projection: { analyses: 1 } }, (err, doc) => {
