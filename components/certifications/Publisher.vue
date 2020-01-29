@@ -7,12 +7,12 @@
       <v-list-item-title>
         <v-menu open-on-hover offset-y>
           <template v-slot:activator="{ on }">
-            <v-btn small v-on="on" class="dateLbl white--text" color="#5AB9C1" depressed :disabled="!user || !humanCertified">
+            <v-btn small v-on="on" class="dateLbl white--text" color="#5AB9C1" depressed :disabled="!user || (!humanCertified && certificationsEvents.length === 0)">
               <span v-if="publisherCertified">{{ publisherCertification }}</span>
               <span v-else>{{ years[0] }}</span>
             </v-btn>
           </template>
-          <v-list v-if="user && humanCertified">
+          <v-list v-if="user && (humanCertified || certificationsEvents.length > 0)">
             <v-list-item v-for="(item, index) in years" :key="index">
               <v-list-item-title class="pointer" @click="openDialog(item);">{{ item }}</v-list-item-title>
             </v-list-item>
@@ -51,6 +51,14 @@ export default {
     },
     publisherCertification () {
       return this.card.platform.certifications.publisherCertified
+    },
+    certificationsEvents () {
+      return this.$store.state.certifications.certificationsEvents.filter(event => {
+        if (this.card.id !== event.cardId && event.certification === 'H') {
+          return false
+        }
+        return true
+      })
     }
   },
   methods: {

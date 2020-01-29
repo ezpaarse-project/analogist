@@ -125,14 +125,14 @@ router.post('/:id/accept', (req, res, next) => {
         currentPlatform = await mongo.get('platforms').findOne({ cardID: doc.value.cardId })
       } catch (e) { logger.error(e) }
 
-      let certifications = currentPlatform ? currentPlatform.certifications : { humanCertified: null, publisherCertified: null }
-      if (doc.value.certification === 'H' && doc.value.form.year !== '—') {
-        certifications.publisherCertified = currentPlatform ? currentPlatform.certifications.publisherCertified : null
-        certifications.humanCertified = doc.value.form.year
+      if (doc.form.year === '—') {
+        doc.form.year = null
       }
 
-      if (doc.value.certification === 'H' && doc.value.form.year === '—') {
-        certifications = { humanCertified: null, publisherCertified: null }
+      const certifications = currentPlatform ? currentPlatform.certifications : { humanCertified: null, publisherCertified: null }
+      if (doc.value.certification === 'H') {
+        certifications.publisherCertified = currentPlatform ? currentPlatform.certifications.publisherCertified : null
+        certifications.humanCertified = doc.value.form.year
       }
 
       if (doc.value.certification === 'P') {

@@ -248,6 +248,12 @@ export default {
       return error({ statusCode, message: statusCode === 404 ? 'Carte introuvable' : message })
     }
 
+    try {
+      await store.dispatch('certifications/GET_CERTIFICATIONS_EVENTS')
+    } catch (e) {
+      await store.dispatch('snacks/error', 'errorGeneric')
+    }
+
     store.dispatch('SET_VISITED_PLATFORM', params.cid)
   },
   head () {
