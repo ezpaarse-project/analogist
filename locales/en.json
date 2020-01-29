@@ -198,7 +198,11 @@
     "analyses": "analyses",
     "contributors": "contributors",
     "badges": "badges",
-    "parsers": "parsers"
+    "parsers": "parsers",
+    "whatIsEzPaarse": "<a href=\"https://www.ezpaarse.org/\" target=\"_blank\">ezPAARSE</a> now comes with a list of <a href=\"https://github.com/ezpaarse-project/ezpaarse-platforms\" target=\"_blank\"><span class=\"font-weight-bold\">{parsers} parseurs</span></a>, which are the result of analytical work provided by the community, and which provide user institutions with good coverage of their subscriptions to electronic resources.",
+    "whatIsAnalogist": "The community platform, called <span class=\"font-weight-bold\">AnalogIST</span>, is the place where different types of URLs are collected, analyzed semi-automatically and commented so that the corresponding parser can be accurate and complete. For publishers or providers who are not yet recognized by <a href=\"https://www.ezpaarse.org/\" target=\"_blank\">ezPAARSE</a> or who simply need an update, it is easy to come and contribute to a platform analysis: just open a Trello account and follow the guide!",
+    "goodAnalyses": "Once the analysis is judged sufficient, or complete, a computer specialist (usually from the team <a href=\"https://www.ezpaarse.org/\" target=\"_blank\">ezPAARSE</a>/<a href=\"https://ezmesure.couperin.org/\" target=\"_blank\">ezMESURE</a> takes over to implement the corresponding parser. This parser will be added to the existing parsers in the dedicated repository <a href=\"https://github.com/ezpaarse-project/ezpaarse-platforms\" target=\"_blank\">github</a> and can be retrieved by all instances of <a href=\"https://www.ezpaarse.org/\" target=\"_blank\">ezPAARSE</a>, through a simple update mechanism embedded in the software administration area. This mode of operation ensures that each new parser, as well as each software and resource update, benefits all existing installations of <a href=\"https://www.ezpaarse.org/\" target=\"_blank\">ezPAARSE</a> : work is required only in one place and only once."
+
   },
   "theme": {
     "dark": "Dark theme",
