@@ -205,9 +205,11 @@
     "light": "Thème clair"
   },
   "certifications": {
+    "noCertifications": "Il n'y a aucunes demandes de certifications",
     "notCertified": "Cette plateforme ne possède pas encore de certification",
     "publisherCertificationsError": "La certification H est nécessaire pour pour pouvoir certifier P la plateforme",
     "notification": "Votre demande vient de nous être envoyée, elle sera traitée dans les plus bref délais",
+    "openedOn": "Ouvert le {date} par {user} - {establishment}",
     "human": "Humain",
     "publisher": "Editeur",
     "desc": "Décroissant",
@@ -227,7 +229,12 @@
       "totalEditor": "Total rapport JR1 Editeur *",
       "attachement": "Pièce jointe",
       "attachementSize": "Taille max. 2 Mo",
-      "requiredFields": "(*) champs obligatoires"
+      "requiredFields": "(*) champs obligatoires",
+      "year": "Année",
+      "user": "Utilisateur",
+      "reject": "Refuser",
+      "rejectExplanations": "Explications du refus",
+      "validate": "Valider"
     },
     "formError": {
       "object": "Un objet est requis",

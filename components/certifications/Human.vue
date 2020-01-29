@@ -22,116 +22,6 @@
         <span v-else> - <a href="https://blog.ezpaarse.org/2020/01/tutoriels-procedure-de-certification-h-et-p-dans-analogist" target="_blank">{{ $t('certifications.notCertified') }}</a></span>
       </v-list-item-title>
     </v-list-item-content>
-
-    <v-spacer></v-spacer>
-
-    <v-btn
-      v-if="user && user.role === 'admin'"
-      class="my-2"
-      small
-      :loading="loading"
-      :disabled="loading"
-      @click="loading = true; modal = true"
-    >
-      Historique
-    </v-btn>
-
-    <v-dialog
-      v-model="modal"
-      max-width="600px"
-      transition="dialog-transition"
-    >
-      <v-card>
-        <v-card-text>
-          <v-timeline dense clipped>
-            <v-timeline-item
-              hide-dot
-              class="headline"
-              large
-            >
-              <p class="headline mt-5">Historique de la plateforme</p>
-            </v-timeline-item>
-
-            <v-timeline-item
-              color="green"
-              icon-color="grey lighten-2"
-              small
-            >
-              <v-row justify="space-between">
-                <v-col cols="9">Validation de la certification par <strong>John Doe</strong></v-col>
-                <v-col class="text-right" cols="3">22/01/2020</v-col>
-              </v-row>
-            </v-timeline-item>
-
-            <v-timeline-item
-              color="purple"
-              icon-color="grey lighten-2"
-              small
-            >
-              <v-row justify="space-between">
-                <v-col cols="9">Tester dans ezPAARSE Logger</v-col>
-                <v-col class="text-right" cols="3">22/01/2020</v-col>
-              </v-row>
-            </v-timeline-item>
-
-            <v-timeline-item
-              color="brown"
-              icon-color="grey lighten-2"
-              small
-            >
-              <v-row justify="space-between">
-                <v-col cols="9">Mise à jour de la plateforme</v-col>
-                <v-col class="text-right" cols="3">22/01/2020</v-col>
-              </v-row>
-            </v-timeline-item>
-
-            <v-timeline-item
-              color="orange"
-              icon-color="grey lighten-2"
-              small
-            >
-              <v-row justify="space-between">
-                <v-col cols="9">Analyse déplacée en <strong>4 - Parseur d'URLs en dev</strong></v-col>
-                <v-col class="text-right" cols="3">22/01/2020</v-col>
-              </v-row>
-            </v-timeline-item>
-
-            <v-timeline-item
-              color="grey"
-              icon-color="grey lighten-2"
-              small
-            >
-              <v-row justify="space-between">
-                <v-col cols="9">Demande de certification par <strong>John Doe</strong> pour l'année <strong>2018</strong></v-col>
-                <v-col class="text-right" cols="3">22/01/2020</v-col>
-              </v-row>
-            </v-timeline-item>
-
-            <v-timeline-item
-              color="red"
-              icon-color="grey lighten-2"
-              small
-            >
-              <v-row justify="space-between">
-                <v-col cols="9">Certification retirée par <strong>John Doe</strong></v-col>
-                <v-col class="text-right" cols="3">22/01/2020</v-col>
-              </v-row>
-            </v-timeline-item>
-
-            <v-timeline-item
-              color="blue"
-              icon-color="grey lighten-2"
-              small
-            >
-              <v-row justify="space-between">
-                <v-col cols="9">Approbation de la certification par <strong>CNRS</strong></v-col>
-                <v-col class="text-right" cols="3">22/01/2020</v-col>
-              </v-row>
-            </v-timeline-item>
-          </v-timeline>
-        </v-card-text>
-      </v-card>
-    </v-dialog>
   </v-list-item>
 </template>
 
@@ -140,18 +30,10 @@ export default {
   props: [ 'years' ],
   data () {
     return {
-      name: 'H',
-      loading: false,
-      modal: false,
-      events: [],
-      input: null,
-      nonce: 0
+      name: 'H'
     }
   },
   computed: {
-    timeline () {
-      return this.events.slice().reverse()
-    },
     card () {
       return this.$store.state.card
     },

@@ -205,9 +205,11 @@
     "light": "Light theme"
   },
   "certifications": {
+    "noCertifications": "There are no requests for certification.",
     "notCertified": "This platform is not yet certified",
     "publisherCertificationsError": "H certification is required to be able to certify P the platform",
     "notification": "Your request has just been sent to us, it will be processed as soon as possible",
+    "openedOn": "Opened on {date} by {user} - {establishment}",
     "human": "Human",
     "publisher": "Publisher",
     "desc": "Descending",
@@ -227,7 +229,12 @@
       "totalEditor": "Total JR1 report Editor *",
       "attachement": "Attachement",
       "attachementSize": "Maximum size 2 Mo",
-      "requiredFields": "(*) required fields"
+      "requiredFields": "(*) required fields",
+      "year": "Year",
+      "user": "User",
+      "reject": "Reject",
+      "rejectExplanations": "Explanations for refusal",
+      "validate": "Validate"
     },
     "formError": {
       "object": "An object is required",

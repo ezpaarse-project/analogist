@@ -22,18 +22,6 @@
         <span v-else> - <a href="https://blog.ezpaarse.org/2020/01/tutoriels-procedure-de-certification-h-et-p-dans-analogist" target="_blank">{{ $t('certifications.notCertified') }}</a></span>
       </v-list-item-title>
     </v-list-item-content>
-    <v-spacer></v-spacer>
-
-    <v-btn
-      v-if="user && user.role === 'admin'"
-      class="my-2"
-      small
-      :loading="loading"
-      :disabled="loading"
-      @click="loading = true"
-    >
-      Historique
-    </v-btn>
   </v-list-item>
 </template>
 
@@ -42,9 +30,7 @@ export default {
   props: [ 'years' ],
   data () {
     return {
-      name: 'P',
-      loading: false,
-      loader: null
+      name: 'P'
     }
   },
   computed: {
@@ -61,18 +47,14 @@ export default {
       return this.certified ? this.card.platform.certifications.humanCertified : null
     },
     publisherCertified () {
-      return this.certified ? this.card.platform.certifications.humanCertified : null
+      return this.certified ? this.card.platform.certifications.publisherCertified : null
     },
     publisherCertification () {
-      return this.card.platform.certifications.humanCertified
+      return this.card.platform.certifications.publisherCertified
     }
   },
   methods: {
     openDialog (year) {
-      if (!this.certified) {
-        return this.$store.dispatch('snacks/error', 'certifications.publisherCertificationsError')
-      }
-
       this.$emit('openDialog', this.name, year)
     }
   }

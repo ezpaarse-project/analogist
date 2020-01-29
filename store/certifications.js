@@ -23,11 +23,11 @@ export default {
     SEND_REQUEST ({ commit }, data) {
       return api.sendRequest(data.cardId, data.formData)
     },
-    ACCEPT ({ commit }, id) {
-      return api.acceptCertification(id)
+    ACCEPT ({ commit }, data) {
+      return api.acceptCertification(data)
     },
-    REFUSE ({ commit }, id) {
-      return api.refuseCertification(id)
+    REFUSE ({ commit }, data) {
+      return api.refuseCertification(data)
     }
   }
 }

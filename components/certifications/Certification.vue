@@ -90,7 +90,7 @@
                   show-size
                   v-model="form.attachement"
                   :label="$t('certifications.form.attachement')"
-                  :rules="[v => v && v.size < 2000000 || $t('certifications.formError.attachement')]"
+                  :rules="[v => !!v || (v && v.size < 2000000) || $t('certifications.formError.attachement')]"
                   :hint="$t('certifications.form.attachementSize')"
                   persistent-hint
                 ></v-file-input>

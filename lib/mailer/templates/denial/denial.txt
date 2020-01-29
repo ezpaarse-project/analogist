@@ -1,0 +1,19 @@
+[AnalogIST] Refus de la certification ({{ certification }} - {{ year }}) pour la plateforme : {{ cardName }}
+
+Bonjour,
+Votre demande de certification ({{ certification }} - {{ year }}) pour la plateforme {{ cardName }} vient d'être refusée pour la/les raison(s) suivante(s) :
+{{ comment }}
+
+Cordialement,
+L'équipe ezMESURE
+
+-----------------------------
+
+[AnalogIST] Denial of Certification  ({{ certification }} - {{ year }} for the platform: {{ cardName }}
+
+Hello,
+Your request for certification ({{ certification }} - {{ year }}) for the {{ cardName }} platform has just been refused for the following reason(s) :
+{{ comment }}
+
+Yours sincerely,
+The ezMESURE team

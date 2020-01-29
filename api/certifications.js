@@ -7,6 +7,7 @@ const path      = require('path')
 const fs        = require('fs')
 const ObjectId  = require('mongodb').ObjectID
 const mongo     = require('../lib/mongo.js')
+const logger     = require('../lib/logger.js')
 const mw        = require('../lib/middlewares.js')
 const { sendMail, generateMail } = require('../lib/mailer')
 
@@ -34,49 +35,45 @@ router.get('/', (req, res, next) => {
 
 /* POST certification request for a platform */
 router.post('/:cid', upload.single('attachement'), (req, res, next) => {
-  try {
-    const { body: data } = req
-    const { file: attachement } = req
+  const { body: data } = req
+  const { file: attachement } = req
 
-    if (!data) return res.status(500).json({ status: 'error' })
+  if (!data) return res.status(500).json({ status: 'error' })
 
-    const requestData = JSON.parse(data.request)
+  const requestData = JSON.parse(data.request)
 
-    if (attachement) {
-      requestData.form.attachement = attachement.filename
-    }
-
-    if (data.certification === 'H') {
-      delete data.form.values
-    }
-
-    return sendMail({
-      from: config.notifications.sender,
-      to: config.notifications.receivers,
-      subject: `[AnalogIST] Mise à jour des certifications de la plateforme : ${requestData.cardName}`,
-      ...generateMail('certifications', { cardName: requestData.cardName, cardId: requestData.cardId })
-    }).then(() => {
-      delete requestData.cardName
-
-      mongo.get('certifications_history').insertOne(
-        {
-          cardId: requestData.cardId,
-          user: requestData.user,
-          certification: requestData.certification,
-          event: 'certification',
-          form: requestData.form,
-          status: 'waiting',
-          createdAt: new Date()
-        },
-        (err) => {
-          if (err) return res.status(500).json({ status: 'error' })
-
-          return res.status(204).end()
-        })
-    }).catch(() => res.status(500).json({ status: 'error' }))
-  } catch (e) {
-    return res.status(500).json({ status: 'error' })
+  if (attachement) {
+    requestData.form.attachement = attachement.filename
   }
+
+  if (data.certification === 'H') {
+    delete data.form.values
+  }
+
+  return sendMail({
+    from: config.notifications.sender,
+    to: config.notifications.receivers,
+    subject: `[AnalogIST] Mise à jour des certifications de la plateforme : ${requestData.cardName}`,
+    ...generateMail('certifications', { cardName: requestData.cardName, cardId: requestData.cardId })
+  }).then(() => {
+    delete requestData.cardName
+
+    mongo.get('certifications_history').insertOne(
+      {
+        cardId: requestData.cardId,
+        user: requestData.user,
+        certification: requestData.certification,
+        event: 'certification',
+        form: requestData.form,
+        status: 'waiting',
+        createdAt: new Date()
+      },
+      (err) => {
+        if (err) return res.status(500).json({ status: 'error' })
+
+        return res.status(204).end()
+      })
+  }).catch(() => res.status(500).json({ status: 'error' }))
 })
 
 /* GET download attachement */
@@ -91,11 +88,12 @@ router.get('/download/:attachement', (req, res, next) => {
 
 router.post('/:id/accept', (req, res, next) => {
   const { id } = req.params
+  const { body: data } = req
 
-  if (!id) return res.status(500).json({ status: 'error' })
+  if (!id || !data) return res.status(500).json({ status: 'error' })
 
   return mongo.get('certifications_history').findOneAndUpdate(
-    { _id: new ObjectId(id) },
+    { _id: new ObjectId(id), status: 'waiting' },
     {
       $set: {
         status: 'accepted',
@@ -103,10 +101,61 @@ router.post('/:id/accept', (req, res, next) => {
       }
     },
     { upsert: true },
-    (err) => {
+    async (err, doc) => {
       if (err) {
         return res.status(500).json({ status: 'error' })
       }
+
+      try {
+        await sendMail({
+          from: config.notifications.sender,
+          to: doc.value.user.email,
+          subject: `[AnalogIST] Acceptation de la certification (${doc.value.certification} - ${doc.value.form.year}) pour la plateforme : ${data.cardName}`,
+          ...generateMail('acceptation', {
+            cardName: data.cardName,
+            cardId: doc.value.cardId,
+            certification: doc.value.certification,
+            year: doc.value.form.year
+          })
+        })
+      } catch (e) { logger.error(e) }
+
+      let currentPlatform
+      try {
+        currentPlatform = await mongo.get('platforms').findOne({ cardID: doc.value.cardId })
+      } catch (e) { logger.error(e) }
+
+      let certifications = currentPlatform ? currentPlatform.certifications : { humanCertified: null, publisherCertified: null }
+      if (doc.value.certification === 'H' && doc.value.form.year !== '—') {
+        certifications.publisherCertified = currentPlatform ? currentPlatform.certifications.publisherCertified : null
+        certifications.humanCertified = doc.value.form.year
+      }
+
+      if (doc.value.certification === 'H' && doc.value.form.year === '—') {
+        certifications = { humanCertified: null, publisherCertified: null }
+      }
+
+      if (doc.value.certification === 'P') {
+        certifications.humanCertified = currentPlatform ? currentPlatform.certifications.humanCertified : null
+        certifications.publisherCertified = doc.value.form.year
+      }
+
+      mongo.get('platforms').findOneAndUpdate(
+        {
+          cardID: doc.value.cardId
+        },
+        {
+          $set: {
+            certifications,
+            lastModified: new Date()
+          }
+        },
+        { upsert: true },
+        (err, doc) => {
+          if (err) {
+            return res.status(500).json({ status: 'error' })
+          }
+        })
 
       return res.status(200).end()
     })
@@ -114,11 +163,12 @@ router.post('/:id/accept', (req, res, next) => {
 
 router.post('/:id/refuse', (req, res, next) => {
   const { id } = req.params
+  const { body: data } = req
 
-  if (!id) return res.status(500).json({ status: 'error' })
+  if (!id || !data) return res.status(500).json({ status: 'error' })
 
   return mongo.get('certifications_history').findOneAndUpdate(
-    { _id: new ObjectId(id) },
+    { _id: new ObjectId(id), status: 'waiting' },
     {
       $set: {
         status: 'refused',
@@ -126,10 +176,25 @@ router.post('/:id/refuse', (req, res, next) => {
       }
     },
     { upsert: true },
-    (err) => {
+    async (err, doc) => {
       if (err) {
         return res.status(500).json({ status: 'error' })
       }
+
+      try {
+        await sendMail({
+          from: config.notifications.sender,
+          to: doc.value.user.email,
+          subject: `[AnalogIST] Refus de la certification (${doc.value.certification} - ${doc.value.form.year}) pour la plateforme : ${data.cardName}`,
+          ...generateMail('denial', {
+            cardName: data.cardName,
+            cardId: doc.value.cardId,
+            certification: doc.value.certification,
+            year: doc.value.form.year,
+            comment: data.comment
+          })
+        })
+      } catch (e) { logger.error(e) }
 
       return res.status(200).end()
     })

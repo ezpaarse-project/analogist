@@ -226,12 +226,12 @@ api.sendRequest = function (cardId, data) {
   }).then(res => res.data)
 }
 
-api.acceptCertification = function (id) {
-  return axios.post(`/api/certifications/${id}/accept`).then(res => res.data)
+api.acceptCertification = function (data) {
+  return axios.post(`/api/certifications/${data.id}/accept`, { cardName: data.cardName }).then(res => res.data)
 }
 
-api.refuseCertification = function (id) {
-  return axios.post(`/api/certifications/${id}/refuse`).then(res => res.data)
+api.refuseCertification = function (data) {
+  return axios.post(`/api/certifications/${data.id}/refuse`, { cardName: data.cardName, comment: data.comment }).then(res => res.data)
 }
 
 export default api

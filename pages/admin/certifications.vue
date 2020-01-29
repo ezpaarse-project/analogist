@@ -37,7 +37,10 @@
         >
         </v-select>
       </v-toolbar>
-      <v-expansion-panels accordion tile>
+
+      <v-card-text v-if="!certificationsEvents.length" v-text="$t('certifications.noCertifications')"></v-card-text>
+
+      <v-expansion-panels accordion tile v-if="certificationsEvents.length">
         <v-expansion-panel
           v-for="(item, i) in certificationsEvents"
           :key="i"
@@ -62,7 +65,11 @@
                   </v-chip>
                 </v-list-item-title>
                 <v-list-item-subtitle>
-                  Opened on {{ item.createdAt | formatDate($i18n.locale) }} by {{ item.user.fullName }} - {{ item.form.establishment }}
+                  {{ $t('certifications.openedOn', {
+                    date: formatDate(item.createdAt),
+                    user: item.user.fullName,
+                    establishment: item.form.establishment })
+                  }}
                 </v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
@@ -70,58 +77,91 @@
           <v-expansion-panel-content>
             <v-container>
               <v-layout row wrap>
-                <v-flex xs12 sm6 md6 class="px-1">
+                <v-flex xs12 sm4 md4 class="px-1">
                   <v-text-field
-                    label="User"
-                    disabled
+                    :label="$t('certifications.form.user')"
+                    readonly
                     :value="item.user.fullName"
                   ></v-text-field>
                 </v-flex>
 
-                <v-flex xs12 sm6 md6 class="px-1">
+                <v-flex xs12 sm4 md4 class="px-1">
                   <v-text-field
-                    label="Establishment"
-                    disabled
+                    :label="$t('certifications.form.establishment')"
+                    readonly
                     :value="item.form.establishment"
+                  ></v-text-field>
+                </v-flex>
+
+                <v-flex xs12 sm4 md4 class="px-1">
+                  <v-text-field
+                    :label="$t('certifications.form.year')"
+                    readonly
+                    :value="item.form.year"
                   ></v-text-field>
                 </v-flex>
 
                 <v-flex xs12 sm12 md12 class="px-1">
                   <v-textarea
-                    disabled
-                    label="Comment"
+                    readonly
+                    :label="$t('certifications.form.comment')"
                     :value="item.form.comment"
                   ></v-textarea>
                 </v-flex>
 
-                <v-flex xs12 sm6 md6 class="px-1" v-if="item.certification === 'P'">
+                <v-flex xs12 sm4 md4 class="px-1" v-if="item.certification === 'P'">
                   <v-text-field
                     :label="$t('certifications.form.totalEzpaarse')"
-                    disabled
+                    readonly
                     :value="item.form.values.ezpaarse"
                   ></v-text-field>
                 </v-flex>
-                <v-flex xs12 sm6 md6 class="px-1" v-if="item.certification === 'P'">
+                <v-flex xs12 sm4 md4 class="px-1" v-if="item.certification === 'P'">
                   <v-text-field
                     :label="$t('certifications.form.totalEditor')"
-                    disabled
+                    readonly
                     :value="item.form.values.editor"
+                  ></v-text-field>
+                </v-flex>
+                <v-flex xs12 sm4 md4 class="px-1" v-if="item.certification === 'P'">
+                  <v-text-field
+                    :label="$t('certifications.form.totalEditor')"
+                    readonly
+                    :value="difference(item.form.values)"
                   ></v-text-field>
                 </v-flex>
 
                 <v-flex xs12 sm6 md6 class="px-1">
                   <v-btn tile dark color="grey" v-if="item.form.attachement" link :to="`/api/certifications/download/${item.form.attachement}`" target="_blank">
-                    <v-icon left>mdi-paperclip</v-icon> Pièce-jointe
+                    <v-icon left>mdi-paperclip</v-icon> {{ $t('certifications.form.attachement') }}
                   </v-btn>
                 </v-flex>
 
                 <v-flex xs12 sm12 md12 offset-xs10>
                   <v-btn tile dark class="ml-auto" color="green lighten-2" @click="accept(item)">
-                    <v-icon left>mdi-plus-circle</v-icon> Valider
+                    <v-icon left>mdi-plus-circle</v-icon> {{ $t('certifications.validate') }}
                   </v-btn>
-                  <v-btn tile dark class="ml-auto" color="red lighten-2" @click="refuse(item)">
-                    Refuser <v-icon right>mdi-minus-circle</v-icon>
-                  </v-btn>
+                  <v-dialog v-model="denialDialog" max-width="600">
+                    <template v-slot:activator="{ on }">
+                      <v-btn tile dark v-on="on" class="ml-auto" color="red lighten-2">
+                        {{ $t('certifications.reject') }} <v-icon right>mdi-minus-circle</v-icon>
+                      </v-btn>
+                    </template>
+                    <v-card>
+                      <v-card-title class="text-center" v-text="$t('certifications.rejectExplanations')"></v-card-title>
+                      <v-card-text class="text-center py-3">
+                        <v-textarea
+                          filled
+                          v-model="refusalExplanations"
+                          :label="$t('certifications.form.comment')"
+                        ></v-textarea>
+                      </v-card-text>
+                      <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn color="green darken-1" dark @click="refuse(item)" v-text="$t('certifications.send')"></v-btn>
+                      </v-card-actions>
+                    </v-card>
+                  </v-dialog>
                 </v-flex>
               </v-layout>
             </v-container>
@@ -136,14 +176,10 @@
 import moment from 'moment'
 
 export default {
-  filters: {
-    formatDate (date, locale) {
-      if (!date) return '-'
-      return moment(date).locale(locale).format('LL')
-    }
-  },
   data () {
     return {
+      refusalExplanations: '',
+      denialDialog: false,
       expanded: [],
       singleExpand: true,
       headers: [
@@ -287,22 +323,35 @@ export default {
     }
   },
   methods: {
+    formatDate (date) {
+      if (!date) return '-'
+      return moment(date).locale(this.$i18n.locale).format('LL')
+    },
     eventPlatformName (cardId) {
       return this.cards.find(card => card.id === cardId).name || 'Name not found'
     },
+    difference ({ editor, ezpaarse }) {
+      return Number.parseFloat((((editor - ezpaarse) / editor) * 100), 10).toFixed(2)
+    },
     accept (item) {
-      this.$store.dispatch('certifications/ACCEPT', item._id).then((res) => {
-        console.log(res)
-      }).catch((err) => {
-        console.log(err)
-      })
+      this.$store.dispatch('certifications/ACCEPT', {
+        id: item._id,
+        cardName: this.eventPlatformName(item.cardId)
+      }).then(async (res) => {
+        this.$store.dispatch('certifications/GET_CERTIFICATIONS_EVENTS')
+          .catch(() => this.$store.dispatch('snacks/error', 'errorGeneric'))
+      }).catch(() => this.$store.dispatch('snacks/error', 'errorGeneric'))
     },
     refuse (item) {
-      this.$store.dispatch('certifications/REFUSE', item._id).then((res) => {
-        console.log('Then', res)
-      }).catch((err) => {
-        console.log('Catch', err)
-      })
+      this.$store.dispatch('certifications/REFUSE', {
+        id: item._id,
+        cardName: this.eventPlatformName(item.cardId),
+        comment: this.refusalExplanations
+      }).then(async (res) => {
+        this.$store.dispatch('certifications/GET_CERTIFICATIONS_EVENTS')
+          .catch(() => this.$store.dispatch('snacks/error', 'errorGeneric'))
+      }).catch(() => this.$store.dispatch('snacks/error', 'errorGeneric'))
+      this.denialDialog = false
     }
   }
 }
