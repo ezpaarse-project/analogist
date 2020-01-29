@@ -139,16 +139,16 @@
 
                 <v-flex xs12 sm12 md12 offset-xs10>
                   <v-btn tile dark class="ml-auto" color="green lighten-2" @click="accept(item)">
-                    <v-icon left>mdi-plus-circle</v-icon> {{ $t('certifications.validate') }}
+                    <v-icon left>mdi-plus-circle</v-icon> {{ $t('certifications.form.validate') }}
                   </v-btn>
                   <v-dialog v-model="denialDialog" max-width="600">
                     <template v-slot:activator="{ on }">
                       <v-btn tile dark v-on="on" class="ml-auto" color="red lighten-2">
-                        {{ $t('certifications.reject') }} <v-icon right>mdi-minus-circle</v-icon>
+                        {{ $t('certifications.form.reject') }} <v-icon right>mdi-minus-circle</v-icon>
                       </v-btn>
                     </template>
                     <v-card>
-                      <v-card-title class="text-center" v-text="$t('certifications.rejectExplanations')"></v-card-title>
+                      <v-card-title class="text-center" v-text="$t('certifications.form.rejectExplanations')"></v-card-title>
                       <v-card-text class="text-center py-3">
                         <v-textarea
                           filled
