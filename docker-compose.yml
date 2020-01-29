@@ -33,6 +33,8 @@ services:
       - https_proxy
       - no_proxy=localhost,127.0.0.1,opbadge
       - NODE_CONFIG
+    volumes:
+      - ./uploads:/usr/src/app/app/uploads
     tty: true
     restart: on-failure
 
