@@ -150,11 +150,6 @@ function extendCard (card, platform) {
     card.lastActivity = platform.lastModified
   }
 
-  if (card.labels) {
-    card.humanCertified = card.labels.some(l => /^certified:\s*human$/i.test(l.name))
-    card.publisherCertified = card.labels.some(l => /^certified:\s*publisher$/i.test(l.name))
-  }
-
   // eslint-disable-next-line no-control-regex
   const regexGithub = new RegExp('code[^\n]+source[^\n]+\n(https?://[^ $\n]+)', 'i')
   // eslint-disable-next-line no-control-regex

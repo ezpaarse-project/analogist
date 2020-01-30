@@ -54,7 +54,11 @@ router.post('/:cid', upload.single('attachement'), (req, res, next) => {
     from: config.notifications.sender,
     to: config.notifications.receivers,
     subject: `[AnalogIST] Mise à jour des certifications de la plateforme : ${requestData.cardName}`,
-    ...generateMail('certifications', { cardName: requestData.cardName, cardId: requestData.cardId })
+    ...generateMail('certifications', {
+      cardName: requestData.cardName,
+      cardId: requestData.cardId,
+      host: req.query.host || req.headers['x-forwarded-host'] || req.headers.host
+    })
   }).then(() => {
     delete requestData.cardName
 
@@ -112,6 +116,7 @@ router.post('/:id/accept', (req, res, next) => {
           to: doc.value.user.email,
           subject: `[AnalogIST] Acceptation de la certification (${doc.value.certification} - ${doc.value.form.year}) pour la plateforme : ${data.cardName}`,
           ...generateMail('acceptation', {
+            host: req.query.host || req.headers['x-forwarded-host'] || req.headers.host,
             cardName: data.cardName,
             cardId: doc.value.cardId,
             certification: doc.value.certification,
@@ -187,6 +192,7 @@ router.post('/:id/refuse', (req, res, next) => {
           to: doc.value.user.email,
           subject: `[AnalogIST] Refus de la certification (${doc.value.certification} - ${doc.value.form.year}) pour la plateforme : ${data.cardName}`,
           ...generateMail('denial', {
+            host: req.query.host || req.headers['x-forwarded-host'] || req.headers.host,
             cardName: data.cardName,
             cardId: doc.value.cardId,
             certification: doc.value.certification,

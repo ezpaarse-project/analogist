@@ -13,7 +13,7 @@
       <p>Votre demande de certification ({{ certification }} - {{ year }}) pour la plateforme <strong>{{ cardName }}</strong> vient d'être validée.</p>
     </mj-text>
 
-    <mj-button background-color="#FF1744" color="white" href="http://analyses.ezpaarse.org/platforms/{{ cardId }}" target="_blank">
+    <mj-button background-color="#FF1744" color="white" href="http://{{ host }}/platforms/{{ cardId }}" target="_blank">
       Pour accéder a la plateforme, cliquez ici !
     </mj-button>
 
@@ -33,7 +33,7 @@
       <p>Your request for certification ({{ certification }} - {{ year }}) for the <strong>{{ cardName }}</strong> platform has just been validated.</p>
     </mj-text>
 
-    <mj-button background-color="#FF1744" color="white" href="http://analyses.ezpaarse.org/platforms/{{ cardId }}" target="_blank">
+    <mj-button background-color="#FF1744" color="white" href="http://{{ host }}/platforms/{{ cardId }}" target="_blank">
       To access the platform, click here!
     </mj-button>
 

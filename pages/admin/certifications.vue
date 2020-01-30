@@ -352,6 +352,7 @@ export default {
           .catch(() => this.$store.dispatch('snacks/error', 'errorGeneric'))
       }).catch(() => this.$store.dispatch('snacks/error', 'errorGeneric'))
       this.denialDialog = false
+      this.refusalExplanations = ''
     }
   }
 }

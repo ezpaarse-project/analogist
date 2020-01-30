@@ -10,11 +10,11 @@
   <mj-column>
     <mj-text>
       <p>Bonjour,</p>
-      <p>Votre demande de certification ({{ certification }} - {{ year }}) pour la plateforme <strong>{{ cardName }}</strong> vient d'être refusée pour la/les raison(s) suivante(s) :</p>
-      <p><q>{{ comment }}</q></p>
+      <p>Votre demande de certification ({{ certification }} - {{ year }}) pour la plateforme <strong>{{ cardName }}</strong> vient d'être refusée.</p>
+      {% if comment %}<p><q>{{ comment }}</q></p>{% endif %}
     </mj-text>
 
-    <mj-button background-color="#FF1744" color="white" href="http://analyses.ezpaarse.org/platforms/{{ cardId }}" target="_blank">
+    <mj-button background-color="#FF1744" color="white" href="http://{{ host }}/platforms/{{ cardId }}" target="_blank">
       Pour accéder a la plateforme, cliquez ici !
     </mj-button>
 
@@ -31,11 +31,11 @@
   <mj-column>
     <mj-text>
       <p>Hello,</p>
-      <p>Your request for certification ({{ certification }} - {{ year }}) for the <strong>{{ cardName }}</strong> platform has just been refused for the following reason(s) :</p>
-      <p><q>{{ comment }}</q></p>
+      <p>Your request for certification ({{ certification }} - {{ year }}) for the <strong>{{ cardName }}</strong> platform has just been refused.</p>
+      {% if comment %}<p><q>{{ comment }}</q></p>{% endif %}
     </mj-text>
 
-    <mj-button background-color="#FF1744" color="white" href="http://analyses.ezpaarse.org/platforms/{{ cardId }}" target="_blank">
+    <mj-button background-color="#FF1744" color="white" href="http://{{ host }}/platforms/{{ cardId }}" target="_blank">
       To access the platform, click here!
     </mj-button>
 

@@ -229,11 +229,11 @@ export default {
 
       this.$store.dispatch('certifications/SEND_REQUEST', { cardId: this.card.id, formData })
         .then((res) => {
-          this.$store.dispatch('FETCH_CARD', this.card.id).catch((err) => {
+          this.$store.dispatch('snacks/success', 'certifications.notification')
+          this.$store.dispatch('certifications/GET_CERTIFICATIONS_EVENTS').catch((err) => {
             if (err) {
               this.$store.dispatch('snacks/error', 'errorGeneric')
             }
-            this.$store.dispatch('snacks/error', 'certifications.notification')
           })
         })
         .catch(() => this.$store.dispatch('snacks/error', 'errorGeneric'))
