@@ -229,7 +229,18 @@ export default {
 
       this.$store.dispatch('certifications/SEND_REQUEST', { cardId: this.card.id, formData })
         .then((res) => {
-          this.$store.dispatch('snacks/success', 'certifications.notification')
+          if (this.user.role === 'admin') {
+            this.$store.dispatch('FETCH_CARD', this.card.id).catch((err) => {
+              if (err) {
+                this.$store.dispatch('snacks/error', 'errorGeneric')
+              }
+            })
+          }
+
+          if (this.user.role !== 'admin') {
+            this.$store.dispatch('snacks/success', 'certifications.notification')
+          }
+
           this.$store.dispatch('certifications/GET_CERTIFICATIONS_EVENTS').catch((err) => {
             if (err) {
               this.$store.dispatch('snacks/error', 'errorGeneric')

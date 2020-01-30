@@ -22,6 +22,38 @@ const upload = multer({
   })
 })
 
+const updatePlatform = async (cardId, data) => {
+  let currentPlatform
+  try {
+    currentPlatform = await mongo.get('platforms').findOne({ cardID: cardId })
+  } catch (e) { logger.error(e) }
+
+  if (data.year === '—') {
+    data.year = null
+  }
+
+  const certifications = currentPlatform ? currentPlatform.certifications : { humanCertified: null, publisherCertified: null }
+  if (data.certification === 'H') {
+    certifications.publisherCertified = currentPlatform ? currentPlatform.certifications.publisherCertified : null
+    certifications.humanCertified = data.year
+  }
+
+  if (data.certification === 'P') {
+    certifications.humanCertified = currentPlatform ? currentPlatform.certifications.humanCertified : null
+    certifications.publisherCertified = data.year
+  }
+
+  return mongo.get('platforms').findOneAndUpdate(
+    { cardID: cardId },
+    {
+      $set: {
+        certifications,
+        lastModified: new Date()
+      }
+    },
+    { upsert: true })
+}
+
 router.patch('*', mw.authorize)
 router.post('*', mw.authorize)
 
@@ -50,34 +82,45 @@ router.post('/:cid', upload.single('attachement'), (req, res, next) => {
     delete data.form.values
   }
 
-  return sendMail({
-    from: config.notifications.sender,
-    to: config.notifications.receivers,
-    subject: `[AnalogIST] Mise à jour des certifications de la plateforme : ${requestData.cardName}`,
-    ...generateMail('certifications', {
-      cardName: requestData.cardName,
+  return mongo.get('certifications_history').insertOne(
+    {
       cardId: requestData.cardId,
-      host: req.query.host || req.headers['x-forwarded-host'] || req.headers.host
+      user: requestData.user,
+      certification: requestData.certification,
+      event: 'certification',
+      form: requestData.form,
+      status: req.session.profile.role === 'admin' ? 'accepted' : 'waiting',
+      createdAt: new Date()
+    },
+    async (err) => {
+      if (err) return res.status(500).json({ status: 'error' })
+
+      try {
+        if (req.session.profile.role !== 'admin') {
+          await sendMail({
+            from: config.notifications.sender,
+            to: config.notifications.receivers,
+            subject: `[AnalogIST] Mise à jour des certifications de la plateforme : ${requestData.cardName}`,
+            ...generateMail('certifications', {
+              cardName: requestData.cardName,
+              cardId: requestData.cardId,
+              host: req.query.host || req.headers['x-forwarded-host'] || req.headers.host
+            })
+          })
+        }
+      } catch (e) { logger.error(e) }
+
+      if (req.session.profile.role === 'admin') {
+        try {
+          await updatePlatform(requestData.cardId, { certification: requestData.certification, year: requestData.form.year })
+        } catch (e) {
+          logger.error(e)
+          return res.status(500).end()
+        }
+      }
+
+      return res.status(204).end()
     })
-  }).then(() => {
-    delete requestData.cardName
-
-    mongo.get('certifications_history').insertOne(
-      {
-        cardId: requestData.cardId,
-        user: requestData.user,
-        certification: requestData.certification,
-        event: 'certification',
-        form: requestData.form,
-        status: 'waiting',
-        createdAt: new Date()
-      },
-      (err) => {
-        if (err) return res.status(500).json({ status: 'error' })
-
-        return res.status(204).end()
-      })
-  }).catch(() => res.status(500).json({ status: 'error' }))
 })
 
 /* GET download attachement */
@@ -125,42 +168,12 @@ router.post('/:id/accept', (req, res, next) => {
         })
       } catch (e) { logger.error(e) }
 
-      let currentPlatform
       try {
-        currentPlatform = await mongo.get('platforms').findOne({ cardID: doc.value.cardId })
-      } catch (e) { logger.error(e) }
-
-      if (doc.form.year === '—') {
-        doc.form.year = null
+        await updatePlatform(doc.value.cardId, { certification: doc.value.certification, year: doc.value.form.year })
+      } catch (e) {
+        logger.error(e)
+        return res.status(500).end()
       }
-
-      const certifications = currentPlatform ? currentPlatform.certifications : { humanCertified: null, publisherCertified: null }
-      if (doc.value.certification === 'H') {
-        certifications.publisherCertified = currentPlatform ? currentPlatform.certifications.publisherCertified : null
-        certifications.humanCertified = doc.value.form.year
-      }
-
-      if (doc.value.certification === 'P') {
-        certifications.humanCertified = currentPlatform ? currentPlatform.certifications.humanCertified : null
-        certifications.publisherCertified = doc.value.form.year
-      }
-
-      mongo.get('platforms').findOneAndUpdate(
-        {
-          cardID: doc.value.cardId
-        },
-        {
-          $set: {
-            certifications,
-            lastModified: new Date()
-          }
-        },
-        { upsert: true },
-        (err, doc) => {
-          if (err) {
-            return res.status(500).json({ status: 'error' })
-          }
-        })
 
       return res.status(200).end()
     })
