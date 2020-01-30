@@ -240,7 +240,8 @@
       "user": "User",
       "reject": "Reject",
       "rejectExplanations": "Explanations for refusal",
-      "validate": "Validate"
+      "validate": "Validate",
+      "difference": "Difference (%)"
     },
     "formError": {
       "object": "An object is required",

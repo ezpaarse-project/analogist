@@ -239,7 +239,8 @@
       "user": "Utilisateur",
       "reject": "Refuser",
       "rejectExplanations": "Explications du refus",
-      "validate": "Valider"
+      "validate": "Valider",
+      "difference": "Différence (%)"
     },
     "formError": {
       "object": "Un objet est requis",

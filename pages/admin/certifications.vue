@@ -125,7 +125,7 @@
                 </v-flex>
                 <v-flex xs12 sm4 md4 class="px-1" v-if="item.certification === 'P'">
                   <v-text-field
-                    :label="$t('certifications.form.totalEditor')"
+                    :label="$t('certifications.form.difference')"
                     readonly
                     :value="difference(item.form.values)"
                   ></v-text-field>
