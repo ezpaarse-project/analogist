@@ -19,14 +19,24 @@
     <v-list-item-action>
       <v-list-item-subtitle class="caption">{{ updatedAt }}</v-list-item-subtitle>
       <span>
-        <v-list-item-avatar class="cert-icon" size="24" v-if="humanCertified" color="#F4B48B">
-          <span class="white--text">H</span>
-        </v-list-item-avatar>
+        <v-tooltip left>
+          <template v-slot:activator="{ on }">
+            <v-list-item-avatar v-on="on" class="cert-icon" size="24" v-if="humanCertified" color="#F4B48B">
+              <span class="white--text">H</span>
+            </v-list-item-avatar>
+          </template>
+          <span v-text="$t('certifications.humanCert')"></span>
+        </v-tooltip>
       </span>
       <span>
-        <v-list-item-avatar class="cert-icon" size="24" v-if="publisherCertified" color="#5AB9C1">
-          <span class="white--text">P</span>
-        </v-list-item-avatar>
+        <v-tooltip left>
+          <template v-slot:activator="{ on }">
+            <v-list-item-avatar v-on="on" class="cert-icon" size="24" v-if="publisherCertified" color="#5AB9C1">
+              <span class="white--text">P</span>
+            </v-list-item-avatar>
+          </template>
+          <span v-text="$t('certifications.publisherCert')"></span>
+        </v-tooltip>
       </span>
     </v-list-item-action>
   </v-list-item>
