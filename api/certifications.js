@@ -58,7 +58,7 @@ router.patch('*', mw.authorize)
 router.post('*', mw.authorize)
 
 router.get('/', (req, res, next) => {
-  return mongo.get('certifications_history').find({ status: 'waiting' }).toArray((err, docs) => {
+  return mongo.get('certifications_history').find().toArray((err, docs) => {
     if (err) { return next(err) }
 
     return res.status(200).json(docs || [])
