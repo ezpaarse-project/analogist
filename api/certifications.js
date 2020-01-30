@@ -97,7 +97,7 @@ router.post('/:cid', upload.single('attachement'), (req, res, next) => {
 
       try {
         if (req.session.profile.role !== 'admin') {
-          await sendMail({
+          sendMail({
             from: config.notifications.sender,
             to: config.notifications.receivers,
             subject: `[AnalogIST] Mise à jour des certifications de la plateforme : ${requestData.cardName}`,
@@ -154,7 +154,7 @@ router.post('/:id/accept', (req, res, next) => {
       }
 
       try {
-        await sendMail({
+        sendMail({
           from: config.notifications.sender,
           to: doc.value.user.email,
           subject: `[AnalogIST] Acceptation de la certification (${doc.value.certification} - ${doc.value.form.year}) pour la plateforme : ${data.cardName}`,
@@ -200,7 +200,7 @@ router.post('/:id/refuse', (req, res, next) => {
       }
 
       try {
-        await sendMail({
+        sendMail({
           from: config.notifications.sender,
           to: doc.value.user.email,
           subject: `[AnalogIST] Refus de la certification (${doc.value.certification} - ${doc.value.form.year}) pour la plateforme : ${data.cardName}`,
