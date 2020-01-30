@@ -222,6 +222,9 @@
     "asc": "Ascending",
     "close": "Close",
     "send": "Send",
+    "waiting": "Waiting",
+    "accepted" : "Accepted",
+    "refused" : "Refused",
     "form": {
       "objects": {
         "addOrModify": "Add / modify certification",

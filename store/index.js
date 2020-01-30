@@ -29,6 +29,7 @@ const store = () => new Vuex.Store({
     searchLists: [],
     searchCertifications: [],
     searchDateOrder: 'desc',
+    searchStatusOrder: 'waiting',
     searchPage: 1,
     drawer: true,
     lastVisitedAnalysis: null,
@@ -116,6 +117,9 @@ const store = () => new Vuex.Store({
     UPDATE_SEARCH_DATE_ORDER ({ commit }, value) {
       return commit('SET_SEARCH_DATE_ORDER', value)
     },
+    UPDATE_SEARCH_STATUS_ORDER ({ commit }, value) {
+      return commit('SET_SEARCH_STATUS_ORDER', value)
+    },
     SET_DRAWER ({ commit }, value) {
       commit('SET_DRAWER', value)
     },
@@ -180,6 +184,9 @@ const store = () => new Vuex.Store({
     },
     SET_SEARCH_DATE_ORDER (state, searchDateOrder) {
       Vue.set(state, 'searchDateOrder', searchDateOrder)
+    },
+    SET_SEARCH_STATUS_ORDER (state, searchStatusOrder) {
+      Vue.set(state, 'searchStatusOrder', searchStatusOrder)
     },
     REMOVE_ANALYSIS (state, analysisID) {
       Vue.set(state, 'analyses', state.analyses.filter(a => a.id !== analysisID))

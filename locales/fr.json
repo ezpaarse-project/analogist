@@ -221,6 +221,9 @@
     "asc": "Croissant",
     "close": "Fermer",
     "send": "Envoyer",
+    "waiting": "En attente",
+    "accepted" : "Acceptée",
+    "refused" : "Refusée",
     "form": {
       "objects": {
         "addOrModify": "Ajouter / modifier une certification",

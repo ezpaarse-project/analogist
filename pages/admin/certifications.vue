@@ -9,12 +9,24 @@
         <v-spacer></v-spacer>
 
         <v-select
+          label="Status"
+          :items="statusOrder"
+          v-model="searchStatusOrder"
+          item-text="text"
+          item-value="order"
+          hide-details
+          single-line
+          clearable
+          class="mx-1 filterFields"
+        >
+        </v-select>
+
+        <v-select
           label="Date"
           :items="dateOrder"
           v-model="searchDateOrder"
           item-text="text"
           item-value="order"
-          append-icon="mdi-clock-outline"
           hide-details
           single-line
           clearable
@@ -28,7 +40,6 @@
           v-model="searchCertifications"
           item-text="name"
           item-value="id"
-          append-icon="mdi-certificate"
           hide-details
           single-line
           clearable
@@ -137,7 +148,7 @@
                   </v-btn>
                 </v-flex>
 
-                <v-flex xs12 sm12 md12 offset-xs10>
+                <v-flex xs12 sm12 md12 offset-xs10 v-if="item.status === 'waiting'">
                   <v-btn tile dark class="ml-auto" color="green lighten-2" @click="accept(item)">
                     <v-icon left>mdi-plus-circle</v-icon> {{ $t('certifications.form.validate') }}
                   </v-btn>
@@ -251,6 +262,10 @@ export default {
 
       return this.$store.state.certifications.certificationsEvents
         .filter(event => {
+          if (event.status) {
+            return event.status === this.searchStatusOrder
+          }
+
           if (certifications.length) {
             return certifications.some(certification => {
               return event.certification && event.certification === certification
@@ -285,6 +300,14 @@ export default {
         this.$store.dispatch('UPDATE_SEARCH_DATE_ORDER', newValue || 'desc')
       }
     },
+    searchStatusOrder: {
+      get () {
+        return this.$store.state.searchStatusOrder
+      },
+      set (newValue) {
+        this.$store.dispatch('UPDATE_SEARCH_STATUS_ORDER', newValue || 'waiting')
+      }
+    },
     dateOrder () {
       return [
         {
@@ -294,6 +317,22 @@ export default {
         {
           order: 'asc',
           text: this.$t('certifications.asc')
+        }
+      ]
+    },
+    statusOrder () {
+      return [
+        {
+          order: 'waiting',
+          text: this.$t('certifications.waiting')
+        },
+        {
+          order: 'accepted',
+          text: this.$t('certifications.accepted')
+        },
+        {
+          order: 'refused',
+          text: this.$t('certifications.refused')
         }
       ]
     },
