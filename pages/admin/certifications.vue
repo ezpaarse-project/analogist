@@ -262,8 +262,8 @@ export default {
 
       return this.$store.state.certifications.certificationsEvents
         .filter(event => {
-          if (event.status) {
-            return event.status === this.searchStatusOrder
+          if (!event.status || (event.status && event.status !== this.searchStatusOrder)) {
+            return false
           }
 
           if (certifications.length) {
