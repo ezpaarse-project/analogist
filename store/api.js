@@ -210,10 +210,10 @@ api.getCertificationsEvents = function () {
   return axios.get('/api/certifications/').then(res => res.data)
 }
 
-api.sendRequest = function (cardId, data) {
+api.sendRequest = function (cardID, data) {
   return axios({
     method: 'POST',
-    url: `/api/certifications/${cardId}`,
+    url: `/api/certifications/${cardID}`,
     data,
     headers: {
       'Content-Type': 'multipart/form-data'

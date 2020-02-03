@@ -136,7 +136,7 @@
     "status": "Status",
     "platforms": "Platforms",
     "certifications": "Certification",
-    "displayAllPlatforms": "Display all platforms"
+    "displayAllPlatforms": "Display archived platforms"
   },
   "creation": {
     "newPlatform": "New platform",

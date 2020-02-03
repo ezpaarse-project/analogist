@@ -60,6 +60,15 @@
                 multiple
                 clearable
               >
+              <template v-slot:item="{ item }">
+                {{ item.name }}
+                <v-list-item-avatar style="margin-left: 10px" size="24" v-if="item.id === 'humanCertified'" color="#F4B48B">
+                  <span class="white--text">H</span>
+                </v-list-item-avatar>
+                <v-list-item-avatar style="margin-left: 10px" size="24" v-if="item.id === 'publisherCertified'" color="#5AB9C1">
+                  <span class="white--text">P</span>
+                </v-list-item-avatar>
+              </template>
               </v-select>
             </v-flex>
 
@@ -201,7 +210,12 @@ export default {
 
           if (certifications.length) {
             return certifications.some(certification => {
-              return card.platform && card.platform.certifications && card.platform.certifications[certification]
+              if (card.platform) {
+                const humanCertifications = card.platform.humanCertifications[0]
+                const publisherCertifications = card.platform.publisherCertifications[0]
+                return (humanCertifications && humanCertifications.certifications[certification] && humanCertifications.status === 'accepted') ||
+                       (publisherCertifications && publisherCertifications.certifications[certification] && publisherCertifications.status === 'accepted')
+              }
             })
           }
 

@@ -33,7 +33,7 @@
           class="mx-1 filterFields"
         >
         </v-select>
-        
+
         <v-select
           :label="$t('cards.certifications')"
           :items="certificationsType"
@@ -46,7 +46,25 @@
           multiple
           class="mx-1 filterFields"
         >
+          <template v-slot:item="{ item }">
+            {{ item.name }}
+            <v-list-item-avatar style="margin-left: 10px" size="24" v-if="item.id === 'humanCertified'" color="#F4B48B">
+              <span class="white--text">H</span>
+            </v-list-item-avatar>
+            <v-list-item-avatar style="margin-left: 10px" size="24" v-if="item.id === 'publisherCertified'" color="#5AB9C1">
+              <span class="white--text">P</span>
+            </v-list-item-avatar>
+          </template>
         </v-select>
+
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on }">
+            <v-btn v-on="on" class="mx-1" fab bottom right x-small color="success" @click="generateCertificationsFiles">
+              <v-icon>mdi-printer</v-icon>
+            </v-btn>
+          </template>
+          <span>Télécharger la liste des certifications</span>
+        </v-tooltip>
       </v-toolbar>
 
       <v-card-text v-if="!certificationsEvents.length" v-text="$t('certifications.noCertifications')"></v-card-text>
@@ -58,13 +76,16 @@
         >
           <v-expansion-panel-header>
             <v-list-item class="pa-0">
-              <v-list-item-avatar size="24" :color="certifications[item.certification].color">
-                <span class="white--text">{{ item.certification }}</span>
+              <v-list-item-avatar size="24" v-if="item.certifications && item.certifications.humanCertified" color="#F4B48B">
+                <span class="white--text">H</span>
+              </v-list-item-avatar>
+              <v-list-item-avatar size="24" v-if="item.certifications && item.certifications.publisherCertified" color="#5AB9C1">
+                <span class="white--text">P</span>
               </v-list-item-avatar>
               <v-list-item-content>
                 <v-list-item-title>
-                  <router-link :to="`/platforms/${item.cardId}`" target="_blank">
-                    <a>{{ eventPlatformName(item.cardId) }}</a>
+                  <router-link :to="`/platforms/${item.cardID}`" target="_blank">
+                    <a>{{ eventPlatformName(item.cardID) }}</a>
                   </router-link>
                   <v-chip
                     dark
@@ -120,21 +141,21 @@
                   ></v-textarea>
                 </v-flex>
 
-                <v-flex xs12 sm4 md4 class="px-1" v-if="item.certification === 'P'">
+                <v-flex xs12 sm4 md4 class="px-1" v-if="item.certifications && item.certifications.publisherCertified">
                   <v-text-field
                     :label="$t('certifications.form.totalEzpaarse')"
                     readonly
                     :value="item.form.values.ezpaarse"
                   ></v-text-field>
                 </v-flex>
-                <v-flex xs12 sm4 md4 class="px-1" v-if="item.certification === 'P'">
+                <v-flex xs12 sm4 md4 class="px-1" v-if="item.certifications && item.certifications.publisherCertified">
                   <v-text-field
                     :label="$t('certifications.form.totalEditor')"
                     readonly
                     :value="item.form.values.editor"
                   ></v-text-field>
                 </v-flex>
-                <v-flex xs12 sm4 md4 class="px-1" v-if="item.certification === 'P'">
+                <v-flex xs12 sm4 md4 class="px-1" v-if="item.certifications && item.certifications.publisherCertified">
                   <v-text-field
                     :label="$t('certifications.form.difference')"
                     readonly
@@ -185,6 +206,15 @@
 
 <script>
 import moment from 'moment'
+// import { saveAs } from 'file-saver'
+
+// function escapeCSVstring (str) {
+//   if (/[";]/.test(str)) {
+//     return `"${str.replace(/"/g, '""')}"`
+//   } else {
+//     return str || ''
+//   }
+// }
 
 export default {
   data () {
@@ -268,7 +298,7 @@ export default {
 
           if (certifications.length) {
             return certifications.some(certification => {
-              return event.certification && event.certification === certification
+              return event && event.certifications[certification] && event.status === this.searchStatusOrder
             })
           }
 
@@ -281,7 +311,7 @@ export default {
           if (this.searchDateOrder === 'desc') {
             return new Date(b.createdAt) - new Date(a.createdAt)
           }
-          return a.cardId.toLowerCase() < b.cardId.toLowerCase() ? -1 : 1
+          return a.cardID.toLowerCase() < b.cardID.toLowerCase() ? -1 : 1
         })
     },
     searchCertifications: {
@@ -339,26 +369,14 @@ export default {
     certificationsType () {
       return [
         {
-          id: 'H',
+          id: 'humanCertified',
           name: this.$t('certifications.human')
         },
         {
-          id: 'P',
+          id: 'publisherCertified',
           name: this.$t('certifications.publisher')
         }
       ]
-    },
-    certifications () {
-      return {
-        H: {
-          name: this.$t('certifications.human'),
-          color: '#F4B48B'
-        },
-        P: {
-          name: this.$t('certifications.publisher'),
-          color: '#5AB9C1'
-        }
-      }
     }
   },
   methods: {
@@ -366,8 +384,8 @@ export default {
       if (!date) return '-'
       return moment(date).locale(this.$i18n.locale).format('LL')
     },
-    eventPlatformName (cardId) {
-      return this.cards.find(card => card.id === cardId).name || 'Name not found'
+    eventPlatformName (cardID) {
+      if (cardID) return this.cards.find(card => card.id === cardID).name || 'Name not found'
     },
     difference ({ editor, ezpaarse }) {
       return Number.parseFloat((((editor - ezpaarse) / editor) * 100), 10).toFixed(2)
@@ -375,7 +393,7 @@ export default {
     accept (item) {
       this.$store.dispatch('certifications/ACCEPT', {
         id: item._id,
-        cardName: this.eventPlatformName(item.cardId)
+        cardName: this.eventPlatformName(item.cardID)
       }).then(async (res) => {
         this.$store.dispatch('certifications/GET_CERTIFICATIONS_EVENTS')
           .catch(() => this.$store.dispatch('snacks/error', 'errorGeneric'))
@@ -384,7 +402,7 @@ export default {
     refuse (item) {
       this.$store.dispatch('certifications/REFUSE', {
         id: item._id,
-        cardName: this.eventPlatformName(item.cardId),
+        cardName: this.eventPlatformName(item.cardID),
         comment: this.refusalExplanations
       }).then(async (res) => {
         this.$store.dispatch('certifications/GET_CERTIFICATIONS_EVENTS')
@@ -392,6 +410,11 @@ export default {
       }).catch(() => this.$store.dispatch('snacks/error', 'errorGeneric'))
       this.denialDialog = false
       this.refusalExplanations = ''
+    },
+    generateCertificationsFiles () {
+      if (!this.certificationsEvents) { return }
+
+      return false
     }
   }
 }

@@ -13,7 +13,7 @@
       <p>Une mise à jour des certifications de la plateforme <strong>{{ cardName }}</strong> sont en attente de votre validation.</p>
     </mj-text>
 
-    <mj-button background-color="#FF1744" color="white" href="http://{{ host }}/platforms/{{ cardId }}" target="_blank">
+    <mj-button background-color="#FF1744" color="white" href="http://{{ host }}/platforms/{{ cardID }}" target="_blank">
       Pour accéder a la plateforme, cliquez ici !
     </mj-button>
 

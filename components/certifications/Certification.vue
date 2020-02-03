@@ -15,7 +15,9 @@
           class="headline"
           primary-title
         >
-          Certification {{ certification }}
+          Certification
+          <span v-if="certifications.humanCertified">&nbsp;H</span>
+          <span v-if="certifications.publisherCertified">&nbsp;P</span>
         </v-card-title>
 
         <v-divider></v-divider>
@@ -61,7 +63,7 @@
                 ></v-textarea>
               </v-flex>
 
-              <v-flex xs12 sm6 pr-1 v-if="certification === 'P'">
+              <v-flex xs12 sm6 pr-1 v-if="certifications.publisherCertified">
                 <v-text-field
                   v-model="form.values.ezpaarse"
                   type="number"
@@ -71,7 +73,7 @@
                 ></v-text-field>
               </v-flex>
 
-              <v-flex xs12 sm6 pl-1 v-if="certification === 'P'">
+              <v-flex xs12 sm6 pl-1 v-if="certifications.publisherCertified">
                 <v-text-field
                   v-model="form.values.editor"
                   type="number"
@@ -133,41 +135,25 @@ export default {
         establishment: null,
         comment: null,
         attachement: [],
-        values: {
-          ezpaarse: null,
-          editor: null
-        }
+        year: null
       },
       disableObject: false,
-      certification: null,
-      year: null
+      certifications: {
+        humanCertified: false,
+        publisherCertified: false
+      }
     }
   },
   computed: {
     years () {
       const currentYear = new Date().getFullYear()
-      return ['—', currentYear - 2, currentYear - 1, currentYear]
+      return [null, currentYear - 2, currentYear - 1, currentYear]
     },
     card () {
       return this.$store.state.card
     },
     user () {
       return this.$store.state.user
-    },
-    certified () {
-      return this.card.platform && this.card.platform.certifications
-    },
-    humanCertified () {
-      return this.certified ? this.card.platform.certifications.humanCertified : null
-    },
-    humanCertification () {
-      return this.card.platform.certifications.humanCertified
-    },
-    publisherCertified () {
-      return this.certified ? this.card.platform.certifications.publisherCertified : null
-    },
-    publisherCertification () {
-      return this.card.platform.certifications.publisherCertified
     },
     objects () {
       return [
@@ -181,19 +167,22 @@ export default {
     closeDialog () {
       this.dialog = false
       this.valid = false
-      this.year = null
+      this.form.year = null
       this.disableObject = false
       this.$refs.form.reset()
     },
-    openDialog (certification, year) {
+    openDialog (humanCertified, publisherCertified, year) {
       this.dialog = true
-      this.certification = certification
+      this.certifications.humanCertified = humanCertified
+      this.certifications.publisherCertified = publisherCertified
 
-      this.year = year
-      if (year === this.years[0]) {
-        this.disableObject = true
-        this.form.object = this.objects[1].name
-        return year
+      this.form.year = year
+
+      if (publisherCertified) {
+        this.form.values = {
+          ezpaarse: null,
+          editor: null
+        }
       }
 
       this.disableObject = true
@@ -205,8 +194,8 @@ export default {
         return false
       }
 
-      if (!this.year) {
-        return this.$store.dispatch('snacks/error', 'certifications.formError.date')
+      if (!this.form.year) {
+        this.form.object = 'delete'
       }
 
       const formData = new FormData()
@@ -214,20 +203,12 @@ export default {
 
       this.form.attachement = this.form.attachement.name
 
-      const request = {
-        cardName: this.card.name,
-        cardId: this.card.id,
-        user: {
-          userId: this.user.id,
-          email: this.user.email,
-          fullName: this.user.fullName
-        },
-        form: { ...this.form, year: this.year },
-        certification: this.certification
-      }
-      formData.append('request', JSON.stringify(request))
+      formData.append('cardName', this.card.name)
+      formData.append('cardID', this.card.id)
+      formData.append('form', JSON.stringify(this.form))
+      formData.append('certifications', JSON.stringify(this.certifications))
 
-      this.$store.dispatch('certifications/SEND_REQUEST', { cardId: this.card.id, formData })
+      this.$store.dispatch('certifications/SEND_REQUEST', { cardID: this.card.id, formData })
         .then((res) => {
           if (this.user.role === 'admin') {
             this.$store.dispatch('FETCH_CARD', this.card.id).catch((err) => {
@@ -240,12 +221,6 @@ export default {
           if (this.user.role !== 'admin') {
             this.$store.dispatch('snacks/success', 'certifications.notification')
           }
-
-          this.$store.dispatch('certifications/GET_CERTIFICATIONS_EVENTS').catch((err) => {
-            if (err) {
-              this.$store.dispatch('snacks/error', 'errorGeneric')
-            }
-          })
         })
         .catch(() => this.$store.dispatch('snacks/error', 'errorGeneric'))
 

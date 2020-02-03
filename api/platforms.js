@@ -25,10 +25,32 @@ router.get('/fields.json', (req, res, next) => {
     .on('error', next)
 })
 
+const getHumanCertifications = (cardID) => {
+  return mongo.get('certifications').find({ cardID, 'certifications.humanCertified': true }).sort({ 'form.year': -1 }).toArray()
+}
+
+const getPublisherCertifications = (cardID) => {
+  return mongo.get('certifications').find({ cardID, 'certifications.publisherCertified': true }).sort({ 'form.year': -1 }).toArray()
+}
+
 /* GET all platforms. */
 router.get('/', (req, res, next) => {
-  mongo.get('platforms').find().toArray((err, docs) => {
+  mongo.get('platforms').find().toArray(async (err, docs) => {
     if (err) { return next(err) }
+
+    for (let i = 0; i < docs.length; i += 1) {
+      try {
+        const humanCertifications = await getHumanCertifications(docs[i].cardID).then(res => res)
+        if (humanCertifications) {
+          docs[i].humanCertifications = humanCertifications
+        }
+
+        const publisherCertifications = await getPublisherCertifications(docs[i].cardID).then(res => res)
+        if (publisherCertifications) {
+          docs[i].publisherCertifications = publisherCertifications
+        }
+      } catch (e) { }
+    }
 
     res.status(200).json(docs || [])
   })
@@ -36,9 +58,21 @@ router.get('/', (req, res, next) => {
 
 /* GET a platform. */
 router.get('/:cid', (req, res, next) => {
-  mongo.get('platforms').findOne({ cardID: req.params.cid }, (err, doc) => {
+  mongo.get('platforms').findOne({ cardID: req.params.cid }, async (err, doc) => {
     if (err) { return next(err) }
     if (!doc) { return res.status(404).end() }
+
+    try {
+      const humanCertifications = await getHumanCertifications(doc.cardID).then(res => res)
+      if (humanCertifications) {
+        doc.humanCertifications = humanCertifications
+      }
+
+      const publisherCertifications = await getPublisherCertifications(doc.cardID).then(res => res)
+      if (publisherCertifications) {
+        doc.publisherCertifications = publisherCertifications
+      }
+    } catch (e) { }
 
     res.status(200).json(doc)
   })

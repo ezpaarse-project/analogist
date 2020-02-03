@@ -7,14 +7,14 @@
       <v-list-item-title>
         <v-menu open-on-hover offset-y>
           <template v-slot:activator="{ on }">
-            <v-btn small v-on="on" class="dateLbl white--text" color="#5AB9C1" depressed :disabled="!user || (!humanCertified && certificationsEvents.length === 0)">
-              <span v-if="publisherCertified">{{ publisherCertification }}</span>
-              <span v-else>{{ years[0] }}</span>
+            <v-btn small v-on="on" class="dateLbl white--text" color="#5AB9C1" depressed :disabled="!user || !canCertify || !humanCertified">
+              <span v-if="publisherCertified">{{ year }}</span>
+              <span v-else>-</span>
             </v-btn>
           </template>
-          <v-list v-if="user && (humanCertified || certificationsEvents.length > 0)">
+          <v-list v-if="user && humanCertified">
             <v-list-item v-for="(item, index) in years" :key="index">
-              <v-list-item-title class="pointer" @click="openDialog(item);">{{ item }}</v-list-item-title>
+              <v-list-item-title class="pointer" @click="openDialog(item);">{{ item || '-' }}</v-list-item-title>
             </v-list-item>
           </v-list>
         </v-menu>
@@ -40,30 +40,38 @@ export default {
     user () {
       return this.$store.state.user
     },
-    certified () {
-      return this.card.platform && this.card.platform.certifications
-    },
     humanCertified () {
-      return this.certified ? this.card.platform.certifications.humanCertified : null
+      if (this.card.platform) {
+        const humanCertifications = []
+        this.card.platform.humanCertifications.forEach(certification => {
+          if (certification.status === 'accepted') humanCertifications.push(certification)
+        })
+        humanCertifications.sort((a, b) => a.form.year < b.form.year)
+        return humanCertifications.length > 0
+      }
+      return false
     },
     publisherCertified () {
-      return this.certified ? this.card.platform.certifications.publisherCertified : null
+      if (this.card.platform) {
+        const publisherCertifications = []
+        this.card.platform.publisherCertifications.forEach(certification => {
+          if (certification.status === 'accepted') publisherCertifications.push(certification)
+        })
+        publisherCertifications.sort((a, b) => a.form.year < b.form.year)
+        return publisherCertifications.length > 0
+      }
+      return false
     },
-    publisherCertification () {
-      return this.card.platform.certifications.publisherCertified
+    year () {
+      return this.publisherCertified ? this.card.platform.publisherCertifications[0].form.year : null
     },
-    certificationsEvents () {
-      return this.$store.state.certifications.certificationsEvents.filter(event => {
-        if (this.card.id !== event.cardId && event.certification === 'H') {
-          return false
-        }
-        return true
-      })
+    canCertify () {
+      return this.card.platform && this.card.platform.analyses.length > 0
     }
   },
   methods: {
     openDialog (year) {
-      this.$emit('openDialog', this.name, year)
+      this.$emit('openDialog', false, true, year)
     }
   }
 }

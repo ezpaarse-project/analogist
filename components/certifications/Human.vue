@@ -7,14 +7,14 @@
       <v-list-item-title>
         <v-menu open-on-hover offset-y>
           <template v-slot:activator="{ on }">
-            <v-btn small v-on="on" class="dateLbl white--text" color="#F4B48B" depressed :disabled="!user">
-              <span v-if="humanCertified">{{ humanCertification }}</span>
-              <span v-else>{{ years[0] }}</span>
+            <v-btn small v-on="on" class="dateLbl white--text" color="#F4B48B" depressed :disabled="!user || !canCertify">
+              <span v-if="humanCertified">{{ year }}</span>
+              <span v-else>-</span>
             </v-btn>
           </template>
           <v-list v-if="user">
             <v-list-item v-for="(item, index) in years" :key="index">
-              <v-list-item-title class="pointer" @click="openDialog(item)">{{ item }}</v-list-item-title>
+              <v-list-item-title class="pointer" @click="openDialog(item)">{{ item || '-' }}</v-list-item-title>
             </v-list-item>
           </v-list>
         </v-menu>
@@ -40,19 +40,27 @@ export default {
     user () {
       return this.$store.state.user
     },
-    certified () {
-      return this.card.platform && this.card.platform.certifications
-    },
     humanCertified () {
-      return this.certified ? this.card.platform.certifications.humanCertified : null
+      if (this.card.platform) {
+        const humanCertifications = []
+        this.card.platform.humanCertifications.forEach(certification => {
+          if (certification.status === 'accepted') humanCertifications.push(certification)
+        })
+        humanCertifications.sort((a, b) => a.form.year < b.form.year)
+        return humanCertifications.length > 0
+      }
+      return false
     },
-    humanCertification () {
-      return this.card.platform.certifications.humanCertified
+    year () {
+      return this.humanCertified ? this.card.platform.humanCertifications[0].form.year : null
+    },
+    canCertify () {
+      return this.card.platform && this.card.platform.analyses.length > 0
     }
   },
   methods: {
     openDialog (year) {
-      this.$emit('openDialog', this.name, year)
+      this.$emit('openDialog', true, false, year)
     }
   }
 }

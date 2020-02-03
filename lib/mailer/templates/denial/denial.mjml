@@ -14,7 +14,7 @@
       {% if comment %}<p><q>{{ comment }}</q></p>{% endif %}
     </mj-text>
 
-    <mj-button background-color="#FF1744" color="white" href="http://{{ host }}/platforms/{{ cardId }}" target="_blank">
+    <mj-button background-color="#FF1744" color="white" href="http://{{ host }}/platforms/{{ cardID }}" target="_blank">
       Pour accéder a la plateforme, cliquez ici !
     </mj-button>
 
@@ -35,7 +35,7 @@
       {% if comment %}<p><q>{{ comment }}</q></p>{% endif %}
     </mj-text>
 
-    <mj-button background-color="#FF1744" color="white" href="http://{{ host }}/platforms/{{ cardId }}" target="_blank">
+    <mj-button background-color="#FF1744" color="white" href="http://{{ host }}/platforms/{{ cardID }}" target="_blank">
       To access the platform, click here!
     </mj-button>
 
