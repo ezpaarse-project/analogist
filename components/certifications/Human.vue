@@ -55,7 +55,7 @@ export default {
       return this.humanCertified ? this.card.platform.humanCertifications[0].form.year : null
     },
     canCertify () {
-      return this.card.platform && this.card.platform.analyses.length > 0
+      return this.card.platform && this.card.platform.analyses && this.card.platform.analyses.length > 0
     }
   },
   methods: {
