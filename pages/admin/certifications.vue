@@ -415,6 +415,8 @@ export default {
       if (!this.certificationsEvents) { return }
 
       const columns = [
+        { title: 'Date de demande', getter: (a) => moment(a.createdAt).locale(this.$i18n.locale).format('LL') },
+        { title: 'Date de d\'dministration', getter: (a) => moment(a.lastModfied).locale(this.$i18n.locale).format('LL') },
         { title: 'Plateforme', getter: (a) => this.eventPlatformName(a.cardID) },
         { title: 'Etablissement', getter: (a) => a.form.establishment },
         { title: 'H', getter: (a) => a.certifications.humanCertified ? a.form.year : '-' },
