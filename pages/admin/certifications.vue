@@ -211,9 +211,8 @@ import { saveAs } from 'file-saver'
 function escapeCSVstring (str) {
   if (/[";]/.test(str)) {
     return `"${str.replace(/"/g, '""')}"`
-  } else {
-    return str || ''
   }
+  return str || ''
 }
 
 export default {
@@ -426,10 +425,10 @@ export default {
         { title: 'Difference', getter: (a) => a.form.values ? `${this.difference(a.form.values)}%` : '-' }
       ]
 
-      const header = columns.map(col => escapeCSVstring(col.title)).join(',')
+      const header = columns.map(col => escapeCSVstring(col.title)).join(';')
 
       const lines = this.certificationsEvents.map(event => {
-        return columns.map(col => escapeCSVstring(col.getter(event))).join(',')
+        return columns.map(col => escapeCSVstring(col.getter(event))).join(';')
       }).join('\n')
 
       const fileName = `[${this.searchStatusOrder}] - Certifications de plateformes.csv`

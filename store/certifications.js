@@ -17,11 +17,8 @@ export default {
         commit('SET_CERTIFICATIONS_EVENTS', res)
       })
     },
-    UPDATE ({ commit }, data) {
-      return api.updateCertifications(data.cId, data.certifications)
-    },
     SEND_REQUEST ({ commit }, data) {
-      return api.sendRequest(data.cardId, data.formData)
+      return api.sendRequest(data.cardID, data.formData)
     },
     ACCEPT ({ commit }, data) {
       return api.acceptCertification(data)
