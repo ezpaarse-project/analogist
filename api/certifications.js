@@ -43,8 +43,9 @@ router.post('/:cid', upload.single('attachment'), (req, res, next) => {
 
   if (!data) return res.status(500).json({ status: 'error' })
 
+  const form = JSON.parse(data.form)
   if (attachment) {
-    data.form.attachment = attachment.filename
+    form.attachment = attachment.filename
   }
 
   return mongo.get('certifications').insertOne(
@@ -56,7 +57,7 @@ router.post('/:cid', upload.single('attachment'), (req, res, next) => {
         email: req.session.profile.email
       },
       certifications: JSON.parse(data.certifications),
-      form: JSON.parse(data.form),
+      form,
       status: req.session.profile.role === 'admin' ? 'accepted' : 'waiting',
       createdAt: new Date()
     },
