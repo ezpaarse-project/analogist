@@ -195,7 +195,7 @@ export default {
         return columns.map(col => escapeCSVstring(col.getter(event))).join(';')
       }).join('\n')
 
-      const fileName = this.$t('certifications.certifiedPlatforms')
+      const fileName = `${this.$t('certifications.certifiedPlatforms')}.csv`
 
       return saveAs(new Blob([`${header}\n${lines}`], { type: 'text/csv;charset=utf-8' }), fileName)
     }
