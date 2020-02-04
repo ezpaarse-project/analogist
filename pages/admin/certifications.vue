@@ -63,7 +63,7 @@
               <v-icon>mdi-printer</v-icon>
             </v-btn>
           </template>
-          <span>Télécharger la liste des certifications</span>
+           <span v-text="$t('certifications.downloadCertifiedList')"></span>
         </v-tooltip>
       </v-toolbar>
 
@@ -433,9 +433,7 @@ export default {
 
       const fileName = `[${this.searchStatusOrder}] - Certifications de plateformes.csv`
 
-      saveAs(new Blob([`${header}\n${lines}`], { type: 'text/csv;charset=utf-8' }), fileName)
-
-      return false
+      return saveAs(new Blob([`${header}\n${lines}`], { type: 'text/csv;charset=utf-8' }), fileName)
     }
   }
 }

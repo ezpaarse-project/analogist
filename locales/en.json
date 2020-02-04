@@ -225,6 +225,7 @@
     "waiting": "Waiting",
     "accepted" : "Accepted",
     "refused" : "Refused",
+    "downloadCertifiedList": "Download the list of certified platforms",
     "form": {
       "objects": {
         "addOrModify": "Add / modify certification",

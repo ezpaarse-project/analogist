@@ -4,9 +4,25 @@
       <v-toolbar class="secondary" dense dark flat>
         <v-toolbar-title>{{ $t('cards.platforms') }} ({{ cards.length }})</v-toolbar-title>
 
-        <v-btn absolute fab bottom right color="primary" v-if="canEdit" :to="{ name: 'platforms-new' }">
-          <v-icon>mdi-plus</v-icon>
-        </v-btn>
+        <v-spacer></v-spacer>
+
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on }">
+            <v-btn v-on="on" icon text v-if="canEdit" :to="{ name: 'platforms-new' }">
+              <v-icon>mdi-plus</v-icon>
+            </v-btn>
+          </template>
+          <span v-text="$t('creation.newPlatform')"></span>
+        </v-tooltip>
+
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on }">
+            <v-btn v-on="on" icon text @click="generateCSV()">
+              <v-icon>mdi-download</v-icon>
+            </v-btn>
+          </template>
+          <span v-text="$t('certifications.downloadCertifiedList')"></span>
+        </v-tooltip>
       </v-toolbar>
 
       <v-card-text>
@@ -60,19 +76,19 @@
                 multiple
                 clearable
               >
-              <template v-slot:item="{ item }">
-                {{ item.name }}
-                <v-list-item-avatar style="margin-left: 10px" size="24" v-if="item.id === 'humanCertified'" color="#F4B48B">
-                  <span class="white--text">H</span>
-                </v-list-item-avatar>
-                <v-list-item-avatar style="margin-left: 10px" size="24" v-if="item.id === 'publisherCertified'" color="#5AB9C1">
-                  <span class="white--text">P</span>
-                </v-list-item-avatar>
-              </template>
+                <template v-slot:item="{ item }">
+                  {{ item.name }}
+                  <v-list-item-avatar style="margin-left: 10px" size="24" v-if="item.id === 'humanCertified'" color="#F4B48B">
+                    <span class="white--text">H</span>
+                  </v-list-item-avatar>
+                  <v-list-item-avatar style="margin-left: 10px" size="24" v-if="item.id === 'publisherCertified'" color="#5AB9C1">
+                    <span class="white--text">P</span>
+                  </v-list-item-avatar>
+                </template>
               </v-select>
             </v-flex>
 
-            <v-flex xs12 sm12>
+            <v-flex xs12 sm6>
               <v-checkbox
                 v-model="displayAllCards"
                 :label="$t('cards.displayAllPlatforms')"
@@ -103,6 +119,14 @@
 
 <script>
 import CardTile from '~/components/CardTile'
+import { saveAs } from 'file-saver'
+
+function escapeCSVstring (str) {
+  if (/[";]/.test(str)) {
+    return `"${str.replace(/"/g, '""')}"`
+  }
+  return str || ''
+}
 
 export default {
   name: 'platforms',
@@ -129,6 +153,51 @@ export default {
       if (this.searchPage <= 0 || this.searchPage > this.nbPages) {
         this.$store.dispatch('SET_SEARCH_PAGE', 1)
       }
+    },
+    difference ({ editor, ezpaarse }) {
+      return Number.parseFloat((((editor - ezpaarse) / editor) * 100), 10).toFixed(2)
+    },
+    generateCSV () {
+      const columns = [
+        { title: 'Plateforme', getter: (a) => a.name },
+        {
+          title: 'H',
+          getter: (a) => {
+            if (a.platform.humanCertifications.length > 0) {
+              return a.platform.humanCertifications[0].form.year
+            }
+            return '-'
+          }
+        },
+        {
+          title: 'P',
+          getter: (a) => {
+            if (a.platform.publisherCertifications.length > 0) {
+              return a.platform.publisherCertifications[0].form.year
+            }
+            return '-'
+          }
+        }
+      ]
+
+      const certifiedPlatforms = []
+      this.cards.forEach(card => {
+        if (card.platform) {
+          if (card.platform.humanCertifications.length > 0 || card.platform.publisherCertifications.length > 0) {
+            certifiedPlatforms.push(card)
+          }
+        }
+      })
+
+      const header = columns.map(col => escapeCSVstring(col.title)).join(';')
+
+      const lines = certifiedPlatforms.map(event => {
+        return columns.map(col => escapeCSVstring(col.getter(event))).join(';')
+      }).join('\n')
+
+      const fileName = 'Plateformes certifiées.csv'
+
+      return saveAs(new Blob([`${header}\n${lines}`], { type: 'text/csv;charset=utf-8' }), fileName)
     }
   },
   computed: {
@@ -213,8 +282,8 @@ export default {
               if (card.platform) {
                 const humanCertifications = card.platform.humanCertifications[0]
                 const publisherCertifications = card.platform.publisherCertifications[0]
-                return (humanCertifications && humanCertifications.certifications[certification] && humanCertifications.status === 'accepted') ||
-                       (publisherCertifications && publisherCertifications.certifications[certification] && publisherCertifications.status === 'accepted')
+                return (humanCertifications && humanCertifications.certifications[certification]) ||
+                       (publisherCertifications && publisherCertifications.certifications[certification])
               }
             })
           }

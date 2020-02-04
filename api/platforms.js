@@ -26,11 +26,11 @@ router.get('/fields.json', (req, res, next) => {
 })
 
 const getHumanCertifications = (cardID) => {
-  return mongo.get('certifications').find({ cardID, 'certifications.humanCertified': true }).sort({ 'form.year': -1 }).toArray()
+  return mongo.get('certifications').find({ cardID, 'certifications.humanCertified': true, status: 'accepted' }).sort({ 'form.year': -1 }).toArray()
 }
 
 const getPublisherCertifications = (cardID) => {
-  return mongo.get('certifications').find({ cardID, 'certifications.publisherCertified': true }).sort({ 'form.year': -1 }).toArray()
+  return mongo.get('certifications').find({ cardID, 'certifications.publisherCertified': true, status: 'accepted' }).sort({ 'form.year': -1 }).toArray()
 }
 
 /* GET all platforms. */

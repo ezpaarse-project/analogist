@@ -41,15 +41,7 @@ export default {
       return this.$store.state.user
     },
     humanCertified () {
-      if (this.card.platform) {
-        const humanCertifications = []
-        this.card.platform.humanCertifications.forEach(certification => {
-          if (certification.status === 'accepted') humanCertifications.push(certification)
-        })
-        humanCertifications.sort((a, b) => a.form.year < b.form.year)
-        return humanCertifications.length > 0
-      }
-      return false
+      return this.card.platform ? this.card.platform.humanCertifications.length > 0 : false
     },
     year () {
       return this.humanCertified ? this.card.platform.humanCertifications[0].form.year : null

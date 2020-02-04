@@ -68,25 +68,10 @@ export default {
       return this.$store.state.trelloLists.find(l => this.card.idList === l.id)
     },
     humanCertified () {
-      if (this.card.platform) {
-        const humanCertifications = []
-        this.card.platform.humanCertifications.forEach(certification => {
-          if (certification.status === 'accepted') humanCertifications.push(certification)
-        })
-        return humanCertifications.length > 0
-      }
-      return false
+      return this.card.platform ? this.card.platform.humanCertifications.length > 0 : false
     },
     publisherCertified () {
-      if (this.card.platform) {
-        const publisherCertifications = []
-        this.card.platform.publisherCertifications.forEach(certification => {
-          if (certification.status === 'accepted') publisherCertifications.push(certification)
-        })
-        publisherCertifications.sort((a, b) => a.form.year < b.form.year)
-        return publisherCertifications.length > 0
-      }
-      return false
+      return this.card.platform ? this.card.platform.publisherCertifications.length > 0 : false
     }
   }
 }
