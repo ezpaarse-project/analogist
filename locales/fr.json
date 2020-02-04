@@ -225,6 +225,7 @@
     "accepted" : "Acceptée",
     "refused" : "Refusée",
     "downloadCertifiedList": "Télécharger la liste des plateformes certifiées",
+    "certifiedPlatforms": "Plateformes certifiées",
     "form": {
       "objects": {
         "addOrModify": "Ajouter / modifier une certification",

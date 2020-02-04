@@ -226,6 +226,7 @@
     "accepted" : "Accepted",
     "refused" : "Refused",
     "downloadCertifiedList": "Download the list of certified platforms",
+    "certifiedPlatforms": "Certified platformes",
     "form": {
       "objects": {
         "addOrModify": "Add / modify certification",
