@@ -66,7 +66,15 @@ export default {
       return this.publisherCertified ? this.card.platform.publisherCertifications[0].form.year : null
     },
     canCertify () {
-      return this.card.platform && this.card.platform.analyses && this.card.platform.analyses.length > 0
+      let isUpdated = false
+      const list = this.$store.state.trelloLists.find(l => this.card.idList === l.id)
+      if (list) {
+        let match
+        if ((match = /^([0-9]{1,2})(.*)$/i.exec(list.name)) !== null) {
+          isUpdated = Number.parseInt(match[1], 10) === 10
+        }
+      }
+      return this.card.platform && this.card.platform.analyses && this.card.platform.analyses.length > 0 && isUpdated
     }
   },
   methods: {
