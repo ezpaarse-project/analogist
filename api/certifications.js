@@ -13,10 +13,14 @@ const { sendMail, generateMail } = require('../lib/mailer')
 const upload = multer({
   storage: multer.diskStorage({
     destination: (req, file, cb) => {
-      cb(null, 'uploads/')
+      if (file) {
+        cb(null, 'uploads/')
+      }
     },
     filename: (req, file, cb) => {
-      cb(null, `${Date.now()}_${file.originalname}`)
+      if (file) {
+        cb(null, `${Date.now()}_${file.originalname}`)
+      }
     }
   })
 })
@@ -33,14 +37,14 @@ router.get('/', (req, res, next) => {
 })
 
 /* POST certification request for a platform */
-router.post('/:cid', upload.single('attachement'), (req, res, next) => {
+router.post('/:cid', upload.single('attachment'), (req, res, next) => {
   const { body: data } = req
-  const { file: attachement } = req
+  const { file: attachment } = req
 
   if (!data) return res.status(500).json({ status: 'error' })
 
-  if (attachement) {
-    data.form.attachement = attachement.filename
+  if (attachment) {
+    data.form.attachment = attachment.filename
   }
 
   return mongo.get('certifications').insertOne(
@@ -76,13 +80,13 @@ router.post('/:cid', upload.single('attachement'), (req, res, next) => {
     })
 })
 
-/* GET download attachement */
-router.get('/download/:attachement', (req, res, next) => {
-  const { attachement } = req.params
+/* GET download attachment */
+router.get('/download/:attachment', (req, res, next) => {
+  const { attachment } = req.params
 
-  if (!attachement) return res.status(404)
+  if (!attachment) return res.status(404)
 
-  return fs.createReadStream(path.resolve(__dirname, '..', 'uploads', attachement)).pipe(res)
+  return fs.createReadStream(path.resolve(__dirname, '..', 'uploads', attachment)).pipe(res)
 })
 
 router.post('/:id/accept', (req, res, next) => {

@@ -164,8 +164,8 @@
                 </v-flex>
 
                 <v-flex xs12 sm6 md6 class="px-1">
-                  <v-btn tile dark color="grey" v-if="item.form.attachement" link :to="`/api/certifications/download/${item.form.attachement}`" target="_blank">
-                    <v-icon left>mdi-paperclip</v-icon> {{ $t('certifications.form.attachement') }}
+                  <v-btn tile dark color="grey" v-if="item.form.attachment" link :to="`/api/certifications/download/${item.form.attachment}`" target="_blank">
+                    <v-icon left>mdi-paperclip</v-icon> {{ $t('certifications.form.attachment') }}
                   </v-btn>
                 </v-flex>
 

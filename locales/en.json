@@ -236,8 +236,8 @@
       "comment": "Comment *",
       "totalEzpaarse": "Total JR1 report ezPAARSE *",
       "totalEditor": "Total JR1 report Editor *",
-      "attachement": "Attachement",
-      "attachementSize": "Maximum size 2 Mo",
+      "attachment": "Attachment",
+      "attachmentSize": "Maximum size 2 Mo",
       "requiredFields": "(*) required fields",
       "year": "Year",
       "user": "User",
@@ -252,7 +252,7 @@
       "comment": "Comment is required.",
       "totalValue": "The total is required.",
       "date": "One year of certification is required",
-      "attachement": "Attachement size should be less than 2 MB!"
+      "attachment": "attachment size should be less than 2 MB!"
     }
   },
   "others": "others",

@@ -235,8 +235,8 @@
       "comment": "Commentaire *",
       "totalEzpaarse": "Total rapport JR1 ezPAARSE *",
       "totalEditor": "Total rapport JR1 Editeur *",
-      "attachement": "Pièce jointe",
-      "attachementSize": "Taille max. 2 Mo",
+      "attachment": "Pièce jointe",
+      "attachmentSize": "Taille max. 2 Mo",
       "requiredFields": "(*) champs obligatoires",
       "year": "Année",
       "user": "Utilisateur",
@@ -251,7 +251,7 @@
       "comment": "Un commentaire est requis",
       "totalValue": "Le total est requis",
       "date": "Une année de certification est requise",
-      "attachement": "La taille de la pièce jointe doit être inférieure à 2 Mo !"
+      "attachment": "La taille de la pièce jointe doit être inférieure à 2 Mo !"
     }
   },
   "others": "autres",

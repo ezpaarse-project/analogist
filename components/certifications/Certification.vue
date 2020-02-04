@@ -86,14 +86,14 @@
               
               <v-flex xs12 sm12>
                 <v-file-input
-                  ref="attachement"
-                  id="attachement"
-                  name="attachement"
+                  ref="attachment"
+                  id="attachment"
+                  name="attachment"
                   show-size
-                  v-model="form.attachement"
-                  :label="$t('certifications.form.attachement')"
-                  :rules="[v => !!v || (v && v.size < 2000000) || $t('certifications.formError.attachement')]"
-                  :hint="$t('certifications.form.attachementSize')"
+                  v-model="form.attachment"
+                  :label="$t('certifications.form.attachment')"
+                  :rules="[v => !!v || (v && v.size < 2000000) || $t('certifications.formError.attachment')]"
+                  :hint="$t('certifications.form.attachmentSize')"
                   persistent-hint
                 ></v-file-input>
               </v-flex>
@@ -134,7 +134,7 @@ export default {
         object: null,
         establishment: null,
         comment: null,
-        attachement: [],
+        attachment: [],
         year: null
       },
       disableObject: false,
@@ -199,9 +199,9 @@ export default {
       }
 
       const formData = new FormData()
-      formData.append('attachement', this.form.attachement)
+      formData.append('attachment', this.form.attachment)
 
-      this.form.attachement = this.form.attachement.name
+      this.form.attachment = this.form.attachment.name
 
       formData.append('cardName', this.card.name)
       formData.append('cardID', this.card.id)
