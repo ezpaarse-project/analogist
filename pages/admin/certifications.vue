@@ -362,6 +362,10 @@ export default {
         {
           order: 'refused',
           text: this.$t('certifications.refused')
+        },
+        {
+          order: 'revoked',
+          text: this.$t('certifications.revoked')
         }
       ]
     },

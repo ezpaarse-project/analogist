@@ -41,7 +41,13 @@ export default {
       return this.$store.state.user
     },
     humanCertified () {
-      return this.card.platform ? this.card.platform.humanCertifications.length > 0 : false
+      if (this.card.platform && this.card.platform.humanCertifications.length > 0) {
+        if (this.card.platform.humanCertifications[0].form.year) {
+          return true
+        }
+        return false
+      }
+      return false
     },
     publisherCertified () {
       return this.card.platform ? this.card.platform.publisherCertifications.length > 0 : false

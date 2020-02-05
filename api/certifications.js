@@ -48,6 +48,19 @@ router.post('/:cid', upload.single('attachment'), (req, res, next) => {
     form.attachment = attachment.filename
   }
 
+  if (form.object === 'delete') {
+    mongo.get('certifications').updateMany({
+      cardID: data.cardID
+    }, {
+      $set: {
+        status: 'revoked',
+        lastModified: new Date()
+      }
+    }, (err) => {
+      if (err) return res.status(500).json({ status: 'error' })
+    })
+  }
+
   return mongo.get('certifications').insertOne(
     {
       cardID: data.cardID,
@@ -59,7 +72,8 @@ router.post('/:cid', upload.single('attachment'), (req, res, next) => {
       certifications: JSON.parse(data.certifications),
       form,
       status: req.session.profile.role === 'admin' ? 'accepted' : 'waiting',
-      createdAt: new Date()
+      createdAt: new Date(),
+      lastModified: new Date()
     },
     (err) => {
       if (err) return res.status(500).json({ status: 'error' })

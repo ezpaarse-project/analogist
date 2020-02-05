@@ -8,7 +8,7 @@
         <v-menu open-on-hover offset-y>
           <template v-slot:activator="{ on }">
             <v-btn small v-on="on" class="dateLbl white--text" color="#F4B48B" depressed :disabled="!user || !canCertify">
-              <span v-if="humanCertified">{{ year }}</span>
+              <span v-if="humanCertified">{{ year || '-' }}</span>
               <span v-else>-</span>
             </v-btn>
           </template>
@@ -41,7 +41,13 @@ export default {
       return this.$store.state.user
     },
     humanCertified () {
-      return this.card.platform ? this.card.platform.humanCertifications.length > 0 : false
+      if (this.card.platform && this.card.platform.humanCertifications.length > 0) {
+        if (this.card.platform.humanCertifications[0].form.year) {
+          return true
+        }
+        return false
+      }
+      return false
     },
     year () {
       return this.humanCertified ? this.card.platform.humanCertifications[0].form.year : null

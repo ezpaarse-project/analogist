@@ -1,6 +1,6 @@
 <template>
   <section>
-    <v-btn text router exact :to="{ path: '/' }" class="mb-2 body-2">
+    <v-btn text router exact :to="{ path: '/platforms' }" class="mb-2 body-2">
       <v-icon left>mdi-arrow-left</v-icon>{{ $t('ui.back') }}
     </v-btn>
 

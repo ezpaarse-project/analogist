@@ -225,6 +225,7 @@
     "waiting": "Waiting",
     "accepted" : "Accepted",
     "refused" : "Refused",
+    "revoked": "Revoked",
     "downloadCertifiedList": "Download the list of certified platforms",
     "certifiedPlatforms": "Certified platformes",
     "form": {

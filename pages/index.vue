@@ -92,7 +92,7 @@ export default {
       return this.$store.state.trelloBoardMembers.length
     },
     badges () {
-      return this.$store.state.badges.metrics.reduce((a, b) => (a + b.issues.app), 0)
+      return this.$store.state.badges.metrics ? this.$store.state.badges.metrics.reduce((a, b) => (a + b.issues.app), 0) : 0
     }
   }
 }

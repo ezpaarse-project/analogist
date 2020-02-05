@@ -224,6 +224,7 @@
     "waiting": "En attente",
     "accepted" : "Acceptée",
     "refused" : "Refusée",
+    "revoked": "Révoquée",
     "downloadCertifiedList": "Télécharger la liste des plateformes certifiées",
     "certifiedPlatforms": "Plateformes certifiées",
     "form": {
