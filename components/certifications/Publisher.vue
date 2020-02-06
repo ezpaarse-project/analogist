@@ -50,7 +50,13 @@ export default {
       return false
     },
     publisherCertified () {
-      return this.card.platform ? this.card.platform.publisherCertifications.length > 0 : false
+      if (this.card.platform && this.card.platform.publisherCertifications.length > 0) {
+        if (this.card.platform.publisherCertifications[0].form.year) {
+          return true
+        }
+        return false
+      }
+      return false
     },
     year () {
       return this.publisherCertified ? this.card.platform.publisherCertifications[0].form.year : null

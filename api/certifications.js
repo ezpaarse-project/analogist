@@ -48,9 +48,12 @@ router.post('/:cid', upload.single('attachment'), (req, res, next) => {
     form.attachment = attachment.filename
   }
 
+  const certifications = JSON.parse(data.certifications)
+
   if (form.object === 'delete') {
     mongo.get('certifications').updateMany({
-      cardID: data.cardID
+      cardID: data.cardID,
+      certifications
     }, {
       $set: {
         status: 'revoked',
@@ -69,7 +72,7 @@ router.post('/:cid', upload.single('attachment'), (req, res, next) => {
         fullName: req.session.profile.fullName,
         email: req.session.profile.email
       },
-      certifications: JSON.parse(data.certifications),
+      certifications,
       form,
       status: req.session.profile.role === 'admin' ? 'accepted' : 'waiting',
       createdAt: new Date(),

@@ -26,11 +26,17 @@ router.get('/fields.json', (req, res, next) => {
 })
 
 const getHumanCertifications = (cardID) => {
-  return mongo.get('certifications').find({ cardID, 'certifications.humanCertified': true, status: 'accepted' }).sort({ 'form.year': -1 }).toArray()
+  return mongo.get('certifications')
+    .find({ cardID, 'certifications.humanCertified': true, status: 'accepted' })
+    .sort({ 'form.year': -1 })
+    .toArray()
 }
 
 const getPublisherCertifications = (cardID) => {
-  return mongo.get('certifications').find({ cardID, 'certifications.publisherCertified': true, status: 'accepted' }).sort({ 'form.year': -1 }).toArray()
+  return mongo.get('certifications')
+    .find({ cardID, 'certifications.publisherCertified': true, status: 'accepted' })
+    .sort({ 'form.year': -1 })
+    .toArray()
 }
 
 /* GET all platforms. */
@@ -40,15 +46,11 @@ router.get('/', (req, res, next) => {
 
     for (let i = 0; i < docs.length; i += 1) {
       try {
-        const humanCertifications = await getHumanCertifications(docs[i].cardID).then(res => res)
-        if (humanCertifications) {
-          docs[i].humanCertifications = humanCertifications
-        }
+        docs[i].humanCertifications = await getHumanCertifications(docs[i].cardID).then(res => res)
+      } catch (e) { }
 
-        const publisherCertifications = await getPublisherCertifications(docs[i].cardID).then(res => res)
-        if (publisherCertifications) {
-          docs[i].publisherCertifications = publisherCertifications
-        }
+      try {
+        docs[i].publisherCertifications = await getPublisherCertifications(docs[i].cardID).then(res => res)
       } catch (e) { }
     }
 
