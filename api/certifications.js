@@ -70,7 +70,7 @@ router.post('/:cid', upload.single('attachment'), (req, res, next) => {
       if (form.object === 'delete') {
         try {
           await mongo.get('certifications').updateMany({
-            _id: { $ne: ObjectId.isValid(doc.insertedId) },
+            _id: { $ne: doc.insertedId },
             cardID: data.cardID,
             certifications
           }, {
