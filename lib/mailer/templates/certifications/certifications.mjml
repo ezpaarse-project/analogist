@@ -10,7 +10,7 @@
   <mj-column>
     <mj-text>
       <p>Bonjour,</p>
-      <p>Une mise à jour des certifications de la plateforme <strong>{{ cardName }}</strong> sont en attente de votre validation.</p>
+      <p>Une mise à jour des certifications de la plateforme <strong>{{ cardName }}</strong> est en attente de votre validation.</p>
     </mj-text>
 
     <mj-button background-color="#FF1744" color="white" href="http://{{ host }}/platforms/{{ cardID }}" target="_blank">
