@@ -50,20 +50,6 @@ router.post('/:cid', upload.single('attachment'), (req, res, next) => {
 
   const certifications = JSON.parse(data.certifications)
 
-  if (form.object === 'delete') {
-    mongo.get('certifications').updateMany({
-      cardID: data.cardID,
-      certifications
-    }, {
-      $set: {
-        status: 'revoked',
-        lastModified: new Date()
-      }
-    }, (err) => {
-      if (err) return res.status(500).json({ status: 'error' })
-    })
-  }
-
   return mongo.get('certifications').insertOne(
     {
       cardID: data.cardID,
@@ -78,8 +64,25 @@ router.post('/:cid', upload.single('attachment'), (req, res, next) => {
       createdAt: new Date(),
       lastModified: new Date()
     },
-    (err) => {
+    async (err, doc) => {
       if (err) return res.status(500).json({ status: 'error' })
+
+      if (form.object === 'delete') {
+        try {
+          await mongo.get('certifications').updateMany({
+            _id: { $ne: ObjectId.isValid(doc.insertedId) },
+            cardID: data.cardID,
+            certifications
+          }, {
+            $set: {
+              status: 'revoked',
+              lastModified: new Date()
+            }
+          })
+        } catch (error) {
+          return res.status(500).json({ status: 'error' })
+        }
+      }
 
       if (req.session.profile.role !== 'admin') {
         sendMail({
