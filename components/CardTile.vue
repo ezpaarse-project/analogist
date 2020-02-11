@@ -56,7 +56,7 @@ export default {
     },
     nbAnalyses () {
       try {
-        return this.card.platform.analyses.length
+        return this.platform.analyses.length
       } catch (e) {
         return 0
       }
@@ -67,18 +67,27 @@ export default {
     list () {
       return this.$store.state.trelloLists.find(l => this.card.idList === l.id)
     },
+    platform () {
+      return this.platform
+    },
+    humanCertifications () {
+      return this.platform.humanCertifications
+    },
     humanCertified () {
-      if (this.card.platform && this.card.platform.humanCertifications.length > 0) {
-        if (this.card.platform.humanCertifications[0].form.year) {
+      if (this.platform && this.humanCertifications.length > 0) {
+        if (this.humanCertifications[0].form.year) {
           return true
         }
         return false
       }
       return false
     },
+    publisherCertifications () {
+      return this.platform.publisherCertifications
+    },
     publisherCertified () {
-      if (this.card.platform && this.card.platform.publisherCertifications.length > 0) {
-        if (this.card.platform.publisherCertifications[0].form.year) {
+      if (this.platform && this.publisherCertifications.length > 0) {
+        if (this.publisherCertifications[0].form.year) {
           return true
         }
         return false
