@@ -41,7 +41,7 @@ export default {
       return this.$store.state.user
     },
     platform () {
-      return this.card.platform
+      return this.card && this.card.platform
     },
     humanCertifications () {
       return this.platform.humanCertifications
