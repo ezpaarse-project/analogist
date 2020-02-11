@@ -46,12 +46,24 @@ router.get('/', (req, res, next) => {
 
     for (let i = 0; i < docs.length; i += 1) {
       try {
-        docs[i].humanCertifications = await getHumanCertifications(docs[i].cardID).then(res => res)
-      } catch (e) { }
+        const humanCertifications = await getHumanCertifications(docs[i].cardID)
+        if (humanCertifications) {
+          docs[i].humanCertifications = humanCertifications
+        }
+      } catch (e) {
+        docs[i].humanCertifications = []
+        return res.status(500).json({ error: 'errorCertificationH' })
+      }
 
       try {
-        docs[i].publisherCertifications = await getPublisherCertifications(docs[i].cardID).then(res => res)
-      } catch (e) { }
+        const publisherCertifications = await getPublisherCertifications(docs[i].cardID)
+        if (publisherCertifications) {
+          docs[i].publisherCertifications = publisherCertifications
+        }
+      } catch (e) {
+        docs[i].publisherCertifications = []
+        return res.status(500).json({ error: 'errorCertificationP' })
+      }
     }
 
     res.status(200).json(docs || [])
@@ -65,16 +77,24 @@ router.get('/:cid', (req, res, next) => {
     if (!doc) { return res.status(404).end() }
 
     try {
-      const humanCertifications = await getHumanCertifications(doc.cardID).then(res => res)
+      const humanCertifications = await getHumanCertifications(doc.cardID)
       if (humanCertifications) {
         doc.humanCertifications = humanCertifications
       }
+    } catch (e) {
+      doc.humanCertifications = []
+      return res.status(500).json({ error: 'errorCertificationH' })
+    }
 
-      const publisherCertifications = await getPublisherCertifications(doc.cardID).then(res => res)
+    try {
+      const publisherCertifications = await getPublisherCertifications(doc.cardID)
       if (publisherCertifications) {
         doc.publisherCertifications = publisherCertifications
       }
-    } catch (e) { }
+    } catch (e) {
+      doc.publisherCertifications = []
+      return res.status(500).json({ error: 'errorCertificationP' })
+    }
 
     res.status(200).json(doc)
   })

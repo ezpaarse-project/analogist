@@ -5,7 +5,7 @@
 
     <v-content>
       <v-container fluid>
-        <nuxt class="pa-3" />
+        <nuxt class="px-3" />
         <Snackbar/>
       </v-container>
     </v-content>

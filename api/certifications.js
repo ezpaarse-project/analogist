@@ -105,7 +105,7 @@ router.post('/:cid', upload.single('attachment'), (req, res, next) => {
 router.get('/download/:attachment', (req, res, next) => {
   const { attachment } = req.params
 
-  if (!attachment) return res.status(404)
+  if (!attachment) return res.status(404).end()
 
   return fs.createReadStream(path.resolve(__dirname, '..', 'uploads', attachment)).pipe(res)
 })
@@ -162,7 +162,7 @@ router.post('/:id/refuse', (req, res, next) => {
       }
     },
     { upsert: true },
-    async (err, doc) => {
+    (err, doc) => {
       if (err) {
         return res.status(500).json({ status: 'error' })
       }

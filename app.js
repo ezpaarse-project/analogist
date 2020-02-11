@@ -21,9 +21,6 @@ app.use(session({
   cookie: { maxAge: config.cookie.maxAge },
   unset: 'destroy',
   store: new MongoStore({
-    host: config.mongo.host,
-    port: config.mongo.port,
-    db: config.mongo.db,
     url: `mongodb://${config.mongo.host}:${config.mongo.port}/${config.mongo.db}`
   })
 }))

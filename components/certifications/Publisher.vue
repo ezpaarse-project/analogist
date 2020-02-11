@@ -14,7 +14,7 @@
           </template>
           <v-list v-if="user && humanCertified">
             <v-list-item v-for="(item, index) in years" :key="index">
-              <v-list-item-title class="pointer" @click="openDialog(item);">{{ item || '-' }}</v-list-item-title>
+              <v-list-item-title class="pointer text-center" @click="openDialog(item);">{{ item || '-' }}</v-list-item-title>
             </v-list-item>
           </v-list>
         </v-menu>
@@ -40,18 +40,27 @@ export default {
     user () {
       return this.$store.state.user
     },
+    platform () {
+      return this.card.platform
+    },
+    humanCertifications () {
+      return this.platform.humanCertifications
+    },
     humanCertified () {
-      if (this.card.platform && this.card.platform.humanCertifications.length > 0) {
-        if (this.card.platform.humanCertifications[0].form.year) {
+      if (this.platform && this.humanCertifications.length > 0) {
+        if (this.humanCertifications[0].form.year) {
           return true
         }
         return false
       }
       return false
     },
+    publisherCertifications () {
+      return this.platform.publisherCertifications
+    },
     publisherCertified () {
-      if (this.card.platform && this.card.platform.publisherCertifications.length > 0) {
-        if (this.card.platform.publisherCertifications[0].form.year) {
+      if (this.platform && this.publisherCertifications.length > 0) {
+        if (this.publisherCertifications[0].form.year) {
           return true
         }
         return false
@@ -59,18 +68,18 @@ export default {
       return false
     },
     year () {
-      return this.publisherCertified ? this.card.platform.publisherCertifications[0].form.year : null
+      return this.publisherCertified ? this.publisherCertifications[0].form.year : null
     },
     canCertify () {
       let isUpdated = false
       const list = this.$store.state.trelloLists.find(l => this.card.idList === l.id)
       if (list) {
         let match
-        if ((match = /^([0-9]{1,2})(.*)$/i.exec(list.name)) !== null) {
+        if ((match = /^([0-9]+)/i.exec(list.name)) !== null) {
           isUpdated = Number.parseInt(match[1], 10) === 10
         }
       }
-      return this.card.platform && this.card.platform.analyses && this.card.platform.analyses.length > 0 && isUpdated
+      return this.platform && this.platform.analyses && this.platform.analyses.length > 0 && isUpdated
     }
   },
   methods: {

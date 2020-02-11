@@ -175,14 +175,14 @@
 
         <v-card-text>
           <span v-text="$t('card.archiveDesc')" v-if="!card.closed"></span>
-          <span v-text="$t('card.unarchiveDesc')" v-if="card.closed"></span>
+          <span v-text="$t('card.unarchiveDesc')" v-else></span>
         </v-card-text>
 
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="error" :loading="deletingCard" @click.native="archivePlatform">
             <span v-text="$t('card.archive')" v-if="!card.closed"></span>
-            <span v-text="$t('card.unarchive')" v-if="card.closed"></span>
+            <span v-text="$t('card.unarchive')" v-else></span>
           </v-btn>
           <v-btn color="secondary" @click.native="deleteDialog = false">{{ $t('ui.cancel') }}</v-btn>
         </v-card-actions>
