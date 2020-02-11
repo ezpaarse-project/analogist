@@ -1,3 +1,5 @@
+const colors = require('vuetify/es5/util/colors').default
+
 module.exports = {
   /*
   ** Headers of the page
@@ -23,32 +25,67 @@ module.exports = {
   router: {
     middleware: ['ssr-cookie']
   },
-  plugins: [
-    { src: '~/plugins/ezlogger.js', ssr: false },
-    { src: '~/plugins/storeInit.js', ssr: false },
-    '~/plugins/vuetify.js',
-    '~/plugins/i18n.js',
-    '~/plugins/socket.js'
-  ],
   /*
   ** Global CSS
   */
   css: [
-    '~/assets/css/main.css',
-    'mdi/css/materialdesignicons.min.css',
-    'vuetify/dist/vuetify.min.css'
+    '~/assets/css/main.css'
   ],
   /*
-  ** Add global packages
+  ** Plugins to load before mounting the App
+  */
+  plugins: [
+    { src: '~/plugins/axios.js', ssr: false },
+    { src: '~/plugins/ezlogger.js', ssr: false },
+    { src: '~/plugins/storeInit.js', ssr: false },
+    { src: '~/plugins/i18n.js', ssr: false },
+    { src: '~/plugins/socket.js', ssr: false }
+  ],
+  /*
+  ** Nuxt.js dev-modules
+  */
+  buildModules: [
+    '@nuxtjs/vuetify'
+  ],
+  /*
+  ** Nuxt.js modules
+  */
+  modules: [
+    '@nuxtjs/axios',
+    '@nuxtjs/auth'
+  ],
+  /*
+  ** Axios module configuration
+  ** See https://axios.nuxtjs.org/options
+  */
+  axios: {
+    proxy: true
+  },
+  /*
+  ** Auth configuration
+  ** See https://auth.nuxtjs.org/
+  */
+  auth: {},
+  vuetify: {
+    theme: {
+      themes: {
+        dark: {
+          primary: colors.red.accent3
+        },
+        light: {
+          primary: colors.red.accent3
+        }
+      }
+    }
+  },
+  /*
+  ** Build configuration
   */
   build: {
-    vendor: [
-      'axios',
-      'vuetify',
-      'vue-i18n',
-      'vuedraggable',
-      'moment',
-      'file-saver'
-    ]
+    /*
+    ** You can extend webpack config here
+    */
+    extend (config, ctx) {
+    }
   }
 }

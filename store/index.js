@@ -5,13 +5,15 @@ import ezlogger from './ezlogger'
 import badges from './badges'
 import snacks from './snacks'
 import socket from './socket'
+import certifications from './certifications'
 
 const store = () => new Vuex.Store({
   modules: {
     ezlogger,
     badges,
     snacks,
-    socket
+    socket,
+    certifications
   },
   state: {
     user: null,
@@ -22,14 +24,17 @@ const store = () => new Vuex.Store({
     analysis: null,
     cards: [],
     trelloLists: [],
+    displayAllCards: false,
     searchText: '',
     searchLists: [],
+    searchCertifications: [],
+    searchDateOrder: 'desc',
+    searchStatusOrder: 'waiting',
     searchPage: 1,
     drawer: true,
     lastVisitedAnalysis: null,
     trelloBoardMembers: [],
-    lastVisitedPlatform: null,
-    dark: false
+    lastVisitedPlatform: null
   },
   actions: {
     FETCH_PROFILE ({ commit }) {
@@ -76,6 +81,9 @@ const store = () => new Vuex.Store({
     ARCHIVE_CARD ({ commit }, cardID) {
       return api.deletePlatform(cardID)
     },
+    UNARCHIVE_CARD ({ commit }, cardID) {
+      return api.addPlatform(cardID)
+    },
     SAVE_ANALYSIS ({ commit }, { cardID, analysis }) {
       if (analysis.id) {
         return api.updateAnalysis(cardID, analysis)
@@ -103,6 +111,15 @@ const store = () => new Vuex.Store({
     UPDATE_SEARCH_LISTS ({ commit }, value) {
       return commit('SET_SEARCH_LISTS', value)
     },
+    UPDATE_SEARCH_CERTIFICATIONS ({ commit }, value) {
+      return commit('SET_SEARCH_CERTIFICATIONS', value)
+    },
+    UPDATE_SEARCH_DATE_ORDER ({ commit }, value) {
+      return commit('SET_SEARCH_DATE_ORDER', value)
+    },
+    UPDATE_SEARCH_STATUS_ORDER ({ commit }, value) {
+      return commit('SET_SEARCH_STATUS_ORDER', value)
+    },
     SET_DRAWER ({ commit }, value) {
       commit('SET_DRAWER', value)
     },
@@ -118,8 +135,11 @@ const store = () => new Vuex.Store({
     SET_VISITED_PLATFORM ({ commit }, value) {
       commit('SET_VISITED_PLATFORM', value)
     },
-    SET_DARK ({ commit }, value) {
-      commit('SET_DARK', value)
+    BECOME_MEMBER () {
+      return api.becomeMember()
+    },
+    DISPLAY_ALL_CARDS ({ commit }, value) {
+      commit('DISPLAY_ALL_CARDS', value)
     }
   },
   mutations: {
@@ -159,6 +179,15 @@ const store = () => new Vuex.Store({
     SET_SEARCH_LISTS (state, searchLists) {
       Vue.set(state, 'searchLists', searchLists)
     },
+    SET_SEARCH_CERTIFICATIONS (state, searchCertifications) {
+      Vue.set(state, 'searchCertifications', searchCertifications)
+    },
+    SET_SEARCH_DATE_ORDER (state, searchDateOrder) {
+      Vue.set(state, 'searchDateOrder', searchDateOrder)
+    },
+    SET_SEARCH_STATUS_ORDER (state, searchStatusOrder) {
+      Vue.set(state, 'searchStatusOrder', searchStatusOrder)
+    },
     REMOVE_ANALYSIS (state, analysisID) {
       Vue.set(state, 'analyses', state.analyses.filter(a => a.id !== analysisID))
     },
@@ -171,8 +200,8 @@ const store = () => new Vuex.Store({
     SET_VISITED_PLATFORM (state, cardID) {
       Vue.set(state, 'lastVisitedPlatform', cardID)
     },
-    SET_DARK (state, value) {
-      Vue.set(state, 'dark', value)
+    DISPLAY_ALL_CARDS (state, value) {
+      Vue.set(state, 'displayAllCards', value)
     }
   }
 })

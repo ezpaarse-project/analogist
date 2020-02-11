@@ -1,0 +1,17 @@
+[AnalogIST] Acceptation de la certification ({{ certification }} - {{ year }}) pour la plateforme : {{ cardName }}
+
+Bonjour,
+Votre demande de certification ({{ certification }} - {{ year }}) pour la plateforme {{ cardName }} vient d'être validée.
+
+Cordialement,
+L'équipe ezMESURE
+
+-----------------------------
+
+[AnalogIST] Acceptance of certification ({{ certification }} - {{ year }} for the platform: {{ cardName }}
+
+Hello,
+Your request for certification ({{ certification }} - {{ year }}) for the {{ cardName }} platform has just been validated.
+
+Yours sincerely,
+The ezMESURE team

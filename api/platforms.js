@@ -25,10 +25,46 @@ router.get('/fields.json', (req, res, next) => {
     .on('error', next)
 })
 
+const getHumanCertifications = (cardID) => {
+  return mongo.get('certifications')
+    .find({ cardID, 'certifications.humanCertified': true, status: 'accepted' })
+    .sort({ 'form.year': -1 })
+    .toArray()
+}
+
+const getPublisherCertifications = (cardID) => {
+  return mongo.get('certifications')
+    .find({ cardID, 'certifications.publisherCertified': true, status: 'accepted' })
+    .sort({ 'form.year': -1 })
+    .toArray()
+}
+
 /* GET all platforms. */
 router.get('/', (req, res, next) => {
-  mongo.get('platforms').find().toArray((err, docs) => {
+  mongo.get('platforms').find().toArray(async (err, docs) => {
     if (err) { return next(err) }
+
+    for (let i = 0; i < docs.length; i += 1) {
+      try {
+        const humanCertifications = await getHumanCertifications(docs[i].cardID)
+        if (humanCertifications) {
+          docs[i].humanCertifications = humanCertifications
+        }
+      } catch (e) {
+        docs[i].humanCertifications = []
+        return res.status(500).json({ error: 'errorCertificationH' })
+      }
+
+      try {
+        const publisherCertifications = await getPublisherCertifications(docs[i].cardID)
+        if (publisherCertifications) {
+          docs[i].publisherCertifications = publisherCertifications
+        }
+      } catch (e) {
+        docs[i].publisherCertifications = []
+        return res.status(500).json({ error: 'errorCertificationP' })
+      }
+    }
 
     res.status(200).json(docs || [])
   })
@@ -36,9 +72,29 @@ router.get('/', (req, res, next) => {
 
 /* GET a platform. */
 router.get('/:cid', (req, res, next) => {
-  mongo.get('platforms').findOne({ cardID: req.params.cid }, (err, doc) => {
+  mongo.get('platforms').findOne({ cardID: req.params.cid }, async (err, doc) => {
     if (err) { return next(err) }
     if (!doc) { return res.status(404).end() }
+
+    try {
+      const humanCertifications = await getHumanCertifications(doc.cardID)
+      if (humanCertifications) {
+        doc.humanCertifications = humanCertifications
+      }
+    } catch (e) {
+      doc.humanCertifications = []
+      return res.status(500).json({ error: 'errorCertificationH' })
+    }
+
+    try {
+      const publisherCertifications = await getPublisherCertifications(doc.cardID)
+      if (publisherCertifications) {
+        doc.publisherCertifications = publisherCertifications
+      }
+    } catch (e) {
+      doc.publisherCertifications = []
+      return res.status(500).json({ error: 'errorCertificationP' })
+    }
 
     res.status(200).json(doc)
   })
@@ -65,6 +121,13 @@ router.post('/', (req, res, next) => {
 /* DELETE a platform */
 router.delete('/:cid', (req, res, next) => {
   trello.closeCard(req.params.cid, req.session.oauth.token)
+    .on('response', response => response.pipe(res))
+    .on('error', next)
+})
+
+/* PATCH a platform */
+router.patch('/:cid', (req, res, next) => {
+  trello.uncloseCard(req.params.cid, req.session.oauth.token)
     .on('response', response => response.pipe(res))
     .on('error', next)
 })

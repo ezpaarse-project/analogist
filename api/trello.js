@@ -64,7 +64,13 @@ router.get('/lists', (req, res, next) => {
 })
 
 router.get('/members', (req, res, next) => {
-  trello.getBoardMemberships(req.session.oauth.token)
+  trello.getBoardMemberships()
+    .on('response', response => response.pipe(res))
+    .on('error', next)
+})
+
+router.get('/member/:id', (req, res, next) => {
+  trello.getMember(req.params.id)
     .on('response', response => response.pipe(res))
     .on('error', next)
 })

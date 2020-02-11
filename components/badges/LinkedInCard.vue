@@ -48,7 +48,7 @@
     <v-card-actions>
       <v-spacer></v-spacer>
       
-      <v-btn color="red" flat @click="closeLinkedInCard">{{ $t('ezLogger.close') }}</v-btn>
+      <v-btn color="red" text @click="closeLinkedInCard">{{ $t('ezLogger.close') }}</v-btn>
     </v-card-actions>
   </v-card>
 </template>

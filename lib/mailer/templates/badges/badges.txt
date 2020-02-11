@@ -1,0 +1,6 @@
+Émission d'un badge pour {{ fullName }}
+
+Le badge {{ eventName }} à été attribué à {{ fullName }} le {{ issueTime }} via {{ issuer }}.
+
+Cordialement,
+L'équipe ezMESURE.

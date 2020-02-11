@@ -1,0 +1,31 @@
+{% extends "layout.mjml" %}
+
+{% block title %}
+<mj-title>Demande AnalogIST ({{ fullName }})</mj-title>
+{% endblock %}
+
+{% block content %}
+
+<mj-section>
+  <mj-column>
+    <mj-text>
+      <p>Bonjour,</p>
+      <p>
+        <a href="https://trello.com/{{ username }}" target="_blank">
+          <strong>{{ fullName }}</strong>
+        </a>
+         souhaite devenir membre du tableau de bord 
+        <a href="https://trello.com/b/{{ boardId }}" target="_blank">
+          <strong>{{ boardName }}</strong>
+        </a>
+      </p>
+    </mj-text>
+
+    <mj-text>
+      <p>Cordialement,</p>
+      <p>L'équipe ezMESURE.</p>
+    </mj-text>
+  </mj-column>
+</mj-section>
+
+{% endblock %}

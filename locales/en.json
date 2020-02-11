@@ -10,6 +10,7 @@
     "close": "Close"
   },
   "drawer": {
+    "home": "Home",
     "platforms": "Platforms",
     "badges": "My badges",
     "trelloBoard": "Trello board",
@@ -17,7 +18,12 @@
     "logout": "Logout",
     "notConnected": "Not connected",
     "login": "Login",
-    "language": "Language"
+    "language": "Language",
+    "newUserButton": "New user ?",
+    "newUser": "New AnalogIST user ?",
+    "newUserText": "In order to contribute to platform analysis for AnalogIST, you must be a member of the <a href=\"https://trello.com/b/wEaLnz8d\" target=\"_blank\">tableau trello</a> dedicated to platform management.",
+    "becomeMember": "Become a member",
+    "becomeMemberSuccess": "Your request will be processed as soon as possible"
   },
   "ezLogger": {
     "title": "ezPAARSE Logger",
@@ -82,8 +88,11 @@
     "github": "Github",
     "homepage": "Homepage",
     "trello": "Trello card",
+    "archived": "Archived platform",
     "archive": "Archive the platform",
-    "archiveDesc": "The platform will be archived and the analyses won't be visible anymore. To undo this action, restore the associated card from the Trello board.",
+    "unarchive": "Désarchiver la plateforme",
+    "archiveDesc": "The platform will be archived and the analyses won't be visible anymore.",
+    "unarchiveDesc": "The platform will be unarchived and the analyses will be visible again.",
     "contributors": "Contributors",
     "humanCertification": "Human certification",
     "publisherCertification": "Publisher certification",
@@ -93,7 +102,8 @@
     "analysesReorderFailed": "Analyses reordering failed",
     "listUpdateFailed": "Status update failed",
     "analysisCreationFailed": "Analysis creation failed",
-    "archivalFailed": "Card archival failed"
+    "archivalFailed": "Card archival failed",
+    "unarchivalFailed": "The de-archiving of the card has failed"
   },
   "analyses": {
     "updated": "Updated",
@@ -120,10 +130,13 @@
     "testWithEzlogger": "Test with ezLogger"
   },
   "cards": {
+    "home": "Home",
     "search": "Search",
     "name": "Name",
     "status": "Status",
-    "platforms": "Platforms"
+    "platforms": "Platforms",
+    "certifications": "Certification",
+    "displayAllPlatforms": "Display archived platforms"
   },
   "creation": {
     "newPlatform": "New platform",
@@ -180,8 +193,72 @@
     "list": "Badges list",
     "noMetrics": "So it is not possible to load the badges list!"
   },
+  "home": {
+    "identifiedPlatforms": "identified platforms",
+    "analyses": "analyses",
+    "contributors": "contributors",
+    "badges": "badges",
+    "parsers": "parsers",
+    "whatIsEzPaarse": "<a href=\"https://www.ezpaarse.org/\" target=\"_blank\">ezPAARSE</a> now comes with a list of <a href=\"https://github.com/ezpaarse-project/ezpaarse-platforms\" target=\"_blank\"><span class=\"font-weight-bold\">{parsers} parseurs</span></a>, which are the result of analytical work provided by the community, and which provide user institutions with good coverage of their subscriptions to electronic resources.",
+    "whatIsAnalogist": "The community platform, called <span class=\"font-weight-bold\">AnalogIST</span>, is the place where different types of URLs are collected, analyzed semi-automatically and commented so that the corresponding parser can be accurate and complete. For publishers or providers who are not yet recognized by <a href=\"https://www.ezpaarse.org/\" target=\"_blank\">ezPAARSE</a> or who simply need an update, it is easy to come and contribute to a platform analysis: just open a Trello account and follow the guide!",
+    "goodAnalyses": "Once the analysis is judged sufficient, or complete, a computer specialist (usually from the team <a href=\"https://www.ezpaarse.org/\" target=\"_blank\">ezPAARSE</a>/<a href=\"https://ezmesure.couperin.org/\" target=\"_blank\">ezMESURE</a> takes over to implement the corresponding parser. This parser will be added to the existing parsers in the dedicated repository <a href=\"https://github.com/ezpaarse-project/ezpaarse-platforms\" target=\"_blank\">github</a> and can be retrieved by all instances of <a href=\"https://www.ezpaarse.org/\" target=\"_blank\">ezPAARSE</a>, through a simple update mechanism embedded in the software administration area. This mode of operation ensures that each new parser, as well as each software and resource update, benefits all existing installations of <a href=\"https://www.ezpaarse.org/\" target=\"_blank\">ezPAARSE</a> : work is required only in one place and only once."
+
+  },
   "theme": {
     "dark": "Dark theme",
     "light": "Light theme"
-  }
+  },
+  "certifications": {
+    "noCertifications": "There are no requests for certification.",
+    "notCertified": "This platform is not yet certified",
+    "publisherCertificationsError": "H certification is required to be able to certify P the platform",
+    "notification": "Your request has just been sent to us, it will be processed as soon as possible",
+    "openedOn": "Opened on {date} by {user} - {establishment}",
+    "human": "Human",
+    "humanCert": "Human certification",
+    "publisher": "Publisher",
+    "publisherCert": "Publisher certification",
+    "desc": "Descending",
+    "asc": "Ascending",
+    "close": "Close",
+    "send": "Send",
+    "waiting": "Waiting",
+    "accepted" : "Accepted",
+    "refused" : "Refused",
+    "revoked": "Revoked",
+    "downloadCertifiedList": "Download the list of certified platforms",
+    "certifiedPlatforms": "Certified platformes",
+    "form": {
+      "objects": {
+        "addOrModify": "Add / modify certification",
+        "delete": "Delete certification",
+        "approved": "Approved certification"
+      },
+      "object": "Object *",
+      "establishment": "Establishment *",
+      "comment": "Comment *",
+      "totalEzpaarse": "Total JR1 report ezPAARSE *",
+      "totalEditor": "Total JR1 report Editor *",
+      "attachment": "Attachment",
+      "attachmentSize": "Maximum size 2 Mo",
+      "requiredFields": "(*) required fields",
+      "year": "Year",
+      "user": "User",
+      "reject": "Reject",
+      "rejectExplanations": "Explanations for refusal",
+      "validate": "Validate",
+      "difference": "Difference (%)"
+    },
+    "formError": {
+      "object": "An object is required",
+      "establishment": "Establishment name is required",
+      "comment": "Comment is required.",
+      "totalValue": "The total is required.",
+      "date": "One year of certification is required",
+      "attachment": "attachment size should be less than 2 MB!"
+    }
+  },
+  "others": "others",
+  "errorGeneric": "An unexpected error has occurred",
+  "mustBeConnected": "You must be logged in to access the information"
 }

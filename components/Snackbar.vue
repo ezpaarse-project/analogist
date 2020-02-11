@@ -7,7 +7,7 @@
     v-model="visible"
   >
     {{ $t(currentMessage.text) }}
-    <v-btn dark flat @click.native="visible = false">{{ $t('ui.close') }}</v-btn>
+    <v-btn dark text @click.native="visible = false">{{ $t('ui.close') }}</v-btn>
   </v-snackbar>
 </template>
 

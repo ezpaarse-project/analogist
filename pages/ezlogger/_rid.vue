@@ -1,6 +1,8 @@
 <template>
   <section>
-    <v-btn flat router exact :to="{ name: 'ezlogger' }"><v-icon left>mdi-arrow-left</v-icon>{{ $t('ui.back') }}</v-btn>
+    <v-btn text router exact :to="{ name: 'ezlogger' }" class="mb-2 body-2">
+      <v-icon left>mdi-arrow-left</v-icon>{{ $t('ui.back') }}
+    </v-btn>
 
     <v-card>
       <v-toolbar class="secondary" dense dark card>
@@ -77,8 +79,8 @@
         hide-actions
       >
         <template slot="items" slot-scope="props">
-          <th class="text-xs-left">{{ props.item.name }}</th>
-          <td class="text-xs-left">{{ props.item.value }}</td>
+          <th class="text-left">{{ props.item.name }}</th>
+          <td class="text-left">{{ props.item.value }}</td>
         </template>
 
         <template slot="no-data">

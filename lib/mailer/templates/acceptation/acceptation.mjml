@@ -1,0 +1,47 @@
+{% extends "layout.mjml" %}
+
+{% block title %}
+<mj-title>[AnalogIST] Acceptation de la certification ({{ certification }} - {{ year }}) pour la plateforme : {{ cardName }}</mj-title>
+{% endblock %}
+
+{% block content %}
+
+<mj-section>
+  <mj-column>
+    <mj-text>
+      <p>Bonjour,</p>
+      <p>Votre demande de certification ({{ certification }} - {{ year }}) pour la plateforme <strong>{{ cardName }}</strong> vient d'être validée.</p>
+    </mj-text>
+
+    <mj-button background-color="#FF1744" color="white" href="http://{{ host }}/platforms/{{ cardID }}" target="_blank">
+      Pour accéder a la plateforme, cliquez ici !
+    </mj-button>
+
+    <mj-text>
+      <p>Cordialement,</p>
+      <p>L'équipe ezMESURE.</p>
+    </mj-text>
+  </mj-column>
+</mj-section>
+
+<mj-divider />
+
+<mj-section>
+  <mj-column>
+    <mj-text>
+      <p>Hello,</p>
+      <p>Your request for certification ({{ certification }} - {{ year }}) for the <strong>{{ cardName }}</strong> platform has just been validated.</p>
+    </mj-text>
+
+    <mj-button background-color="#FF1744" color="white" href="http://{{ host }}/platforms/{{ cardID }}" target="_blank">
+      To access the platform, click here!
+    </mj-button>
+
+    <mj-text>
+      <p>Yours sincerely,</p>
+      <p>The ezMESURE team.</p>
+    </mj-text>
+  </mj-column>
+</mj-section>
+
+{% endblock %}

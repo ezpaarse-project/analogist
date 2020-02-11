@@ -1,13 +1,13 @@
 <template>
-  <v-toolbar app dark fixed clipped-left color="primary">
-    <v-toolbar-side-icon @click.stop="setDrawer(!drawer)">
+  <v-app-bar app dark fixed clipped-left color="primary">
+    <v-app-bar-nav-icon @click.stop="setDrawer(!drawer)">
       <v-icon>mdi-menu</v-icon>
-    </v-toolbar-side-icon>
+    </v-app-bar-nav-icon>
     <v-toolbar-title>
-      <img class="analogistLogo" src="~/assets/img/logo-white.svg" /> 
+      <img class="analogistLogo" src="@/static/logo-white.svg" />
       AnalogIST
     </v-toolbar-title>
-  </v-toolbar>
+  </v-app-bar>
 </template>
 
 <script>

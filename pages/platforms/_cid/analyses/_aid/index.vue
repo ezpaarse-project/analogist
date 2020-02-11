@@ -1,36 +1,40 @@
 <template>
   <section>
-    <v-layout row justify-space-between>
-      <v-btn flat router exact :to="{ name: 'platforms-cid', params: { cid: $route.params.cid } }"><v-icon left>mdi-arrow-left</v-icon>{{ $t('ui.back') }}</v-btn>
-    </v-layout>
+    <v-btn text router exact :to="{ name: 'platforms-cid', params: { cid: $route.params.cid } }" class="mb-2 body-2">
+      <v-icon left>mdi-arrow-left</v-icon>{{ $t('ui.back') }}
+    </v-btn>
 
     <v-card>
-      <v-toolbar class="secondary" dense dark card>
-        <v-toolbar-title>
-          {{ card.name }}
-        </v-toolbar-title>
+      <v-toolbar class="secondary" dense dark flat>
+        <v-toolbar-title>{{ card.name }}</v-toolbar-title>
 
         <v-spacer></v-spacer>
 
         <v-tooltip bottom>
-          <v-btn icon slot="activator" v-if="canEdit" :to="{ name: 'platforms-cid-analyses-aid-edit', params: { cid: $route.params.cid, aid: $route.params.aid } }">
-            <v-icon>mdi-pencil</v-icon>
-          </v-btn>
-          <span>{{ $t('ui.edit') }}</span>
+          <template v-slot:activator="{ on }">
+            <v-btn icon v-on="on" v-if="canEdit" :to="{ name: 'platforms-cid-analyses-aid-edit', params: { cid: $route.params.cid, aid: $route.params.aid } }">
+              <v-icon>mdi-pencil</v-icon>
+            </v-btn>
+          </template>
+          <span v-text="$t('ui.edit')"></span>
         </v-tooltip>
 
         <v-tooltip bottom>
-          <v-btn icon slot="activator" @click="exportToEzlogger">
-            <v-icon>mdi-file-find</v-icon>
-          </v-btn>
-          <span>{{ $t('analyses.testWithEzlogger') }}</span>
+          <template v-slot:activator="{ on }">
+            <v-btn icon v-on="on" @click="exportToEzlogger">
+              <v-icon>mdi-file-find</v-icon>
+            </v-btn>
+          </template>
+          <span v-text="$t('analyses.testWithEzlogger')"></span>
         </v-tooltip>
 
         <v-tooltip bottom>
-          <v-btn icon slot="activator" v-if="canEdit" @click="deleteDialog = true">
-            <v-icon>mdi-delete</v-icon>
-          </v-btn>
-          <span>{{ $t('ui.delete') }}</span>
+          <template v-slot:activator="{ on }">
+            <v-btn icon v-on="on" v-if="canEdit" @click="deleteDialog = true">
+              <v-icon>mdi-delete</v-icon>
+            </v-btn>
+          </template>
+          <span v-text="$t('ui.delete')"></span>
         </v-tooltip>
       </v-toolbar>
 
@@ -57,31 +61,37 @@
             {{ $t('analyses.updated')}} {{ updatedAt }} <span v-if="updatedBy">{{ $t('analyses.by') }} {{ updatedBy.fullName }}</span>
           </div>
 
-          <div class="headline" v-text="analysis.title"></div>
-          <p class="break-all" v-text="analysis.url"></p>
+          <div class="black--text headline" v-text="analysis.title"></div>
+          <p class="black--text body-2"><a :href="analysis.url" target="_blank">{{ analysis.url }}</a></p>
 
-          <v-layout row wrap>
+          <v-layout>
             <v-tooltip bottom>
-              <v-chip slot="activator" label v-if="analysis.rtype" class="blue white--text">
-                <v-icon left>mdi-tag</v-icon>
-                {{ analysis.rtype }}
-              </v-chip>
+              <template v-slot:activator="{ on }">
+                <v-chip v-on="on" label v-if="analysis.rtype" class="blue white--text ml-1 mr-1">
+                  <v-icon left color="white">mdi-tag</v-icon>
+                  {{ analysis.rtype }}
+                </v-chip>
+              </template>
               <span>{{ $t('analyses.type') }}</span>
             </v-tooltip>
 
             <v-tooltip bottom>
-              <v-chip slot="activator" label v-if="analysis.mime" class="blue white--text">
-                <v-icon left>mdi-file</v-icon>
-                {{ analysis.mime }}
-              </v-chip>
+              <template v-slot:activator="{ on }">
+                <v-chip v-on="on" label v-if="analysis.mime" class="blue white--text ml-1 mr-1">
+                  <v-icon left color="white">mdi-file</v-icon>
+                  {{ analysis.mime }}
+                </v-chip>
+              </template>
               <span>{{ $t('analyses.format') }}</span>
             </v-tooltip>
 
             <v-tooltip bottom>
-              <v-chip slot="activator" label v-if="analysis.unitid" class="blue white--text">
-                <v-icon left>mdi-fingerprint</v-icon>
-                {{ analysis.unitid }}
-              </v-chip>
+              <template v-slot:activator="{ on }">
+                <v-chip v-on="on" label v-if="analysis.unitid" class="blue white--text ml-1 mr-1">
+                  <v-icon left color="white">mdi-fingerprint</v-icon>
+                  {{ analysis.unitid }}
+                </v-chip>
+              </template>
               <span>{{ $t('analyses.unitid') }}</span>
             </v-tooltip>
           </v-layout>
@@ -93,62 +103,68 @@
           <v-divider/>
           <v-subheader class="title mt-3">{{ $t('analyses.recognizedFields') }}</v-subheader>
 
-          <table class="v-datatable v-table">
-            <thead>
-              <tr class="text-xs-left">
-                <th>{{ $t('analyses.type') }}</th>
-                <th>{{ $t('analyses.value') }}</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(id, index) in analysis.identifiers" :key="index">
-                <td v-text="id.type"></td>
-                <td v-text="id.value"></td>
-              </tr>
-            </tbody>
-          </table>
+          <v-simple-table>
+            <template v-slot:default>
+              <thead>
+                <tr class="text-left">
+                  <th class="font-weight-regular">{{ $t('analyses.type') }}</th>
+                  <th class="font-weight-regular">{{ $t('analyses.value') }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(id, index) in analysis.identifiers" :key="index">
+                  <td v-text="id.type"></td>
+                  <td v-text="id.value"></td>
+                </tr>
+              </tbody>
+            </template>
+          </v-simple-table>
         </template>
 
         <template v-if="analysis.pathParams && analysis.pathParams.length">
           <v-divider/>
           <v-subheader class="title mt-3">{{ $t('analyses.pathParams') }}</v-subheader>
 
-          <table class="v-datatable v-table">
-            <thead>
-              <tr class="text-xs-left">
-                <th>{{ $t('analyses.value') }}</th>
-                <th>{{ $t('analyses.comment') }}</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(id, index) in analysis.pathParams" :key="index">
-                <td v-text="id.value"></td>
-                <td v-text="id.comment"></td>
-              </tr>
-            </tbody>
-          </table>
+          <v-simple-table>
+            <template v-slot:default>
+              <thead>
+                <tr class="text-left">
+                  <th class="font-weight-regular">{{ $t('analyses.value') }}</th>
+                  <th class="font-weight-regular">{{ $t('analyses.comment') }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(id, index) in analysis.pathParams" :key="index">
+                  <td v-text="id.value"></td>
+                  <td v-text="id.comment"></td>
+                </tr>
+              </tbody>
+            </template>
+          </v-simple-table>
         </template>
 
         <template v-if="analysis.queryParams && analysis.queryParams.length">
           <v-divider/>
           <v-subheader class="title mt-3">{{ $t('analyses.queryParams') }}</v-subheader>
 
-          <table class="v-datatable v-table">
-            <thead>
-              <tr class="text-xs-left">
-                <th>{{ $t('analyses.name') }}</th>
-                <th>{{ $t('analyses.value') }}</th>
-                <th>{{ $t('analyses.comment') }}</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(id, index) in analysis.queryParams" :key="index">
-                <td v-text="id.name"></td>
-                <td v-text="id.value"></td>
-                <td v-text="id.comment"></td>
-              </tr>
-            </tbody>
-          </table>
+          <v-simple-table>
+            <template v-slot:default>
+              <thead>
+                <tr class="text-left">
+                  <th class="font-weight-regular">{{ $t('analyses.name') }}</th>
+                  <th class="font-weight-regular">{{ $t('analyses.value') }}</th>
+                  <th class="font-weight-regular">{{ $t('analyses.comment') }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(id, index) in analysis.queryParams" :key="index">
+                  <td v-text="id.name"></td>
+                  <td v-text="id.value"></td>
+                  <td v-text="id.comment"></td>
+                </tr>
+              </tbody>
+            </template>
+          </v-simple-table>
         </template>
       </template>
 

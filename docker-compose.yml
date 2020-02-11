@@ -15,6 +15,7 @@ services:
       - ANG_TRELLO_BOARDID
       - ANG_MONGO_HOST=mongodb
       # les variables d'envrionnement pour les badges
+      - ANG_BADGE_HOST=opbadge
       - ANG_BADGE_ANALYSES_BRONZE_ID
       - ANG_BADGE_ANALYSES_BRONZE_NAME
       - ANG_BADGE_ANALYSES_BRONZE_EVENT
@@ -31,6 +32,9 @@ services:
       - http_proxy
       - https_proxy
       - no_proxy=localhost,127.0.0.1,opbadge
+      - NODE_CONFIG
+    volumes:
+      - ./uploads:/usr/src/app/app/uploads
     tty: true
     restart: on-failure
 

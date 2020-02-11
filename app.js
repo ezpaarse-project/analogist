@@ -8,7 +8,6 @@ const config = require('config')
 
 const session    = require('express-session')
 const MongoStore = require('connect-mongo')(session)
-const mongo      = require('./lib/mongo')
 
 process.env.PORT = config.port
 
@@ -21,7 +20,9 @@ app.use(session({
   secret: config.cookie.secret,
   cookie: { maxAge: config.cookie.maxAge },
   unset: 'destroy',
-  store: new MongoStore({ db: mongo.db })
+  store: new MongoStore({
+    url: `mongodb://${config.mongo.host}:${config.mongo.port}/${config.mongo.db}`
+  })
 }))
 
 // Import API Routes

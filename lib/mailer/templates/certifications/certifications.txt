@@ -1,0 +1,7 @@
+[AnalogIST] Mise à jour des certifications de la plateforme {{ cardName }}
+
+Bonjour,
+Une mise à jour des certifications de la plateforme {{ cardName }} est en attente de votre validation.
+
+Cordialement,
+L'équipe ezMESURE

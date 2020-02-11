@@ -1,12 +1,12 @@
 <template>
   <section>
-    <v-btn flat router exact :to="{ path: '/' }"><v-icon left>mdi-arrow-left</v-icon>{{ $t('ui.back') }}</v-btn>
+    <v-btn text router exact :to="{ path: '/platforms' }" class="mb-2 body-2">
+      <v-icon left>mdi-arrow-left</v-icon>{{ $t('ui.back') }}
+    </v-btn>
 
     <v-card>
-      <v-toolbar class="secondary" dense dark card>
-        <v-toolbar-title>
-          {{ $t('creation.newPlatform') }}
-        </v-toolbar-title>
+      <v-toolbar class="secondary" dense dark flat>
+        <v-toolbar-title>{{ $t('creation.newPlatform') }}</v-toolbar-title>
       </v-toolbar>
 
       <v-stepper v-model="step" vertical >
@@ -41,7 +41,7 @@
             </v-container>
 
             <v-btn color="primary" :disabled="!form.longName || !form.shortName" @click.native="step++">{{ $t('creation.next') }}</v-btn>
-            <v-btn flat @click.native="step--">{{ $t('creation.previous') }}</v-btn>
+            <v-btn text @click.native="step--">{{ $t('creation.previous') }}</v-btn>
           </v-stepper-content>
 
           <v-stepper-step step="3" :complete="step > 3" complete-icon="mdi-check">
@@ -60,7 +60,7 @@
             ></v-select>
 
             <v-btn color="primary" :disabled="!form.idList" :loading="creating" @click.native="createCard()">{{ $t('creation.create') }}</v-btn>
-            <v-btn flat @click.native="step--">{{ $t('creation.previous') }}</v-btn>
+            <v-btn text @click.native="step--">{{ $t('creation.previous') }}</v-btn>
           </v-stepper-content>
         </v-stepper-items>
       </v-stepper>

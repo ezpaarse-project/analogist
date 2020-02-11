@@ -1,16 +1,5 @@
-import axios from 'axios'
+import api from '../store/api'
 
-const options = {}
-// The server-side needs a full url to work
-if (process.server) {
-  const host = process.env.HOST || 'localhost'
-  const port = process.env.PORT || 3000
-
-  options.baseURL = `http://${host}:${port}`
-
-  if (process.env.http_proxy) {
-    options.proxy = { host, port }
-  }
+export default ({ $axios }) => {
+  api.setInstance($axios)
 }
-
-export default axios.create(options)

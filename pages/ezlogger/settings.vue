@@ -1,16 +1,18 @@
 <template>
   <section>
-    <v-btn @click.native="saveSettings" flat router exact :to="{ name: 'ezlogger' }"><v-icon left>mdi-arrow-left</v-icon>{{ $t('ui.back') }}</v-btn>
+    <v-btn @click.native="saveSettings" text router exact :to="{ name: 'ezlogger' }" class="mb-2 body-2">
+      <v-icon left>mdi-arrow-left</v-icon>{{ $t('ui.back') }}
+    </v-btn>
 
     <v-card class="mb-4">
-      <v-toolbar card dense dark class="secondary">
+      <v-toolbar class="secondary" dense dark flat>
         <v-toolbar-title>{{ $t('ezLoggerSettings.instance') }}</v-toolbar-title>
       </v-toolbar>
 
       <v-card-text>
         <v-switch v-model="preprod" hide-details :label="$t('ezLoggerSettings.useNationalInstance')"></v-switch>
         <v-text-field v-if="!preprod" v-model="ezpaarseUrl" hide-details name="instance-url" :label="$t('ezLoggerSettings.customUrl')"></v-text-field>
-        <p>{{ $t('ezLoggerSettings.nationalInstanceDesc') }}</p>
+        <p class="black--text">{{ $t('ezLoggerSettings.nationalInstanceDesc') }}</p>
       </v-card-text>
 
       <v-divider/>
@@ -31,24 +33,24 @@
     </v-card>
 
     <v-card class="mb-4">
-      <v-toolbar card dense dark class="secondary">
+      <v-toolbar class="secondary" dense dark flat>
         <v-toolbar-title>{{ $t('ezLoggerSettings.general') }}</v-toolbar-title>
       </v-toolbar>
 
       <v-card-text>
         <v-switch v-model="autoRemoveNoise" :label="$t('ezLoggerSettings.autoNoiseFiltering')"></v-switch>
         <v-switch v-model="patchHyphens" :label="$t('ezLoggerSettings.patchHyphens')"></v-switch>
-        <p>{{ $t('ezLoggerSettings.patchHyphensDesc') }}</p>
+        <p class="black--text">{{ $t('ezLoggerSettings.patchHyphensDesc') }}</p>
       </v-card-text>
     </v-card>
 
     <v-card class="mb-4">
-      <v-toolbar card dense dark class="secondary">
+      <v-toolbar dense dark class="secondary">
         <v-toolbar-title>{{ $t('ezLoggerSettings.defaultParser') }}</v-toolbar-title>
       </v-toolbar>
 
       <v-card-text>
-        <p>{{ $t('ezLoggerSettings.defaultParserDesc') }}</p>
+        <p class="black--text">{{ $t('ezLoggerSettings.defaultParserDesc') }}</p>
         <v-autocomplete
           :loading="loadingParsers"
           :items="parsers"
@@ -66,29 +68,29 @@
           hide-details
           solo
         >
-          <template slot="item" slot-scope="{ item, tile }">
-            <v-list-tile-content>
-              <v-list-tile-title v-text="item.longname"></v-list-tile-title>
-              <v-list-tile-sub-title v-text="item.name"></v-list-tile-sub-title>
-            </v-list-tile-content>
+          <template v-slot:item="{ item }">
+            <v-list-item-content>
+              <v-list-item-title v-text="item.longname"></v-list-item-title>
+              <v-list-item-subtitle v-text="item.name"></v-list-item-subtitle>
+            </v-list-item-content>
           </template>
         </v-autocomplete>
       </v-card-text>
     </v-card>
 
     <v-card class="mb-4">
-      <v-toolbar card dense dark class="secondary">
+      <v-toolbar class="secondary" dense dark flat>
         <v-toolbar-title>{{ $t('ezLoggerSettings.headers') }}</v-toolbar-title>
         <v-btn @click.native="addHeader" class="pink" dark small absolute bottom right fab>
           <v-icon>mdi-plus</v-icon>
         </v-btn>
       </v-toolbar>
 
-      <v-data-table :items="settings.headers" hide-actions hide-headers>
-        <template slot="items" slot-scope="props">
+      <v-data-table :items="settings.headers" hide-default-footer hide-default-header>
+        <template v-slot:item="{ item, index }">
           <td>
             <v-text-field
-              v-model="props.item.name"
+              v-model="item.name"
               :label="$t('ezLoggerSettings.name')"
               single-line
               full-width
@@ -97,15 +99,15 @@
           </td>
           <td>
             <v-text-field
-              v-model="props.item.value"
+              v-model="item.value"
               :label="$t('ezLoggerSettings.value')"
               single-line
               full-width
               hide-details
             />
           </td>
-          <td class="text-xs-right">
-            <v-btn icon @click.native="removeHeader(props.index)">
+          <td class="text-right">
+            <v-btn icon @click.native="removeHeader(index)">
               <v-icon>mdi-delete</v-icon>
             </v-btn>
           </td>
@@ -114,26 +116,26 @@
     </v-card>
 
     <v-card class="mb-4">
-      <v-toolbar card dense dark class="secondary">
+      <v-toolbar class="secondary" dense dark flat>
         <v-toolbar-title>{{ $t('ezLoggerSettings.proxySuffixes') }}</v-toolbar-title>
         <v-btn @click.native="addProxy" class="pink" dark small absolute bottom right fab>
           <v-icon>mdi-plus</v-icon>
         </v-btn>
       </v-toolbar>
 
-      <v-data-table :items="settings.proxySuffixes" hide-actions hide-headers>
-        <template slot="items" slot-scope="props">
+      <v-data-table :items="settings.proxySuffixes" hide-default-footer hide-default-header>
+        <template v-slot:item="{ item, index }">
           <td>
             <v-text-field
-              v-model="props.item.str"
+              v-model="item.str"
               :label="$t('ezLoggerSettings.suffix')"
               single-line
               full-width
               hide-details
             />
           </td>
-          <td class="text-xs-right">
-            <v-btn icon @click.native="removeProxy(props.index)">
+          <td class="text-right">
+            <v-btn icon @click.native="removeProxy(index)">
               <v-icon>mdi-delete</v-icon>
             </v-btn>
           </td>
@@ -145,7 +147,6 @@
 
 <script>
 import { mapState, mapActions } from 'vuex'
-import axios from '~/plugins/axios'
 
 export default {
   name: 'settings',
@@ -204,7 +205,7 @@ export default {
       const ezpaarseUrl = this.getEzpaarseUrl()
 
       try {
-        const { data } = await axios.get(`${ezpaarseUrl}/info/platforms`)
+        const { data } = await this.$axios.get(`${ezpaarseUrl}/info/platforms`)
         if (!Array.isArray(data)) { throw new Error('invalid response') }
         this.parsers = data
       } catch (e) {
@@ -248,7 +249,7 @@ export default {
       this.connectionTest.errorMeta = null
       this.connectionTest.version = null
 
-      axios.get(`${ezpaarseUrl}/info/version`)
+      this.$axios.get(`${ezpaarseUrl}/info/version`)
         .then(response => {
           this.connectionTest.loading = false
 

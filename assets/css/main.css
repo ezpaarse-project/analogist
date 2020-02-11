@@ -1,6 +1,13 @@
 .cert-icon {
-  height: 22px;
+  margin: 2px 0 0 0 !important;
+  padding: 0 !important;
 }
 .mdi.icon {
   line-height: 1
+}
+.pointer {
+  cursor: pointer;
+}
+.dateLbl {
+  width: 80px !important;
 }

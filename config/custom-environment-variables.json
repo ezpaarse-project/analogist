@@ -26,6 +26,7 @@
     "debounce_time": "ANG_HISTORY_DEBOUNCE"
   },
   "badges": {
+    "host": "ANG_BADGE_HOST",
     "issuer": "ANG_BADGE_ISSUER",
     "analysesBronze": {
       "badgeId": "ANG_BADGE_ANALYSES_BRONZE_ID",

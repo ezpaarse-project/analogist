@@ -7,10 +7,8 @@ export default {
     badges: null,
     visibility: false,
     users: null,
-    members: null,
     ping: null,
-    metrics: null,
-    userBadges: null
+    metrics: null
   },
   mutations: {
     SET_BADGES (state, badges) {
@@ -27,12 +25,6 @@ export default {
     },
     SET_USERS (state, users) {
       Vue.set(state, 'users', users)
-    },
-    SET_MEMBERS (state, members) {
-      Vue.set(state, 'members', members)
-    },
-    SET_USER_BADGES (state, badges) {
-      Vue.set(state, 'userBadges', badges)
     }
   },
   actions: {
@@ -57,9 +49,38 @@ export default {
         console.log(response)
       })
     },
-    getMetrics ({ commit }) {
-      return api.getMetrics().then((res) => {
-        if (res.status === 'success') commit('SET_METRICS', res.data.metrics)
+    getMembers ({ commit }, auth) {
+      if (auth) {
+        return api.getBoardMembers().then((res) => {
+          const users = res.map(({ member }) => member)
+          commit('SET_USERS', users)
+        })
+      }
+    },
+    getMetrics ({ commit, state }, admin) {
+      return api.getMetrics().then(({ data, status }) => {
+        if (status === 'success') {
+          const metrics = data.metrics
+
+          if (admin && state.users) {
+            metrics.forEach((metric, index) => {
+              api.getUsers(metric.badge.id).then(({ data }) => {
+                const usersData = data
+
+                usersData.forEach(({ userId }, index) => {
+                  const user = state.users.find(({ id }) => id === userId)
+                  usersData[index] = { ...usersData[index], ...user }
+                })
+
+                metrics[index].users = usersData || []
+              }).catch((response) => {
+                metrics[index].users = []
+              })
+            })
+          }
+
+          commit('SET_METRICS', metrics)
+        }
       }).catch((response) => {
         // eslint-disable-next-line
         console.log(response)
@@ -77,23 +98,6 @@ export default {
     setVisiblity ({ commit }, visibility) {
       return api.setVisiblity({ visibility }).then((res) => {
         if (res.status === 'success') commit('SET_VISIBILITY', visibility)
-      }).catch((response) => {
-        // eslint-disable-next-line
-        console.log(response)
-      })
-    },
-    getUsers ({ commit, state }, badgeId) {
-      return api.getUsers({ badgeId }).then((res) => {
-        if (res.status === 'success') {
-          commit('SET_USERS', res.data)
-
-          return api.getBoardMembers().then((res) => {
-            commit('SET_MEMBERS', res)
-          }).catch((response) => {
-            // eslint-disable-next-line
-            console.log(response)
-          })
-        }
       }).catch((response) => {
         // eslint-disable-next-line
         console.log(response)

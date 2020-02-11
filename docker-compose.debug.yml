@@ -4,6 +4,7 @@ services:
     image: node:8.11.1-wheezy
     volumes:
       - .:/app
+      - ./uploads:/usr/src/app/app/uploads
     working_dir: /app
     links:
       - analogistdb:mongodb
@@ -16,6 +17,7 @@ services:
       - ANG_TRELLO_SECRET
       - ANG_TRELLO_BOARDID
       - ANG_MONGO_HOST=mongodb
+      - ANG_BADGE_HOST=opbadge
       - ANG_BADGE_ANALYSES_BRONZE_ID
       - ANG_BADGE_ANALYSES_BRONZE_NAME
       - ANG_BADGE_ANALYSES_BRONZE_EVENT
@@ -30,6 +32,7 @@ services:
       - http_proxy
       - https_proxy
       - no_proxy=localhost,127.0.0.1,opbadge
+      - NODE_CONFIG
     tty: true
     command: npm run dev
 

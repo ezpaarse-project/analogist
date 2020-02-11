@@ -1,6 +1,13 @@
-import axios from '~/plugins/axios'
+let axios = null
 
 const api = {}
+
+api.setInstance = function (instance) {
+  if (!axios) {
+    axios = instance
+  }
+  return axios
+}
 
 api.info = function () {
   return axios.get('/api').then(res => res.data)
@@ -64,6 +71,10 @@ api.getPlatform = function (cardID) {
 
 api.deletePlatform = function (cardID) {
   return axios.delete(`/api/platforms/${cardID}`).then(res => res.data)
+}
+
+api.addPlatform = function (cardID) {
+  return axios.patch(`/api/platforms/${cardID}`).then(res => res.data)
 }
 
 api.getFields = function () {
@@ -139,11 +150,6 @@ function extendCard (card, platform) {
     card.lastActivity = platform.lastModified
   }
 
-  if (card.labels) {
-    card.humanCertified = card.labels.some(l => /^certified:\s*human$/i.test(l.name))
-    card.publisherCertified = card.labels.some(l => /^certified:\s*publisher$/i.test(l.name))
-  }
-
   // eslint-disable-next-line no-control-regex
   const regexGithub = new RegExp('code[^\n]+source[^\n]+\n(https?://[^ $\n]+)', 'i')
   // eslint-disable-next-line no-control-regex
@@ -164,6 +170,10 @@ api.getBoardMembers = function () {
 
 api.getMember = function (memberId) {
   return axios.get(`/api/trello/member/${memberId}`).then(res => res.data)
+}
+
+api.becomeMember = function () {
+  return axios.post('/api/auth/membership').then(res => res.data)
 }
 
 /**
@@ -189,8 +199,34 @@ api.setVisiblity = function (data) {
   return axios.put(`/api/badges/visibility`, data).then(res => res.data)
 }
 
-api.getUsers = function (data) {
-  return axios.get(`/api/badges/users/${data.badgeId}`).then(res => res.data)
+api.getUsers = function (badgeId) {
+  return axios.get(`/api/badges/users/${badgeId}`).then(res => res.data)
+}
+
+/**
+ * Certfificaitions
+ */
+api.getCertificationsEvents = function () {
+  return axios.get('/api/certifications/').then(res => res.data)
+}
+
+api.sendRequest = function (cardID, data) {
+  return axios({
+    method: 'POST',
+    url: `/api/certifications/${cardID}`,
+    data,
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  }).then(res => res.data)
+}
+
+api.acceptCertification = function (data) {
+  return axios.post(`/api/certifications/${data.id}/accept`, { cardName: data.cardName }).then(res => res.data)
+}
+
+api.refuseCertification = function (data) {
+  return axios.post(`/api/certifications/${data.id}/refuse`, { cardName: data.cardName, comment: data.comment }).then(res => res.data)
 }
 
 export default api

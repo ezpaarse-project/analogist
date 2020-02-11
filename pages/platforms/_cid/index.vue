@@ -1,95 +1,128 @@
 <template>
   <section>
-    <v-layout row justify-space-between>
-      <v-btn flat router exact :to="{ path: '/' }"><v-icon left>mdi-arrow-left</v-icon>{{ $t('ui.back') }}</v-btn>
+    <v-layout>
+      <v-btn text router exact :to="{ path: '/platforms' }" class="mb-2 body-2">
+        <v-icon left>mdi-arrow-left</v-icon>{{ $t('ui.back') }}
+      </v-btn>
     </v-layout>
 
     <v-card>
-      <v-toolbar class="secondary" dark dense card>
+      <v-toolbar class="secondary" dark dense elevation="0">
         <v-toolbar-title>
-          {{ card.name }}
+          <v-tooltip right v-if="card.closed">
+            <template v-slot:activator="{ on }">
+              <span v-on="on">
+                <v-icon size="24" class="mb-1">mdi-archive</v-icon>
+                {{ card.name }}
+              </span>
+            </template>
+            <span v-text="$t('card.archived')"></span>
+          </v-tooltip>
+          <span v-else v-text="card.name"></span>
         </v-toolbar-title>
 
         <v-spacer></v-spacer>
 
         <v-tooltip bottom>
-          <v-btn icon slot="activator" v-if="canEdit" @click="createAnalysis"><v-icon>mdi-plus</v-icon></v-btn>
+          <template v-slot:activator="{ on }">
+            <v-btn icon v-on="on" v-if="canEdit" @click="createAnalysis">
+              <v-icon>mdi-plus</v-icon>
+            </v-btn>
+          </template>
           <span>{{ $t('analyses.new') }}</span>
         </v-tooltip>
 
-        <v-menu>
-          <v-btn slot="activator" icon dark>
-            <v-icon>mdi-dots-vertical</v-icon>
-          </v-btn>
+        <v-menu
+          left
+          bottom
+        >
+          <template v-slot:activator="{ on }">
+            <v-btn icon v-on="on">
+              <v-icon>mdi-dots-vertical</v-icon>
+            </v-btn>
+          </template>
+
           <v-list>
-            <v-list-tile avatar v-if="card.members.length > 0" @click="membersDialog = true">
-              <v-list-tile-avatar>
-                <v-icon>mdi-account-multiple</v-icon>
-              </v-list-tile-avatar>
-              <v-list-tile-content>
-                <v-list-tile-title>{{ $t('card.contributors') }}</v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
-            <v-list-tile avatar v-if="card.githubUrl" :href="card.githubUrl" target="_blank">
-              <v-list-tile-avatar>
-                <v-icon>mdi-github-box</v-icon>
-              </v-list-tile-avatar>
-              <v-list-tile-content>
-                <v-list-tile-title>{{ $t('card.github') }}</v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
-            <v-list-tile avatar v-if="card.homeUrl" :href="card.homeUrl" target="_blank">
-              <v-list-tile-avatar>
-                <v-icon>mdi-home</v-icon>
-              </v-list-tile-avatar>
-              <v-list-tile-content>
-                <v-list-tile-title>{{ $t('card.homepage') }}</v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
-            <v-list-tile avatar v-if="card.url" :href="card.url" target="_blank">
-              <v-list-tile-avatar>
-                <v-icon>mdi-trello</v-icon>
-              </v-list-tile-avatar>
-              <v-list-tile-content>
-                <v-list-tile-title>{{ $t('card.trello') }}</v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
+            <v-list-item-group>
+              <v-list-item v-if="card.members.length > 0" @click="membersDialog = true">
+                <v-list-item-avatar>
+                  <v-icon>mdi-account-multiple</v-icon>
+                </v-list-item-avatar>
+                <v-list-item-content>
+                  <v-list-item-title v-text="$t('card.contributors')"></v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+              <v-list-item v-if="card.githubUrl" :href="card.githubUrl" target="_blank">
+                <v-list-item-avatar>
+                  <v-icon>mdi-github-box</v-icon>
+                </v-list-item-avatar>
+                <v-list-item-content>
+                  <v-list-item-title v-text="$t('card.github')"></v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+              <v-list-item v-if="card.homeUrl" :href="card.homeUrl" target="_blank">
+                <v-list-item-avatar>
+                  <v-icon>mdi-home</v-icon>
+                </v-list-item-avatar>
+                <v-list-item-content>
+                  <v-list-item-title v-text="$t('card.homepage')"></v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+              <v-list-item v-if="card.url" :href="card.url" target="_blank">
+                <v-list-item-avatar>
+                  <v-icon>mdi-trello</v-icon>
+                </v-list-item-avatar>
+                <v-list-item-content>
+                  <v-list-item-title v-text="$t('card.trello')"></v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </v-list-item-group>
 
             <v-divider></v-divider>
 
-            <v-list-tile avatar @click="generateTestFile">
-              <v-list-tile-avatar>
-                <v-icon>mdi-upload</v-icon>
-              </v-list-tile-avatar>
-              <v-list-tile-content>
-                <v-list-tile-title>{{ $t('analyses.export') }}</v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
-            <v-list-tile avatar @click="exportToEzlogger">
-              <v-list-tile-avatar>
-                <v-icon>mdi-file-find</v-icon>
-              </v-list-tile-avatar>
-              <v-list-tile-content>
-                <v-list-tile-title>{{ $t('analyses.testWithEzlogger') }}</v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
-            <v-list-tile avatar v-if="canEdit" @click="deleteDialog = true">
-              <v-list-tile-avatar>
-                <v-icon>mdi-archive</v-icon>
-              </v-list-tile-avatar>
-              <v-list-tile-content>
-                <v-list-tile-title>{{ $t('card.archive') }}</v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
+            <v-list-item-group>
+              <v-list-item @click="generateTestFile">
+                <v-list-item-avatar>
+                  <v-icon>mdi-upload</v-icon>
+                </v-list-item-avatar>
+                <v-list-item-content>
+                  <v-list-item-title v-text="$t('analyses.export')"></v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+              <v-list-item @click="exportToEzlogger">
+                <v-list-item-avatar>
+                  <v-icon>mdi-file-find</v-icon>
+                </v-list-item-avatar>
+                <v-list-item-content>
+                  <v-list-item-title v-text="$t('analyses.testWithEzlogger')"></v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+              <v-list-item v-if="canEdit && !card.closed" @click="deleteDialog = true">
+                <v-list-item-avatar>
+                  <v-icon>mdi-archive-arrow-down</v-icon>
+                </v-list-item-avatar>
+                <v-list-item-content>
+                  <v-list-item-title v-text="$t('card.archive')"></v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+              <v-list-item v-if="canEdit && card.closed" @click="deleteDialog = true">
+                <v-list-item-avatar>
+                  <v-icon>mdi-archive-arrow-up</v-icon>
+                </v-list-item-avatar>
+                <v-list-item-content>
+                  <v-list-item-title v-text="$t('card.unarchive')"></v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </v-list-item-group>
           </v-list>
         </v-menu>
       </v-toolbar>
 
       <v-card-text>
-        <v-layout row wrap>
+        <v-layout row wrap class="pl-3 pr-3">
           <v-flex xs12 sm4>
-            <div>{{ $t('card.lastActivity') }}</div>
-            <strong>{{ lastActivity }}</strong>
+            <div class="font-weight-regular">{{ $t('card.lastActivity') }}</div>
+            <div class="font-weight-medium">{{ lastActivity }}</div>
           </v-flex>
 
           <v-flex xs12 sm8>
@@ -116,35 +149,18 @@
         </v-layout>
       </v-card-text>
 
-
-      <template v-if="card.humanCertified || card.publisherCertified">
-        <v-divider/>
+      <template>
+        <v-divider></v-divider>
         <v-subheader>Certifications</v-subheader>
 
         <v-list>
-          <v-list-tile v-if="card.humanCertified" avatar href="https://blog.ezpaarse.org/2017/06/certification-h-et-p-des-plateformes-traitees-dans-ezpaarse/" target="_blank">
-            <v-list-tile-avatar>
-              <img src="~/assets/img/certif_h.png">
-            </v-list-tile-avatar>
-            <v-list-tile-content>
-              <v-list-tile-title>{{ $t('card.manuallyVerified') }}</v-list-tile-title>
-            </v-list-tile-content>
-          </v-list-tile>
-
-          <v-list-tile v-if="card.publisherCertified" avatar href="https://blog.ezpaarse.org/2017/06/certification-h-et-p-des-plateformes-traitees-dans-ezpaarse/" target="_blank">
-            <v-list-tile-avatar>
-              <img src="~/assets/img/certif_p.png">
-            </v-list-tile-avatar>
-            <v-list-tile-content>
-              <v-list-tile-title>{{ $t('card.publisherVerified') }}</v-list-tile-title>
-            </v-list-tile-content>
-          </v-list-tile>
+          <Certification />
         </v-list>
 
-        <v-divider/>
+        <v-divider></v-divider>
       </template>
 
-      <v-divider/>
+      <v-divider></v-divider>
 
       <v-list two-line>
         <draggable v-model="analyses">
@@ -158,12 +174,16 @@
         <v-card-title class="headline">{{ $t('ui.areYouSure') }}</v-card-title>
 
         <v-card-text>
-          {{ $t('card.archiveDesc') }}
+          <span v-text="$t('card.archiveDesc')" v-if="!card.closed"></span>
+          <span v-text="$t('card.unarchiveDesc')" v-else></span>
         </v-card-text>
 
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="error" :loading="deletingCard" @click.native="archivePlatform">{{ $t('ui.archive') }}</v-btn>
+          <v-btn color="error" :loading="deletingCard" @click.native="archivePlatform">
+            <span v-text="$t('card.archive')" v-if="!card.closed"></span>
+            <span v-text="$t('card.unarchive')" v-else></span>
+          </v-btn>
           <v-btn color="secondary" @click.native="deleteDialog = false">{{ $t('ui.cancel') }}</v-btn>
         </v-card-actions>
       </v-card>
@@ -178,15 +198,15 @@
         </v-card-title>
 
         <v-list>
-          <v-list-tile v-for="member in card.members" v-bind:key="member.id" avatar :href="'https://trello.com/' + member.username">
-            <v-list-tile-avatar>
+          <v-list-item v-for="member in card.members" v-bind:key="member.id" avatar :href="'https://trello.com/' + member.username">
+            <v-list-item-avatar>
               <img v-if="member.avatarHash" :src="'https://trello-avatars.s3.amazonaws.com/' + member.avatarHash + '/50.png'" alt="avatar">
-              <span v-else class="icon blue-grey lighten-4">{{ member.initials }}</span>
-            </v-list-tile-avatar>
-            <v-list-tile-content>
-              <v-list-tile-title v-text="member.fullName" />
-            </v-list-tile-content>
-          </v-list-tile>
+              <span v-else-if="member.initials" class="icon blue-grey lighten-4">{{ member.initials }}</span>
+            </v-list-item-avatar>
+            <v-list-item-content>
+              <v-list-item-title v-text="member.fullName" />
+            </v-list-item-content>
+          </v-list-item>
         </v-list>
       </v-card>
     </v-dialog>
@@ -196,6 +216,7 @@
 <script>
 import moment from 'moment'
 import AnalysisTile from '~/components/AnalysisTile'
+import Certification from '~/components/certifications/Certification'
 import draggable from 'vuedraggable'
 import { saveAs } from 'file-saver'
 
@@ -212,6 +233,7 @@ export default {
   transition: 'slide-x-transition',
   components: {
     AnalysisTile,
+    Certification,
     draggable
   },
   async fetch ({ params, store, error }) {
@@ -224,6 +246,12 @@ export default {
       const message    = e.response && e.response.statusText
 
       return error({ statusCode, message: statusCode === 404 ? 'Carte introuvable' : message })
+    }
+
+    try {
+      await store.dispatch('certifications/GET_CERTIFICATIONS_EVENTS')
+    } catch (e) {
+      await store.dispatch('snacks/error', 'errorGeneric')
     }
 
     store.dispatch('SET_VISITED_PLATFORM', params.cid)
@@ -321,11 +349,19 @@ export default {
       this.deletingCard = true
 
       try {
-        await this.$store.dispatch('ARCHIVE_CARD', this.card.id)
+        if (!this.card.closed) {
+          await this.$store.dispatch('ARCHIVE_CARD', this.card.id)
+        } else {
+          await this.$store.dispatch('UNARCHIVE_CARD', this.card.id)
+        }
         this.deleteDialog = false
-        this.$router.push({ path: '/' })
+        this.$router.push({ path: '/platforms' })
       } catch (e) {
-        this.$store.dispatch('snacks/error', 'card.archivalFailed')
+        if (!this.card.closed) {
+          this.$store.dispatch('snacks/error', 'card.archivalFailed')
+        } else {
+          this.$store.dispatch('snacks/error', 'card.unarchivalFailed')
+        }
       }
 
       this.deletingCard = false
