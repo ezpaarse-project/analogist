@@ -68,7 +68,7 @@ export default {
       return this.$store.state.trelloLists.find(l => this.card.idList === l.id)
     },
     platform () {
-      return this.platform
+      return this.card && this.card.platform
     },
     humanCertifications () {
       return this.platform.humanCertifications
