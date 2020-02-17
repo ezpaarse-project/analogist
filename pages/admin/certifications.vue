@@ -426,7 +426,8 @@ export default {
         { title: 'P', getter: (a) => a.certifications.publisherCertified ? a.form.year : '-' },
         { title: 'ezPAARSE', getter: (a) => a.form.values && a.form.values.ezpaarse ? a.form.values.ezpaarse : '-' },
         { title: 'Editeur', getter: (a) => a.form.values && a.form.values.editor ? a.form.values.editor : '-' },
-        { title: 'Difference', getter: (a) => a.form.values ? `${this.difference(a.form.values)}%` : '-' }
+        { title: 'Difference', getter: (a) => a.form.values ? `${this.difference(a.form.values)}%` : '-' },
+        { title: 'Commentaire', getter: (a) => escapeCSVstring(a.form.comment.replace(/(\r\n|\n|\r)/gm, ' ').trim()) }
       ]
 
       const header = columns.map(col => escapeCSVstring(col.title)).join(';')
