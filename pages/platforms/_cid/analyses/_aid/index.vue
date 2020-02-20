@@ -67,7 +67,7 @@
           <v-layout>
             <v-tooltip bottom>
               <template v-slot:activator="{ on }">
-                <v-chip v-on="on" label v-if="analysis.rtype" class="blue white--text ml-1 mr-1">
+                <v-chip v-on="on" label v-if="analysis.rtype" color="primary" class="white--text mr-1">
                   <v-icon left color="white">mdi-tag</v-icon>
                   {{ analysis.rtype }}
                 </v-chip>
@@ -77,7 +77,7 @@
 
             <v-tooltip bottom>
               <template v-slot:activator="{ on }">
-                <v-chip v-on="on" label v-if="analysis.mime" class="blue white--text ml-1 mr-1">
+                <v-chip v-on="on" label v-if="analysis.mime" color="primary" class="white--text mr-1">
                   <v-icon left color="white">mdi-file</v-icon>
                   {{ analysis.mime }}
                 </v-chip>
@@ -87,7 +87,7 @@
 
             <v-tooltip bottom>
               <template v-slot:activator="{ on }">
-                <v-chip v-on="on" label v-if="analysis.unitid" class="blue white--text ml-1 mr-1">
+                <v-chip v-on="on" label v-if="analysis.unitid" color="primary" class="white--text mr-1">
                   <v-icon left color="white">mdi-fingerprint</v-icon>
                   {{ analysis.unitid }}
                 </v-chip>
@@ -96,7 +96,7 @@
             </v-tooltip>
           </v-layout>
 
-          <v-alert class="pre-wrap" icon="mdi-information-outline" :value="true" info v-if="analysis.comment">{{ analysis.comment }}</v-alert>
+          <v-alert class="pre-wrap mt-3" type="info" :value="true" v-if="analysis.comment">{{ analysis.comment }}</v-alert>
         </v-card-text>
 
         <template v-if="analysis.identifiers && analysis.identifiers.length">
