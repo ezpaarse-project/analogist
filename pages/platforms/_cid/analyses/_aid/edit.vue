@@ -35,10 +35,10 @@
                 :append-icon="analysis.rtype ? 'mdi-close' : 'mdi-menu-down'"
                 @click:append="clearRtype"
               >
-                <template slot="item" slot-scope="data">
+                <template v-slot:item="{ item }">
                   <v-list-item-content>
-                    <v-list-item-title v-html="data.item.code"></v-list-item-title>
-                    <v-list-item-subtitle v-html="data.item.description"></v-list-item-subtitle>
+                    <v-list-item-title v-html="item.code"></v-list-item-title>
+                    <v-list-item-subtitle v-html="item[`description_${$i18n.locale}`] || item.description"></v-list-item-subtitle>
                   </v-list-item-content>
                 </template>
               </v-autocomplete>
@@ -61,7 +61,7 @@
                 <template v-slot:item="{ item }">
                   <v-list-item-content>
                     <v-list-item-title v-html="item.code"></v-list-item-title>
-                    <v-list-item-subtitle v-html="item.description"></v-list-item-subtitle>
+                    <v-list-item-subtitle v-html="item[`description_${$i18n.locale}`] || item.description"></v-list-item-subtitle>
                   </v-list-item-content>
                 </template>
               </v-autocomplete>
@@ -114,7 +114,7 @@
                     <template v-slot:item="{ item }">
                       <v-list-item-content>
                         <v-list-item-title v-html="item.code"></v-list-item-title>
-                        <v-list-item-subtitle v-html="item.description"></v-list-item-subtitle>
+                        <v-list-item-subtitle v-html="item[`description_${$i18n.locale}`] || item.description"></v-list-item-subtitle>
                       </v-list-item-content>
                     </template>
                   </v-autocomplete>
