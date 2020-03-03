@@ -94,19 +94,27 @@
             <v-list-item-title>{{ req.method }} {{ req.url }}</v-list-item-title>
             <v-list-item-subtitle>
               <v-tooltip bottom v-if="req.type">
-                <v-chip slot="activator" small label color="blue" text-color="white">{{ req.type }}</v-chip>
+                <template v-slot:activator="{ on }">
+                  <v-chip v-on="on" small label color="blue" text-color="white">{{ req.type }}</v-chip>
+                </template>
                 <span>{{ $t('ezLogger.requestType') }}</span>
               </v-tooltip>
               <v-tooltip bottom v-if="req.statusCode">
-                <v-chip slot="activator" small label color="blue" text-color="white">{{ req.statusCode }}</v-chip>
+                <template v-slot:activator="{ on }">
+                  <v-chip v-on="on" small label color="blue" text-color="white">{{ req.statusCode }}</v-chip>
+                </template>
                 <span>{{ $t('ezLogger.responseStatusCode') }}</span>
               </v-tooltip>
               <v-tooltip bottom v-if="req.ec && req.ec.rtype">
-                <v-chip slot="activator" small label color="green" text-color="white">{{ req.ec.rtype }}</v-chip>
+                <template v-slot:activator="{ on }">
+                  <v-chip v-on="on" small label color="green" text-color="white">{{ req.ec.rtype }}</v-chip>
+                </template>
                 <span>{{ $t('ezLogger.rtype') }}</span>
               </v-tooltip>
               <v-tooltip bottom v-if="req.ec && req.ec.mime">
-                <v-chip slot="activator" small label color="green" text-color="white">{{ req.ec.mime }}</v-chip>
+                <template v-slot:activator="{ on }">
+                  <v-chip v-on="on" small label color="green" text-color="white">{{ req.ec.mime }}</v-chip>
+                </template>
                 <span>{{ $t('ezLogger.mime') }}</span>
               </v-tooltip>
             </v-list-item-subtitle>

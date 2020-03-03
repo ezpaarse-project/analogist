@@ -5,7 +5,7 @@
     </v-btn>
 
     <v-card>
-      <v-toolbar class="secondary" dense dark card>
+      <v-toolbar class="secondary" dense dark flat>
         <v-toolbar-title>
           {{ $t('ezLogger.requestDetails') }}
         </v-toolbar-title>
@@ -21,7 +21,7 @@
           hide-details
           :value="request.url"
         >
-          <template slot="prepend">
+          <template v-slot:prepend>
             <v-progress-circular v-if="request.status === 'processing'" indeterminate color="grey" />
             <v-icon v-else-if="request.status === 'pending'" class="grey--text">mdi-clock</v-icon>
             <v-icon v-else-if="request.status === 'analyzed'" class="green--text">mdi-lightbulb-on</v-icon>
@@ -30,7 +30,9 @@
           </template>
 
           <v-tooltip slot="append-outer" left>
-            <v-icon slot="activator" @click="copyUrl">mdi-clipboard</v-icon>
+            <template v-slot:activator="{ on }">
+              <v-icon v-on="on" @click="copyUrl">mdi-clipboard</v-icon>
+            </template>
             <span>{{ $t('ezLogger.copyToClipboard') }}</span>
           </v-tooltip>
         </v-text-field>
@@ -38,23 +40,33 @@
 
       <v-card-text>
         <v-tooltip bottom v-if="request.method">
-          <v-chip slot="activator" label color="blue" text-color="white">{{ request.method }}</v-chip>
+          <template v-slot:activator="{ on }">
+            <v-chip v-on="on" label color="blue" text-color="white">{{ request.method }}</v-chip>
+          </template>
           <span>{{ $t('ezLogger.requestMethod') }}</span>
         </v-tooltip>
         <v-tooltip bottom v-if="request.type">
-          <v-chip slot="activator" label color="blue" text-color="white">{{ request.type }}</v-chip>
+          <template v-slot:activator="{ on }">
+            <v-chip v-on="on" label color="blue" text-color="white">{{ request.type }}</v-chip>
+          </template>
           <span>{{ $t('ezLogger.requestType') }}</span>
         </v-tooltip>
         <v-tooltip bottom v-if="request.statusCode">
-          <v-chip slot="activator" label color="blue" text-color="white">{{ request.statusCode }}</v-chip>
+          <template v-slot:activator="{ on }">
+            <v-chip v-on="on" label color="blue" text-color="white">{{ request.statusCode }}</v-chip>
+          </template>
           <span>{{ $t('ezLogger.responseStatusCode') }}</span>
         </v-tooltip>
         <v-tooltip bottom v-if="request.ec && request.ec.rtype">
-          <v-chip slot="activator" label color="green" text-color="white">{{ request.ec.rtype }}</v-chip>
+          <template v-slot:activator="{ on }">
+            <v-chip v-on="on" label color="green" text-color="white">{{ request.ec.rtype }}</v-chip>
+          </template>
           <span>{{ $t('ezLogger.rtype') }}</span>
         </v-tooltip>
         <v-tooltip bottom v-if="request.ec && request.ec.mime">
-          <v-chip slot="activator" label color="green" text-color="white">{{ request.ec.mime }}</v-chip>
+          <template v-slot:activator="{ on }">
+            <v-chip v-on="on" label color="green" text-color="white">{{ request.ec.mime }}</v-chip>
+          </template>
           <span>{{ $t('ezLogger.mime') }}</span>
         </v-tooltip>
       </v-card-text>
@@ -75,12 +87,14 @@
 
       <v-data-table
         :items="ecProps"
-        hide-headers
-        hide-actions
+        hide-default-headers
+        hide-default-footer
       >
-        <template slot="items" slot-scope="props">
-          <th class="text-left">{{ props.item.name }}</th>
-          <td class="text-left">{{ props.item.value }}</td>
+         <template v-slot:item="{ item }">
+          <tr>
+            <th class="text-left">{{ item.name }}</th>
+            <td class="text-left">{{ item.value }}</td>
+          </tr>
         </template>
 
         <template slot="no-data">
