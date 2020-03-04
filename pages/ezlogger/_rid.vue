@@ -89,9 +89,10 @@
         :items="ecProps"
         hide-default-headers
         hide-default-footer
+        disable-pagination
       >
-         <template v-slot:item="{ item }">
-          <tr>
+         <template v-slot:body="{ items }">
+          <tr v-for="(item, index) in items" :key="index">
             <th class="text-left">{{ item.name }}</th>
             <td class="text-left">{{ item.value }}</td>
           </tr>
