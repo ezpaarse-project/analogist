@@ -253,10 +253,4 @@ export default {
 
 <style scoped>
 a { color: inherit; }
-.bottomList {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-}
 </style>
