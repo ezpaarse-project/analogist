@@ -154,36 +154,35 @@
       </v-list-group>
     </v-list>
 
-    <v-list text class="text-center bottomList">
-      <v-layout row wrap align-center justify-center mb-2>
-        <v-flex xs12 mb-5>
-          <v-tooltip top>
-            <template v-slot:activator="{ on }">
-              <v-btn small text icon v-on="on" @click="$vuetify.theme.dark = !$vuetify.theme.dark">
-                <v-icon v-if="$vuetify.theme.dark">mdi-white-balance-sunny</v-icon>
-                <v-icon v-else>mdi-weather-night</v-icon>
-              </v-btn>
-            </template>
-            <span v-if="$vuetify.theme.dark">{{ $t('theme.light') }}</span>
-            <span v-else>{{ $t('theme.dark') }}</span>
-          </v-tooltip>
-        </v-flex>
-        <v-flex xs12>
-          <v-btn
-            small
-            class="ma-0"
-            href="https://github.com/ezpaarse-project/analogist#readme"
-            target="_blank"
-            outlined
-          >
-            Version: {{ appVersion }}
-            <v-icon right>
-              mdi-github-circle
-            </v-icon>
-          </v-btn>
-        </v-flex>
-      </v-layout>
-    </v-list>
+    <template v-slot:append>
+      <div class="pa-2 text-center">
+        <v-tooltip top>
+          <template v-slot:activator="{ on }">
+            <v-btn small text icon v-on="on" @click="$vuetify.theme.dark = !$vuetify.theme.dark">
+              <v-icon v-if="$vuetify.theme.dark">mdi-white-balance-sunny</v-icon>
+              <v-icon v-else>mdi-weather-night</v-icon>
+            </v-btn>
+          </template>
+          <span v-if="$vuetify.theme.dark">{{ $t('theme.light') }}</span>
+          <span v-else>{{ $t('theme.dark') }}</span>
+        </v-tooltip>
+
+        <v-spacer></v-spacer>
+
+        <v-btn
+          small
+          class="ma-3"
+          href="https://github.com/ezpaarse-project/analogist#readme"
+          target="_blank"
+          outlined
+        >
+          Version: {{ appVersion }}
+          <v-icon right>
+            mdi-github-circle
+          </v-icon>
+        </v-btn>
+      </div>
+    </template>
   </v-navigation-drawer>
 </template>
 
