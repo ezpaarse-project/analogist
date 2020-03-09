@@ -10,7 +10,7 @@ services:
       - ANG_TRELLO_KEY
       - ANG_TRELLO_SECRET
       - ANG_TRELLO_BOARDID
-      - ANG_MONGO_HOST=mongodb
+      - ANG_MONGO_HOST=db
       # les variables d'envrionnement pour les badges
       - ANG_BADGE_HOST=opbadge
       - ANG_BADGE_ANALYSES_BRONZE_ID
@@ -35,7 +35,7 @@ services:
     tty: true
     restart: on-failure
 
-  analogistdb:
+  db:
     image: mongo:3.6.5
     volumes:
       - ./data/db:/data/db
@@ -48,7 +48,7 @@ services:
       - http_proxy
       - https_proxy
       - OBF_CERT
-      - BADGE_MONGO_HOST=mongodb
+      - BADGE_MONGO_HOST=db
       - BADGE_MONGO_PORT
       - BADGE_MONGO_DB
       - BADGE_LOGENTRY_CLIENT
