@@ -1,4 +1,4 @@
-version: '2'
+version: '3'
 services:
   analogist:
     image: node:8.11.1-wheezy
@@ -6,17 +6,13 @@ services:
       - .:/app
       - ./uploads:/usr/src/app/app/uploads
     working_dir: /app
-    links:
-      - analogistdb:mongodb
-      - opbadge
-      - maildev
     ports:
       - "3000:3000"
     environment:
       - ANG_TRELLO_KEY
       - ANG_TRELLO_SECRET
       - ANG_TRELLO_BOARDID
-      - ANG_MONGO_HOST=mongodb
+      - ANG_MONGO_HOST=db
       - ANG_BADGE_HOST=opbadge
       - ANG_BADGE_ANALYSES_BRONZE_ID
       - ANG_BADGE_ANALYSES_BRONZE_NAME
@@ -36,7 +32,7 @@ services:
     tty: true
     command: npm run dev
 
-  analogistdb:
+  db:
     image: mongo:3.6.5
     volumes:
       - ./data/db:/data/db
@@ -48,7 +44,7 @@ services:
       - http_proxy
       - https_proxy
       - OBF_CERT
-      - BADGE_MONGO_HOST=mongodb
+      - BADGE_MONGO_HOST=db
       - BADGE_MONGO_PORT
       - BADGE_MONGO_DB
       - BADGE_LOGENTRY_CLIENT
@@ -58,8 +54,6 @@ services:
       - ./ssl:/usr/src/app/app/ssl
     ports:
       - "4000:4000"
-    links:
-      - analogistdb:mongodb
 
   maildev:
     image: djfarrelly/maildev

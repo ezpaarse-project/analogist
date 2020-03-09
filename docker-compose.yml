@@ -1,10 +1,7 @@
-version: '2'
+version: '3'
 services:
   analogist:
     image: ezpaarseproject/analogist:1.17.6
-    links:
-      - analogistdb:mongodb
-      - opbadge
     ports:
       - "3000:3000"
     environment:
@@ -59,6 +56,4 @@ services:
       - BADGE_AUTHORITY
     volumes:
       - ./ssl:/usr/src/app/app/ssl
-    links:
-      - analogistdb:mongodb
     restart: on-failure
