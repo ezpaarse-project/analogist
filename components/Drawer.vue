@@ -120,7 +120,7 @@
       <v-list-group v-if="user && user.role === 'admin'" no-action append-icon="mdi-chevron-down" :value="$nuxt.$route.name.indexOf('admin') !== -1">
         <template v-slot:activator>
           <v-list-item-icon>
-            <v-icon>mdi-settings</v-icon>
+            <v-icon>mdi-cog</v-icon>
           </v-list-item-icon>
           <v-list-item-title class="subtitle-2 font-weight-regular">Administration</v-list-item-title>
         </template>
