@@ -124,21 +124,23 @@
       </v-toolbar>
 
       <v-data-table :items="settings.proxySuffixes" hide-default-footer hide-default-header>
-        <template v-slot:item="{ item, index }">
-          <td>
-            <v-text-field
-              v-model="item.str"
-              :label="$t('ezLoggerSettings.suffix')"
-              single-line
-              full-width
-              hide-details
-            />
-          </td>
-          <td class="text-right">
-            <v-btn icon @click.native="removeProxy(index)">
-              <v-icon>mdi-delete</v-icon>
-            </v-btn>
-          </td>
+        <template v-slot:body="{ items }">
+          <tr v-for="(item, index) in items" :key="index">
+            <td>
+              <v-text-field
+                v-model="item.str"
+                :label="$t('ezLoggerSettings.suffix')"
+                single-line
+                full-width
+                hide-details
+              />
+            </td>
+            <td class="text-right" width="36px">
+              <v-btn icon @click.native="removeProxy(index)">
+                <v-icon>mdi-delete</v-icon>
+              </v-btn>
+            </td>
+          </tr>
         </template>
       </v-data-table>
     </v-card>
