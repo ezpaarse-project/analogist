@@ -178,7 +178,7 @@
         >
           Version: {{ appVersion }}
           <v-icon right>
-            mdi-github-circle
+            mdi-github
           </v-icon>
         </v-btn>
       </div>
