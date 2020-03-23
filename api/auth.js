@@ -94,6 +94,7 @@ router.post('/membership', mw.updateUserProfile, (req, res, next) => {
       ...generateMail('newUser', {
         fullName: profile.fullName,
         username: profile.username,
+        email: profile.email,
         boarId: board.id,
         boardName: board.name
       })
