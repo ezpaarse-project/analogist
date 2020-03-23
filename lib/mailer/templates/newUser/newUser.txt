@@ -1,6 +1,7 @@
 Demande AnalogIST ({{ fullName }})
 
-{{ fullName }} (https://trello.com/{{ username }}) souhaite devenir membre du tableau de bord {{ boardName }} (https://trello.com/b/{{ boardId }})
+{{ fullName }} ({{ username }}) (https://trello.com/{{ username }}) souhaite devenir membre du tableau de bord {{ boardName }} (https://trello.com/b/{{ boardId }})
+Email : {{ email }}
 
 Cordialement,
 L'équipe ezMESURE.

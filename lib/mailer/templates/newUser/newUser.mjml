@@ -12,13 +12,14 @@
       <p>Bonjour,</p>
       <p>
         <a href="https://trello.com/{{ username }}" target="_blank">
-          <strong>{{ fullName }}</strong>
+          <strong>{{ fullName }} ({{ username }})</strong>
         </a>
          souhaite devenir membre du tableau de bord 
         <a href="https://trello.com/b/{{ boardId }}" target="_blank">
           <strong>{{ boardName }}</strong>
         </a>
       </p>
+      <p>Email : {{ email }}</p>
     </mj-text>
 
     <mj-text>
