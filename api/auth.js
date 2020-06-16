@@ -95,7 +95,7 @@ router.post('/membership', mw.updateUserProfile, (req, res, next) => {
         fullName: profile.fullName,
         username: profile.username,
         email: profile.email,
-        boarId: board.id,
+        boardId: board.id,
         boardName: board.name
       })
     }).then(() => res.status(204).end())
