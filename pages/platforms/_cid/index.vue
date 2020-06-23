@@ -200,7 +200,7 @@
         <v-list>
           <v-list-item v-for="member in card.members" v-bind:key="member.id" avatar :href="'https://trello.com/' + member.username">
             <v-list-item-avatar>
-              <img v-if="member.avatarHash" :src="'https://trello-avatars.s3.amazonaws.com/' + member.avatarHash + '/50.png'" alt="avatar">
+              <img v-if="member.avatarHash" :src="member.avatarUrl + '/50.png'" alt="avatar">
               <span v-else-if="member.initials" class="icon blue-grey lighten-4">{{ member.initials }}</span>
             </v-list-item-avatar>
             <v-list-item-content>

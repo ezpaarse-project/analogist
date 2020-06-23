@@ -20,7 +20,7 @@
 
       <v-list-item v-else>
         <v-list-item-avatar v-if="user.avatarHash">
-          <img :title="user.fullName" :src="'https://trello-avatars.s3.amazonaws.com/' + user.avatarHash + '/50.png'" alt="Avatar" />
+          <img :title="user.fullName" :src="user.avatarUrl + '/50.png'" alt="Avatar" />
         </v-list-item-avatar>
         <v-list-item-avatar color="blue-grey lighten-4" v-if="!user.avatarHash">
           <span class="white--text headline" v-text="user.initials"></span>
@@ -224,7 +224,7 @@ export default {
     },
     avatarUrl () {
       if (this.user && this.user.avatarHash) {
-        return `https://trello-avatars.s3.amazonaws.com/${this.user.avatarHash}/50.png`
+        return `${this.user.avatarUrl}/50.png`
       }
     },
     loginUrl () {
