@@ -2,7 +2,7 @@
   <v-list-item :value="visited" router :to="{ name: 'platforms-cid-analyses-aid', params: { cid: $route.params.cid, aid: analysis.id } }">
     <v-list-item-avatar>
       <v-avatar size="36" color="grey lighten-1">
-        <img v-if="updatedBy && updatedBy.avatarHash" :title="updatedBy.fullName" :src="'https://trello-avatars.s3.amazonaws.com/' + updatedBy.avatarHash + '/50.png'" alt="avatar" />
+        <img v-if="updatedBy && updatedBy.avatarHash" :title="updatedBy.fullName" :src="updatedBy.avatarUrl + '/50.png'" alt="avatar" />
         <span v-else-if="updatedBy" class="subtitle-1 white--text" :title="updatedBy.fullName" v-text="updatedBy.initials" />
         <v-icon v-else>mdi-account-question</v-icon>
       </v-avatar>
