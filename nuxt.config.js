@@ -16,6 +16,7 @@ module.exports = {
       { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Roboto' }
     ]
   },
+  telemetry: false,
   mode: 'spa',
   loading: { color: '#FFFFFF' },
   loadingIndicator: {
