@@ -80,15 +80,18 @@
               xs12
               sm12
             >
-              <p class="text-xs-justify">
-                {{ $t('home.whatIsEzPaarse', { parsers }) }}
-              </p>
-              <p class="text-xs-justify">
-                {{ $t('home.whatIsAnalogist') }}
-              </p>
-              <p class="text-xs-justify">
-                {{ $t('home.goodAnalyses') }}
-              </p>
+              <p
+                class="text-xs-justify"
+                v-html="$t('home.whatIsEzPaarse', { parsers })"
+              />
+              <p
+                class="text-xs-justify"
+                v-html="$t('home.whatIsAnalogist')"
+              />
+              <p
+                class="text-xs-justify"
+                v-html="$t('home.goodAnalyses')"
+              />
             </v-flex>
           </v-layout>
         </v-container>
