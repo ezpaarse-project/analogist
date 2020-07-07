@@ -8,13 +8,16 @@
     :timeout="currentMessage.timeout"
   >
     {{ $t(currentMessage.text) }}
-    <v-btn
-      dark
-      text
-      @click.native="visible = false"
-    >
-      {{ $t('ui.close') }}
-    </v-btn>
+    <template v-slot:action>
+      <v-btn
+        dark
+        text
+        @click.native="visible = false"
+      >
+        {{ $t('ui.close') }}
+      </v-btn>
+    </template>
+
   </v-snackbar>
 </template>
 
