@@ -247,9 +247,10 @@
         class="text-center"
       >
         <p>{{ $t('ezLogger.waitingForTraffic') }}</p>
-        <p class="muted">
-          {{ $t('ezLogger.getTheExtension', { url: extensionUrl }) }}
-        </p>
+        <p
+          class="muted"
+          v-html="$t('ezLogger.getTheExtension', { url: extensionUrl })"
+        />
       </v-card-text>
     </v-card>
 
