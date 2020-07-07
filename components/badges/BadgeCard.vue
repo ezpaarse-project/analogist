@@ -6,7 +6,10 @@
         size="100"
         tile
       >
-        <img class="mx-auto badgeImage" :src="badge.image">
+        <img
+          class="mx-auto badgeImage"
+          :src="badge.image"
+        >
       </v-avatar>
 
       <v-card-title class="headline">
@@ -26,15 +29,24 @@
         <span v-else>{{ badge.alt_language[$i18n.locale].criteria }}</span>
       </p>
 
-      <p v-if="badge.issued_on"><strong>{{ $t('badges.issuedOn') }}</strong> : {{ issued_on }}</p>
+      <p v-if="badge.issued_on">
+        <strong>{{ $t('badges.issuedOn') }}</strong> : {{ issued_on }}
+      </p>
     </v-card-text>
 
     <v-card-actions>
-      <v-menu offset-y v-if="badge.issued_on">
+      <v-menu
+        v-if="badge.issued_on"
+        offset-y
+      >
         <template v-slot:activator="{ on: menu }">
           <v-tooltip bottom>
             <template v-slot:activator="{ on: tooltip }">
-              <v-btn class="black--text" icon v-on="{ ...tooltip, ...menu }">
+              <v-btn
+                class="black--text"
+                icon
+                v-on="{ ...tooltip, ...menu }"
+              >
                 <v-icon>mdi-share-variant</v-icon>
               </v-btn>
             </template>
@@ -42,18 +54,28 @@
           </v-tooltip>
         </template>
         <v-list class="sharing-list">
-          <v-list-item router :href="`https://www.facebook.com/sharer/sharer.php?u=${viewUrl}`" target="_blank">
-            <v-icon>mdi-facebook-box</v-icon> Facebook
+          <v-list-item
+            router
+            :href="`https://www.facebook.com/sharer/sharer.php?u=${viewUrl}`"
+            target="_blank"
+          >
+            <v-icon>mdi-facebook</v-icon> Facebook
           </v-list-item>
-          <v-list-item :href="`https://twitter.com/intent/tweet?size=medium&count=none&text=${$i18n.locale === 'fr' ? badge.name : badge.alt_language[$i18n.locale].name}%20${viewUrl}&hashtags=AnalogIST,ezMESURE,ezTEAM,openbadge&via=ezpaarse`" target="_blank">
-            <v-icon>mdi-twitter-box</v-icon> Twitter
+          <v-list-item
+            :href="`https://twitter.com/intent/tweet?size=medium&count=none&text=${$i18n.locale === 'fr' ? badge.name : badge.alt_language[$i18n.locale].name}%20${viewUrl}&hashtags=AnalogIST,ezMESURE,ezTEAM,openbadge&via=ezpaarse`"
+            target="_blank"
+          >
+            <v-icon>mdi-twitter</v-icon> Twitter
           </v-list-item>
           <v-list-item @click="linkedIn">
-            <v-icon>mdi-linkedin-box</v-icon> Linkedin
+            <v-icon>mdi-linkedin</v-icon> Linkedin
           </v-list-item>
           <v-tooltip bottom>
             <template v-slot:activator="{ on }">
-              <v-list-item v-on="on" @click="copyEmbedObject">
+              <v-list-item
+                v-on="on"
+                @click="copyEmbedObject"
+              >
                 <v-icon>mdi-code-tags</v-icon> {{ $t('badges.embed') }}
               </v-list-item>
             </template>
@@ -62,11 +84,27 @@
         </v-list>
       </v-menu>
 
-      <v-text-field id="embed-input" class="embedInput" text readonly solo single-line full-width hide-details :value="embedObject"></v-text-field>
+      <v-text-field
+        id="embed-input"
+        class="embedInput"
+        text
+        readonly
+        solo
+        single-line
+        full-width
+        hide-details
+        :value="embedObject"
+      />
 
-      <v-spacer></v-spacer>
-      
-      <v-btn color="red" text @click="closeCard">{{ $t('ezLogger.close') }}</v-btn>
+      <v-spacer />
+
+      <v-btn
+        color="red"
+        text
+        @click="closeCard"
+      >
+        {{ $t('ezLogger.close') }}
+      </v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -75,7 +113,16 @@
 import moment from 'moment'
 
 export default {
-  props: ['badge', 'userId'],
+  props: {
+    badge: {
+      type: Object,
+      default: () => ({})
+    },
+    userId: {
+      type: String,
+      default: () => ('')
+    }
+  },
   computed: {
     issued_on () {
       return this.badge.issued_on ? moment.unix(this.badge.issued_on).locale(this.$i18n.locale).format('LL') : null
@@ -120,13 +167,13 @@ export default {
   text-align: justify
 }
 .embedInput {
-  opacity: 0; 
-  user-select: none; 
-  cursor: default; 
+  opacity: 0;
+  user-select: none;
+  cursor: default;
   pointer-events: none;
 }
 .badgeImage {
-  display: block; 
+  display: block;
   margin: auto;
 }
 </style>

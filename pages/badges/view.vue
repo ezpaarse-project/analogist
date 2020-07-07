@@ -1,31 +1,76 @@
 <template>
   <section>
     <v-card>
-      <v-toolbar class="secondary" dense dark flat>
+      <v-toolbar
+        class="secondary"
+        dense
+        dark
+        flat
+      >
         <v-toolbar-title>
-          {{ $t('badges.title') }} <v-chip v-if="badges && badges.badges" color="grey lighten-2"><strong>{{badgesOwned}}</strong> / {{badges.badges.length}}</v-chip>
+          {{ $t('badges.title') }} <v-chip
+            v-if="badges && badges.badges"
+            color="grey lighten-2"
+          >
+            <strong>{{ badgesOwned }}</strong> / {{ badges.badges.length }}
+          </v-chip>
         </v-toolbar-title>
       </v-toolbar>
-      
+
       <v-card-text>
-        <v-layout wrap justify-center v-if="badges && badges.badges">
-          <v-flex xs12 sm12>
+        <v-layout
+          v-if="badges && badges.badges"
+          wrap
+          justify-center
+        >
+          <v-flex
+            xs12
+            sm12
+          >
             <v-switch
+              v-model="visibility"
               style="float: right"
               :label="visibility ? $t('badges.public') : $t('badges.private')"
-              v-model="visibility"
-            ></v-switch>
+            />
           </v-flex>
         </v-layout>
 
-        <v-layout v-if="badges && badges.badges && ping" wrap justify-center>
-          <v-flex xs12 sm2 v-for="badge in badges.badges" :key="badge.id" @click="currentBadge = badge; linkedInModal = false" :class="{ 'notPossessed' : !badge.issued_on }">
-            <img class="mx-auto badgeImage" :src="badge.image">
-            <h4 class="badgeName" v-if="$i18n.locale === 'fr'">{{ badge.name }}</h4>
-            <h4 class="badgeName" v-else>{{ badge.alt_language[$i18n.locale].name }}</h4>
+        <v-layout
+          v-if="badges && badges.badges && ping"
+          wrap
+          justify-center
+        >
+          <v-flex
+            v-for="badge in badges.badges"
+            :key="badge.id"
+            xs12
+            sm2
+            :class="{ 'notPossessed' : !badge.issued_on }"
+            @click="currentBadge = badge; linkedInModal = false"
+          >
+            <img
+              class="mx-auto badgeImage"
+              :src="badge.image"
+            >
+            <h4
+              v-if="$i18n.locale === 'fr'"
+              class="badgeName"
+            >
+              {{ badge.name }}
+            </h4>
+            <h4
+              v-else
+              class="badgeName"
+            >
+              {{ badge.alt_language[$i18n.locale].name }}
+            </h4>
           </v-flex>
 
-          <v-flex xs12 sm12 v-if="!ping">
+          <v-flex
+            v-if="!ping"
+            xs12
+            sm12
+          >
             <v-card class="red white--text">
               <v-card-text>
                 {{ $t('badges.error') }}
@@ -33,17 +78,38 @@
             </v-card>
           </v-flex>
 
-          <v-dialog v-if="currentBadge && !linkedInModal" v-model="currentBadge" max-width="600px">
-            <badge-card :badge="currentBadge" :userId="user.id" @closeCard="closeCard" @linkedIn="linkedIn"></badge-card>
+          <v-dialog
+            v-if="currentBadge && !linkedInModal"
+            v-model="currentBadge"
+            max-width="600px"
+          >
+            <badge-card
+              :badge="currentBadge"
+              :user-id="user.id"
+              @closeCard="closeCard"
+              @linkedIn="linkedIn"
+            />
           </v-dialog>
-        
-          <v-dialog v-if="linkedInModal && currentBadge" v-model="currentBadge" max-width="600px">
-            <linked-in-card :badge="currentBadge" :userId="user.id" @closeLinkedInCard="closeLinkedInCard"></linked-in-card>
+
+          <v-dialog
+            v-if="linkedInModal && currentBadge"
+            v-model="currentBadge"
+            max-width="600px"
+          >
+            <linked-in-card
+              :badge="currentBadge"
+              :user-id="user.id"
+              @closeLinkedInCard="closeLinkedInCard"
+            />
           </v-dialog>
         </v-layout>
 
         <v-layout v-else>
-          <v-flex xs12 sm12 mb-2>
+          <v-flex
+            xs12
+            sm12
+            mb-2
+          >
             <v-card class="red white--text">
               <v-card-text>
                 {{ $t('badges.noMetrics') }}
@@ -52,13 +118,28 @@
           </v-flex>
         </v-layout>
 
-        <a href="https://openbadgefactory.com/" target="blank">
-          <img src="@/static/obf_logo.png" alt="OpenBadgeFactory" :class="{ 'error': !ping }" class="obfactory" align="right">
+        <a
+          href="https://openbadgefactory.com/"
+          target="blank"
+        >
+          <img
+            src="@/static/obf_logo.png"
+            alt="OpenBadgeFactory"
+            :class="{ 'error': !ping }"
+            class="obfactory"
+            align="right"
+          >
         </a>
-              
+
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
-            <v-btn text v-on="on" icon href="https://blog.ezpaarse.org/2018/06/communication-les-badges-ezpaarse/" target="_blank">
+            <v-btn
+              text
+              icon
+              href="https://blog.ezpaarse.org/2018/06/communication-les-badges-ezpaarse/"
+              target="_blank"
+              v-on="on"
+            >
               <v-icon>mdi-help-circle</v-icon>
             </v-btn>
           </template>
@@ -74,24 +155,11 @@ import BadgeCard from '~/components/badges/BadgeCard'
 import LinkedInCard from '~/components/badges/LinkedInCard'
 
 export default {
-  name: 'badges',
+  name: 'Badges',
   transition: 'slide-x-transition',
   components: {
     BadgeCard,
     LinkedInCard
-  },
-  head () {
-    return {
-      title: 'Badges'
-    }
-  },
-  data () {
-    return {
-      modal: false,
-      currentBadge: null,
-      linkedInModal: false,
-      visible: false
-    }
   },
   async fetch ({ store, redirect, app }) {
     try {
@@ -112,9 +180,12 @@ export default {
       await store.dispatch('snacks/error', 'badges.noMetrics')
     }
   },
-  watch: {
-    user: function () {
-      if (!this.user) return this.$router.push('/badges/list')
+  data () {
+    return {
+      modal: false,
+      currentBadge: null,
+      linkedInModal: false,
+      visible: false
     }
   },
   computed: {
@@ -141,6 +212,11 @@ export default {
       return this.$store.state.user
     }
   },
+  watch: {
+    user: function () {
+      if (!this.user) return this.$router.push('/badges/list')
+    }
+  },
   methods: {
     closeCard () {
       this.currentBadge = null
@@ -152,6 +228,11 @@ export default {
     closeLinkedInCard () {
       this.linkedInModal = false
       this.currentBadge = null
+    }
+  },
+  head () {
+    return {
+      title: 'Badges'
     }
   }
 }
@@ -172,7 +253,7 @@ img.error {
   opacity: 0.6;
 }
 .badgeImage {
-  display: block; 
+  display: block;
   margin: auto;
   cursor: pointer;
 }

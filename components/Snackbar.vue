@@ -1,13 +1,20 @@
 <template>
   <v-snackbar
     v-if="currentMessage"
-    bottom right
+    v-model="visible"
+    bottom
+    right
     :color="currentMessage.color"
     :timeout="currentMessage.timeout"
-    v-model="visible"
   >
     {{ $t(currentMessage.text) }}
-    <v-btn dark text @click.native="visible = false">{{ $t('ui.close') }}</v-btn>
+    <v-btn
+      dark
+      text
+      @click.native="visible = false"
+    >
+      {{ $t('ui.close') }}
+    </v-btn>
   </v-snackbar>
 </template>
 
@@ -18,6 +25,12 @@ export default {
   data () {
     return {
       visible: false
+    }
+  },
+  computed: {
+    ...mapState('snacks', ['messages']),
+    currentMessage () {
+      return this.messages[0]
     }
   },
   watch: {
@@ -36,12 +49,6 @@ export default {
         this.shiftMessages()
         this.visible = true
       }, 500)
-    }
-  },
-  computed: {
-    ...mapState('snacks', ['messages']),
-    currentMessage () {
-      return this.messages[0]
     }
   },
   methods: {

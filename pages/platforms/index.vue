@@ -1,50 +1,77 @@
 <template>
   <section>
     <v-card>
-      <v-toolbar class="secondary" dense dark flat>
+      <v-toolbar
+        class="secondary"
+        dense
+        dark
+        flat
+      >
         <v-toolbar-title>{{ $t('cards.platforms') }} ({{ cards.length }})</v-toolbar-title>
 
-        <v-spacer></v-spacer>
+        <v-spacer />
 
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
-            <v-btn v-on="on" icon text v-if="canEdit" :to="{ name: 'platforms-new' }">
+            <v-btn
+              v-if="canEdit"
+              icon
+              text
+              :to="{ name: 'platforms-new' }"
+              v-on="on"
+            >
               <v-icon>mdi-plus</v-icon>
             </v-btn>
           </template>
-          <span v-text="$t('creation.newPlatform')"></span>
+          <span v-text="$t('creation.newPlatform')" />
         </v-tooltip>
 
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
-            <v-btn v-on="on" icon text @click="generateCSV()">
+            <v-btn
+              icon
+              text
+              v-on="on"
+              @click="generateCSV()"
+            >
               <v-icon>mdi-download</v-icon>
             </v-btn>
           </template>
-          <span v-text="$t('certifications.downloadCertifiedList')"></span>
+          <span v-text="$t('certifications.downloadCertifiedList')" />
         </v-tooltip>
       </v-toolbar>
 
       <v-card-text>
-        <v-container fluid grid-list-md>
-          <v-layout row wrap>
-            <v-flex xs12 sm5>
+        <v-container
+          fluid
+          grid-list-md
+        >
+          <v-layout
+            row
+            wrap
+          >
+            <v-flex
+              xs12
+              sm5
+            >
               <v-text-field
-                @input="checkPage"
-                :label="$t('cards.search')"
                 v-model="searchText"
+                :label="$t('cards.search')"
                 append-icon="mdi-magnify"
                 hide-details
                 single-line
                 clearable
+                @input="checkPage"
               />
             </v-flex>
-            <v-flex xs12 sm5>
+            <v-flex
+              xs12
+              sm5
+            >
               <v-select
-                @input="checkPage"
+                v-model="searchLists"
                 :label="$t('cards.status')"
                 :items="lists"
-                v-model="searchLists"
                 item-text="name"
                 item-value="id"
                 append-icon="mdi-tag"
@@ -52,8 +79,12 @@
                 single-line
                 multiple
                 clearable
+                @input="checkPage"
               >
-                <template slot="selection" slot-scope="{ item, index }">
+                <template
+                  slot="selection"
+                  slot-scope="{ item, index }"
+                >
                   <span v-if="index === 0">{{ item.name }}</span>
                   <span
                     v-if="index === 1"
@@ -62,12 +93,14 @@
                 </template>
               </v-select>
             </v-flex>
-            <v-flex xs12 sm2>
+            <v-flex
+              xs12
+              sm2
+            >
               <v-select
-                @input="checkPage"
+                v-model="searchCertifications"
                 :label="$t('cards.certifications')"
                 :items="certifications"
-                v-model="searchCertifications"
                 item-text="name"
                 item-value="id"
                 append-icon="mdi-certificate"
@@ -75,43 +108,61 @@
                 single-line
                 multiple
                 clearable
+                @input="checkPage"
               >
                 <template v-slot:item="{ item }">
                   {{ item.name }}
-                  <v-list-item-avatar style="margin-left: 10px" size="24" v-if="item.id === 'humanCertified'" color="#F4B48B">
+                  <v-list-item-avatar
+                    v-if="item.id === 'humanCertified'"
+                    style="margin-left: 10px"
+                    size="24"
+                    color="#F4B48B"
+                  >
                     <span class="white--text">H</span>
                   </v-list-item-avatar>
-                  <v-list-item-avatar style="margin-left: 10px" size="24" v-if="item.id === 'publisherCertified'" color="#5AB9C1">
+                  <v-list-item-avatar
+                    v-if="item.id === 'publisherCertified'"
+                    style="margin-left: 10px"
+                    size="24"
+                    color="#5AB9C1"
+                  >
                     <span class="white--text">P</span>
                   </v-list-item-avatar>
                 </template>
               </v-select>
             </v-flex>
 
-            <v-flex xs12 sm6>
+            <v-flex
+              xs12
+              sm6
+            >
               <v-checkbox
                 v-model="displayAllCards"
                 :label="$t('cards.displayAllPlatforms')"
                 color="primary"
                 hide-details
-              ></v-checkbox>
+              />
             </v-flex>
           </v-layout>
         </v-container>
 
         <div class="text-center pt-3">
           <v-pagination
+            v-model="searchPage"
             prev-icon="mdi-chevron-left"
             next-icon="mdi-chevron-right"
             :length="nbPages"
-            v-model="searchPage"
             :total-visible="5"
           />
         </div>
       </v-card-text>
 
       <v-list three-line>
-        <CardTile v-for="card in paginatedCards" :key="card.id" :card="card"></CardTile>
+        <CardTile
+          v-for="card in paginatedCards"
+          :key="card.id"
+          :card="card"
+        />
       </v-list>
     </v-card>
   </section>
@@ -129,75 +180,18 @@ function escapeCSVstring (str) {
 }
 
 export default {
-  name: 'platforms',
+  name: 'Platforms',
   transition: 'slide-x-transition',
   components: {
     CardTile
-  },
-  head () {
-    return {
-      title: 'Platforms'
-    }
-  },
-  data () {
-    return {
-      displayAll: false
-    }
   },
   async fetch ({ store }) {
     await store.dispatch('FETCH_TRELLO_LISTS')
     await store.dispatch('FETCH_CARDS')
   },
-  methods: {
-    checkPage () {
-      if (this.searchPage <= 0 || this.searchPage > this.nbPages) {
-        this.$store.dispatch('SET_SEARCH_PAGE', 1)
-      }
-    },
-    difference ({ editor, ezpaarse }) {
-      return Number.parseFloat((((editor - ezpaarse) / editor) * 100), 10).toFixed(2)
-    },
-    generateCSV () {
-      const columns = [
-        { title: 'Plateforme', getter: (a) => a.name },
-        {
-          title: 'H',
-          getter: (a) => {
-            if (a.platform.humanCertifications.length > 0) {
-              return a.platform.humanCertifications[0].form.year
-            }
-            return '-'
-          }
-        },
-        {
-          title: 'P',
-          getter: (a) => {
-            if (a.platform.publisherCertifications.length > 0) {
-              return a.platform.publisherCertifications[0].form.year
-            }
-            return '-'
-          }
-        }
-      ]
-
-      const certifiedPlatforms = []
-      this.cards.forEach(card => {
-        if (card.platform) {
-          if (card.platform.humanCertifications.length > 0 || card.platform.publisherCertifications.length > 0) {
-            certifiedPlatforms.push(card)
-          }
-        }
-      })
-
-      const header = columns.map(col => escapeCSVstring(col.title)).join(';')
-
-      const lines = certifiedPlatforms.map(event => {
-        return columns.map(col => escapeCSVstring(col.getter(event))).join(';')
-      }).join('\n')
-
-      const fileName = `${this.$t('certifications.certifiedPlatforms')}.csv`
-
-      return saveAs(new Blob([`${header}\n${lines}`], { type: 'text/csv;charset=utf-8' }), fileName)
+  data () {
+    return {
+      displayAll: false
     }
   },
   computed: {
@@ -294,6 +288,63 @@ export default {
     },
     paginatedCards () {
       return this.cards.slice((this.searchPage - 1) * 20, (this.searchPage - 1) * 20 + 20)
+    }
+  },
+  methods: {
+    checkPage () {
+      if (this.searchPage <= 0 || this.searchPage > this.nbPages) {
+        this.$store.dispatch('SET_SEARCH_PAGE', 1)
+      }
+    },
+    difference ({ editor, ezpaarse }) {
+      return Number.parseFloat((((editor - ezpaarse) / editor) * 100), 10).toFixed(2)
+    },
+    generateCSV () {
+      const columns = [
+        { title: 'Plateforme', getter: (a) => a.name },
+        {
+          title: 'H',
+          getter: (a) => {
+            if (a.platform.humanCertifications.length > 0) {
+              return a.platform.humanCertifications[0].form.year
+            }
+            return '-'
+          }
+        },
+        {
+          title: 'P',
+          getter: (a) => {
+            if (a.platform.publisherCertifications.length > 0) {
+              return a.platform.publisherCertifications[0].form.year
+            }
+            return '-'
+          }
+        }
+      ]
+
+      const certifiedPlatforms = []
+      this.cards.forEach(card => {
+        if (card.platform) {
+          if (card.platform.humanCertifications.length > 0 || card.platform.publisherCertifications.length > 0) {
+            certifiedPlatforms.push(card)
+          }
+        }
+      })
+
+      const header = columns.map(col => escapeCSVstring(col.title)).join(';')
+
+      const lines = certifiedPlatforms.map(event => {
+        return columns.map(col => escapeCSVstring(col.getter(event))).join(';')
+      }).join('\n')
+
+      const fileName = `${this.$t('certifications.certifiedPlatforms')}.csv`
+
+      return saveAs(new Blob([`${header}\n${lines}`], { type: 'text/csv;charset=utf-8' }), fileName)
+    }
+  },
+  head () {
+    return {
+      title: 'Platforms'
     }
   }
 }

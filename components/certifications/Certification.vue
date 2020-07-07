@@ -1,15 +1,21 @@
 <template>
   <span>
-    <Human v-bind:years="years" v-on:openDialog="openDialog" />
-    <Publisher v-bind:years="years" v-on:openDialog="openDialog" />
+    <Human
+      :years="years"
+      @openDialog="openDialog"
+    />
+    <Publisher
+      :years="years"
+      @openDialog="openDialog"
+    />
 
     <v-dialog
       v-model="dialog"
+      width="600"
       @click:outside="closeDialog"
       @keydown.esc="closeDialog"
-      width="600"
     >
-       <v-card>
+      <v-card>
         <v-card-title
           dark
           class="headline"
@@ -20,7 +26,7 @@
           <span v-if="certifications.publisherCertified">&nbsp;P</span>
         </v-card-title>
 
-        <v-divider></v-divider>
+        <v-divider />
 
         <v-card-text>
           <v-form
@@ -29,8 +35,14 @@
             lazy-validation
             enctype="multipart/form-data"
           >
-            <v-layout  wrap class="my-2">
-              <v-flex xs12 sm12>
+            <v-layout
+              wrap
+              class="my-2"
+            >
+              <v-flex
+                xs12
+                sm12
+              >
                 <v-select
                   v-model="form.object"
                   :rules="[v => !!v || $t('certifications.formError.object')]"
@@ -40,40 +52,56 @@
                   :label="$t('certifications.form.object')"
                   :disabled="disableObject"
                   required
-                ></v-select>
+                />
               </v-flex>
 
-              <v-flex xs12 sm12>
+              <v-flex
+                xs12
+                sm12
+              >
                 <v-text-field
                   v-model="form.establishment"
                   :rules="[v => !!v || $t('certifications.formError.establishment')]"
                   required
                   placeholder="ex: CNRS"
                   :label="$t('certifications.form.establishment')"
-                ></v-text-field>
+                />
               </v-flex>
 
-              <v-flex xs12 sm12>
+              <v-flex
+                xs12
+                sm12
+              >
                 <v-textarea
+                  v-model="form.comment"
                   name="input-7-1"
                   :label="$t('certifications.form.comment')"
-                  v-model="form.comment"
                   :rules="[v => !!v || $t('certifications.formError.comment')]"
                   required
-                ></v-textarea>
+                />
               </v-flex>
 
-              <v-flex xs12 sm6 pr-1 v-if="certifications.publisherCertified">
+              <v-flex
+                v-if="certifications.publisherCertified"
+                xs12
+                sm6
+                pr-1
+              >
                 <v-text-field
                   v-model="form.values.ezpaarse"
                   type="number"
                   placeholder="ex: 9092"
                   :label="$t('certifications.form.totalEzpaarse')"
                   :rules="[v => !!v || $t('certifications.formError.totalValue')]"
-                ></v-text-field>
+                />
               </v-flex>
 
-              <v-flex xs12 sm6 pl-1 v-if="certifications.publisherCertified">
+              <v-flex
+                v-if="certifications.publisherCertified"
+                xs12
+                sm6
+                pl-1
+              >
                 <v-text-field
                   v-model="form.values.editor"
                   type="number"
@@ -81,36 +109,54 @@
                   :label="$t('certifications.form.totalEditor')"
                   :rules="[v => !!v || $t('certifications.formError.totalValue')]"
                   required
-                ></v-text-field>
+                />
               </v-flex>
-              
-              <v-flex xs12 sm12>
+
+              <v-flex
+                xs12
+                sm12
+              >
                 <v-file-input
-                  ref="attachment"
                   id="attachment"
+                  ref="attachment"
+                  v-model="form.attachment"
                   name="attachment"
                   show-size
-                  v-model="form.attachment"
                   :label="$t('certifications.form.attachment')"
                   :rules="[v => !!v || (v && v.size < 2000000) || $t('certifications.formError.attachment')]"
                   :hint="$t('certifications.form.attachmentSize')"
                   persistent-hint
-                ></v-file-input>
+                />
               </v-flex>
 
-              <v-flex xs12 sm12 mt-3>
-                <p class="caption" v-text="$t('certifications.form.requiredFields')"></p>
+              <v-flex
+                xs12
+                sm12
+                mt-3
+              >
+                <p
+                  class="caption"
+                  v-text="$t('certifications.form.requiredFields')"
+                />
               </v-flex>
             </v-layout>
           </v-form>
         </v-card-text>
 
-        <v-divider></v-divider>
+        <v-divider />
 
         <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="primary" text @click="certify()" :disabled="!valid">{{ $t('certifications.send') }}</v-btn>
-          <v-btn text @click="closeDialog">{{ $t('certifications.close') }}</v-btn>
+          <v-spacer />
+          <v-btn
+            color="primary"
+            text
+            :disabled="!valid"
+            @click="certify()"
+          >{{ $t('certifications.send') }}</v-btn>
+          <v-btn
+            text
+            @click="closeDialog"
+          >{{ $t('certifications.close') }}</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -229,4 +275,3 @@ export default {
   }
 }
 </script>
-

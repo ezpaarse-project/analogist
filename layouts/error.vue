@@ -1,16 +1,47 @@
 <template>
   <v-app>
     <main>
-      <v-container fluid fill-height>
-        <v-layout row wrap align-center justify-center>
-          <v-flex xs12 sm8 md4 class="text-center">
-            <v-card text color="transparent" pa-5 flat>
+      <v-container
+        fluid
+        fill-height
+      >
+        <v-layout
+          row
+          wrap
+          align-center
+          justify-center
+        >
+          <v-flex
+            xs12
+            sm8
+            md4
+            class="text-center"
+          >
+            <v-card
+              text
+              color="transparent"
+              pa-5
+              flat
+            >
               <v-card-text class="text-center">
-                <v-icon size="128">mdi-emoticon-sad-outline</v-icon>
-                <h1 class="display-3">
+                <v-icon size="128">
+                  mdi-emoticon-sad-outline
+                </v-icon>
+                <h1
+                  v-if="error"
+                  class="display-3"
+                >
                   {{ error.statusCode }}
                 </h1>
-                <h2>{{ error.message }}</h2>
+                <h2 v-if="error">
+                  {{ error.message }}
+                </h2>
+                <h1
+                  v-if="!error"
+                  class="display-3"
+                >
+                  {{ $t('errorGeneric') }}
+                </h1>
               </v-card-text>
             </v-card>
           </v-flex>
@@ -21,14 +52,12 @@
 </template>
 
 <script>
-import AppHeader from '~/components/Header.vue'
-import AppDrawer from '~/components/Drawer.vue'
-
 export default {
-  props: ['error'],
-  components: {
-    AppHeader,
-    AppDrawer
+  props: {
+    error: {
+      type: Object,
+      default: () => ({})
+    }
   },
   computed: {
     dark () {

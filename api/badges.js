@@ -29,7 +29,7 @@ router.get('/metrics', cors(), (req, res, next) => {
 router.get('/view/:uuid/:language', (req, res, next) => {
   request.get(`${url}/view/${req.params.uuid}/${req.params.language}`, {
     headers: {
-      'angHost': `${req.protocol}://${req.get('x-forwarded-host') || req.connection.remoteAddress}`
+      angHost: `${req.protocol}://${req.get('x-forwarded-host') || req.connection.remoteAddress}`
     }
   }).on('response', response => {
     res.charset = 'UTF-8'
@@ -41,7 +41,7 @@ router.get('/view/:uuid/:language', (req, res, next) => {
 router.get('/embed/:uuid/:language', (req, res, next) => {
   request.get(`${url}/embed/${req.params.uuid}/${req.params.language}`, {
     headers: {
-      'angHost': `${req.protocol}://${req.get('x-forwarded-host') || req.connection.remoteAddress}`
+      angHost: `${req.protocol}://${req.get('x-forwarded-host') || req.connection.remoteAddress}`
     }
   }).on('response', response => {
     res.charset = 'UTF-8'

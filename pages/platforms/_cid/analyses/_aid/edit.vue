@@ -1,28 +1,75 @@
 <template>
   <section>
-    <v-layout row justify-space-between>
-      <v-btn text router exact :to="{ name: 'platforms-cid-analyses-aid', params: { cid: $route.params.cid, aid: $route.params.aid } }" class="mb-2 body-2">
-        <v-icon left>mdi-arrow-left</v-icon>{{ $t('ui.back') }}
+    <v-layout
+      row
+      justify-space-between
+    >
+      <v-btn
+        text
+        router
+        exact
+        :to="{ name: 'platforms-cid-analyses-aid', params: { cid: $route.params.cid, aid: $route.params.aid } }"
+        class="mb-2 body-2"
+      >
+        <v-icon left>
+          mdi-arrow-left
+        </v-icon>{{ $t('ui.back') }}
       </v-btn>
     </v-layout>
 
     <v-card>
-      <v-toolbar class="secondary" dense dark flat>
+      <v-toolbar
+        class="secondary"
+        dense
+        dark
+        flat
+      >
         <v-toolbar-title>{{ card.name }}</v-toolbar-title>
 
-        <v-btn absolute fab bottom right class="pink" :disabled="!dirty" :loading="saving" v-on:click.native="save">
+        <v-btn
+          absolute
+          fab
+          bottom
+          right
+          class="pink"
+          :disabled="!dirty"
+          :loading="saving"
+          @click.native="save"
+        >
           <v-icon>mdi-content-save</v-icon>
         </v-btn>
       </v-toolbar>
 
       <v-card-text v-if="analysis">
-        <v-container fluid grid-list-md pa-0>
-          <v-text-field filled @input="handleChange" name="title" :label="$t('analyses.title')" v-model="analysis.title"></v-text-field>
-          <v-text-field filled @input="handleChange" @change="parseUrl" name="url" :label="$t('analyses.url')" v-model="analysis.url"></v-text-field>
+        <v-container
+          fluid
+          grid-list-md
+          pa-0
+        >
+          <v-text-field
+            v-model="analysis.title"
+            filled
+            name="title"
+            :label="$t('analyses.title')"
+            @input="handleChange"
+          />
+          <v-text-field
+            v-model="analysis.url"
+            filled
+            name="url"
+            :label="$t('analyses.url')"
+            @input="handleChange"
+            @change="parseUrl"
+          />
 
           <v-layout wrap>
-            <v-flex xs12 sm6 md4>
+            <v-flex
+              xs12
+              sm6
+              md4
+            >
               <v-autocomplete
+                v-model="analysis.rtype"
                 filled
                 name="rtype"
                 :label="$t('analyses.type')"
@@ -30,22 +77,28 @@
                 item-text="code"
                 item-value="code"
                 :filter="filterFields"
-                @input="handleChange"
-                v-model="analysis.rtype"
                 :append-icon="analysis.rtype ? 'mdi-close' : 'mdi-menu-down'"
+                @input="handleChange"
                 @click:append="clearRtype"
               >
                 <template v-slot:item="{ item }">
                   <v-list-item-content>
-                    <v-list-item-title v-html="item.code"></v-list-item-title>
-                    <v-list-item-subtitle v-html="item[`description_${$i18n.locale}`] || item.description"></v-list-item-subtitle>
+                    <v-list-item-title v-text="item.code" />
+                    <v-list-item-subtitle>
+                      {{ item[`description_${$i18n.locale}`] || item.description }}
+                    </v-list-item-subtitle>
                   </v-list-item-content>
                 </template>
               </v-autocomplete>
             </v-flex>
 
-            <v-flex xs12 sm6 md4>
+            <v-flex
+              xs12
+              sm6
+              md4
+            >
               <v-autocomplete
+                v-model="analysis.mime"
                 filled
                 name="mime"
                 :label="$t('analyses.format')"
@@ -53,45 +106,73 @@
                 item-text="code"
                 item-value="code"
                 :filter="filterFields"
-                @input="handleChange"
-                v-model="analysis.mime"
                 :append-icon="analysis.mime ? 'mdi-close' : 'mdi-menu-down'"
+                @input="handleChange"
                 @click:append="clearMime"
               >
                 <template v-slot:item="{ item }">
                   <v-list-item-content>
-                    <v-list-item-title v-html="item.code"></v-list-item-title>
-                    <v-list-item-subtitle v-html="item[`description_${$i18n.locale}`] || item.description"></v-list-item-subtitle>
+                    <v-list-item-title v-text="item.code" />
+                    <v-list-item-subtitle>
+                      {{ item[`description_${$i18n.locale}`] || item.description }}
+                    </v-list-item-subtitle>
                   </v-list-item-content>
                 </template>
               </v-autocomplete>
             </v-flex>
-            <v-flex xs12 sm12 md4>
-              <v-text-field filled @input="handleChange" name="unitid" :label="$t('analyses.unitid')" v-model="analysis.unitid"></v-text-field>
+            <v-flex
+              xs12
+              sm12
+              md4
+            >
+              <v-text-field
+                v-model="analysis.unitid"
+                filled
+                name="unitid"
+                :label="$t('analyses.unitid')"
+                @input="handleChange"
+              />
             </v-flex>
           </v-layout>
 
-          <v-textarea @input="handleChange" filled name="comment" :label="$t('analyses.comment')" v-model="analysis.comment"></v-textarea>
+          <v-textarea
+            v-model="analysis.comment"
+            filled
+            name="comment"
+            :label="$t('analyses.comment')"
+            @input="handleChange"
+          />
         </v-container>
 
         <v-card class="my-3">
           <v-card-title class="headline">
             {{ $t('analyses.recognizedFields') }}
-            <v-spacer/>
-            <v-btn color="primary" fab small dark v-on:click.native="addEntryIn('identifiers')">
+            <v-spacer />
+            <v-btn
+              color="primary"
+              fab
+              small
+              dark
+              @click.native="addEntryIn('identifiers')"
+            >
               <v-icon>mdi-plus</v-icon>
             </v-btn>
           </v-card-title>
 
-          <v-data-table v-if="analysis.identifiers && analysis.identifiers.length"
+          <v-data-table
+            v-if="analysis.identifiers && analysis.identifiers.length"
             :items="analysis.identifiers"
             hide-default-footer
           >
             <template v-slot:header>
               <tr>
-                <th class="text-center font-weight-regular">{{ $t('analyses.type') }}</th>
-                <th class="text-center font-weight-regular">{{ $t('analyses.value') }}</th>
-                <th></th>
+                <th class="text-center font-weight-regular">
+                  {{ $t('analyses.type') }}
+                </th>
+                <th class="text-center font-weight-regular">
+                  {{ $t('analyses.value') }}
+                </th>
+                <th />
               </tr>
             </template>
 
@@ -99,38 +180,43 @@
               <tr>
                 <td>
                   <v-autocomplete
+                    v-model="item.type"
                     class="my-2"
                     :label="$t('analyses.type')"
                     :items="recognizedFields"
                     :filter="filterFields"
-                    v-model="item.type"
-                    @input="handleChange"
                     item-text="code"
                     item-value="code"
                     append-icon="mdi-menu-down"
                     single-line
                     hide-details
+                    @input="handleChange"
                   >
                     <template v-slot:item="{ item }">
                       <v-list-item-content>
-                        <v-list-item-title v-html="item.code"></v-list-item-title>
-                        <v-list-item-subtitle v-html="item[`description_${$i18n.locale}`] || item.description"></v-list-item-subtitle>
+                        <v-list-item-title v-text="item.code" />
+                        <v-list-item-subtitle>
+                          {{ item[`description_${$i18n.locale}`] || item.description }}
+                        </v-list-item-subtitle>
                       </v-list-item-content>
                     </template>
                   </v-autocomplete>
                 </td>
                 <td>
                   <v-text-field
-                    class="my-2"
                     v-model="item.value"
-                    @input="handleChange"
+                    class="my-2"
                     :label="$t('analyses.value')"
                     single-line
                     hide-details
+                    @input="handleChange"
                   />
                 </td>
                 <td class="text-right">
-                  <v-btn icon v-on:click.native="removeEntryFrom('identifiers', index)">
+                  <v-btn
+                    icon
+                    @click.native="removeEntryFrom('identifiers', index)"
+                  >
                     <v-icon>mdi-delete</v-icon>
                   </v-btn>
                 </td>
@@ -142,21 +228,32 @@
         <v-card class="my-3">
           <v-card-title class="headline">
             {{ $t('analyses.pathParams') }}
-            <v-spacer/>
-            <v-btn color="primary" fab small dark v-on:click.native="addEntryIn('pathParams')">
+            <v-spacer />
+            <v-btn
+              color="primary"
+              fab
+              small
+              dark
+              @click.native="addEntryIn('pathParams')"
+            >
               <v-icon>mdi-plus</v-icon>
             </v-btn>
           </v-card-title>
 
-          <v-data-table v-if="analysis.pathParams && analysis.pathParams.length"
+          <v-data-table
+            v-if="analysis.pathParams && analysis.pathParams.length"
             :items="analysis.pathParams"
             hide-default-footer
           >
             <template v-slot:header>
               <tr>
-                <th class="text-center font-weight-regular">{{ $t('analyses.value') }}</th>
-                <th class="text-center font-weight-regular">{{ $t('analyses.comment') }}</th>
-                <th></th>
+                <th class="text-center font-weight-regular">
+                  {{ $t('analyses.value') }}
+                </th>
+                <th class="text-center font-weight-regular">
+                  {{ $t('analyses.comment') }}
+                </th>
+                <th />
               </tr>
             </template>
 
@@ -164,28 +261,31 @@
               <tr>
                 <td>
                   <v-text-field
-                    class="my-2"
                     v-model="item.value"
-                    @input="handleChange"
+                    class="my-2"
                     :label="$t('analyses.value')"
                     single-line
                     full-width
                     hide-details
+                    @input="handleChange"
                   />
                 </td>
                 <td>
                   <v-text-field
-                    class="my-2"
                     v-model="item.comment"
-                    @input="handleChange"
+                    class="my-2"
                     :label="$t('analyses.comment')"
                     single-line
                     full-width
                     hide-details
+                    @input="handleChange"
                   />
                 </td>
                 <td class="text-right">
-                  <v-btn icon v-on:click.native="removeEntryFrom('pathParams', index)">
+                  <v-btn
+                    icon
+                    @click.native="removeEntryFrom('pathParams', index)"
+                  >
                     <v-icon>mdi-delete</v-icon>
                   </v-btn>
                 </td>
@@ -197,22 +297,35 @@
         <v-card class="my-3">
           <v-card-title class="headline">
             {{ $t('analyses.queryParams') }}
-            <v-spacer/>
-            <v-btn color="primary" fab small dark v-on:click.native="addEntryIn('queryParams')">
+            <v-spacer />
+            <v-btn
+              color="primary"
+              fab
+              small
+              dark
+              @click.native="addEntryIn('queryParams')"
+            >
               <v-icon>mdi-plus</v-icon>
             </v-btn>
           </v-card-title>
 
-          <v-data-table v-if="analysis.queryParams && analysis.queryParams.length"
+          <v-data-table
+            v-if="analysis.queryParams && analysis.queryParams.length"
             :items="analysis.queryParams"
             hide-default-footer
           >
             <template v-slot:header>
               <tr>
-                <th class="text-center font-weight-regular">{{ $t('analyses.name') }}</th>
-                <th class="text-center font-weight-regular">{{ $t('analyses.value') }}</th>
-                <th class="text-center font-weight-regular">{{ $t('analyses.comment') }}</th>
-                <th></th>
+                <th class="text-center font-weight-regular">
+                  {{ $t('analyses.name') }}
+                </th>
+                <th class="text-center font-weight-regular">
+                  {{ $t('analyses.value') }}
+                </th>
+                <th class="text-center font-weight-regular">
+                  {{ $t('analyses.comment') }}
+                </th>
+                <th />
               </tr>
             </template>
 
@@ -220,39 +333,42 @@
               <tr>
                 <td>
                   <v-text-field
-                    class="my-2"
                     v-model="item.name"
-                    @input="handleChange"
+                    class="my-2"
                     :label="$t('analyses.name')"
                     single-line
                     full-width
                     hide-details
+                    @input="handleChange"
                   />
                 </td>
                 <td>
                   <v-text-field
-                    class="my-2"
                     v-model="item.value"
-                    @input="handleChange"
+                    class="my-2"
                     :label="$t('analyses.value')"
                     single-line
                     full-width
                     hide-details
+                    @input="handleChange"
                   />
                 </td>
                 <td>
                   <v-text-field
-                    class="my-2"
                     v-model="item.comment"
-                    @input="handleChange"
+                    class="my-2"
                     :label="$t('analyses.comment')"
                     single-line
                     full-width
                     hide-details
+                    @input="handleChange"
                   />
                 </td>
                 <td class="text-right">
-                  <v-btn icon v-on:click.native="removeEntryFrom('queryParams', index)">
+                  <v-btn
+                    icon
+                    @click.native="removeEntryFrom('queryParams', index)"
+                  >
                     <v-icon>mdi-delete</v-icon>
                   </v-btn>
                 </td>
@@ -260,7 +376,6 @@
             </template>
           </v-data-table>
         </v-card>
-
       </v-card-text>
 
       <v-card-text v-else>
@@ -275,17 +390,8 @@ import api from '~/store/api'
 let changeTimeout
 
 export default {
-  name: 'analysis-edit',
+  name: 'AnalysisEdit',
   transition: 'slide-x-transition',
-  async asyncData () {
-    return {
-      tmp: '',
-      pendingChanges: false,
-      dirty: false,
-      saving: false,
-      fields: await api.getFields()
-    }
-  },
   async fetch ({ params, store, error, redirect }) {
     if (!store.state.user || !store.state.user.isAuthorized) {
       return redirect({
@@ -307,9 +413,13 @@ export default {
     store.dispatch('SET_VISITED_PLATFORM', params.cid)
     store.dispatch('SET_VISITED_ANALYSIS', params.aid)
   },
-  head () {
+  async asyncData () {
     return {
-      title: `Analyses: ${this.card.name}`
+      tmp: '',
+      pendingChanges: false,
+      dirty: false,
+      saving: false,
+      fields: await api.getFields()
     }
   },
   computed: {
@@ -326,26 +436,17 @@ export default {
       return this.user && this.user.isAuthorized
     },
     rtypes () {
-      return this.fields.rtype.sort(this.sortByCode)
+      return this.fields.rtype.slice().sort(this.sortByCode)
     },
     mimes () {
-      return this.fields.mime.sort(this.sortByCode)
+      return this.fields.mime.slice().sort(this.sortByCode)
     },
     recognizedFields () {
       return this.fields.rid.concat(this.fields.other).sort(this.sortByCode)
     }
   },
-  beforeRouteLeave (to, from, next) {
-    clearTimeout(changeTimeout)
-    if (!this.dirty && !this.saving) { return next() }
-
-    this.$once('saved', next)
-
-    if (this.dirty && this.saving) {
-      this.pendingChanges = true
-    } else {
-      this.save()
-    }
+  mounted () {
+    this.$socket.emit('ADD_TO_ROOM', { userId: this.user.id })
   },
   methods: {
     sortByCode (a, b) {
@@ -458,8 +559,22 @@ export default {
       }
     }
   },
-  mounted () {
-    this.$socket.emit('ADD_TO_ROOM', { userId: this.user.id })
+  head () {
+    return {
+      title: `Analyses: ${this.card.name}`
+    }
+  },
+  beforeRouteLeave (to, from, next) {
+    clearTimeout(changeTimeout)
+    if (!this.dirty && !this.saving) { return next() }
+
+    this.$once('saved', next)
+
+    if (this.dirty && this.saving) {
+      this.pendingChanges = true
+    } else {
+      this.save()
+    }
   }
 }
 </script>

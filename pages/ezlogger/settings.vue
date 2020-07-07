@@ -1,62 +1,119 @@
 <template>
   <section>
-    <v-btn @click.native="saveSettings" text router exact :to="{ name: 'ezlogger' }" class="mb-2 body-2">
-      <v-icon left>mdi-arrow-left</v-icon>{{ $t('ui.back') }}
+    <v-btn
+      text
+      router
+      exact
+      :to="{ name: 'ezlogger' }"
+      class="mb-2 body-2"
+      @click.native="saveSettings"
+    >
+      <v-icon left>
+        mdi-arrow-left
+      </v-icon>{{ $t('ui.back') }}
     </v-btn>
 
     <v-card class="mb-4">
-      <v-toolbar class="secondary" dense dark flat>
+      <v-toolbar
+        class="secondary"
+        dense
+        dark
+        flat
+      >
         <v-toolbar-title>{{ $t('ezLoggerSettings.instance') }}</v-toolbar-title>
       </v-toolbar>
 
       <v-card-text>
-        <v-switch v-model="preprod" hide-details :label="$t('ezLoggerSettings.useNationalInstance')"></v-switch>
-        <v-text-field v-if="!preprod" v-model="ezpaarseUrl" hide-details name="instance-url" :label="$t('ezLoggerSettings.customUrl')"></v-text-field>
-        <p class="black--text">{{ $t('ezLoggerSettings.nationalInstanceDesc') }}</p>
+        <v-switch
+          v-model="preprod"
+          hide-details
+          :label="$t('ezLoggerSettings.useNationalInstance')"
+        />
+        <v-text-field
+          v-if="!preprod"
+          v-model="ezpaarseUrl"
+          hide-details
+          name="instance-url"
+          :label="$t('ezLoggerSettings.customUrl')"
+        />
+        <p class="black--text">
+          {{ $t('ezLoggerSettings.nationalInstanceDesc') }}
+        </p>
       </v-card-text>
 
-      <v-divider/>
+      <v-divider />
 
       <v-card-text>
-        <v-btn @click.native="testConnection" :loading="connectionTest.loading">
-          <v-icon left>mdi-swap-vertical</v-icon> {{ $t('ezLoggerSettings.checkAvailability') }}
+        <v-btn
+          :loading="connectionTest.loading"
+          @click.native="testConnection"
+        >
+          <v-icon left>
+            mdi-swap-vertical
+          </v-icon> {{ $t('ezLoggerSettings.checkAvailability') }}
         </v-btn>
 
-        <v-alert color="success" :value="connectionTest.version">
+        <v-alert
+          color="success"
+          :value="connectionTest.version"
+        >
           <div>{{ $t('ezLoggerSettings.connectionSuccessful') }}</div>
           <div>{{ $t('ezLoggerSettings.version', { version: connectionTest.version }) }}</div>
         </v-alert>
-        <v-alert color="error" :value="true" v-if="connectionTest.errorMsg">
+        <v-alert
+          v-if="connectionTest.errorMsg"
+          color="error"
+          :value="true"
+        >
           {{ $t(`ezLoggerSettings.${connectionTest.errorMsg}`, connectionTest.errorMeta) }}
         </v-alert>
       </v-card-text>
     </v-card>
 
     <v-card class="mb-4">
-      <v-toolbar class="secondary" dense dark flat>
+      <v-toolbar
+        class="secondary"
+        dense
+        dark
+        flat
+      >
         <v-toolbar-title>{{ $t('ezLoggerSettings.general') }}</v-toolbar-title>
       </v-toolbar>
 
       <v-card-text>
-        <v-switch v-model="autoRemoveNoise" :label="$t('ezLoggerSettings.autoNoiseFiltering')"></v-switch>
-        <v-switch v-model="patchHyphens" :label="$t('ezLoggerSettings.patchHyphens')"></v-switch>
-        <p class="black--text">{{ $t('ezLoggerSettings.patchHyphensDesc') }}</p>
+        <v-switch
+          v-model="autoRemoveNoise"
+          :label="$t('ezLoggerSettings.autoNoiseFiltering')"
+        />
+        <v-switch
+          v-model="patchHyphens"
+          :label="$t('ezLoggerSettings.patchHyphens')"
+        />
+        <p class="black--text">
+          {{ $t('ezLoggerSettings.patchHyphensDesc') }}
+        </p>
       </v-card-text>
     </v-card>
 
     <v-card class="mb-4">
-      <v-toolbar dense dark class="secondary">
+      <v-toolbar
+        dense
+        dark
+        class="secondary"
+      >
         <v-toolbar-title>{{ $t('ezLoggerSettings.defaultParser') }}</v-toolbar-title>
       </v-toolbar>
 
       <v-card-text>
-        <p class="black--text">{{ $t('ezLoggerSettings.defaultParserDesc') }}</p>
+        <p class="black--text">
+          {{ $t('ezLoggerSettings.defaultParserDesc') }}
+        </p>
         <v-autocomplete
+          v-model="forceParser"
           :loading="loadingParsers"
           :items="parsers"
           :search-input.sync="parserSearch"
           :filter="filterParsers"
-          v-model="forceParser"
           :label="$t('ezLoggerSettings.parserName')"
           append-icon="mdi-menu-down"
           clear-icon="mdi-close"
@@ -70,8 +127,8 @@
         >
           <template v-slot:item="{ item }">
             <v-list-item-content>
-              <v-list-item-title v-text="item.longname"></v-list-item-title>
-              <v-list-item-subtitle v-text="item.name"></v-list-item-subtitle>
+              <v-list-item-title v-text="item.longname" />
+              <v-list-item-subtitle v-text="item.name" />
             </v-list-item-content>
           </template>
         </v-autocomplete>
@@ -79,14 +136,32 @@
     </v-card>
 
     <v-card class="mb-4">
-      <v-toolbar class="secondary" dense dark flat>
+      <v-toolbar
+        class="secondary"
+        dense
+        dark
+        flat
+      >
         <v-toolbar-title>{{ $t('ezLoggerSettings.headers') }}</v-toolbar-title>
-        <v-btn @click.native="addHeader" class="pink" dark small absolute bottom right fab>
+        <v-btn
+          class="pink"
+          dark
+          small
+          absolute
+          bottom
+          right
+          fab
+          @click.native="addHeader"
+        >
           <v-icon>mdi-plus</v-icon>
         </v-btn>
       </v-toolbar>
 
-      <v-data-table :items="settings.headers" hide-default-footer hide-default-header>
+      <v-data-table
+        :items="settings.headers"
+        hide-default-footer
+        hide-default-header
+      >
         <template v-slot:item="{ item, index }">
           <td>
             <v-text-field
@@ -107,7 +182,10 @@
             />
           </td>
           <td class="text-right">
-            <v-btn icon @click.native="removeHeader(index)">
+            <v-btn
+              icon
+              @click.native="removeHeader(index)"
+            >
               <v-icon>mdi-delete</v-icon>
             </v-btn>
           </td>
@@ -116,16 +194,37 @@
     </v-card>
 
     <v-card class="mb-4">
-      <v-toolbar class="secondary" dense dark flat>
+      <v-toolbar
+        class="secondary"
+        dense
+        dark
+        flat
+      >
         <v-toolbar-title>{{ $t('ezLoggerSettings.proxySuffixes') }}</v-toolbar-title>
-        <v-btn @click.native="addProxy" class="pink" dark small absolute bottom right fab>
+        <v-btn
+          class="pink"
+          dark
+          small
+          absolute
+          bottom
+          right
+          fab
+          @click.native="addProxy"
+        >
           <v-icon>mdi-plus</v-icon>
         </v-btn>
       </v-toolbar>
 
-      <v-data-table :items="settings.proxySuffixes" hide-default-footer hide-default-header>
+      <v-data-table
+        :items="settings.proxySuffixes"
+        hide-default-footer
+        hide-default-header
+      >
         <template v-slot:body="{ items }">
-          <tr v-for="(item, index) in items" :key="index">
+          <tr
+            v-for="(item, index) in items"
+            :key="index"
+          >
             <td>
               <v-text-field
                 v-model="item.str"
@@ -135,8 +234,14 @@
                 hide-details
               />
             </td>
-            <td class="text-right" width="36px">
-              <v-btn icon @click.native="removeProxy(index)">
+            <td
+              class="text-right"
+              width="36px"
+            >
+              <v-btn
+                icon
+                @click.native="removeProxy(index)"
+              >
                 <v-icon>mdi-delete</v-icon>
               </v-btn>
             </td>
@@ -151,13 +256,8 @@
 import { mapState, mapActions } from 'vuex'
 
 export default {
-  name: 'settings',
+  name: 'Settings',
   transition: 'slide-x-transition',
-  head () {
-    return {
-      title: 'ezLogger'
-    }
-  },
   async fetch ({ store }) {
     await store.dispatch('ezlogger/loadSettings')
   },
@@ -294,6 +394,11 @@ export default {
             this.connectionTest.errorMsg = 'error_generic'
           }
         })
+    }
+  },
+  head () {
+    return {
+      title: 'ezLogger'
     }
   }
 }

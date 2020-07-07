@@ -1,66 +1,148 @@
 <template>
   <section>
-    <v-btn text router exact :to="{ path: '/platforms' }" class="mb-2 body-2">
-      <v-icon left>mdi-arrow-left</v-icon>{{ $t('ui.back') }}
+    <v-btn
+      text
+      router
+      exact
+      :to="{ path: '/platforms' }"
+      class="mb-2 body-2"
+    >
+      <v-icon left>
+        mdi-arrow-left
+      </v-icon>{{ $t('ui.back') }}
     </v-btn>
 
     <v-card>
-      <v-toolbar class="secondary" dense dark flat>
+      <v-toolbar
+        class="secondary"
+        dense
+        dark
+        flat
+      >
         <v-toolbar-title>{{ $t('creation.newPlatform') }}</v-toolbar-title>
       </v-toolbar>
 
-      <v-stepper v-model="step" vertical >
+      <v-stepper
+        v-model="step"
+        vertical
+      >
         <v-stepper-items>
-          <v-stepper-step step="1" :complete="step > 1" complete-icon="mdi-check">
+          <v-stepper-step
+            step="1"
+            :complete="step > 1"
+            complete-icon="mdi-check"
+          >
             {{ $t('creation.domainCheck') }}
           </v-stepper-step>
           <v-stepper-content step="1">
             <v-container class="mb-5">
-              <DomainChecker/>
+              <DomainChecker />
             </v-container>
 
-            <v-btn color="primary" @click.native="step++">{{ $t('creation.next') }}</v-btn>
+            <v-btn
+              color="primary"
+              @click.native="step++"
+            >
+              {{ $t('creation.next') }}
+            </v-btn>
           </v-stepper-content>
 
-          <v-stepper-step step="2" :complete="step > 2" complete-icon="mdi-check">
+          <v-stepper-step
+            step="2"
+            :complete="step > 2"
+            complete-icon="mdi-check"
+          >
             {{ $t('creation.platformInfo') }}
           </v-stepper-step>
           <v-stepper-content step="2">
-            <v-container fluid grid-list-md>
-              <v-layout row wrap>
-                <v-flex xs12 sm8>
-                  <v-text-field name="longName" :label="$t('creation.name')" v-model="form.longName" required></v-text-field>
+            <v-container
+              fluid
+              grid-list-md
+            >
+              <v-layout
+                row
+                wrap
+              >
+                <v-flex
+                  xs12
+                  sm8
+                >
+                  <v-text-field
+                    v-model="form.longName"
+                    name="longName"
+                    :label="$t('creation.name')"
+                    required
+                  />
                 </v-flex>
-                <v-flex xs12 sm4>
-                  <v-text-field name="shortName" :label="$t('creation.abv')" v-model="form.shortName" required></v-text-field>
+                <v-flex
+                  xs12
+                  sm4
+                >
+                  <v-text-field
+                    v-model="form.shortName"
+                    name="shortName"
+                    :label="$t('creation.abv')"
+                    required
+                  />
                 </v-flex>
                 <v-flex xs12>
-                  <v-text-field name="homeUrl" :label="$t('creation.homepage')" v-model="form.homeUrl"></v-text-field>
+                  <v-text-field
+                    v-model="form.homeUrl"
+                    name="homeUrl"
+                    :label="$t('creation.homepage')"
+                  />
                 </v-flex>
               </v-layout>
             </v-container>
 
-            <v-btn color="primary" :disabled="!form.longName || !form.shortName" @click.native="step++">{{ $t('creation.next') }}</v-btn>
-            <v-btn text @click.native="step--">{{ $t('creation.previous') }}</v-btn>
+            <v-btn
+              color="primary"
+              :disabled="!form.longName || !form.shortName"
+              @click.native="step++"
+            >
+              {{ $t('creation.next') }}
+            </v-btn>
+            <v-btn
+              text
+              @click.native="step--"
+            >
+              {{ $t('creation.previous') }}
+            </v-btn>
           </v-stepper-content>
 
-          <v-stepper-step step="3" :complete="step > 3" complete-icon="mdi-check">
+          <v-stepper-step
+            step="3"
+            :complete="step > 3"
+            complete-icon="mdi-check"
+          >
             {{ $t('creation.platformStatus') }}
           </v-stepper-step>
           <v-stepper-content step="3">
             <v-select
+              v-model="form.idList"
               :items="lists"
               :label="$t('creation.platformStatus')"
-              v-model="form.idList"
               append-icon="mdi-menu-down"
               item-text="name"
               item-value="id"
               single-line
               bottom
-            ></v-select>
+            />
 
-            <v-btn color="primary" :disabled="!form.idList" :loading="creating" @click.native="createCard()">{{ $t('creation.create') }}</v-btn>
-            <v-btn text @click.native="step--">{{ $t('creation.previous') }}</v-btn>
+            <v-btn
+              color="primary"
+              :disabled="!form.idList"
+              :loading="creating"
+              @click.native="createCard()"
+            >
+              {{ $t('creation.create') }}
+            </v-btn>
+            <v-btn
+              text
+              @click.native="step--"
+            >
+              {{ $t('creation.previous') }}
+            </v-btn>
           </v-stepper-content>
         </v-stepper-items>
       </v-stepper>
@@ -72,10 +154,17 @@
 import DomainChecker from '~/components/DomainChecker'
 
 export default {
-  name: 'new',
+  name: 'New',
   transition: 'slide-x-transition',
   components: {
     DomainChecker
+  },
+  async fetch ({ store, redirect }) {
+    await store.dispatch('FETCH_TRELLO_LISTS')
+
+    if (!store.state.user || !store.state.user.isAuthorized) {
+      redirect('/')
+    }
   },
   data () {
     return {
@@ -87,18 +176,6 @@ export default {
         shortName: '',
         idList: null
       }
-    }
-  },
-  head () {
-    return {
-      title: 'Nouvelle plateforme'
-    }
-  },
-  async fetch ({ store, redirect }) {
-    await store.dispatch('FETCH_TRELLO_LISTS')
-
-    if (!store.state.user || !store.state.user.isAuthorized) {
-      redirect('/')
     }
   },
   computed: {
@@ -135,6 +212,11 @@ export default {
       }
 
       this.creating = false
+    }
+  },
+  head () {
+    return {
+      title: 'Nouvelle plateforme'
     }
   }
 }

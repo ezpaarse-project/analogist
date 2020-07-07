@@ -1,15 +1,27 @@
 <template>
   <section>
     <v-card>
-      <v-toolbar class="secondary" dense dark flat>
+      <v-toolbar
+        class="secondary"
+        dense
+        dark
+        flat
+      >
         <v-toolbar-title>
           {{ $t('badges.emitBadge') }}
         </v-toolbar-title>
       </v-toolbar>
 
       <v-card-text>
-        <v-layout wrap v-if="ping">
-          <v-flex xs12 sm6 v-if="trelloBoardMembers && trelloBoardMembers.length">
+        <v-layout
+          v-if="ping"
+          wrap
+        >
+          <v-flex
+            v-if="trelloBoardMembers && trelloBoardMembers.length"
+            xs12
+            sm6
+          >
             <v-autocomplete
               v-model="currentBoardMember"
               :items="trelloBoardMembers"
@@ -23,26 +35,36 @@
               hide-details
               class="mx-1"
             >
-              <template slot="item" slot-scope="{ item }">
+              <template
+                slot="item"
+                slot-scope="{ item }"
+              >
                 <v-list-item-avatar>
-                  <img v-if="item.member.avatarHash" :src="`${item.member.avatarUrl}/50.png`">
+                  <img
+                    v-if="item.member.avatarHash"
+                    :src="`${item.member.avatarUrl}/50.png`"
+                  >
                   <span v-else>
                     <v-avatar color="blue-grey lighten-4">
-                      <span class="white--text headline"><small>{{item.member.initials}}</small></span>
+                      <span class="white--text headline"><small>{{ item.member.initials }}</small></span>
                     </v-avatar>
                   </span>
                 </v-list-item-avatar>
                 <v-list-item-content>
-                  <v-list-item-title v-html="item.member.fullName"></v-list-item-title>
-                <v-list-item-subtitle v-html="item.member.username"></v-list-item-subtitle>
+                  <v-list-item-title v-text="item.member.fullName" />
+                  <v-list-item-subtitle v-text="item.member.username" />
                 </v-list-item-content>
               </template>
             </v-autocomplete>
           </v-flex>
 
-          <v-spacer></v-spacer>
+          <v-spacer />
 
-          <v-flex xs12 sm6 v-if="badges && badges.length">
+          <v-flex
+            v-if="badges && badges.length"
+            xs12
+            sm6
+          >
             <v-autocomplete
               v-model="currentBadge"
               :items="badges"
@@ -56,37 +78,59 @@
               hide-details
               class="mx-1"
             >
-              <template slot="item" slot-scope="{ item }">
+              <template
+                slot="item"
+                slot-scope="{ item }"
+              >
                 <template>
                   <v-list-item-avatar :class="{ 'isOwn': item.issued_on }">
                     <img :src="item.image">
                   </v-list-item-avatar>
                   <v-list-item-content :class="{ 'isOwn': item.issued_on }">
-                    <v-list-item-title v-html="item.name"></v-list-item-title>
-                    <v-list-item-subtitle v-if="item.issued_on">{{issuedOn(item.issued_on)}}</v-list-item-subtitle>
+                    <v-list-item-title v-text="item.name" />
+                    <v-list-item-subtitle v-if="item.issued_on">
+                      {{ issuedOn(item.issued_on) }}
+                    </v-list-item-subtitle>
                   </v-list-item-content>
                 </template>
               </template>
             </v-autocomplete>
           </v-flex>
 
-          <v-flex xs12 sm12>
+          <v-flex
+            xs12
+            sm12
+          >
             <v-text-field
+              v-model="email"
               label="Email"
               append-icon="mdi-email"
               type="email"
-              v-model="email"
               class="mx-1"
-            ></v-text-field>
+            />
           </v-flex>
 
-          <v-flex xs12 sm12>
-            <v-btn large block color="success" @click="emit" :disabled="!email || !currentBadge || !currentBoardMember">{{$t('badges.emitBadge')}}</v-btn>
+          <v-flex
+            xs12
+            sm12
+          >
+            <v-btn
+              large
+              block
+              color="success"
+              :disabled="!email || !currentBadge || !currentBoardMember"
+              @click="emit"
+            >
+              {{ $t('badges.emitBadge') }}
+            </v-btn>
           </v-flex>
         </v-layout>
 
         <v-layout v-else>
-          <v-flex xs12 sm12>
+          <v-flex
+            xs12
+            sm12
+          >
             <v-card class="red white--text">
               <v-card-text>
                 {{ $t('badges.pingError') }}
@@ -96,9 +140,22 @@
         </v-layout>
 
         <v-layout>
-          <v-flex xs12 sm12 mt-3>
-            <a href="https://openbadgefactory.com/" target="blank">
-              <img src="@/static/obf_logo.png" alt="OpenBadgeFactory" :class="{ 'error': !ping }" class="obfactory" align="right">
+          <v-flex
+            xs12
+            sm12
+            mt-3
+          >
+            <a
+              href="https://openbadgefactory.com/"
+              target="blank"
+            >
+              <img
+                src="@/static/obf_logo.png"
+                alt="OpenBadgeFactory"
+                :class="{ 'error': !ping }"
+                class="obfactory"
+                align="right"
+              >
             </a>
           </v-flex>
         </v-layout>
@@ -111,13 +168,6 @@
 import moment from 'moment'
 
 export default {
-  data () {
-    return {
-      currentBoardMember: null,
-      currentBadge: null,
-      email: null
-    }
-  },
   async fetch ({ store, redirect, app }) {
     try {
       await store.dispatch('FETCH_PROFILE')
@@ -145,16 +195,11 @@ export default {
       }
     }
   },
-  watch: {
-    user: function () {
-      if (!this.user) {
-        return this.$router.push('/badges/list')
-      }
-    },
-    currentBoardMember: async function () {
-      if (this.currentBoardMember) {
-        await this.$store.dispatch('badges/getBadges', { id: this.currentBoardMember.idMember, locale: this.$i18n.locale })
-      }
+  data () {
+    return {
+      currentBoardMember: null,
+      currentBadge: null,
+      email: null
     }
   },
   computed: {
@@ -169,6 +214,18 @@ export default {
     },
     trelloBoardMembers () {
       return this.$store.state.trelloBoardMembers
+    }
+  },
+  watch: {
+    user: function () {
+      if (!this.user) {
+        return this.$router.push('/badges/list')
+      }
+    },
+    currentBoardMember: async function () {
+      if (this.currentBoardMember) {
+        await this.$store.dispatch('badges/getBadges', { id: this.currentBoardMember.idMember, locale: this.$i18n.locale })
+      }
     }
   },
   methods: {

@@ -1,11 +1,24 @@
 <template>
   <section>
-    <v-btn text router exact :to="{ name: 'ezlogger' }" class="mb-2 body-2">
-      <v-icon left>mdi-arrow-left</v-icon>{{ $t('ui.back') }}
+    <v-btn
+      text
+      router
+      exact
+      :to="{ name: 'ezlogger' }"
+      class="mb-2 body-2"
+    >
+      <v-icon left>
+        mdi-arrow-left
+      </v-icon>{{ $t('ui.back') }}
     </v-btn>
 
     <v-card>
-      <v-toolbar class="secondary" dense dark flat>
+      <v-toolbar
+        class="secondary"
+        dense
+        dark
+        flat
+      >
         <v-toolbar-title>
           {{ $t('ezLogger.requestDetails') }}
         </v-toolbar-title>
@@ -22,16 +35,48 @@
           :value="request.url"
         >
           <template v-slot:prepend>
-            <v-progress-circular v-if="request.status === 'processing'" indeterminate color="grey" />
-            <v-icon v-else-if="request.status === 'pending'" class="grey--text">mdi-clock</v-icon>
-            <v-icon v-else-if="request.status === 'analyzed'" class="green--text">mdi-lightbulb-on</v-icon>
-            <v-icon v-else-if="request.status === 'rejected'" class="orange--text">mdi-lightbulb</v-icon>
-            <v-icon v-else-if="request.status === 'error'" class="red--text">mdi-alert-circle-outline</v-icon>
+            <v-progress-circular
+              v-if="request.status === 'processing'"
+              indeterminate
+              color="grey"
+            />
+            <v-icon
+              v-else-if="request.status === 'pending'"
+              class="grey--text"
+            >
+              mdi-clock
+            </v-icon>
+            <v-icon
+              v-else-if="request.status === 'analyzed'"
+              class="green--text"
+            >
+              mdi-lightbulb-on
+            </v-icon>
+            <v-icon
+              v-else-if="request.status === 'rejected'"
+              class="orange--text"
+            >
+              mdi-lightbulb
+            </v-icon>
+            <v-icon
+              v-else-if="request.status === 'error'"
+              class="red--text"
+            >
+              mdi-alert-circle-outline
+            </v-icon>
           </template>
 
-          <v-tooltip slot="append-outer" left>
+          <v-tooltip
+            slot="append-outer"
+            left
+          >
             <template v-slot:activator="{ on }">
-              <v-icon v-on="on" @click="copyUrl">mdi-clipboard</v-icon>
+              <v-icon
+                v-on="on"
+                @click="copyUrl"
+              >
+                mdi-clipboard
+              </v-icon>
             </template>
             <span>{{ $t('ezLogger.copyToClipboard') }}</span>
           </v-tooltip>
@@ -39,50 +84,100 @@
       </v-card-text>
 
       <v-card-text>
-        <v-tooltip bottom v-if="request.method">
+        <v-tooltip
+          v-if="request.method"
+          bottom
+        >
           <template v-slot:activator="{ on }">
-            <v-chip v-on="on" label color="blue" text-color="white">{{ request.method }}</v-chip>
+            <v-chip
+              label
+              color="blue"
+              text-color="white"
+              v-on="on"
+            >
+              {{ request.method }}
+            </v-chip>
           </template>
           <span>{{ $t('ezLogger.requestMethod') }}</span>
         </v-tooltip>
-        <v-tooltip bottom v-if="request.type">
+        <v-tooltip
+          v-if="request.type"
+          bottom
+        >
           <template v-slot:activator="{ on }">
-            <v-chip v-on="on" label color="blue" text-color="white">{{ request.type }}</v-chip>
+            <v-chip
+              label
+              color="blue"
+              text-color="white"
+              v-on="on"
+            >
+              {{ request.type }}
+            </v-chip>
           </template>
           <span>{{ $t('ezLogger.requestType') }}</span>
         </v-tooltip>
-        <v-tooltip bottom v-if="request.statusCode">
+        <v-tooltip
+          v-if="request.statusCode"
+          bottom
+        >
           <template v-slot:activator="{ on }">
-            <v-chip v-on="on" label color="blue" text-color="white">{{ request.statusCode }}</v-chip>
+            <v-chip
+              label
+              color="blue"
+              text-color="white"
+              v-on="on"
+            >
+              {{ request.statusCode }}
+            </v-chip>
           </template>
           <span>{{ $t('ezLogger.responseStatusCode') }}</span>
         </v-tooltip>
-        <v-tooltip bottom v-if="request.ec && request.ec.rtype">
+        <v-tooltip
+          v-if="request.ec && request.ec.rtype"
+          bottom
+        >
           <template v-slot:activator="{ on }">
-            <v-chip v-on="on" label color="green" text-color="white">{{ request.ec.rtype }}</v-chip>
+            <v-chip
+              label
+              color="green"
+              text-color="white"
+              v-on="on"
+            >
+              {{ request.ec.rtype }}
+            </v-chip>
           </template>
           <span>{{ $t('ezLogger.rtype') }}</span>
         </v-tooltip>
-        <v-tooltip bottom v-if="request.ec && request.ec.mime">
+        <v-tooltip
+          v-if="request.ec && request.ec.mime"
+          bottom
+        >
           <template v-slot:activator="{ on }">
-            <v-chip v-on="on" label color="green" text-color="white">{{ request.ec.mime }}</v-chip>
+            <v-chip
+              label
+              color="green"
+              text-color="white"
+              v-on="on"
+            >
+              {{ request.ec.mime }}
+            </v-chip>
           </template>
           <span>{{ $t('ezLogger.mime') }}</span>
         </v-tooltip>
       </v-card-text>
 
-      <v-divider></v-divider>
+      <v-divider />
 
       <v-card-title>
         <span class="title">{{ $t('ezLogger.consultationEvent') }}</span>
-        <v-spacer></v-spacer>
+        <v-spacer />
         <v-text-field
+          v-model="search"
           append-icon="mdi-search"
           :label="$t('ui.search')"
           single-line
           hide-details
-          v-model="search"
-        ></v-text-field>
+        />
       </v-card-title>
 
       <v-data-table
@@ -91,10 +186,17 @@
         hide-default-footer
         disable-pagination
       >
-         <template v-slot:body="{ items }">
-          <tr v-for="(item, index) in items" :key="index">
-            <th class="text-left">{{ item.name }}</th>
-            <td class="text-left">{{ item.value }}</td>
+        <template v-slot:body="{ items }">
+          <tr
+            v-for="(item, index) in items"
+            :key="index"
+          >
+            <th class="text-left">
+              {{ item.name }}
+            </th>
+            <td class="text-left">
+              {{ item.value }}
+            </td>
           </tr>
         </template>
 
@@ -104,7 +206,6 @@
         <template slot="no-results">
           {{ $t('ezLogger.noResults') }}
         </template>
-
       </v-data-table>
     </v-card>
   </section>
@@ -112,13 +213,8 @@
 
 <script>
 export default {
-  name: 'request',
+  name: 'Request',
   transition: 'slide-x-transition',
-  head () {
-    return {
-      title: 'ezLogger'
-    }
-  },
   asyncData ({ store, params, redirect }) {
     const request = store.state.ezlogger.requests.find(req => req.id === params.rid)
 
@@ -156,6 +252,11 @@ export default {
         return this.$store.dispatch('snacks/error', 'ezLogger.urlCopyFailed')
       }
       this.$store.dispatch('snacks/success', 'ezLogger.urlCopySuccess')
+    }
+  },
+  head () {
+    return {
+      title: 'ezLogger'
     }
   }
 }

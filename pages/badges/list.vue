@@ -1,7 +1,12 @@
 <template>
   <section>
     <v-card>
-      <v-toolbar class="secondary" dense dark flat>
+      <v-toolbar
+        class="secondary"
+        dense
+        dark
+        flat
+      >
         <v-toolbar-title>
           Badges
         </v-toolbar-title>
@@ -9,16 +14,24 @@
 
       <v-card-text>
         <v-layout wrap>
-          <v-flex xs12 sm12 v-if="metrics && metrics.length">
+          <v-flex
+            v-if="metrics && metrics.length"
+            xs12
+            sm12
+          >
             <v-text-field
               v-model="search"
               append-icon="mdi-magnify"
               :label="$t('ui.search')"
               single-line
-            ></v-text-field>
+            />
           </v-flex>
 
-          <v-flex xs12 sm12 mb-3>
+          <v-flex
+            xs12
+            sm12
+            mb-3
+          >
             <v-data-table
               v-if="metrics && metrics.length"
               :headers="headers"
@@ -33,7 +46,10 @@
               class="elevation-1"
             >
               <template v-slot:item.badge.image="{ item }">
-                <img :src="item.badge.image" class="badgeImage">
+                <img
+                  :src="item.badge.image"
+                  class="badgeImage"
+                >
               </template>
               <template v-slot:item.badge.name="{ item }">
                 <span v-if="$i18n.locale === 'fr'">{{ item.badge.name }}</span>
@@ -41,21 +57,29 @@
               </template>
               <template v-slot:expanded-item="{ headers, item }">
                 <td :colspan="headers.length">
-                  <v-layout row wrap justify-center v-if="user">
+                  <v-layout
+                    v-if="user"
+                    row
+                    wrap
+                    justify-center
+                  >
                     <template v-for="user in item.users">
                       <v-flex :key="user.userId">
                         <v-list-item>
                           <v-list-item-avatar>
-                            <img v-if="user.avatarHash" :src="`${user.avatarUrl}/50.png`">
+                            <img
+                              v-if="user.avatarHash"
+                              :src="`${user.avatarUrl}/50.png`"
+                            >
                             <span v-else>
                               <v-avatar color="blue-grey lighten-4">
-                                <span class="white--text headline"><small>{{user.initials}}</small></span>
+                                <span class="white--text headline"><small>{{ user.initials }}</small></span>
                               </v-avatar>
                             </span>
                           </v-list-item-avatar>
 
                           <v-list-item-content>
-                            <v-list-item-title v-html="user.fullName"></v-list-item-title>
+                            <v-list-item-title v-text="user.fullName" />
                             <v-list-item-subtitle>{{ user.issuedOn | issueDate($i18n.locale) }}</v-list-item-subtitle>
                           </v-list-item-content>
                         </v-list-item>
@@ -63,18 +87,30 @@
                     </template>
                   </v-layout>
 
-                  <v-layout row wrap justify-center v-else>
-                    <p v-html="$t('mustBeConnected')"></p>
+                  <v-layout
+                    v-else
+                    row
+                    wrap
+                    justify-center
+                  >
+                    <p v-html="$t('mustBeConnected')" />
                   </v-layout>
                 </td>
-                
               </template>
               <template v-slot:no-results>
-                <v-alert :value="true" color="info" icon="mdi-alert-circle" v-text="$t('badges.searchNotFound', { search })"></v-alert>
+                <v-alert
+                  :value="true"
+                  color="info"
+                  icon="mdi-alert-circle"
+                  v-text="$t('badges.searchNotFound', { search })"
+                />
               </template>
             </v-data-table>
 
-            <v-card class="red white--text" v-else>
+            <v-card
+              v-else
+              class="red white--text"
+            >
               <v-card-text>
                 {{ $t('badges.noMetrics') }}
               </v-card-text>
@@ -82,19 +118,33 @@
           </v-flex>
         </v-layout>
 
-        <a href="https://openbadgefactory.com/" target="blank">
-          <img src="@/static/obf_logo.png" alt="OpenBadgeFactory" :class="{ 'error': !ping }" class="obfactory" align="right">
+        <a
+          href="https://openbadgefactory.com/"
+          target="blank"
+        >
+          <img
+            src="@/static/obf_logo.png"
+            alt="OpenBadgeFactory"
+            :class="{ 'error': !ping }"
+            class="obfactory"
+            align="right"
+          >
         </a>
-              
+
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
-            <v-btn text icon v-on="on" href="https://blog.ezpaarse.org/2018/06/communication-les-badges-ezpaarse/" target="_blank">
+            <v-btn
+              text
+              icon
+              href="https://blog.ezpaarse.org/2018/06/communication-les-badges-ezpaarse/"
+              target="_blank"
+              v-on="on"
+            >
               <v-icon>mdi-help-circle</v-icon>
             </v-btn>
           </template>
           <span>Informations</span>
         </v-tooltip>
-
       </v-card-text>
     </v-card>
   </section>
@@ -107,7 +157,26 @@ export default {
   filters: {
     issueDate (date, locale) {
       if (!date) return '-'
-      return moment(date).locale(locale).format('LL')
+      return moment.unix(date).locale(locale).format('LL')
+    }
+  },
+  async fetch ({ store, app }) {
+    try {
+      await store.dispatch('badges/getPing')
+    } catch (e) {
+      await store.dispatch('snacks/error', 'badges.pingError')
+    }
+
+    const { user } = store.state
+
+    try {
+      await store.dispatch('badges/getMembers', user)
+    } catch (e) { }
+
+    try {
+      await store.dispatch('badges/getMetrics', (user && user.role === 'admin'))
+    } catch (e) {
+      await store.dispatch('snacks/error', 'badges.noMetrics')
     }
   },
   data () {
@@ -137,25 +206,6 @@ export default {
         }
       ],
       expanded: []
-    }
-  },
-  async fetch ({ store, app }) {
-    try {
-      await store.dispatch('badges/getPing')
-    } catch (e) {
-      await store.dispatch('snacks/error', 'badges.pingError')
-    }
-
-    const { user } = store.state
-
-    try {
-      await store.dispatch('badges/getMembers', user)
-    } catch (e) { }
-
-    try {
-      await store.dispatch('badges/getMetrics', (user && user.role === 'admin'))
-    } catch (e) {
-      await store.dispatch('snacks/error', 'badges.noMetrics')
     }
   },
   computed: {

@@ -1,57 +1,94 @@
 <template>
   <section>
     <v-card>
-      <v-toolbar class="secondary" dense dark flat>
+      <v-toolbar
+        class="secondary"
+        dense
+        dark
+        flat
+      >
         <v-toolbar-title>{{ $t('cards.home') }}</v-toolbar-title>
       </v-toolbar>
 
       <v-card-text>
-        <v-container fluid grid-list-md style="font-size: 1.2em;">
+        <v-container
+          fluid
+          grid-list-md
+          style="font-size: 1.2em;"
+        >
           <div class="text-center">
             <p>
               <img src="@/static/logo-analogist.png">
             </p>
             <v-chip pill>
-              <v-avatar left color="primary white--text">
-                <span v-text="infos.platforms || '—'"></span>
+              <v-avatar
+                left
+                color="primary white--text"
+              >
+                <span v-text="infos.platforms || '—'" />
               </v-avatar>
               <span>{{ $t('home.identifiedPlatforms') }}</span>
             </v-chip>
 
             <v-chip pill>
-              <v-avatar left color="primary white--text">
-                <span v-text="infos.analyses || '—'"></span>
+              <v-avatar
+                left
+                color="primary white--text"
+              >
+                <span v-text="infos.analyses || '—'" />
               </v-avatar>
               <span>{{ $t('home.analyses') }}</span>
             </v-chip>
 
             <v-chip pill>
-              <v-avatar left color="primary white--text">
-                <span v-text="parsers || '—'"></span>
+              <v-avatar
+                left
+                color="primary white--text"
+              >
+                <span v-text="parsers || '—'" />
               </v-avatar>
               <span>{{ $t('home.parsers') }}</span>
             </v-chip>
 
             <v-chip pill>
-              <v-avatar left color="primary white--text">
-                <span v-text="trelloBoardMembers || '—'"></span>
+              <v-avatar
+                left
+                color="primary white--text"
+              >
+                <span v-text="trelloBoardMembers || '—'" />
               </v-avatar>
               <span>{{ $t('home.contributors') }}</span>
             </v-chip>
 
             <v-chip pill>
-              <v-avatar left color="primary white--text">
-                <span v-text="badges || '—'"></span>
+              <v-avatar
+                left
+                color="primary white--text"
+              >
+                <span v-text="badges || '—'" />
               </v-avatar>
               <span>{{ $t('home.badges') }}</span>
             </v-chip>
           </div>
 
-          <v-layout row wrap mt-4>
-            <v-flex xs12 sm12>
-              <p class="text-xs-justify" v-html="$t('home.whatIsEzPaarse', { parsers })"></p>
-              <p class="text-xs-justify" v-html="$t('home.whatIsAnalogist')"></p>
-              <p class="text-xs-justify" v-html="$t('home.goodAnalyses')"></p>
+          <v-layout
+            row
+            wrap
+            mt-4
+          >
+            <v-flex
+              xs12
+              sm12
+            >
+              <p class="text-xs-justify">
+                {{ $t('home.whatIsEzPaarse', { parsers }) }}
+              </p>
+              <p class="text-xs-justify">
+                {{ $t('home.whatIsAnalogist') }}
+              </p>
+              <p class="text-xs-justify">
+                {{ $t('home.goodAnalyses') }}
+              </p>
             </v-flex>
           </v-layout>
         </v-container>
@@ -62,12 +99,12 @@
 
 <script>
 export default {
-  name: 'analogist',
+  name: 'Analogist',
   transition: 'slide-x-transition',
-  head () {
-    return {
-      title: 'Analogist'
-    }
+  async fetch ({ store }) {
+    await store.dispatch('FETCH_CARDS')
+    await store.dispatch('FETCH_TRELLO_BOARD_MEMBERS')
+    await store.dispatch('badges/getMetrics')
   },
   async asyncData ({ $axios }) {
     const { data } = await $axios.get('http://ezpaarse-preprod.couperin.org/info/platforms')
@@ -75,11 +112,6 @@ export default {
     return {
       parsers: data.length
     }
-  },
-  async fetch ({ store }) {
-    await store.dispatch('FETCH_CARDS')
-    await store.dispatch('FETCH_TRELLO_BOARD_MEMBERS')
-    await store.dispatch('badges/getMetrics')
   },
   computed: {
     infos () {
@@ -93,6 +125,11 @@ export default {
     },
     badges () {
       return this.$store.state.badges.metrics ? this.$store.state.badges.metrics.reduce((a, b) => (a + b.issues.app), 0) : 0
+    }
+  },
+  head () {
+    return {
+      title: 'Analogist'
     }
   }
 }

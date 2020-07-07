@@ -1,10 +1,29 @@
 <template>
-  <v-list-item :value="visited" router :to="{ name: 'platforms-cid-analyses-aid', params: { cid: $route.params.cid, aid: analysis.id } }">
+  <v-list-item
+    :value="visited"
+    router
+    :to="{ name: 'platforms-cid-analyses-aid', params: { cid: $route.params.cid, aid: analysis.id } }"
+  >
     <v-list-item-avatar>
-      <v-avatar size="36" color="grey lighten-1">
-        <img v-if="updatedBy && updatedBy.avatarHash" :title="updatedBy.fullName" :src="updatedBy.avatarUrl + '/50.png'" alt="avatar" />
-        <span v-else-if="updatedBy" class="subtitle-1 white--text" :title="updatedBy.fullName" v-text="updatedBy.initials" />
-        <v-icon v-else>mdi-account-question</v-icon>
+      <v-avatar
+        size="36"
+        color="grey lighten-1"
+      >
+        <img
+          v-if="updatedBy && updatedBy.avatarHash"
+          :title="updatedBy.fullName"
+          :src="updatedBy.avatarUrl + '/50.png'"
+          alt="avatar"
+        >
+        <span
+          v-else-if="updatedBy"
+          class="subtitle-1 white--text"
+          :title="updatedBy.fullName"
+          v-text="updatedBy.initials"
+        />
+        <v-icon v-else>
+          mdi-account-question
+        </v-icon>
       </v-avatar>
     </v-list-item-avatar>
 
@@ -14,7 +33,9 @@
     </v-list-item-content>
 
     <v-list-item-action>
-      <v-list-item-action-text v-if="analysis.updatedAt">{{ updatedAt }}</v-list-item-action-text>
+      <v-list-item-action-text v-if="analysis.updatedAt">
+        {{ updatedAt }}
+      </v-list-item-action-text>
     </v-list-item-action>
   </v-list-item>
 </template>
@@ -23,7 +44,16 @@
 import moment from 'moment'
 
 export default {
-  props: ['analysis', 'cardID'],
+  props: {
+    analysis: {
+      type: Object,
+      default: () => ({})
+    },
+    cardID: {
+      type: String,
+      default: () => ('')
+    }
+  },
   computed: {
     updatedAt () {
       return moment(this.analysis.updatedAt).locale(this.$i18n.locale).fromNow()

@@ -1,25 +1,52 @@
 <template>
   <v-list-item>
     <v-list-item-avatar color="#5AB9C1">
-      <span class="white--text headline" v-text="name"></span>
+      <span
+        class="white--text headline"
+        v-text="name"
+      />
     </v-list-item-avatar>
     <v-list-item-content>
       <v-list-item-title>
-        <v-menu open-on-hover offset-y>
+        <v-menu
+          open-on-hover
+          offset-y
+        >
           <template v-slot:activator="{ on }">
-            <v-btn small v-on="on" class="dateLbl white--text" color="#5AB9C1" depressed :disabled="!user || !canCertify || !humanCertified">
+            <v-btn
+              small
+              class="dateLbl white--text"
+              color="#5AB9C1"
+              depressed
+              :disabled="!user || !canCertify || !humanCertified"
+              v-on="on"
+            >
               <span v-if="publisherCertified">{{ year }}</span>
               <span v-else>-</span>
             </v-btn>
           </template>
           <v-list v-if="user && humanCertified">
-            <v-list-item v-for="(item, index) in years" :key="index">
-              <v-list-item-title class="pointer text-center" @click="openDialog(item);">{{ item || '-' }}</v-list-item-title>
+            <v-list-item
+              v-for="(item, index) in years"
+              :key="index"
+            >
+              <v-list-item-title
+                class="pointer text-center"
+                @click="openDialog(item);"
+              >
+                {{ item || '-' }}
+              </v-list-item-title>
             </v-list-item>
           </v-list>
         </v-menu>
-        <span v-if="publisherCertified"> - <a href="https://blog.ezpaarse.org/2017/06/certification-h-et-p-des-plateformes-traitees-dans-ezpaarse/" target="_blank">{{ $t('card.publisherVerified') }}</a></span>
-        <span v-else> - <a href="https://blog.ezpaarse.org/2020/01/tutoriels-procedure-de-certification-h-et-p-dans-analogist" target="_blank">{{ $t('certifications.notCertified') }}</a></span>
+        <span v-if="publisherCertified"> - <a
+          href="https://blog.ezpaarse.org/2017/06/certification-h-et-p-des-plateformes-traitees-dans-ezpaarse/"
+          target="_blank"
+        >{{ $t('card.publisherVerified') }}</a></span>
+        <span v-else> - <a
+          href="https://blog.ezpaarse.org/2020/01/tutoriels-procedure-de-certification-h-et-p-dans-analogist"
+          target="_blank"
+        >{{ $t('certifications.notCertified') }}</a></span>
       </v-list-item-title>
     </v-list-item-content>
   </v-list-item>
@@ -27,7 +54,12 @@
 
 <script>
 export default {
-  props: [ 'years' ],
+  props: {
+    years: {
+      type: Array,
+      default: () => ([])
+    }
+  },
   data () {
     return {
       name: 'P'

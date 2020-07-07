@@ -25,7 +25,7 @@ router.use(new Grant({
     secret: config.trello.secret,
     expiration: 'never',
     scope: ['read', 'write', 'account'],
-    'custom_params': {
+    custom_params: {
       name: 'AnalogIST'
     }
   }

@@ -1,43 +1,46 @@
 <template>
   <section>
     <v-card>
-      <v-toolbar class="secondary" dense dark flat>
+      <v-toolbar
+        class="secondary"
+        dense
+        dark
+        flat
+      >
         <v-toolbar-title>
           Certifications
         </v-toolbar-title>
 
-        <v-spacer></v-spacer>
+        <v-spacer />
 
         <v-select
+          v-model="searchStatusOrder"
           label="Status"
           :items="statusOrder"
-          v-model="searchStatusOrder"
           item-text="text"
           item-value="order"
           hide-details
           single-line
           clearable
           class="mx-1 filterFields"
-        >
-        </v-select>
+        />
 
         <v-select
+          v-model="searchDateOrder"
           label="Date"
           :items="dateOrder"
-          v-model="searchDateOrder"
           item-text="text"
           item-value="order"
           hide-details
           single-line
           clearable
           class="mx-1 filterFields"
-        >
-        </v-select>
+        />
 
         <v-select
+          v-model="searchCertifications"
           :label="$t('cards.certifications')"
           :items="certificationsType"
-          v-model="searchCertifications"
           item-text="name"
           item-value="id"
           hide-details
@@ -48,43 +51,83 @@
         >
           <template v-slot:item="{ item }">
             {{ item.name }}
-            <v-list-item-avatar style="margin-left: 10px" size="24" v-if="item.id === 'humanCertified'" color="#F4B48B">
+            <v-list-item-avatar
+              v-if="item.id === 'humanCertified'"
+              style="margin-left: 10px"
+              size="24"
+              color="#F4B48B"
+            >
               <span class="white--text">H</span>
             </v-list-item-avatar>
-            <v-list-item-avatar style="margin-left: 10px" size="24" v-if="item.id === 'publisherCertified'" color="#5AB9C1">
+            <v-list-item-avatar
+              v-if="item.id === 'publisherCertified'"
+              style="margin-left: 10px"
+              size="24"
+              color="#5AB9C1"
+            >
               <span class="white--text">P</span>
             </v-list-item-avatar>
           </template>
         </v-select>
 
-        <v-tooltip bottom v-if="certificationsEvents.length">
+        <v-tooltip
+          v-if="certificationsEvents.length"
+          bottom
+        >
           <template v-slot:activator="{ on }">
-            <v-btn v-on="on" class="mx-1" fab bottom right x-small color="success" @click="generateCertificationsFiles">
+            <v-btn
+              class="mx-1"
+              fab
+              bottom
+              right
+              x-small
+              color="success"
+              v-on="on"
+              @click="generateCertificationsFiles"
+            >
               <v-icon>mdi-printer</v-icon>
             </v-btn>
           </template>
-           <span v-text="$t('certifications.downloadCertifiedList')"></span>
+          <span v-text="$t('certifications.downloadCertifiedList')" />
         </v-tooltip>
       </v-toolbar>
 
-      <v-card-text v-if="!certificationsEvents.length" v-text="$t('certifications.noCertifications')"></v-card-text>
+      <v-card-text
+        v-if="!certificationsEvents.length"
+        v-text="$t('certifications.noCertifications')"
+      />
 
-      <v-expansion-panels accordion tile v-if="certificationsEvents.length">
+      <v-expansion-panels
+        v-if="certificationsEvents.length"
+        accordion
+        tile
+      >
         <v-expansion-panel
           v-for="(item, i) in certificationsEvents"
           :key="i"
         >
           <v-expansion-panel-header>
             <v-list-item class="pa-0">
-              <v-list-item-avatar size="24" v-if="item.certifications && item.certifications.humanCertified" color="#F4B48B">
+              <v-list-item-avatar
+                v-if="item.certifications && item.certifications.humanCertified"
+                size="24"
+                color="#F4B48B"
+              >
                 <span class="white--text">H</span>
               </v-list-item-avatar>
-              <v-list-item-avatar size="24" v-if="item.certifications && item.certifications.publisherCertified" color="#5AB9C1">
+              <v-list-item-avatar
+                v-if="item.certifications && item.certifications.publisherCertified"
+                size="24"
+                color="#5AB9C1"
+              >
                 <span class="white--text">P</span>
               </v-list-item-avatar>
               <v-list-item-content>
                 <v-list-item-title>
-                  <router-link :to="`/platforms/${item.cardID}`" target="_blank">
+                  <router-link
+                    :to="`/platforms/${item.cardID}`"
+                    target="_blank"
+                  >
                     <a>{{ eventPlatformName(item.cardID) }}</a>
                   </router-link>
                   <v-chip
@@ -108,89 +151,178 @@
           </v-expansion-panel-header>
           <v-expansion-panel-content>
             <v-container>
-              <v-layout row wrap>
-                <v-flex xs12 sm4 md4 class="px-1">
+              <v-layout
+                row
+                wrap
+              >
+                <v-flex
+                  xs12
+                  sm4
+                  md4
+                  class="px-1"
+                >
                   <v-text-field
                     :label="$t('certifications.form.user')"
                     readonly
                     :value="item.user.fullName"
-                  ></v-text-field>
+                  />
                 </v-flex>
 
-                <v-flex xs12 sm4 md4 class="px-1">
+                <v-flex
+                  xs12
+                  sm4
+                  md4
+                  class="px-1"
+                >
                   <v-text-field
                     :label="$t('certifications.form.establishment')"
                     readonly
                     :value="item.form.establishment"
-                  ></v-text-field>
+                  />
                 </v-flex>
 
-                <v-flex xs12 sm4 md4 class="px-1">
+                <v-flex
+                  xs12
+                  sm4
+                  md4
+                  class="px-1"
+                >
                   <v-text-field
                     :label="$t('certifications.form.year')"
                     readonly
                     :value="item.form.year"
-                  ></v-text-field>
+                  />
                 </v-flex>
 
-                <v-flex xs12 sm12 md12 class="px-1">
+                <v-flex
+                  xs12
+                  sm12
+                  md12
+                  class="px-1"
+                >
                   <v-textarea
                     readonly
                     :label="$t('certifications.form.comment')"
                     :value="item.form.comment"
-                  ></v-textarea>
+                  />
                 </v-flex>
 
-                <v-flex xs12 sm4 md4 class="px-1" v-if="item.certifications && item.certifications.publisherCertified">
+                <v-flex
+                  v-if="item.certifications && item.certifications.publisherCertified"
+                  xs12
+                  sm4
+                  md4
+                  class="px-1"
+                >
                   <v-text-field
                     :label="$t('certifications.form.totalEzpaarse')"
                     readonly
                     :value="item.form.values.ezpaarse"
-                  ></v-text-field>
+                  />
                 </v-flex>
-                <v-flex xs12 sm4 md4 class="px-1" v-if="item.certifications && item.certifications.publisherCertified">
+                <v-flex
+                  v-if="item.certifications && item.certifications.publisherCertified"
+                  xs12
+                  sm4
+                  md4
+                  class="px-1"
+                >
                   <v-text-field
                     :label="$t('certifications.form.totalEditor')"
                     readonly
                     :value="item.form.values.editor"
-                  ></v-text-field>
+                  />
                 </v-flex>
-                <v-flex xs12 sm4 md4 class="px-1" v-if="item.certifications && item.certifications.publisherCertified">
+                <v-flex
+                  v-if="item.certifications && item.certifications.publisherCertified"
+                  xs12
+                  sm4
+                  md4
+                  class="px-1"
+                >
                   <v-text-field
                     :label="$t('certifications.form.difference')"
                     readonly
                     :value="difference(item.form.values)"
-                  ></v-text-field>
+                  />
                 </v-flex>
 
-                <v-flex xs12 sm6 md6 class="px-1">
-                  <v-btn tile dark color="grey" v-if="item.form.attachment" link :to="`/api/certifications/download/${item.form.attachment}`" target="_blank">
-                    <v-icon left>mdi-paperclip</v-icon> {{ $t('certifications.form.attachment') }}
+                <v-flex
+                  xs12
+                  sm6
+                  md6
+                  class="px-1"
+                >
+                  <v-btn
+                    v-if="item.form.attachment"
+                    tile
+                    dark
+                    color="grey"
+                    link
+                    :to="`/api/certifications/download/${item.form.attachment}`"
+                    target="_blank"
+                  >
+                    <v-icon left>
+                      mdi-paperclip
+                    </v-icon> {{ $t('certifications.form.attachment') }}
                   </v-btn>
                 </v-flex>
 
-                <v-flex xs12 sm12 md12 offset-xs10 v-if="item.status === 'waiting'">
-                  <v-btn tile dark class="ml-auto" color="green lighten-2" @click="accept(item)">
-                    <v-icon left>mdi-plus-circle</v-icon> {{ $t('certifications.form.validate') }}
+                <v-flex
+                  v-if="item.status === 'waiting'"
+                  xs12
+                  sm12
+                  md12
+                  offset-xs10
+                >
+                  <v-btn
+                    tile
+                    dark
+                    class="ml-auto"
+                    color="green lighten-2"
+                    @click="accept(item)"
+                  >
+                    <v-icon left>
+                      mdi-plus-circle
+                    </v-icon> {{ $t('certifications.form.validate') }}
                   </v-btn>
-                  <v-dialog v-model="denialDialog" max-width="600">
+                  <v-dialog
+                    v-model="denialDialog"
+                    max-width="600"
+                  >
                     <template v-slot:activator="{ on }">
-                      <v-btn tile dark v-on="on" class="ml-auto" color="red lighten-2">
-                        {{ $t('certifications.form.reject') }} <v-icon right>mdi-minus-circle</v-icon>
+                      <v-btn
+                        tile
+                        dark
+                        class="ml-auto"
+                        color="red lighten-2"
+                        v-on="on"
+                      >
+                        {{ $t('certifications.form.reject') }} <v-icon right>
+                          mdi-minus-circle
+                        </v-icon>
                       </v-btn>
                     </template>
                     <v-card>
-                      <v-card-title class="text-center" v-text="$t('certifications.form.rejectExplanations')"></v-card-title>
+                      <v-card-title
+                        class="text-center"
+                        v-text="$t('certifications.form.rejectExplanations')"
+                      />
                       <v-card-text class="text-center py-3">
                         <v-textarea
-                          filled
                           v-model="refusalExplanations"
+                          filled
                           :label="$t('certifications.form.comment')"
-                        ></v-textarea>
+                        />
                       </v-card-text>
                       <v-card-actions>
-                        <v-spacer></v-spacer>
-                        <v-btn color="green darken-1" dark @click="refuse(item)" v-text="$t('certifications.send')"></v-btn>
+                        <v-spacer />
+                        <v-btn
+                          color="green darken-1"
+                          dark
+                          @click="refuse(item)"
+                          v-text="$t('certifications.send')"
+                        />
                       </v-card-actions>
                     </v-card>
                   </v-dialog>
@@ -216,6 +348,25 @@ function escapeCSVstring (str) {
 }
 
 export default {
+  async fetch ({ store, redirect, app }) {
+    try {
+      await store.dispatch('FETCH_PROFILE')
+    } catch (e) {
+      return redirect('/')
+    }
+
+    try {
+      await store.dispatch('FETCH_CARDS')
+    } catch (e) {
+      await store.dispatch('snacks/error', 'errorGeneric')
+    }
+
+    try {
+      await store.dispatch('certifications/GET_CERTIFICATIONS_EVENTS')
+    } catch (e) {
+      await store.dispatch('snacks/error', 'errorGeneric')
+    }
+  },
   data () {
     return {
       refusalExplanations: '',
@@ -261,25 +412,6 @@ export default {
           icon: 'mdi-check-circle'
         }
       }
-    }
-  },
-  async fetch ({ store, redirect, app }) {
-    try {
-      await store.dispatch('FETCH_PROFILE')
-    } catch (e) {
-      return redirect('/')
-    }
-
-    try {
-      await store.dispatch('FETCH_CARDS')
-    } catch (e) {
-      await store.dispatch('snacks/error', 'errorGeneric')
-    }
-
-    try {
-      await store.dispatch('certifications/GET_CERTIFICATIONS_EVENTS')
-    } catch (e) {
-      await store.dispatch('snacks/error', 'errorGeneric')
     }
   },
   computed: {

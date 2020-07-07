@@ -150,7 +150,7 @@ function isNoisy (req) {
 function getPossibleUrls (url, patchHyphens) {
   if (!patchHyphens) { return [url] }
 
-  const reg = new RegExp(`^([a-z]+://)([^/]+)(.*)`, 'i')
+  const reg = new RegExp('^([a-z]+://)([^/]+)(.*)', 'i')
   const match = reg.exec(url)
 
   if (!match) { return [url] }

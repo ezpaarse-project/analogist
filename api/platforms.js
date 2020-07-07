@@ -244,7 +244,7 @@ router.patch('/:cid/analyses/order', mw.updateHistory, (req, res, next) => {
 
   const order = req.body
 
-  mongo.get('platforms').findOne({ 'cardID': req.params.cid }, (err, platform) => {
+  mongo.get('platforms').findOne({ cardID: req.params.cid }, (err, platform) => {
     if (err) { return next(err) }
     if (!platform) { return res.status(404).end() }
 
@@ -312,7 +312,7 @@ router.post('/:cid/history/:hid', (req, res, next) => {
 
   mongo.get('platforms').findOne(
     { cardID: req.params.cid, 'history.id': new ObjectID(req.params.hid) },
-    { projection: { 'history.$': 1, 'analyses': 1 } },
+    { projection: { 'history.$': 1, analyses: 1 } },
     (err, platform) => {
       if (err) { return next(err) }
       if (!platform) { return res.status(404).end() }

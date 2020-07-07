@@ -1,41 +1,69 @@
 <template>
-  <v-list-item ripple router :to="{ name: 'platforms-cid', params: { cid: card.id }}" v-if="!card.closed || displayAllCards">
+  <v-list-item
+    v-if="!card.closed || displayAllCards"
+    ripple
+    router
+    :to="{ name: 'platforms-cid', params: { cid: card.id }}"
+  >
     <v-list-item-content>
       <v-list-item-title>
-        <v-tooltip right v-if="card.closed">
+        <v-tooltip
+          v-if="card.closed"
+          right
+        >
           <template v-slot:activator="{ on }">
             <span v-on="on">
-              <v-icon size="24" class="mb-1">mdi-archive</v-icon>
+              <v-icon
+                size="24"
+                class="mb-1"
+              >mdi-archive</v-icon>
               {{ card.name }}
             </span>
           </template>
-          <span v-text="$t('card.archived')"></span>
+          <span v-text="$t('card.archived')" />
         </v-tooltip>
-        <span v-else v-text="card.name"></span>
+        <span
+          v-else
+          v-text="card.name"
+        />
       </v-list-item-title>
       <v-list-item-subtitle>{{ listName }}</v-list-item-subtitle>
       <v-list-item-subtitle>{{ $t('card.nbAnalyses', { n: nbAnalyses }) }}</v-list-item-subtitle>
     </v-list-item-content>
     <v-list-item-action>
-      <v-list-item-subtitle class="caption">{{ updatedAt }}</v-list-item-subtitle>
+      <v-list-item-subtitle class="caption">
+        {{ updatedAt }}
+      </v-list-item-subtitle>
       <span>
         <v-tooltip left>
           <template v-slot:activator="{ on }">
-            <v-list-item-avatar v-on="on" class="cert-icon" size="24" v-if="humanCertified" color="#F4B48B">
+            <v-list-item-avatar
+              v-if="humanCertified"
+              class="cert-icon"
+              size="24"
+              color="#F4B48B"
+              v-on="on"
+            >
               <span class="white--text">H</span>
             </v-list-item-avatar>
           </template>
-          <span v-text="$t('certifications.humanCert')"></span>
+          <span v-text="$t('certifications.humanCert')" />
         </v-tooltip>
       </span>
       <span>
         <v-tooltip left>
           <template v-slot:activator="{ on }">
-            <v-list-item-avatar v-on="on" class="cert-icon" size="24" v-if="publisherCertified" color="#5AB9C1">
+            <v-list-item-avatar
+              v-if="publisherCertified"
+              class="cert-icon"
+              size="24"
+              color="#5AB9C1"
+              v-on="on"
+            >
               <span class="white--text">P</span>
             </v-list-item-avatar>
           </template>
-          <span v-text="$t('certifications.publisherCert')"></span>
+          <span v-text="$t('certifications.publisherCert')" />
         </v-tooltip>
       </span>
     </v-list-item-action>
@@ -46,7 +74,12 @@
 import moment from 'moment'
 
 export default {
-  props: ['card'],
+  props: {
+    card: {
+      type: Object,
+      default: () => ({})
+    }
+  },
   computed: {
     displayAllCards () {
       return this.$store.state.displayAllCards

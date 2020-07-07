@@ -78,7 +78,7 @@ api.addPlatform = function (cardID) {
 }
 
 api.getFields = function () {
-  return axios.get(`/api/platforms/fields.json`).then(res => res.data)
+  return axios.get('/api/platforms/fields.json').then(res => res.data)
 }
 
 api.moveCard = function (card, listID) {
@@ -165,7 +165,7 @@ function extendCard (card, platform) {
 }
 
 api.getBoardMembers = function () {
-  return axios.get(`/api/trello/members`).then(res => res.data)
+  return axios.get('/api/trello/members').then(res => res.data)
 }
 
 api.getMember = function (memberId) {
@@ -184,19 +184,19 @@ api.getBadges = function (userId) {
 }
 
 api.getPing = function () {
-  return axios.get(`/api/badges/ping`).then(res => res.data)
+  return axios.get('/api/badges/ping').then(res => res.data)
 }
 
 api.getMetrics = function () {
-  return axios.get(`/api/badges/metrics`).then(res => res.data)
+  return axios.get('/api/badges/metrics').then(res => res.data)
 }
 
 api.emit = function (data) {
-  return axios.post(`/api/badges/emit`, data).then(res => res.data)
+  return axios.post('/api/badges/emit', data).then(res => res.data)
 }
 
 api.setVisiblity = function (data) {
-  return axios.put(`/api/badges/visibility`, data).then(res => res.data)
+  return axios.put('/api/badges/visibility', data).then(res => res.data)
 }
 
 api.getUsers = function (badgeId) {
