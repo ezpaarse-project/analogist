@@ -25,9 +25,7 @@ router.use('/certifications', require('./certifications'))
 
 // catch 404 and forward to error handler
 router.use((req, res, next) => {
-  const err = new Error('Not Found')
-  err.status = 404
-  next(err)
+  res.status(404).end()
 })
 
 module.exports = router
