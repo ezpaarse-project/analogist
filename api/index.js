@@ -25,7 +25,10 @@ router.use('/certifications', require('./certifications'))
 
 // catch 404 and forward to error handler
 router.use((req, res, next) => {
-  res.status(404).end()
+  res.status(404).json({
+    status: 404,
+    message: `Cannot ${req.method} ${req.originalUrl}`
+  })
 })
 
 module.exports = router
