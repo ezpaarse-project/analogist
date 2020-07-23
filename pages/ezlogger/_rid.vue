@@ -186,12 +186,9 @@
         hide-default-footer
         disable-pagination
       >
-        <template v-slot:body="{ items }">
-          <tr
-            v-for="(item, index) in items"
-            :key="index"
-          >
-            <th class="text-left px-5 py-2">
+        <template v-slot:item="{ item }">
+          <tr>
+            <th class="text-left">
               {{ item.name }}
             </th>
             <td class="text-left">
