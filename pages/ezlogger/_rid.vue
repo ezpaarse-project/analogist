@@ -191,7 +191,7 @@
             v-for="(item, index) in items"
             :key="index"
           >
-            <th class="text-left">
+            <th class="text-left px-5 py-2">
               {{ item.name }}
             </th>
             <td class="text-left">

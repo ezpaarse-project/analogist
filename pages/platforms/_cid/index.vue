@@ -91,7 +91,7 @@
                 target="_blank"
               >
                 <v-list-item-avatar>
-                  <v-icon>mdi-github-box</v-icon>
+                  <v-icon>mdi-github</v-icon>
                 </v-list-item-avatar>
                 <v-list-item-content>
                   <v-list-item-title v-text="$t('card.github')" />
