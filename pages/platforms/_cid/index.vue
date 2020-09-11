@@ -318,11 +318,10 @@
                   :src="member.avatarUrl + '/50.png'"
                   alt="avatar"
                 >
-                <span v-else>
-                  <v-icon>
-                    mdi-account-question
-                  </v-icon>
-                </span>
+                <span
+                  v-else
+                  v-text="member.initials"
+                />
               </v-avatar>
             </v-list-item-avatar>
             <v-list-item-content>
