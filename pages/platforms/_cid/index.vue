@@ -309,15 +309,20 @@
             :href="'https://trello.com/' + member.username"
           >
             <v-list-item-avatar>
-              <img
-                v-if="member.avatarHash"
-                :src="member.avatarUrl + '/50.png'"
-                alt="avatar"
+              <v-avatar
+                size="36"
+                color="grey lighten-1"
               >
-              <span
-                v-else-if="member.initials"
-                class="icon blue-grey lighten-4"
-              >{{ member.initials }}</span>
+                <img
+                  v-if="member.avatarHash"
+                  :src="member.avatarUrl + '/50.png'"
+                  alt="avatar"
+                >
+                <span
+                  v-else
+                  v-text="member.initials"
+                />
+              </v-avatar>
             </v-list-item-avatar>
             <v-list-item-content>
               <v-list-item-title v-text="member.fullName" />
