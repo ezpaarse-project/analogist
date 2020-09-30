@@ -69,7 +69,10 @@
               small
               v-on="on"
             >
-              {{ $t('card.menu') }} <v-icon right>mdi-chevron-down</v-icon>
+              {{ $t('card.menu') }}
+              <v-icon right>
+                mdi-chevron-down
+              </v-icon>
             </v-btn>
           </template>
 
