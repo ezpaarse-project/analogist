@@ -546,6 +546,19 @@ export default {
           if (this.analysis.identifiers.length) {
             this.analysis.identifiers = this.analysis.identifiers.map((identifier) => ({ type: identifier.type, value: identifier.value.trim() }))
           }
+          if (this.analysis.pathParams.length) {
+            this.analysis.pathParams = this.analysis.pathParams.map((pathParam) => ({
+              value: pathParam.value ? pathParam.value.trim() : null,
+              comment: pathParam.comment ? pathParam.comment.trim() : null
+            }))
+          }
+          if (this.analysis.queryParams.length) {
+            this.analysis.queryParams = this.analysis.queryParams.map((queryParam) => ({
+              name: queryParam.name ? queryParam.name.trim() : null,
+              value: queryParam.value ? queryParam.value.trim() : null,
+              comment: queryParam.comment ? queryParam.comment.trim() : null
+            }))
+          }
 
           await this.$store.dispatch('SAVE_ANALYSIS', {
             cardID: this.card.id,
