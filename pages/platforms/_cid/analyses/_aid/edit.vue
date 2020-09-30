@@ -545,34 +545,22 @@ export default {
           }
           if (this.analysis.identifiers.length) {
             this.analysis.identifiers = this.analysis.identifiers.map((identifier) => ({
-              type: identifier.type,
-              value: identifier.value.trim()
-            })).filter((identifier) => {
-              if (identifier.type && !identifier.value) {
-                return false
-              }
-
-              return true
-            })
+              type: identifier?.type?.trim(),
+              value: identifier?.value?.trim()
+            })).filter((identifier) => identifier.type && identifier.value)
           }
           if (this.analysis.pathParams.length) {
             this.analysis.pathParams = this.analysis.pathParams.map((pathParam) => ({
-              value: pathParam.value ? pathParam.value.trim() : null,
-              comment: pathParam.comment ? pathParam.comment.trim() : null
+              value: pathParam?.value?.trim(),
+              comment: pathParam?.comment?.trim()
             }))
           }
           if (this.analysis.queryParams.length) {
             this.analysis.queryParams = this.analysis.queryParams.map((queryParam) => ({
-              name: queryParam.name ? queryParam.name.trim() : null,
-              value: queryParam.value ? queryParam.value.trim() : null,
-              comment: queryParam.comment ? queryParam.comment.trim() : null
-            })).filter((queryParam) => {
-              if (!queryParam.name) {
-                return false
-              }
-
-              return true
-            })
+              name: queryParam?.name?.trim(),
+              value: queryParam?.value?.trim(),
+              comment: queryParam?.comment?.trim()
+            })).filter((queryParam) => queryParam.name)
           }
 
           await this.$store.dispatch('SAVE_ANALYSIS', {
