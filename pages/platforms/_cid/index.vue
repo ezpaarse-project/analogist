@@ -309,7 +309,6 @@
           <v-list-item
             v-for="member in card.members"
             :key="member.id"
-            avatar
             :href="'https://trello.com/' + member.username"
           >
             <v-list-item-avatar>
@@ -318,14 +317,20 @@
                 color="grey lighten-1"
               >
                 <img
-                  v-if="member.avatarHash"
+                  v-if="member && member.avatarHash"
+                  :title="member.fullName"
                   :src="member.avatarUrl + '/50.png'"
                   alt="avatar"
                 >
                 <span
-                  v-else
+                  v-else-if="member && member.initials"
+                  class="subtitle-1 white--text"
+                  :title="member.fullName"
                   v-text="member.initials"
                 />
+                <v-icon v-else>
+                  mdi-account-question
+                </v-icon>
               </v-avatar>
             </v-list-item-avatar>
             <v-list-item-content>

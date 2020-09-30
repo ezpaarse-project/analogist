@@ -15,7 +15,7 @@
           alt="avatar"
         >
         <span
-          v-else-if="updatedBy"
+          v-else-if="updatedBy && updatedBy.initials"
           class="subtitle-1 white--text"
           :title="updatedBy.fullName"
           v-text="updatedBy.initials"
