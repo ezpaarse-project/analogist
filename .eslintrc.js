@@ -13,6 +13,9 @@ module.exports = {
     'html',
     'vue'
   ],
+  parserOptions: {
+    ecmaVersion: 2020
+  },
   // add your custom rules here
   rules: {
     // // allow async-await
