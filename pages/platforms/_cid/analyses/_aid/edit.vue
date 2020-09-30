@@ -544,7 +544,16 @@ export default {
             this.analysis.comment = this.analysis.comment.trim()
           }
           if (this.analysis.identifiers.length) {
-            this.analysis.identifiers = this.analysis.identifiers.map((identifier) => ({ type: identifier.type, value: identifier.value.trim() }))
+            this.analysis.identifiers = this.analysis.identifiers.map((identifier) => ({
+              type: identifier.type,
+              value: identifier.value.trim()
+            })).filter((identifier) => {
+              if (identifier.type && !identifier.value) {
+                return false
+              }
+
+              return true
+            })
           }
           if (this.analysis.pathParams.length) {
             this.analysis.pathParams = this.analysis.pathParams.map((pathParam) => ({
@@ -557,7 +566,13 @@ export default {
               name: queryParam.name ? queryParam.name.trim() : null,
               value: queryParam.value ? queryParam.value.trim() : null,
               comment: queryParam.comment ? queryParam.comment.trim() : null
-            }))
+            })).filter((queryParam) => {
+              if (!queryParam.name) {
+                return false
+              }
+
+              return true
+            })
           }
 
           await this.$store.dispatch('SAVE_ANALYSIS', {
