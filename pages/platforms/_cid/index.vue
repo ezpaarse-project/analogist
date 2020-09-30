@@ -65,10 +65,14 @@
         >
           <template v-slot:activator="{ on }">
             <v-btn
-              icon
+              color="primary"
+              small
               v-on="on"
             >
-              <v-icon>mdi-dots-vertical</v-icon>
+              {{ $t('card.menu') }}
+              <v-icon right>
+                mdi-chevron-down
+              </v-icon>
             </v-btn>
           </template>
 

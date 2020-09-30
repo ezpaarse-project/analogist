@@ -30,9 +30,8 @@
       <p
         v-for="parser in parsers"
         :key="parser.platform"
-      >
-        {{ $t('domainCheck.supported', { domainName, trello: parser.manifest.trello, cardName: parser.manifest.longname }) }}
-      </p>
+        v-html="$t('domainCheck.supported', { domainName, trello: parser.manifest.trello, cardName: parser.manifest.longname })"
+      />
     </template>
     <p
       v-else-if="error"
@@ -43,9 +42,8 @@
     <p
       v-else-if="domainName"
       class="body-2"
-    >
-      {{ $t('domainCheck.unsupported', { domainName }) }}
-    </p>
+      v-html="$t('domainCheck.unsupported', { domainName })"
+    />
     <p
       v-else
       class="body-2 "
