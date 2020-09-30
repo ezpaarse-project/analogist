@@ -543,7 +543,9 @@ export default {
           if (this.analysis.comment) {
             this.analysis.comment = this.analysis.comment.trim()
           }
-          this.analysis.identifiers = this.analysis.identifiers.map((identifier) => ({ type: identifier.type, value: identifier.value.trim() }))
+          if (this.analysis.identifiers.length) {
+            this.analysis.identifiers = this.analysis.identifiers.map((identifier) => ({ type: identifier.type, value: identifier.value.trim() }))
+          }
 
           await this.$store.dispatch('SAVE_ANALYSIS', {
             cardID: this.card.id,
