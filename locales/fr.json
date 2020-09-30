@@ -103,7 +103,8 @@
     "listUpdateFailed": "Le changement de statut a échoué",
     "analysisCreationFailed": "La création d'analyse a échoué",
     "archivalFailed": "L'archivage de la carte a échoué",
-    "unarchivalFailed": "Le désarchivage de la carte a échoué"
+    "unarchivalFailed": "Le désarchivage de la carte a échoué",
+    "menu": "Menu"
   },
   "analyses": {
     "updated": "Mise à jour",

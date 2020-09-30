@@ -531,9 +531,19 @@ export default {
           this.pendingChanges = false
 
           // remove white space
+          if (this.analysis.title) {
+            this.analysis.title = this.analysis.title.trim()
+          }
           if (this.analysis.url) {
             this.analysis.url = this.analysis.url.trim()
           }
+          if (this.analysis.unitid) {
+            this.analysis.unitid = this.analysis.unitid.trim()
+          }
+          if (this.analysis.comment) {
+            this.analysis.comment = this.analysis.comment.trim()
+          }
+          this.analysis.identifiers = this.analysis.identifiers.map((identifier) => ({ type: identifier.type, value: identifier.value.trim() }))
 
           await this.$store.dispatch('SAVE_ANALYSIS', {
             cardID: this.card.id,

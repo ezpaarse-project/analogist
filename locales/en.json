@@ -103,7 +103,8 @@
     "listUpdateFailed": "Status update failed",
     "analysisCreationFailed": "Analysis creation failed",
     "archivalFailed": "Card archival failed",
-    "unarchivalFailed": "The de-archiving of the card has failed"
+    "unarchivalFailed": "The de-archiving of the card has failed",
+    "menu": "Menu"
   },
   "analyses": {
     "updated": "Updated",

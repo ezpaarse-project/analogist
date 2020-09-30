@@ -32,7 +32,8 @@ module.exports = {
         ImportDeclaration: true,
         Property: true
       }
-    }]
+    }],
+    'vue/no-v-html': 'off'
   },
   globals: {}
 }
