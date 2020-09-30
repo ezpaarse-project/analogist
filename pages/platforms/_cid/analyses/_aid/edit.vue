@@ -547,7 +547,7 @@ export default {
             this.analysis.identifiers = this.analysis.identifiers.map((identifier) => ({
               type: identifier?.type?.trim(),
               value: identifier?.value?.trim()
-            })).filter((identifier) => !(identifier.type && !identifier.value))
+            })).filter((identifier) => identifier.type && identifier.value)
           }
           if (this.analysis.pathParams.length) {
             this.analysis.pathParams = this.analysis.pathParams.map((pathParam) => ({
@@ -560,7 +560,7 @@ export default {
               name: queryParam?.name?.trim(),
               value: queryParam?.value?.trim(),
               comment: queryParam?.comment?.trim()
-            })).filter((queryParam) => !(!queryParam.name))
+            })).filter((queryParam) => queryParam.name)
           }
 
           await this.$store.dispatch('SAVE_ANALYSIS', {
