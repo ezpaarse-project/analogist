@@ -20,10 +20,9 @@
           :title="updatedBy.fullName"
           v-text="updatedBy.initials"
         />
-        <span
-          v-else
-          v-text="updatedBy.initials"
-        />
+        <v-icon v-else>
+          mdi-account-question
+        </v-icon>
       </v-avatar>
     </v-list-item-avatar>
 
