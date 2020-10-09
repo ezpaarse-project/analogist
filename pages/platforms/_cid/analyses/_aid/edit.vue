@@ -46,9 +46,6 @@
           grid-list-md
           pa-0
         >
-          <pre>
-            {{ analysis }}
-          </pre>
           <v-text-field
             v-model="analysis.title"
             filled
