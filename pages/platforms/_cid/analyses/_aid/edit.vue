@@ -46,6 +46,9 @@
           grid-list-md
           pa-0
         >
+          <pre>
+            {{ analysis }}
+          </pre>
           <v-text-field
             v-model="analysis.title"
             filled
@@ -543,19 +546,19 @@ export default {
           if (this.analysis.comment) {
             this.analysis.comment = this.analysis.comment.trim()
           }
-          if (this.analysis.identifiers.length) {
+          if (this.analysis.identifiers && this.analysis.identifiers.length) {
             this.analysis.identifiers = this.analysis.identifiers.map((identifier) => ({
               type: identifier?.type?.trim(),
               value: identifier?.value?.trim()
             })).filter((identifier) => identifier.type && identifier.value)
           }
-          if (this.analysis.pathParams.length) {
+          if (this.analysis.pathParams && this.analysis.pathParams.length) {
             this.analysis.pathParams = this.analysis.pathParams.map((pathParam) => ({
               value: pathParam?.value?.trim(),
               comment: pathParam?.comment?.trim()
             }))
           }
-          if (this.analysis.queryParams.length) {
+          if (this.analysis.queryParams && this.analysis.queryParams.length) {
             this.analysis.queryParams = this.analysis.queryParams.map((queryParam) => ({
               name: queryParam?.name?.trim(),
               value: queryParam?.value?.trim(),
