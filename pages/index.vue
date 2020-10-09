@@ -72,7 +72,7 @@
             >
               <p
                 class="text-xs-justify"
-                v-html="$t('home.whatIsEzPaarse', { parsers })"
+                v-html="$t('home.whatIsEzPaarse')"
               />
               <p
                 class="text-xs-justify"
