@@ -104,10 +104,10 @@
           </div>
 
           <div
-            class="black--text headline"
+            class="headline"
             v-text="analysis.title"
           />
-          <p class="black--text body-2">
+          <p class="body-2">
             <a
               :href="analysis.url"
               target="_blank"
