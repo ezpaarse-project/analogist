@@ -45,16 +45,6 @@
                 left
                 color="primary white--text"
               >
-                <span v-text="parsers || '—'" />
-              </v-avatar>
-              <span>{{ $t('home.parsers') }}</span>
-            </v-chip>
-
-            <v-chip pill>
-              <v-avatar
-                left
-                color="primary white--text"
-              >
                 <span v-text="trelloBoardMembers || '—'" />
               </v-avatar>
               <span>{{ $t('home.contributors') }}</span>
@@ -108,13 +98,6 @@ export default {
     await store.dispatch('FETCH_CARDS')
     await store.dispatch('FETCH_TRELLO_BOARD_MEMBERS')
     await store.dispatch('badges/getMetrics')
-  },
-  async asyncData ({ $axios }) {
-    const { data } = await $axios.get('http://ezpaarse-preprod.couperin.org/info/platforms')
-    if (!Array.isArray(data)) { throw new Error('invalid response') }
-    return {
-      parsers: data.length
-    }
   },
   computed: {
     infos () {
