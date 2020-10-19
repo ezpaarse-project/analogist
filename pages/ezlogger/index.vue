@@ -394,7 +394,7 @@ export default {
 
     analyze () {
       const ezpaarseUrl = this.settings.preprod
-        ? 'http://ezpaarse-preprod.couperin.org'
+        ? 'http://dev.ezpaarse.org'
         : this.settings.ezpaarseUrl
 
       if (!ezpaarseUrl) { return }

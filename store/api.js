@@ -96,7 +96,7 @@ api.addUserToCard = function (card, user) {
 }
 
 api.checkDomain = function (domain) {
-  return axios.get(`http://ezpaarse-preprod.couperin.org/info/domains/${domain}`)
+  return axios.get(`http://dev.ezpaarse.org/info/domains/${domain}`)
     .then(res => {
       if (typeof res.data === 'object') { return res.data }
       throw new Error('Invalid Response')

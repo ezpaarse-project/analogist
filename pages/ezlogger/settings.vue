@@ -54,7 +54,8 @@
         </v-btn>
 
         <v-alert
-          color="success"
+          color="success white--text"
+          class="my-2"
           :value="connectionTest.version"
         >
           <div>{{ $t('ezLoggerSettings.connectionSuccessful') }}</div>
@@ -62,7 +63,8 @@
         </v-alert>
         <v-alert
           v-if="connectionTest.errorMsg"
-          color="error"
+          color="error white--text"
+          class="my-2"
           :value="true"
         >
           {{ $t(`ezLoggerSettings.${connectionTest.errorMsg}`, connectionTest.errorMeta) }}
@@ -327,7 +329,7 @@ export default {
     ]),
     getEzpaarseUrl () {
       return this.preprod
-        ? 'http://ezpaarse-preprod.couperin.org'
+        ? 'http://dev.ezpaarse.org'
         : this.ezpaarseUrl
     },
     filterParsers (item, queryText) {

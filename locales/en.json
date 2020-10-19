@@ -56,7 +56,7 @@
   "ezLoggerSettings": {
     "instance": "ezPAARSE Instance",
     "useNationalInstance": "Use the public instance",
-    "nationalInstanceDesc": "The public instance is hosted on http://ezpaarse-preprod.couperin.org and always provides the latest version of ezPAARSE.",
+    "nationalInstanceDesc": "The public instance is hosted on http://dev.ezpaarse.org and always provides the latest version of ezPAARSE.",
     "customUrl": "URL for the ezPAARSE instance",
     "checkAvailability": "Check availability",
     "connectionSuccessful": "The ezPAARSE instance is available.",

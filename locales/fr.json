@@ -56,7 +56,7 @@
   "ezLoggerSettings": {
     "instance": "Instance ezPAARSE",
     "useNationalInstance": "Utiliser l'instance publique",
-    "nationalInstanceDesc": "L'instance publique est hébergée sur http://ezpaarse-preprod.couperin.org et fournit toujours la dernière version d'ezPAARSE.",
+    "nationalInstanceDesc": "L'instance publique est hébergée sur http://dev.ezpaarse.org et fournit toujours la dernière version d'ezPAARSE.",
     "customUrl": "URL de l'instance ezPAARSE",
     "checkAvailability": "Vérifier la disponibilité",
     "connectionSuccessful": "L'instance ezPAARSE est disponible.",
