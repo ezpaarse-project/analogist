@@ -38,6 +38,18 @@
         />
 
         <v-select
+          v-model="searchYears"
+          :label="$t('certifications.form.year')"
+          :items="yearsOrder"
+          item-text="text"
+          item-value="order"
+          hide-details
+          single-line
+          clearable
+          class="mx-1 filterFields"
+        />
+
+        <v-select
           v-model="searchCertifications"
           :label="$t('cards.certifications')"
           :items="certificationsType"
@@ -433,6 +445,10 @@ export default {
             })
           }
 
+          if (this.searchYears && event.form.year !== this.searchYears) {
+            return false
+          }
+
           return true
         })
         .sort((a, b) => {
@@ -469,6 +485,14 @@ export default {
         this.$store.dispatch('UPDATE_SEARCH_STATUS_ORDER', newValue || 'waiting')
       }
     },
+    searchYears: {
+      get () {
+        return this.$store.state.searchYearsOrder
+      },
+      set (newValue) {
+        this.$store.dispatch('UPDATE_SEARCH_YEARS_ORDER', newValue || null)
+      }
+    },
     dateOrder () {
       return [
         {
@@ -480,6 +504,10 @@ export default {
           text: this.$t('certifications.asc')
         }
       ]
+    },
+    yearsOrder () {
+      const currentYear = new Date().getFullYear()
+      return [currentYear - 2, currentYear - 1, currentYear]
     },
     statusOrder () {
       return [
