@@ -317,7 +317,7 @@
                 color="grey lighten-1"
               >
                 <img
-                  v-if="member && member.avatarHash"
+                  v-if="member && member.avatarUrl"
                   :title="member.fullName"
                   :src="member.avatarUrl + '/50.png'"
                   alt="avatar"

@@ -41,7 +41,7 @@
               >
                 <v-list-item-avatar>
                   <img
-                    v-if="item.member.avatarHash"
+                    v-if="item.member.avatarUrl"
                     :src="`${item.member.avatarUrl}/50.png`"
                   >
                   <span v-else>

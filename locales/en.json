@@ -197,7 +197,7 @@
   "home": {
     "identifiedPlatforms": "Identified Platforms",
     "analyses": "Analyses",
-    "contributors": "Contributors",
+    "parsers": "Parsers",
     "badges": "Badges",
     "whatIsEzPaarse": "<a href=\"https://www.ezpaarse.org/\" target=\"_blank\">ezPAARSE</a> now comes with a list of <a href=\"https://github.com/ezpaarse-project/ezpaarse-platforms\" target=\"_blank\"><span class=\"font-weight-bold\">parsers</span></a>, which are the result of an analytical work provided by the community, and which provide users with a good coverage of their institution's subscriptions to electronic resources.",
     "whatIsAnalogist": "The community platform, called <span class=\"font-weight-bold\">AnalogIST</span>, is the place where different types of URLs are collected, semi-automatically analyzed and commented so that the corresponding parser can be accurate and complete. For publishers or providers who are not yet recognized by <a href=\"https://www.ezpaarse.org/\" target=\"_blank\">ezPAARSE</a>, or that simply need an update, it is easy to contribute to a platform analysis: just open a Trello account and follow the guide!",

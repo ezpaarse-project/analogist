@@ -45,6 +45,14 @@ router.get('/', (req, res, next) => {
     if (err) { return next(err) }
 
     for (let i = 0; i < docs.length; i += 1) {
+      if (docs[i].analyses) {
+        docs[i].analyses = docs[i].analyses.length
+      }
+
+      if (docs[i].history) {
+        delete docs[i].history
+      }
+
       try {
         const humanCertifications = await getHumanCertifications(docs[i].cardID)
         if (humanCertifications) {
@@ -75,6 +83,10 @@ router.get('/:cid', (req, res, next) => {
   mongo.get('platforms').findOne({ cardID: req.params.cid }, async (err, doc) => {
     if (err) { return next(err) }
     if (!doc) { return res.status(404).end() }
+
+    if (doc.history) {
+      delete doc.history
+    }
 
     try {
       const humanCertifications = await getHumanCertifications(doc.cardID)
@@ -228,7 +240,12 @@ router.put('/:cid/analyses/:aid', mw.updateHistory, (req, res, next) => {
             if (err) console.error(err)
 
             badges.emit(config.badges.analysesBronze, req.session.profile, true)
+              // eslint-disable-next-line no-console
+              .catch((err) => console.error(err))
+
             badges.emit(config.badges.analysesSilver, req.session.profile, true)
+              // eslint-disable-next-line no-console
+              .catch((err) => console.error(err))
           }
         )
       }

@@ -46,7 +46,7 @@
       </v-list-item>
 
       <v-list-item v-else>
-        <v-list-item-avatar v-if="user.avatarHash">
+        <v-list-item-avatar v-if="user.avatarUrl">
           <img
             :title="user.fullName"
             :src="user.avatarUrl + '/50.png'"
@@ -54,7 +54,7 @@
           >
         </v-list-item-avatar>
         <v-list-item-avatar
-          v-if="!user.avatarHash"
+          v-if="!user.avatarUrl"
           color="blue-grey lighten-4"
         >
           <span

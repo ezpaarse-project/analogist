@@ -14,6 +14,17 @@ router.get('/cards', (req, res, next) => {
     .on('error', next)
 })
 
+/* GET trello cards */
+router.get('/cards/count', (req, res, next) => {
+  trello.getCardsCount((err, data) => {
+    if (err) { return res.status(500).end() }
+
+    const cards = data.filter(({ closed }) => !closed)
+
+    return res.send(`${cards.length}`)
+  })
+})
+
 /* GET trello card by ID */
 router.get('/cards/:cid', (req, res, next) => {
   trello.getCard(req.params.cid)
