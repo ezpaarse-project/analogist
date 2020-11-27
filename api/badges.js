@@ -1,10 +1,10 @@
 'use strict'
 
-const config      = require('config')
-const router      = require('express').Router()
-const request     = require('request')
-const badges      = require('../lib/badges')
-const cors        = require('cors')
+const config  = require('config')
+const router  = require('express').Router()
+const request = require('request')
+const badges  = require('../lib/badges')
+const cors    = require('cors')
 
 const url = `http://${config.badges.host}:${config.badges.port}`
 
@@ -58,7 +58,7 @@ router.post('/emit', async (req, res) => {
     return res.status(500).end()
   }
 
-  res.status(200).end()
+  return res.status(200).end()
 })
 
 router.put('/visibility', (req, res, next) => {

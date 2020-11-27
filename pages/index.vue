@@ -35,7 +35,7 @@
                 left
                 color="primary white--text"
               >
-                <span v-text="parsers || '—'" />
+                <span v-text="parsers" />
               </v-avatar>
               <span>{{ $t('home.parsers') }}</span>
             </v-chip>
