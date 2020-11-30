@@ -24,19 +24,5 @@ export default ({ app, store }) => {
     store.dispatch('socket/SOCKET_CONNECT', false)
   })
 
-  socket.on('BADGE_EMITTED', (data) => {
-    if (data.emitted) {
-      store.dispatch('snacks/success', 'badges.emitted')
-    }
-  })
-  socket.on('BADGE_EMITTED_MANUALLY', (data) => {
-    if (data.emitted) {
-      store.dispatch('snacks/success', 'badges.issued')
-    }
-  })
-  socket.on('BADGE_ALREADY_OWNED', () => {
-    store.dispatch('snacks/info', 'badges.owned')
-  })
-
   if (!app.socket) app.socket = socket
 }

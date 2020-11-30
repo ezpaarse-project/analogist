@@ -119,6 +119,7 @@
               block
               color="success"
               :disabled="!email || !currentBadge || !currentBoardMember"
+              :loading="loading"
               @click="emit"
             >
               {{ $t('badges.emitBadge') }}
@@ -199,7 +200,8 @@ export default {
     return {
       currentBoardMember: null,
       currentBadge: null,
-      email: null
+      email: null,
+      loading: false
     }
   },
   computed: {
@@ -230,6 +232,7 @@ export default {
   },
   methods: {
     emit () {
+      this.loading = true
       this.$socket.emit('ADD_TO_ROOM', { userId: this.currentBoardMember.idMember })
 
       this.$store.dispatch('badges/emit', {
@@ -242,6 +245,23 @@ export default {
           fullName: this.currentBoardMember.member.fullName,
           email: this.email
         }
+      })
+
+      this.$socket.on('BADGE_EMITTED', (data) => {
+        if (data.emitted) {
+          this.$store.dispatch('snacks/success', 'badges.emitted')
+          this.loading = false
+        }
+      })
+      this.$socket.on('BADGE_EMITTED_MANUALLY', (data) => {
+        if (data.emitted) {
+          this.$store.dispatch('snacks/success', 'badges.issued')
+          this.loading = false
+        }
+      })
+      this.$socket.on('BADGE_ALREADY_OWNED', () => {
+        this.$store.dispatch('snacks/info', 'badges.owned')
+        this.loading = false
       })
 
       this.email = null
