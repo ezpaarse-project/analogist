@@ -62,7 +62,7 @@
             >
               <p
                 class="text-xs-justify"
-                v-html="$t('home.whatIsEzPaarse')"
+                v-html="$t('home.whatIsEzPaarse', { parsers })"
               />
               <p
                 class="text-xs-justify"
@@ -85,13 +85,29 @@ export default {
   name: 'Analogist',
   transition: 'slide-x-transition',
   async asyncData ({ $axios }) {
-    const { data: badges } = await $axios.get('/api/badges/metrics/count')
-    const { data: platforms } = await $axios.get('/api/trello/cards/count')
+    let badges
+    let platforms
+    let parsers
+
+    try {
+      const { data: count } = await $axios.get('/api/badges/metrics/count')
+      badges = count
+    } catch (e) { badges = 0 }
+
+    try {
+      const { data: count } = await $axios.get('/api/trello/cards/count')
+      platforms = count
+    } catch (err) { platforms = 0 }
+
+    try {
+      const { data: count } = await $axios.get('http://localhost:59599/api/info/platforms/count')
+      parsers = count
+    } catch (error) { parsers = 0 }
 
     return {
       badges,
       platforms,
-      parsers: 0
+      parsers
     }
   },
   head () {
