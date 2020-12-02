@@ -89,7 +89,7 @@ export default {
     },
     nbAnalyses () {
       try {
-        return this.platform.analyses.length
+        return this.platform.analyses
       } catch (e) {
         return 0
       }

@@ -25,7 +25,7 @@
                 left
                 color="primary white--text"
               >
-                <span v-text="infos.platforms || '—'" />
+                <span v-text="platforms" />
               </v-avatar>
               <span>{{ $t('home.identifiedPlatforms') }}</span>
             </v-chip>
@@ -35,9 +35,9 @@
                 left
                 color="primary white--text"
               >
-                <span v-text="infos.analyses || '—'" />
+                <span v-text="parsers" />
               </v-avatar>
-              <span>{{ $t('home.analyses') }}</span>
+              <span>{{ $t('home.parsers') }}</span>
             </v-chip>
 
             <v-chip pill>
@@ -45,17 +45,7 @@
                 left
                 color="primary white--text"
               >
-                <span v-text="trelloBoardMembers || '—'" />
-              </v-avatar>
-              <span>{{ $t('home.contributors') }}</span>
-            </v-chip>
-
-            <v-chip pill>
-              <v-avatar
-                left
-                color="primary white--text"
-              >
-                <span v-text="badges || '—'" />
+                <span v-text="badges" />
               </v-avatar>
               <span>{{ $t('home.badges') }}</span>
             </v-chip>
@@ -72,7 +62,7 @@
             >
               <p
                 class="text-xs-justify"
-                v-html="$t('home.whatIsEzPaarse')"
+                v-html="$t('home.whatIsEzPaarse', { parsers })"
               />
               <p
                 class="text-xs-justify"
@@ -94,23 +84,30 @@
 export default {
   name: 'Analogist',
   transition: 'slide-x-transition',
-  async fetch ({ store }) {
-    await store.dispatch('FETCH_CARDS')
-    await store.dispatch('FETCH_TRELLO_BOARD_MEMBERS')
-    await store.dispatch('badges/getMetrics')
-  },
-  computed: {
-    infos () {
-      return {
-        platforms: this.$store.state.cards.length,
-        analyses: this.$store.state.cards.reduce((a, b) => (a + ((b.platform && b.platform.analyses) ? b.platform.analyses.length : 0)), 0)
-      }
-    },
-    trelloBoardMembers () {
-      return this.$store.state.trelloBoardMembers.length
-    },
-    badges () {
-      return this.$store.state.badges.metrics ? this.$store.state.badges.metrics.reduce((a, b) => (a + b.issues.app), 0) : 0
+  async asyncData ({ $axios }) {
+    let badges
+    let platforms
+    let parsers
+
+    try {
+      const { data: count } = await $axios.get('/api/badges/metrics/count')
+      badges = count
+    } catch (e) { badges = 0 }
+
+    try {
+      const { data: count } = await $axios.get('/api/trello/cards/count')
+      platforms = count
+    } catch (err) { platforms = 0 }
+
+    try {
+      const { data: count } = await $axios.get('http://localhost:59599/api/info/platforms/count')
+      parsers = count
+    } catch (error) { parsers = 0 }
+
+    return {
+      badges,
+      platforms,
+      parsers
     }
   },
   head () {

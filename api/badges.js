@@ -1,10 +1,10 @@
 'use strict'
 
-const config      = require('config')
-const router      = require('express').Router()
-const request     = require('request')
-const badges      = require('../lib/badges')
-const cors        = require('cors')
+const config  = require('config')
+const router  = require('express').Router()
+const request = require('request')
+const badges  = require('../lib/badges')
+const cors    = require('cors')
 
 const url = `http://${config.badges.host}:${config.badges.port}`
 
@@ -26,8 +26,15 @@ router.get('/metrics', cors(), (req, res, next) => {
     .on('error', next)
 })
 
-router.get('/view/:uuid/:language', (req, res, next) => {
-  request.get(`${url}/view/${req.params.uuid}/${req.params.language}`, {
+router.get('/metrics/count', cors(), (req, res, next) => {
+  request.get(`${url}/metrics/count`)
+    .on('response', response => response.pipe(res))
+    .on('error', next)
+})
+
+router.get('/:type/:uuid/:language', (req, res, next) => {
+  const { type, uuid, language } = req.params
+  request.get(`${url}/share/${type}/${uuid}/${language}`, {
     headers: {
       angHost: `${req.protocol}://${req.get('x-forwarded-host') || req.connection.remoteAddress}`
     }
@@ -38,24 +45,24 @@ router.get('/view/:uuid/:language', (req, res, next) => {
   }).on('error', next)
 })
 
-router.get('/embed/:uuid/:language', (req, res, next) => {
-  request.get(`${url}/embed/${req.params.uuid}/${req.params.language}`, {
-    headers: {
-      angHost: `${req.protocol}://${req.get('x-forwarded-host') || req.connection.remoteAddress}`
-    }
-  }).on('response', response => {
-    res.charset = 'UTF-8'
-    res.type('html')
-    return response.pipe(res)
-  }).on('error', next)
-})
+router.post('/emit', async (req, res) => {
+  const { event, profile } = req.body
 
-router.post('/emit', (req, res) => {
-  badges.emit(req.body.event, req.body.profile, false)
+  if (!event || !profile) {
+    return res.status(400).end()
+  }
+
+  try {
+    await badges.emit(event, profile, false)
+  } catch (err) {
+    return res.status(500).end()
+  }
+
+  return res.status(200).end()
 })
 
 router.put('/visibility', (req, res, next) => {
-  request.put(`${url}/visibility`, {
+  request.put(`${url}/badges/visibility`, {
     json: {
       visibility: req.body.visibility,
       userId: req.session.profile.id
@@ -65,7 +72,7 @@ router.put('/visibility', (req, res, next) => {
 })
 
 router.get('/users/:badgeId', (req, res, next) => {
-  request.get(`${url}/users?id=${req.params.badgeId}`)
+  request.get(`${url}/badges/users?id=${req.params.badgeId}`)
     .on('response', response => response.pipe(res))
     .on('error', next)
 })

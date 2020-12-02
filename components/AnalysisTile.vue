@@ -9,7 +9,7 @@
         color="grey lighten-1"
       >
         <img
-          v-if="updatedBy && updatedBy.avatarHash"
+          v-if="updatedBy && updatedBy.avatarUrl"
           :title="updatedBy.fullName"
           :src="updatedBy.avatarUrl + '/50.png'"
           alt="avatar"

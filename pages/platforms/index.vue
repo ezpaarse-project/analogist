@@ -271,6 +271,10 @@ export default {
             return false
           }
 
+          if (card.closed && !this.displayAllCards) {
+            return false
+          }
+
           if (certifications.length) {
             return certifications.some(certification => {
               if (card.platform) {
