@@ -30,8 +30,7 @@ module.exports = {
   ** Global CSS
   */
   css: [
-    '~/assets/css/main.css',
-    '@mdi/font/css/materialdesignicons.min.css'
+    '~/assets/css/main.css'
   ],
   /*
   ** Plugins to load before mounting the App
@@ -47,8 +46,7 @@ module.exports = {
   ** Nuxt.js dev-modules
   */
   buildModules: [
-    '@nuxtjs/vuetify',
-    '@mdi/font'
+    '@nuxtjs/vuetify'
   ],
   /*
   ** Nuxt.js modules
@@ -71,9 +69,6 @@ module.exports = {
   */
   auth: {},
   vuetify: {
-    icons: {
-      iconfont: 'mdi'
-    },
     theme: {
       themes: {
         dark: {

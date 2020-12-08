@@ -33,7 +33,6 @@
     "express-session": "^1.17.1",
     "file-saver": "^2.0.2",
     "grant-express": "^3.8.2",
-    "mdi": "^2.2.43",
     "mjml": "^4.6.3",
     "mongodb": "^3.5.9",
     "morgan": "^1.10.0",
@@ -49,7 +48,6 @@
     "winston": "^3.3.3"
   },
   "devDependencies": {
-    "@mdi/font": "^5.8.55",
     "@nuxtjs/vuetify": "^1.11.2",
     "chai": "^4.2.0",
     "eslint": "^7.4.0",
