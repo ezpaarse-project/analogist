@@ -100,7 +100,7 @@ export default {
     } catch (err) { platforms = 0 }
 
     try {
-      const { data: count } = await $axios.get('http://localhost:59599/api/info/platforms/count')
+      const { data: count } = await $axios.get('http://dev.ezpaarse.org/api/info/platforms/count')
       parsers = count
     } catch (error) { parsers = 0 }
 
