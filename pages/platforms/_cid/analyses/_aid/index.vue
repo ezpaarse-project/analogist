@@ -295,8 +295,6 @@
 </template>
 
 <script>
-import moment from 'moment'
-
 export default {
   name: 'Analysis',
   transition: 'slide-x-transition',
@@ -331,7 +329,7 @@ export default {
       return this.$store.state.user && this.$store.state.user.isAuthorized
     },
     updatedAt () {
-      return moment(this.analysis.updatedAt).locale(this.$i18n.locale).fromNow()
+      return this.$dateFns.formatDistanceToNow(this.analysis.updatedAt)
     },
     updatedBy () {
       try {

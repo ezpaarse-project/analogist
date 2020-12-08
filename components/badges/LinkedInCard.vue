@@ -124,8 +124,6 @@
 </template>
 
 <script>
-import moment from 'moment'
-
 export default {
   props: {
     badge: {
@@ -144,10 +142,10 @@ export default {
   },
   computed: {
     issued_on () {
-      return moment.unix(this.badge.issued_on).format(this.$i18n.locale === 'fr' ? 'M / YYYY' : 'YYYY / M')
+      return this.$dateFns.format(new Date(this.badge.issued_on * 1000), 'L / yyyy', { locale: this.$i18n.locale })
     },
     expires_on () {
-      return moment.unix(this.badge.expires_on).format(this.$i18n.locale === 'fr' ? 'M / YYYY' : 'YYYY / M')
+      return this.$dateFns.format(new Date(this.badge.expires_on * 1000), 'L / yyyy', { locale: this.$i18n.locale })
     },
     validationUrl () {
       return `http://${location.host}/api/badges/view/${this.userId}/${this.badge.id}/${this.$i18n.locale}`

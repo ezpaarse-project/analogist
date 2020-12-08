@@ -344,7 +344,6 @@
 </template>
 
 <script>
-import moment from 'moment'
 import AnalysisTile from '~/components/AnalysisTile'
 import Certification from '~/components/certifications/Certification'
 import draggable from 'vuedraggable'
@@ -427,7 +426,7 @@ export default {
       return this.$store.state.trelloLists
     },
     lastActivity () {
-      return moment(this.card.lastActivity).locale(this.$i18n.locale).fromNow()
+      return this.$dateFns.formatDistanceToNow(this.card.lastActivity)
     }
   },
   methods: {
@@ -540,7 +539,7 @@ export default {
       }).join('\n')
 
       const shortName = (/\[([\w\d]+)\]$/.exec(this.card && this.card.name) || [])[1]
-      const fileName = `${shortName || 'test'}.${moment().format('YYYY-MM-DD')}.csv`
+      const fileName = `${shortName || 'test'}.${this.$dateFns.format(new Date(), 'YYYY-MM-DD')}.csv`
 
       saveAs(new Blob([`${header}\n${lines}`], { type: 'text/csv;charset=utf-8' }), fileName)
     }

@@ -37,9 +37,9 @@ module.exports = {
   */
   plugins: [
     { src: '~/plugins/axios.js', ssr: false },
+    { src: '~/plugins/dateFns.js', ssr: false },
     { src: '~/plugins/ezlogger.js', ssr: false },
     { src: '~/plugins/storeInit.js', ssr: false },
-    { src: '~/plugins/i18n.js', ssr: false },
     { src: '~/plugins/socket.js', ssr: false }
   ],
   /*
@@ -53,7 +53,8 @@ module.exports = {
   */
   modules: [
     '@nuxtjs/axios',
-    '@nuxtjs/auth'
+    '@nuxtjs/auth',
+    'nuxt-i18n'
   ],
   /*
   ** Axios module configuration
@@ -79,14 +80,48 @@ module.exports = {
       }
     }
   },
+  i18n: {
+    locales: [
+      {
+        name: 'Français',
+        code: 'fr',
+        iso: 'fr-FR',
+        file: 'fr.json'
+      },
+      {
+        name: 'English',
+        code: 'en',
+        iso: 'en-US',
+        file: 'en.json'
+      }
+    ],
+    baseUrl: '/',
+    defaultLocale: 'fr',
+    lazy: true,
+    langDir: 'locales/',
+    strategy: 'no_prefix',
+    detectBrowserLanguage: {
+      useCookie: true,
+      cookieKey: 'analogist_i18n',
+      alwaysRedirect: true,
+      fallbackLocale: 'en'
+    }
+  },
   /*
   ** Build configuration
   */
   build: {
-    /*
-    ** You can extend webpack config here
-    */
+    analyze: true,
+    extractCSS: true,
     extend (config, ctx) {
+      if (ctx.isDev && ctx.isClient) {
+        config.module.rules.push({
+          enforce: 'pre',
+          test: /\.(js|vue)$/,
+          loader: 'eslint-loader',
+          exclude: /(node_modules)/
+        })
+      }
     }
   }
 }

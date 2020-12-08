@@ -166,8 +166,6 @@
 </template>
 
 <script>
-import moment from 'moment'
-
 export default {
   async fetch ({ store, redirect, app }) {
     try {
@@ -269,7 +267,7 @@ export default {
       this.currentBoardMember = null
     },
     issuedOn (date) {
-      return date ? moment.unix(date).locale(this.$i18n.locale).format('LL') : null
+      return date ? this.$dateFns.format(date, 'PPPP') : null
     }
   }
 }

@@ -30,7 +30,7 @@
       </p>
 
       <p v-if="badge.issued_on">
-        <strong>{{ $t('badges.issuedOn') }}</strong> : {{ issued_on }}
+        <strong>{{ $t('badges.issuedOn') }}</strong> : {{ $dateFns.format(new Date(badge.issued_on * 1000), 'PPPP') }}
       </p>
     </v-card-text>
 
@@ -110,8 +110,6 @@
 </template>
 
 <script>
-import moment from 'moment'
-
 export default {
   props: {
     badge: {
@@ -124,9 +122,6 @@ export default {
     }
   },
   computed: {
-    issued_on () {
-      return this.badge.issued_on ? moment.unix(this.badge.issued_on).locale(this.$i18n.locale).format('LL') : null
-    },
     viewUrl () {
       return `http://${location.host}/api/badges/view/${this.badge.uuid}/${this.$i18n.locale}`
     },

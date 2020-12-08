@@ -284,17 +284,18 @@
         </template>
 
         <v-list-item
-          v-for="lang in locales"
-          :key="lang.value"
-          @click="$i18n.locale = lang.value"
+          v-for="locale in $i18n.locales"
+          :key="locale.code"
+          @click="$i18n.setLocale(locale.code)"
         >
-          <v-list-item-title class="subtitle-2 font-weight-regular">
-            {{ lang.name }}
-          </v-list-item-title>
+          <v-list-item-title
+            class="body-2"
+            v-text="locale.name"
+          />
           <v-list-item-icon>
             <img
               width="24"
-              :src="require(`@/static/${lang.value}.png`)"
+              :src="require(`@/static/${locale.code}.png`)"
             >
           </v-list-item-icon>
         </v-list-item>

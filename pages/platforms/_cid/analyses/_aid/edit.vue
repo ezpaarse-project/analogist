@@ -192,11 +192,11 @@
                     hide-details
                     @input="handleChange"
                   >
-                    <template v-slot:item="{ item }">
+                    <template v-slot:item="{ item: currentItem }">
                       <v-list-item-content>
-                        <v-list-item-title v-text="item.code" />
+                        <v-list-item-title v-text="currentItem.code" />
                         <v-list-item-subtitle>
-                          {{ item[`description_${$i18n.locale}`] || item.description }}
+                          {{ currentItem[`description_${$i18n.locale}`] || currentItem.description }}
                         </v-list-item-subtitle>
                       </v-list-item-content>
                     </template>

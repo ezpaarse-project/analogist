@@ -55,32 +55,32 @@
                 <span v-if="$i18n.locale === 'fr'">{{ item.badge.name }}</span>
                 <span v-else>{{ item.badge.alt_language[$i18n.locale].name }}</span>
               </template>
-              <template v-slot:expanded-item="{ headers, item }">
-                <td :colspan="headers.length">
+              <template v-slot:expanded-item="{ headers: tableHeaders, item }">
+                <td :colspan="tableHeaders.length">
                   <v-layout
                     v-if="user"
                     row
                     wrap
                     justify-center
                   >
-                    <template v-for="user in item.users">
-                      <v-flex :key="user.userId">
+                    <template v-for="u in item.users">
+                      <v-flex :key="u.userId">
                         <v-list-item>
                           <v-list-item-avatar>
                             <img
-                              v-if="user.avatarUrl"
-                              :src="`${user.avatarUrl}/50.png`"
+                              v-if="u.avatarUrl"
+                              :src="`${u.avatarUrl}/50.png`"
                             >
                             <span v-else>
                               <v-avatar color="blue-grey lighten-4">
-                                <span class="white--text headline"><small>{{ user.initials }}</small></span>
+                                <span class="white--text headline"><small>{{ u.initials }}</small></span>
                               </v-avatar>
                             </span>
                           </v-list-item-avatar>
 
                           <v-list-item-content>
-                            <v-list-item-title v-text="user.fullName" />
-                            <v-list-item-subtitle>{{ user.issuedOn | issueDate($i18n.locale) }}</v-list-item-subtitle>
+                            <v-list-item-title v-text="u.fullName" />
+                            <v-list-item-subtitle>{{ $dateFns.format(new Date(u.issuedOn) * 1000, 'PPPP') }}</v-list-item-subtitle>
                           </v-list-item-content>
                         </v-list-item>
                       </v-flex>
@@ -151,15 +151,7 @@
 </template>
 
 <script>
-import moment from 'moment'
-
 export default {
-  filters: {
-    issueDate (date, locale) {
-      if (!date) return '-'
-      return moment.unix(date).locale(locale).format('LL')
-    }
-  },
   async fetch ({ store, app }) {
     try {
       await store.dispatch('badges/getPing')
