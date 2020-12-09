@@ -15,16 +15,10 @@
         grow
         dark
       >
-        <v-tab
-          to="#tab-share"
-          router
-        >
+        <v-tab href="#tab-share">
           {{ $t('badges.share') }}
         </v-tab>
-        <v-tab
-          to="#tab-certification"
-          router
-        >
+        <v-tab href="#tab-certification">
           {{ $t('badges.shareCertification') }}
         </v-tab>
       </v-tabs>

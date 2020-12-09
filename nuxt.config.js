@@ -1,9 +1,6 @@
-const colors = require('vuetify/es5/util/colors').default
-
 module.exports = {
-  /*
-  ** Headers of the page
-  */
+  ssr: false,
+
   head: {
     title: 'AnalogIST',
     meta: [
@@ -16,38 +13,42 @@ module.exports = {
       { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Roboto' }
     ]
   },
+
   telemetry: false,
-  mode: 'spa',
+
   loading: { color: '#FFFFFF' },
   loadingIndicator: {
     name: 'folding-cube',
     color: '#E10D1A'
   },
+
+  components: true,
+
   router: {
     middleware: ['ssr-cookie']
   },
-  /*
-  ** Global CSS
-  */
+
   css: [
     '~/assets/css/main.css'
   ],
+
   /*
   ** Plugins to load before mounting the App
   */
   plugins: [
-    { src: '~/plugins/axios.js', ssr: false },
-    { src: '~/plugins/dateFns.js', ssr: false },
-    { src: '~/plugins/ezlogger.js', ssr: false },
-    { src: '~/plugins/storeInit.js', ssr: false },
-    { src: '~/plugins/socket.js', ssr: false }
+    { src: '~/plugins/axios.js' },
+    { src: '~/plugins/dateFns.js' },
+    { src: '~/plugins/ezlogger.js' },
+    { src: '~/plugins/storeInit.js' },
+    { src: '~/plugins/socket.js' },
+    { src: '~/plugins/vuetify.js' }
   ],
+
   /*
   ** Nuxt.js dev-modules
   */
-  buildModules: [
-    '@nuxtjs/vuetify'
-  ],
+  buildModules: [],
+
   /*
   ** Nuxt.js modules
   */
@@ -56,6 +57,7 @@ module.exports = {
     '@nuxtjs/auth',
     'nuxt-i18n'
   ],
+
   /*
   ** Axios module configuration
   ** See https://axios.nuxtjs.org/options
@@ -63,23 +65,13 @@ module.exports = {
   axios: {
     proxy: true
   },
+
   /*
   ** Auth configuration
   ** See https://auth.nuxtjs.org/
   */
   auth: {},
-  vuetify: {
-    theme: {
-      themes: {
-        dark: {
-          primary: colors.red.accent3
-        },
-        light: {
-          primary: colors.red.accent3
-        }
-      }
-    }
-  },
+
   i18n: {
     locales: [
       {
@@ -107,6 +99,7 @@ module.exports = {
       fallbackLocale: 'en'
     }
   },
+
   /*
   ** Build configuration
   */

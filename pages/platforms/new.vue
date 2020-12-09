@@ -151,14 +151,9 @@
 </template>
 
 <script>
-import DomainChecker from '~/components/DomainChecker'
-
 export default {
   name: 'New',
   transition: 'slide-x-transition',
-  components: {
-    DomainChecker
-  },
   async fetch ({ store, redirect }) {
     await store.dispatch('FETCH_TRELLO_LISTS')
 

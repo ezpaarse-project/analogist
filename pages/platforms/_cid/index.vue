@@ -232,14 +232,17 @@
       <v-divider />
 
       <v-list two-line>
-        <draggable v-model="analyses">
+        <vuedraggable
+          v-model="analyses"
+          ghost-class="font-weight-bold"
+        >
           <AnalysisTile
             v-for="analysis in analyses"
             :key="analysis.id"
             :analysis="analysis"
             :card-i-d="card.id"
           />
-        </draggable>
+        </vuedraggable>
       </v-list>
     </v-card>
 
@@ -344,10 +347,8 @@
 </template>
 
 <script>
-import AnalysisTile from '~/components/AnalysisTile'
-import Certification from '~/components/certifications/Certification'
-import draggable from 'vuedraggable'
 import { saveAs } from 'file-saver'
+import vuedraggable from 'vuedraggable'
 
 function escapeCSVstring (str) {
   if (/[";]/.test(str)) {
@@ -361,9 +362,7 @@ export default {
   name: 'Platform',
   transition: 'slide-x-transition',
   components: {
-    AnalysisTile,
-    Certification,
-    draggable
+    vuedraggable
   },
   async fetch ({ params, store, error }) {
     await store.dispatch('FETCH_TRELLO_LISTS')

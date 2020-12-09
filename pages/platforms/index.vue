@@ -169,7 +169,6 @@
 </template>
 
 <script>
-import CardTile from '~/components/CardTile'
 import { saveAs } from 'file-saver'
 
 function escapeCSVstring (str) {
@@ -182,9 +181,6 @@ function escapeCSVstring (str) {
 export default {
   name: 'Platforms',
   transition: 'slide-x-transition',
-  components: {
-    CardTile
-  },
   async fetch ({ store }) {
     await store.dispatch('FETCH_TRELLO_LISTS')
     await store.dispatch('FETCH_CARDS')
