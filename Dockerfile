@@ -1,5 +1,5 @@
 FROM node:12.18.1
-MAINTAINER ezPAARSE Team <ezpaarse@couperin.org>
+LABEL maintainer="ezPAARSE Team <ezpaarse@couperin.org>"
 
 ENV NODE_ENV production
 
