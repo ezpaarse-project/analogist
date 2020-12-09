@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import moment from 'moment'
+import { getUnixTime } from 'date-fns'
 
 const defaultSettings = {
   preprod: true,
@@ -52,7 +52,7 @@ export default {
           type: req.type,
           statusCode: req.statusCode,
           timeStamp: req.timeStamp,
-          startDate: moment(req.timeStamp).locale('en'),
+          startDate: getUnixTime(req.timeStamp),
           status: 'pending',
           id: ++state.counter,
           ec: null,

@@ -365,12 +365,12 @@ export default {
     },
 
     exportAsFile () {
-      const dateFormat  = 'DD/MMM/YYYY:HH:mm:ss Z'
+      const dateFormat  = 'dd/LLL/yyyy:HH:mm:ss xxx'
       const textContent = this.requests
         .sort((a, b) => a.timeStamp > b.timeStamp ? 1 : -1)
         .map(req => {
           // 127.0.0.1 - ezlogger [14/Mar/2014:09:39:18 -0700] “GET http://www.somedb.com:80/index.html HTTP/1.1” 200 1234
-          return `127.0.0.1 - ezlogger [${req.startDate.format(dateFormat)}] "${req.method} ${req.url} HTTP/1.1" ${req.statusCode} ${req.contentLength || 0}`
+          return `127.0.0.1 - ezlogger [${this.$dateFns.format(new Date(req.startDate * 1000), dateFormat, { locale: 'en' })}] "${req.method} ${req.url} HTTP/1.1" ${req.statusCode} ${req.contentLength || 0}`
         }).join('\r\n')
 
       saveAs(new Blob([textContent], { type: 'text/plain;charset=utf-8' }), 'export.log')
@@ -381,7 +381,7 @@ export default {
         .sort((a, b) => a.timeStamp > b.timeStamp ? 1 : -1)
         .map(req => {
           return [
-            req.startDate.unix(),
+            req.startDate,
             'ezlogger',
             req.method,
             req.url,

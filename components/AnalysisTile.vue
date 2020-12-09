@@ -40,8 +40,6 @@
 </template>
 
 <script>
-import moment from 'moment'
-
 export default {
   props: {
     analysis: {
@@ -55,7 +53,7 @@ export default {
   },
   computed: {
     updatedAt () {
-      return moment(this.analysis.updatedAt).locale(this.$i18n.locale).fromNow()
+      return this.$dateFns.formatDistanceToNow(this.analysis.updatedAt)
     },
     card () {
       return this.$store.state.card

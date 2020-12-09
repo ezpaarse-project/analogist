@@ -151,16 +151,9 @@
 </template>
 
 <script>
-import BadgeCard from '~/components/badges/BadgeCard'
-import LinkedInCard from '~/components/badges/LinkedInCard'
-
 export default {
   name: 'Badges',
   transition: 'slide-x-transition',
-  components: {
-    BadgeCard,
-    LinkedInCard
-  },
   async fetch ({ store, redirect, app }) {
     try {
       await store.dispatch('FETCH_PROFILE')

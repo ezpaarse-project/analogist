@@ -17,7 +17,6 @@
         {{ $t('ui.close') }}
       </v-btn>
     </template>
-
   </v-snackbar>
 </template>
 

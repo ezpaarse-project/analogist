@@ -349,7 +349,6 @@
 </template>
 
 <script>
-import moment from 'moment'
 import { saveAs } from 'file-saver'
 
 function escapeCSVstring (str) {
@@ -545,7 +544,7 @@ export default {
   methods: {
     formatDate (date) {
       if (!date) return '-'
-      return moment(date).locale(this.$i18n.locale).format('LL')
+      return this.$dateFns.format(date, 'PPPP')
     },
     eventPlatformName (cardID) {
       if (cardID) return this.cards.find(card => card.id === cardID).name || 'Name not found'
@@ -578,8 +577,8 @@ export default {
       if (!this.certificationsEvents) { return }
 
       const columns = [
-        { title: 'Date de demande', getter: (a) => moment(a.createdAt).locale(this.$i18n.locale).format('LL') },
-        { title: 'Date d\'administration', getter: (a) => moment(a.lastModfied).locale(this.$i18n.locale).format('LL') },
+        { title: 'Date de demande', getter: (a) => this.$dateFns.format(a.createdAt, 'PPPP') },
+        { title: 'Date d\'administration', getter: (a) => this.$dateFns.format(a.lastModfied, 'PPPP') },
         { title: 'Plateforme', getter: (a) => this.eventPlatformName(a.cardID) },
         { title: 'Etablissement', getter: (a) => a.form.establishment },
         { title: 'H', getter: (a) => a.certifications.humanCertified ? a.form.year : '-' },

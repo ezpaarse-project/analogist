@@ -1,9 +1,6 @@
-const colors = require('vuetify/es5/util/colors').default
-
 module.exports = {
-  /*
-  ** Headers of the page
-  */
+  ssr: false,
+
   head: {
     title: 'AnalogIST',
     meta: [
@@ -16,45 +13,51 @@ module.exports = {
       { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Roboto' }
     ]
   },
+
   telemetry: false,
-  mode: 'spa',
+
   loading: { color: '#FFFFFF' },
   loadingIndicator: {
     name: 'folding-cube',
     color: '#E10D1A'
   },
+
+  components: true,
+
   router: {
     middleware: ['ssr-cookie']
   },
-  /*
-  ** Global CSS
-  */
+
   css: [
     '~/assets/css/main.css'
   ],
+
   /*
   ** Plugins to load before mounting the App
   */
   plugins: [
-    { src: '~/plugins/axios.js', ssr: false },
-    { src: '~/plugins/ezlogger.js', ssr: false },
-    { src: '~/plugins/storeInit.js', ssr: false },
-    { src: '~/plugins/i18n.js', ssr: false },
-    { src: '~/plugins/socket.js', ssr: false }
+    { src: '~/plugins/axios.js' },
+    { src: '~/plugins/dateFns.js' },
+    { src: '~/plugins/ezlogger.js' },
+    { src: '~/plugins/storeInit.js' },
+    { src: '~/plugins/socket.js' },
+    { src: '~/plugins/vuetify.js' }
   ],
+
   /*
   ** Nuxt.js dev-modules
   */
-  buildModules: [
-    '@nuxtjs/vuetify'
-  ],
+  buildModules: [],
+
   /*
   ** Nuxt.js modules
   */
   modules: [
     '@nuxtjs/axios',
-    '@nuxtjs/auth'
+    '@nuxtjs/auth',
+    'nuxt-i18n'
   ],
+
   /*
   ** Axios module configuration
   ** See https://axios.nuxtjs.org/options
@@ -62,31 +65,56 @@ module.exports = {
   axios: {
     proxy: true
   },
+
   /*
   ** Auth configuration
   ** See https://auth.nuxtjs.org/
   */
   auth: {},
-  vuetify: {
-    theme: {
-      themes: {
-        dark: {
-          primary: colors.red.accent3
-        },
-        light: {
-          primary: colors.red.accent3
-        }
+
+  i18n: {
+    locales: [
+      {
+        name: 'Français',
+        code: 'fr',
+        iso: 'fr-FR',
+        file: 'fr.json'
+      },
+      {
+        name: 'English',
+        code: 'en',
+        iso: 'en-US',
+        file: 'en.json'
       }
+    ],
+    baseUrl: '/',
+    defaultLocale: 'fr',
+    lazy: true,
+    langDir: 'locales/',
+    strategy: 'no_prefix',
+    detectBrowserLanguage: {
+      useCookie: true,
+      cookieKey: 'analogist_i18n',
+      alwaysRedirect: true,
+      fallbackLocale: 'en'
     }
   },
+
   /*
   ** Build configuration
   */
   build: {
-    /*
-    ** You can extend webpack config here
-    */
+    analyze: true,
+    extractCSS: true,
     extend (config, ctx) {
+      if (ctx.isDev && ctx.isClient) {
+        config.module.rules.push({
+          enforce: 'pre',
+          test: /\.(js|vue)$/,
+          loader: 'eslint-loader',
+          exclude: /(node_modules)/
+        })
+      }
     }
   }
 }

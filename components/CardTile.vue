@@ -71,8 +71,6 @@
 </template>
 
 <script>
-import moment from 'moment'
-
 export default {
   props: {
     card: {
@@ -85,7 +83,7 @@ export default {
       return this.$store.state.displayAllCards
     },
     updatedAt () {
-      return moment(this.card.lastActivity).locale(this.$i18n.locale).fromNow()
+      return this.$dateFns.formatDistanceToNow(this.card.lastActivity)
     },
     nbAnalyses () {
       try {

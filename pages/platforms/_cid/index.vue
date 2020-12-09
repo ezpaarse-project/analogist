@@ -232,14 +232,17 @@
       <v-divider />
 
       <v-list two-line>
-        <draggable v-model="analyses">
+        <vuedraggable
+          v-model="analyses"
+          ghost-class="font-weight-bold"
+        >
           <AnalysisTile
             v-for="analysis in analyses"
             :key="analysis.id"
             :analysis="analysis"
             :card-i-d="card.id"
           />
-        </draggable>
+        </vuedraggable>
       </v-list>
     </v-card>
 
@@ -344,11 +347,8 @@
 </template>
 
 <script>
-import moment from 'moment'
-import AnalysisTile from '~/components/AnalysisTile'
-import Certification from '~/components/certifications/Certification'
-import draggable from 'vuedraggable'
 import { saveAs } from 'file-saver'
+import vuedraggable from 'vuedraggable'
 
 function escapeCSVstring (str) {
   if (/[";]/.test(str)) {
@@ -362,9 +362,7 @@ export default {
   name: 'Platform',
   transition: 'slide-x-transition',
   components: {
-    AnalysisTile,
-    Certification,
-    draggable
+    vuedraggable
   },
   async fetch ({ params, store, error }) {
     await store.dispatch('FETCH_TRELLO_LISTS')
@@ -427,7 +425,7 @@ export default {
       return this.$store.state.trelloLists
     },
     lastActivity () {
-      return moment(this.card.lastActivity).locale(this.$i18n.locale).fromNow()
+      return this.$dateFns.formatDistanceToNow(this.card.lastActivity)
     }
   },
   methods: {
@@ -540,7 +538,7 @@ export default {
       }).join('\n')
 
       const shortName = (/\[([\w\d]+)\]$/.exec(this.card && this.card.name) || [])[1]
-      const fileName = `${shortName || 'test'}.${moment().format('YYYY-MM-DD')}.csv`
+      const fileName = `${shortName || 'test'}.${this.$dateFns.format(new Date(), 'YYYY-MM-DD')}.csv`
 
       saveAs(new Blob([`${header}\n${lines}`], { type: 'text/csv;charset=utf-8' }), fileName)
     }
