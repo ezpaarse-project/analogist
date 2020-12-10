@@ -100,6 +100,10 @@ module.exports = {
     }
   },
 
+  env: {
+    ezpaarseUrl: process.env.ANG_EZPAARSE_URL || 'http://dev.ezpaarse.org'
+  },
+
   /*
   ** Build configuration
   */

@@ -6,13 +6,17 @@
     clipped-left
     color="primary"
   >
-    <v-app-bar-nav-icon @click.stop="setDrawer(!drawer)">
+    <v-app-bar-nav-icon
+      aria-label="Open"
+      @click.stop="setDrawer(!drawer)"
+    >
       <v-icon>mdi-menu</v-icon>
     </v-app-bar-nav-icon>
     <v-toolbar-title>
       <img
         class="analogistLogo"
         src="@/static/logo-white.svg"
+        alt="Analogist logo"
       >
       AnalogIST
     </v-toolbar-title>

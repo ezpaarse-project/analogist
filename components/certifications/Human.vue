@@ -42,10 +42,12 @@
         <span v-if="humanCertified"> - <a
           href="https://blog.ezpaarse.org/2017/06/certification-h-et-p-des-plateformes-traitees-dans-ezpaarse/"
           target="_blank"
+          rel="noreferrer"
         >{{ $t('card.manuallyVerified') }}</a></span>
         <span v-else> - <a
           href="https://blog.ezpaarse.org/2020/01/tutoriels-procedure-de-certification-h-et-p-dans-analogist"
           target="_blank"
+          rel="noreferrer"
         >{{ $t('certifications.notCertified') }}</a></span>
       </v-list-item-title>
     </v-list-item-content>

@@ -21,7 +21,7 @@
     "language": "Langue",
     "newUserButton": "Nouvel utilisateur ?",
     "newUser": "Nouvel utilisateur AnalogIST ?",
-    "newUserText": "Pour pouvoir contribuer à l'analyse des plateformes pour AnalogIST, vous devez être membre du <a href=\"https://trello.com/b/wEaLnz8d\" target=\"_blank\">tableau trello</a> dédié a la gestion des plateformes.",
+    "newUserText": "Pour pouvoir contribuer à l'analyse des plateformes pour AnalogIST, vous devez être membre du <a href=\"https://trello.com/b/wEaLnz8d\" target=\"_blank\" rel=\"noreferrer\">tableau trello</a> dédié a la gestion des plateformes.",
     "becomeMember": "Devenir membre",
     "becomeMemberSuccess": "Votre demande sera traitée dans les plus bref délais"
   },
@@ -40,7 +40,7 @@
     "noData": "Pas de données",
     "noResults": "Aucun résultat",
     "waitingForTraffic": "En attente de trafic, il est temps de parcourir le web !",
-    "getTheExtension": "Rien ne s'affiche ? Téléchargez l'extension <a href=\"{url}\" target=\"_blank\">ezPAARSE Logger</a> !",
+    "getTheExtension": "Rien ne s'affiche ? Téléchargez l'extension <a href=\"{url}\" target=\"_blank\" rel=\"noreferrer\">ezPAARSE Logger</a> !",
     "analyze": "Analyser",
     "clearAll": "Nettoyer tout",
     "export": "Exporter",
@@ -61,7 +61,7 @@
     "checkAvailability": "Vérifier la disponibilité",
     "connectionSuccessful": "L'instance ezPAARSE est disponible.",
     "version": "Version: {version}",
-    "name": "nom",
+    "name": "Nom",
     "value": "Valeur",
     "suffix": "Suffixe",
     "general": "General",
@@ -155,7 +155,7 @@
     "domainName": "Nom de domaine",
     "check": "Vérifier",
     "checking": "Vérification...",
-    "supported": "Le domaine <strong>{domainName}</strong> est déjà supporté par le parseur <a href=\"{trello}\" target=\"_blank\">{cardName}</a>.",
+    "supported": "Le domaine <strong>{domainName}</strong> est déjà supporté par le parseur <a href=\"{trello}\" target=\"_blank\" rel=\"noreferrer\">{cardName}</a>.",
     "error": "Une erreur est survenue : {message}",
     "unsupported": "Le domaine <strong>{domainName}</strong> n'a pas encore de parseur associé.",
     "pleaseType": "Entrez un nom de domaine susceptible d'héberger des ressources."
@@ -199,9 +199,9 @@
     "analyses": "analyses",
     "parsers": "parseurs",
     "badges": "badges",
-    "whatIsEzPaarse": "<a href=\"https://www.ezpaarse.org/\" target=\"_blank\">ezPAARSE</a> est aujourd’hui livré avec une liste de <a href=\"https://github.com/ezpaarse-project/ezpaarse-platforms\" target=\"_blank\"><span class=\"font-weight-bold\">{parsers} parseurs</span></a>, qui sont le résultat d’un travail d’analyse fourni par la communauté, et qui assurent aux établissements utilisateurs une bonne couverture de leurs abonnements aux ressources électroniques.",
-    "whatIsAnalogist": "La plateforme communautaire, appelée <span class=\"font-weight-bold\">AnalogIST</span>, est l’endroit où les différents types d'URLs sont collectés, analysés semi-automatiquement et commentés pour que le parseur correspondant puisse être précis et complet. Pour les éditeurs ou fournisseurs qui ne sont pas encore reconnus par <a href=\"https://www.ezpaarse.org/\" target=\"_blank\">ezPAARSE</a> ou qui ont simplement besoin d'une mise à jour, il est facile de venir contribuer à une analyse de plateforme : pour cela, il suffit d’ouvrir un compte Trello et de suivre le guide !",
-    "goodAnalyses": "Une fois l’analyse jugée suffisante, ou complète, un informaticien (généralement de l’équipe <a href=\"https://www.ezpaarse.org/\" target=\"_blank\">ezPAARSE</a>/<a href=\"https://ezmesure.couperin.org/\" target=\"_blank\">ezMESURE</a> prend le relais pour implémenter le parseur correspondant. Ce parseur viendra s’ajouter aux parseurs existants dans le dépôt <a href=\"https://github.com/ezpaarse-project/ezpaarse-platforms\" target=\"_blank\">github</a> dédié et pourra être récupéré par toutes les instances d’<a href=\"https://www.ezpaarse.org/\" target=\"_blank\">ezPAARSE</a>, par un mécanisme simple de mise à jour embarqué dans la zone d’administration du logiciel. Ce mode de fonctionnement garantit que chaque nouveau parseur, ainsi que chacune des mises à jour du logiciel et de ses ressources, profitent à toutes les installations existantes d’<a href=\"https://www.ezpaarse.org/\" target=\"_blank\">ezPAARSE</a> : le travail n’est nécessaire qu’à un endroit et une seule fois."
+    "whatIsEzPaarse": "<a href=\"https://www.ezpaarse.org/\" target=\"_blank\" rel=\"noreferrer\">ezPAARSE</a> est aujourd’hui livré avec une liste de <a href=\"https://github.com/ezpaarse-project/ezpaarse-platforms\" target=\"_blank\" rel=\"noreferrer\"><span class=\"font-weight-bold\">{parsers} parseurs</span></a>, qui sont le résultat d’un travail d’analyse fourni par la communauté, et qui assurent aux établissements utilisateurs une bonne couverture de leurs abonnements aux ressources électroniques.",
+    "whatIsAnalogist": "La plateforme communautaire, appelée <span class=\"font-weight-bold\">AnalogIST</span>, est l’endroit où les différents types d'URLs sont collectés, analysés semi-automatiquement et commentés pour que le parseur correspondant puisse être précis et complet. Pour les éditeurs ou fournisseurs qui ne sont pas encore reconnus par <a href=\"https://www.ezpaarse.org/\" target=\"_blank\" rel=\"noreferrer\">ezPAARSE</a> ou qui ont simplement besoin d'une mise à jour, il est facile de venir contribuer à une analyse de plateforme : pour cela, il suffit d’ouvrir un compte Trello et de suivre le guide !",
+    "goodAnalyses": "Une fois l’analyse jugée suffisante, ou complète, un informaticien (généralement de l’équipe <a href=\"https://www.ezpaarse.org/\" target=\"_blank\" rel=\"noreferrer\">ezPAARSE</a>/<a href=\"https://ezmesure.couperin.org/\" target=\"_blank\" rel=\"noreferrer\">ezMESURE</a> prend le relais pour implémenter le parseur correspondant. Ce parseur viendra s’ajouter aux parseurs existants dans le dépôt <a href=\"https://github.com/ezpaarse-project/ezpaarse-platforms\" target=\"_blank\" rel=\"noreferrer\">github</a> dédié et pourra être récupéré par toutes les instances d’<a href=\"https://www.ezpaarse.org/\" target=\"_blank\" rel=\"noreferrer\">ezPAARSE</a>, par un mécanisme simple de mise à jour embarqué dans la zone d’administration du logiciel. Ce mode de fonctionnement garantit que chaque nouveau parseur, ainsi que chacune des mises à jour du logiciel et de ses ressources, profitent à toutes les installations existantes d’<a href=\"https://www.ezpaarse.org/\" target=\"_blank\" rel=\"noreferrer\">ezPAARSE</a> : le travail n’est nécessaire qu’à un endroit et une seule fois."
   },
   "theme": {
     "dark": "Thème sombre",

@@ -34,6 +34,7 @@
           <a
             :href="`https://www.linkedin.com/shareArticle?mini=true&url=${validationUrl}&source=AnalogIST`"
             target="_blank"
+            rel="noreferrer"
           >
             <p><v-btn
               color="blue"
@@ -52,6 +53,7 @@
           <a
             href="https://www.linkedin.com/profile/add/?startTask=CERTIFICATION_NAME"
             target="_blank"
+            rel="noreferrer"
           >
             <p><v-btn
               color="blue"

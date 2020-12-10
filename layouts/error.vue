@@ -63,6 +63,13 @@ export default {
     dark () {
       return this.$store.state.dark
     }
+  },
+  head () {
+    return {
+      htmlAttrs: {
+        lang: this.$i18n.locale
+      }
+    }
   }
 }
 </script>

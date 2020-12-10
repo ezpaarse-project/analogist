@@ -6,6 +6,7 @@
       text
       router
       exact
+      :aria-label="$t('ezLogger.backToPlatform')"
       :to="{ name: 'platforms-cid', params: { cid: lastVisitedPlatform } }"
     >
       <v-icon left>
@@ -41,6 +42,7 @@
             <v-btn
               icon
               :loading="processing"
+              :aria-label="$t('ezLogger.analyze')"
               v-on="on"
               @click="analyze"
             >
@@ -53,6 +55,7 @@
           <template v-slot:activator="{ on }">
             <v-btn
               icon
+              :aria-label="$t('ezLogger.clearAll')"
               v-on="on"
               @click="clearRequests"
             >
@@ -65,6 +68,7 @@
           <template v-slot:activator="{ on }">
             <v-btn
               icon
+              :aria-label="$t('ezLogger.export')"
               v-on="on"
               @click="showExport = true"
             >
@@ -77,6 +81,7 @@
           <template v-slot:activator="{ on }">
             <v-btn
               icon
+              :aria-label="$t('ezLogger.filter')"
               v-on="on"
               @click="filterRequests"
             >
@@ -92,6 +97,7 @@
               router
               exact
               :to="{ name: 'ezlogger-settings' }"
+              :aria-label="$t('ezLogger.settings')"
               v-on="on"
             >
               <v-icon>mdi-cog</v-icon>
@@ -302,11 +308,12 @@ const perPage = 20
 export default {
   name: 'Ezlogger',
   transition: 'slide-x-transition',
-  data () {
+  asyncData ({ env }) {
     return {
       processing: false,
       showExport: false,
-      extensionUrl: 'https://github.com/ezpaarse-project/ezpaarse-logger-extension#installation'
+      extensionUrl: 'https://github.com/ezpaarse-project/ezpaarse-logger-extension#installation',
+      ezpaarseInstance: env.ezpaarseUrl
     }
   },
   computed: {
@@ -394,7 +401,7 @@ export default {
 
     analyze () {
       const ezpaarseUrl = this.settings.preprod
-        ? 'http://dev.ezpaarse.org'
+        ? this.ezpaarseInstance
         : this.settings.ezpaarseUrl
 
       if (!ezpaarseUrl) { return }

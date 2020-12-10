@@ -43,6 +43,7 @@
                   <img
                     v-if="item.member.avatarUrl"
                     :src="`${item.member.avatarUrl}/50.png`"
+                    alt="avatar"
                   >
                   <span v-else>
                     <v-avatar color="blue-grey lighten-4">
@@ -84,7 +85,10 @@
               >
                 <template>
                   <v-list-item-avatar :class="{ 'isOwn': item.issued_on }">
-                    <img :src="item.image">
+                    <img
+                      :src="item.image"
+                      alt="badge"
+                    >
                   </v-list-item-avatar>
                   <v-list-item-content :class="{ 'isOwn': item.issued_on }">
                     <v-list-item-title v-text="item.name" />

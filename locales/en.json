@@ -21,7 +21,7 @@
     "language": "Language",
     "newUserButton": "New User?",
     "newUser": "New AnalogIST User?",
-    "newUserText": "In order to contribute to a platform analysis on AnalogIST, you need to be a member of the dedicated <a href=\"https://trello.com/b/wEaLnz8d\" target=\"_blank\">Trello board</a>.",
+    "newUserText": "In order to contribute to a platform analysis on AnalogIST, you need to be a member of the dedicated <a href=\"https://trello.com/b/wEaLnz8d\" target=\"_blank\" rel=\"noreferrer\">Trello board</a>.",
     "becomeMember": "Become a Member",
     "becomeMemberSuccess": "Your request will be processed as soon as possible."
   },
@@ -40,7 +40,7 @@
     "noResults": "No Result",
     "settings": "Settings",
     "waitingForTraffic": "Waiting for traffic, let's browse the Internet !",
-    "getTheExtension": "Does nothing show up? Download the <a href=\"{url}\" target=\"_blank\">ezPAARSE Logger</a> extension!",
+    "getTheExtension": "Does nothing show up? Download the <a href=\"{url}\" target=\"_blank\" rel=\"noreferrer\">ezPAARSE Logger</a> extension!",
     "analyze": "Analyze",
     "clearAll": "Clear all",
     "export": "Export",
@@ -155,7 +155,7 @@
     "domainName": "Domain Name",
     "check": "Check",
     "checking": "Checking...",
-    "supported": "The domain <strong>{domainName}</strong> is already supported by the parser <a href=\"{trello}\" target=\"_blank\">{cardName}</a>.",
+    "supported": "The domain <strong>{domainName}</strong> is already supported by the parser <a href=\"{trello}\" target=\"_blank\" rel=\"noreferrer\">{cardName}</a>.",
     "error": "An error occurred : {message}",
     "unsupported": "The domain <strong>{domainName}</strong> has no associated parser yet.",
     "pleaseType": "Enter a domain name that can host resources."
@@ -199,9 +199,9 @@
     "analyses": "Analyses",
     "parsers": "Parsers",
     "badges": "Badges",
-    "whatIsEzPaarse": "<a href=\"https://www.ezpaarse.org/\" target=\"_blank\">ezPAARSE</a> now comes with a list of <a href=\"https://github.com/ezpaarse-project/ezpaarse-platforms\" target=\"_blank\"><span class=\"font-weight-bold\">{parsers} parsers</span></a>, which are the result of an analytical work provided by the community, and which provide users with a good coverage of their institution's subscriptions to electronic resources.",
-    "whatIsAnalogist": "The community platform, called <span class=\"font-weight-bold\">AnalogIST</span>, is the place where different types of URLs are collected, semi-automatically analyzed and commented so that the corresponding parser can be accurate and complete. For publishers or providers who are not yet recognized by <a href=\"https://www.ezpaarse.org/\" target=\"_blank\">ezPAARSE</a>, or that simply need an update, it is easy to contribute to a platform analysis: just open a Trello account and follow the guide!",
-    "goodAnalyses": "Once the analysis is considered satisfactory, or complete, a programmer (usually from the <a href=\"https://www.ezpaarse.org/\" target=\"_blank\">ezPAARSE</a>/<a href=\"https://ezmesure.couperin.org/\" target=\"_blank\">ezMESURE</a> team will take over and implement the corresponding parser. This parser will be added to the existing parsers in the dedicated <a href=\"https://github.com/ezpaarse-project/ezpaarse-platforms\" target=\"_blank\">github repository</a> and can be retrieved by all instances of <a href=\"https://www.ezpaarse.org/\" target=\"_blank\">ezPAARSE</a>, through a simple update mechanism embedded in the software administration area. This mode of operation ensures that each new parser, as well as each software and resource update, benefits all existing installations of <a href=\"https://www.ezpaarse.org/\" target=\"_blank\">ezPAARSE</a>: work is required only in one place and only once."
+    "whatIsEzPaarse": "<a href=\"https://www.ezpaarse.org/\" target=\"_blank\" rel=\"noreferrer\">ezPAARSE</a> now comes with a list of <a href=\"https://github.com/ezpaarse-project/ezpaarse-platforms\" target=\"_blank\" rel=\"noreferrer\"><span class=\"font-weight-bold\">{parsers} parsers</span></a>, which are the result of an analytical work provided by the community, and which provide users with a good coverage of their institution's subscriptions to electronic resources.",
+    "whatIsAnalogist": "The community platform, called <span class=\"font-weight-bold\">AnalogIST</span>, is the place where different types of URLs are collected, semi-automatically analyzed and commented so that the corresponding parser can be accurate and complete. For publishers or providers who are not yet recognized by <a href=\"https://www.ezpaarse.org/\" target=\"_blank\" rel=\"noreferrer\">ezPAARSE</a>, or that simply need an update, it is easy to contribute to a platform analysis: just open a Trello account and follow the guide!",
+    "goodAnalyses": "Once the analysis is considered satisfactory, or complete, a programmer (usually from the <a href=\"https://www.ezpaarse.org/\" target=\"_blank\" rel=\"noreferrer\">ezPAARSE</a>/<a href=\"https://ezmesure.couperin.org/\" target=\"_blank\" rel=\"noreferrer\">ezMESURE</a> team will take over and implement the corresponding parser. This parser will be added to the existing parsers in the dedicated <a href=\"https://github.com/ezpaarse-project/ezpaarse-platforms\" target=\"_blank\" rel=\"noreferrer\">github repository</a> and can be retrieved by all instances of <a href=\"https://www.ezpaarse.org/\" target=\"_blank\" rel=\"noreferrer\">ezPAARSE</a>, through a simple update mechanism embedded in the software administration area. This mode of operation ensures that each new parser, as well as each software and resource update, benefits all existing installations of <a href=\"https://www.ezpaarse.org/\" target=\"_blank\" rel=\"noreferrer\">ezPAARSE</a>: work is required only in one place and only once."
 
   },
   "theme": {

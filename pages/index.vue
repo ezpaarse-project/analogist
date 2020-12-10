@@ -18,36 +18,21 @@
         >
           <div class="text-center">
             <p>
-              <img src="@/static/logo-analogist.png">
+              <img
+                src="@/static/logo-analogist.png"
+                alt="Analogist logo"
+              >
             </p>
-            <v-chip pill>
-              <v-avatar
-                left
-                color="primary white--text"
-              >
-                <span v-text="platforms" />
-              </v-avatar>
-              <span>{{ $t('home.identifiedPlatforms') }}</span>
+            <v-chip label>
+              <span><strong>{{ platforms }}</strong> {{ $t('home.identifiedPlatforms') }}</span>
             </v-chip>
 
-            <v-chip pill>
-              <v-avatar
-                left
-                color="primary white--text"
-              >
-                <span v-text="parsers" />
-              </v-avatar>
-              <span>{{ $t('home.parsers') }}</span>
+            <v-chip label>
+              <span><strong>{{ parsers }}</strong> {{ $t('home.parsers') }}</span>
             </v-chip>
 
-            <v-chip pill>
-              <v-avatar
-                left
-                color="primary white--text"
-              >
-                <span v-text="badges" />
-              </v-avatar>
-              <span>{{ $t('home.badges') }}</span>
+            <v-chip label>
+              <span><strong>{{ badges }}</strong> {{ $t('home.badges') }}</span>
             </v-chip>
           </div>
 
@@ -100,7 +85,7 @@ export default {
     } catch (err) { platforms = 0 }
 
     try {
-      const { data: count } = await $axios.get('http://dev.ezpaarse.org/api/info/platforms/count')
+      const { data: count } = await $axios.get('api/platforms/count')
       parsers = count
     } catch (error) { parsers = 0 }
 

@@ -45,6 +45,7 @@
 
       <v-card-text>
         <v-btn
+          :aria-label="$t('ezLoggerSettings.checkAvailability')"
           :loading="connectionTest.loading"
           @click.native="testConnection"
         >
@@ -153,6 +154,7 @@
           bottom
           right
           fab
+          :aria-label="$t('ezLoggerSettings.headers')"
           @click.native="addHeader"
         >
           <v-icon>mdi-plus</v-icon>
@@ -165,32 +167,29 @@
         hide-default-header
       >
         <template v-slot:item="{ item, index }">
-          <td>
-            <v-text-field
-              v-model="item.name"
-              :label="$t('ezLoggerSettings.name')"
-              single-line
-              full-width
-              hide-details
-            />
-          </td>
-          <td>
-            <v-text-field
-              v-model="item.value"
-              :label="$t('ezLoggerSettings.value')"
-              single-line
-              full-width
-              hide-details
-            />
-          </td>
-          <td class="text-right">
-            <v-btn
-              icon
-              @click.native="removeHeader(index)"
-            >
-              <v-icon>mdi-delete</v-icon>
-            </v-btn>
-          </td>
+          <tr>
+            <td>
+              <v-text-field
+                v-model="item.name"
+                :label="$t('ezLoggerSettings.name')"
+              />
+            </td>
+            <td>
+              <v-text-field
+                v-model="item.value"
+                :label="$t('ezLoggerSettings.value')"
+              />
+            </td>
+            <td class="text-right">
+              <v-btn
+                icon
+                :aria-label="$t('ui.delete')"
+                @click.native="removeHeader(index)"
+              >
+                <v-icon>mdi-delete</v-icon>
+              </v-btn>
+            </td>
+          </tr>
         </template>
       </v-data-table>
     </v-card>
@@ -211,6 +210,7 @@
           bottom
           right
           fab
+          :aria-label="$t('ezLoggerSettings.proxySuffixes')"
           @click.native="addProxy"
         >
           <v-icon>mdi-plus</v-icon>
@@ -231,9 +231,7 @@
               <v-text-field
                 v-model="item.str"
                 :label="$t('ezLoggerSettings.suffix')"
-                single-line
-                full-width
-                hide-details
+                class="my-2"
               />
             </td>
             <td
@@ -242,6 +240,7 @@
             >
               <v-btn
                 icon
+                :aria-label="$t('ui.delete')"
                 @click.native="removeProxy(index)"
               >
                 <v-icon>mdi-delete</v-icon>
@@ -263,7 +262,7 @@ export default {
   async fetch ({ store }) {
     await store.dispatch('ezlogger/loadSettings')
   },
-  data () {
+  asyncData ({ env }) {
     return {
       connectionTest: {
         loading: false,
@@ -273,7 +272,8 @@ export default {
       },
       parsers: [],
       parserSearch: '',
-      loadingParsers: false
+      loadingParsers: false,
+      ezpaarseInstance: env.ezpaarseUrl
     }
   },
   computed: {
@@ -329,7 +329,7 @@ export default {
     ]),
     getEzpaarseUrl () {
       return this.preprod
-        ? 'http://dev.ezpaarse.org'
+        ? this.ezpaarseInstance
         : this.ezpaarseUrl
     },
     filterParsers (item, queryText) {

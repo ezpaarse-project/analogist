@@ -17,6 +17,7 @@
               v-if="canEdit"
               icon
               text
+              :aria-label="$t('creation.newPlatform')"
               :to="{ name: 'platforms-new' }"
               v-on="on"
             >
@@ -31,6 +32,7 @@
             <v-btn
               icon
               text
+              :aria-label="$t('certifications.downloadCertifiedList')"
               v-on="on"
               @click="generateCSV()"
             >
