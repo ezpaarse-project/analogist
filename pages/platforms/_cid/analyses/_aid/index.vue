@@ -28,6 +28,7 @@
             <v-btn
               v-if="canEdit"
               icon
+              :aria-label="$t('ui.edit')"
               :to="{ name: 'platforms-cid-analyses-aid-edit', params: { cid: $route.params.cid, aid: $route.params.aid } }"
               v-on="on"
             >
@@ -41,6 +42,7 @@
           <template v-slot:activator="{ on }">
             <v-btn
               icon
+              :aria-label="$t('analyses.testWithEzlogger')"
               v-on="on"
               @click="exportToEzlogger"
             >
@@ -111,6 +113,7 @@
             <a
               :href="analysis.url"
               target="_blank"
+              rel="noreferrer"
             >{{ analysis.url }}</a>
           </p>
 

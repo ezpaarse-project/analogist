@@ -51,6 +51,7 @@
             <img
               class="mx-auto badgeImage"
               :src="badge.image"
+              alt="badge"
             >
             <h4
               v-if="$i18n.locale === 'fr'"
@@ -136,8 +137,10 @@
             <v-btn
               text
               icon
+              aria-label="Informations"
               href="https://blog.ezpaarse.org/2018/06/communication-les-badges-ezpaarse/"
               target="_blank"
+              rel="noreferrer"
               v-on="on"
             >
               <v-icon>mdi-help-circle</v-icon>

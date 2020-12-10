@@ -93,6 +93,7 @@
                 v-if="card.githubUrl"
                 :href="card.githubUrl"
                 target="_blank"
+                rel="noreferrer"
               >
                 <v-list-item-avatar>
                   <v-icon>mdi-github</v-icon>
@@ -105,6 +106,7 @@
                 v-if="card.homeUrl"
                 :href="card.homeUrl"
                 target="_blank"
+                rel="noreferrer"
               >
                 <v-list-item-avatar>
                   <v-icon>mdi-home</v-icon>
@@ -117,6 +119,7 @@
                 v-if="card.url"
                 :href="card.url"
                 target="_blank"
+                rel="noreferrer"
               >
                 <v-list-item-avatar>
                   <v-icon>mdi-trello</v-icon>

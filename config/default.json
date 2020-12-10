@@ -25,6 +25,7 @@
   "history": {
     "debounceTime": 900
   },
+  "ezpaarse": "http://dev.ezpaarse.org",
   "badges": {
     "host": "opbadge",
     "port": "4000",

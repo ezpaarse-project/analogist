@@ -14,8 +14,10 @@
         class="ml-2 mr-2"
         icon
         target="_blank"
+        :aria-label="link.title"
         :title="link.title"
         :href="link.href"
+        rel="noreferrer"
       >
         <v-icon dark>
           {{ link.icon }}
@@ -107,6 +109,7 @@
               <v-btn
                 text
                 icon
+                :aria-label="$t('drawer.logout')"
                 v-on="on"
                 @click="logout"
               >
@@ -158,6 +161,7 @@
       <v-list-item
         :href="trelloLink"
         target="_blank"
+        rel="noreferrer"
       >
         <v-list-item-icon>
           <v-icon>mdi-trello</v-icon>
@@ -296,6 +300,7 @@
             <img
               width="24"
               :src="require(`@/static/${locale.code}.png`)"
+              :alt="locale.name"
             >
           </v-list-item-icon>
         </v-list-item>
@@ -310,6 +315,7 @@
               small
               text
               icon
+              :aria-label="$t('theme.light')"
               v-on="on"
               @click="$vuetify.theme.dark = !$vuetify.theme.dark"
             >
@@ -332,6 +338,7 @@
           class="ma-3"
           href="https://github.com/ezpaarse-project/analogist#readme"
           target="_blank"
+          rel="noreferrer"
           outlined
         >
           Version: {{ appVersion }}
@@ -357,11 +364,11 @@ export default {
         { name: 'English', value: 'en' }
       ],
       links: [
-        { icon: 'mdi-home-variant', href: 'http://www.ezpaarse.org/' },
-        { icon: 'mdi-email', href: 'mailto:ezpaarse@couperin.org' },
-        { icon: 'mdi-twitter', href: 'https://twitter.com/ezpaarse' },
-        { icon: 'mdi-comment-text-outline', href: 'http://blog.ezpaarse.org/' },
-        { icon: 'mdi-youtube', href: 'https://www.youtube.com/channel/UCcR-0UE9WjYiwS4fMG2T4tQ' }
+        { icon: 'mdi-home-variant', href: 'http://www.ezpaarse.org/', title: 'ezPAARSE' },
+        { icon: 'mdi-email', href: 'mailto:ezpaarse@couperin.org', title: 'Contact' },
+        { icon: 'mdi-twitter', href: 'https://twitter.com/ezpaarse', title: 'Twitter' },
+        { icon: 'mdi-comment-text-outline', href: 'http://blog.ezpaarse.org/', title: 'Blog' },
+        { icon: 'mdi-youtube', href: 'https://www.youtube.com/channel/UCcR-0UE9WjYiwS4fMG2T4tQ', title: 'Youtube' }
       ],
       becomeMemberDialog: false
     }

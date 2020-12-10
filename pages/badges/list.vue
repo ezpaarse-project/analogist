@@ -49,6 +49,7 @@
                 <img
                   :src="item.badge.image"
                   class="badgeImage"
+                  alt="badge"
                 >
               </template>
               <template v-slot:item.badge.name="{ item }">
@@ -70,6 +71,7 @@
                             <img
                               v-if="u.avatarUrl"
                               :src="`${u.avatarUrl}/50.png`"
+                              alt="avatar"
                             >
                             <span v-else>
                               <v-avatar color="blue-grey lighten-4">
@@ -136,8 +138,10 @@
             <v-btn
               text
               icon
+              aria-label="Informations"
               href="https://blog.ezpaarse.org/2018/06/communication-les-badges-ezpaarse/"
               target="_blank"
+              rel="noreferrer"
               v-on="on"
             >
               <v-icon>mdi-help-circle</v-icon>

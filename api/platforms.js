@@ -39,6 +39,12 @@ const getPublisherCertifications = (cardID) => {
     .toArray()
 }
 
+router.get('/count', async (req, res, next) => {
+  request.get(`${config.ezpaarse}/api/info/platforms/count`)
+    .on('response', response => response.pipe(res))
+    .on('error', next)
+})
+
 /* GET all platforms. */
 router.get('/', (req, res, next) => {
   mongo.get('platforms').find().toArray(async (err, docs) => {

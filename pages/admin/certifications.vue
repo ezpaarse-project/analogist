@@ -139,6 +139,7 @@
                   <router-link
                     :to="`/platforms/${item.cardID}`"
                     target="_blank"
+                    rel="noreferrer"
                   >
                     <a>{{ eventPlatformName(item.cardID) }}</a>
                   </router-link>
@@ -273,6 +274,7 @@
                     link
                     :to="`/api/certifications/download/${item.form.attachment}`"
                     target="_blank"
+                    rel="noreferrer"
                   >
                     <v-icon left>
                       mdi-paperclip

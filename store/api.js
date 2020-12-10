@@ -1,10 +1,12 @@
 let axios = null
+let ezpaarseUrl = 'http://localhost:59599'
 
 const api = {}
 
-api.setInstance = function (instance) {
+api.setInstance = function (instance, ezpaarse) {
   if (!axios) {
     axios = instance
+    ezpaarseUrl = ezpaarse
   }
   return axios
 }
@@ -96,7 +98,7 @@ api.addUserToCard = function (card, user) {
 }
 
 api.checkDomain = function (domain) {
-  return axios.get(`http://dev.ezpaarse.org/info/domains/${domain}`)
+  return axios.get(`${ezpaarseUrl}/info/domains/${domain}`)
     .then(res => {
       if (typeof res.data === 'object') { return res.data }
       throw new Error('Invalid Response')

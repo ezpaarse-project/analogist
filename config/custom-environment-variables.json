@@ -25,6 +25,7 @@
   "history": {
     "debounce_time": "ANG_HISTORY_DEBOUNCE"
   },
+  "ezpaarse": "ANG_EZPAARSE_URL",
   "badges": {
     "host": "ANG_BADGE_HOST",
     "issuer": "ANG_BADGE_ISSUER",
