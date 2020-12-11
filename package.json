@@ -19,6 +19,7 @@
     "generate": "nuxt generate"
   },
   "dependencies": {
+    "@mdi/font": "^5.8.55",
     "@nuxtjs/auth": "^4.9.1",
     "@nuxtjs/axios": "^5.11.0",
     "body-parser": "^1.19.0",
@@ -45,11 +46,13 @@
     "socket.io": "^2.3.0",
     "socket.io-client": "^2.3.0",
     "vuedraggable": "^2.24.3",
+    "vuetify": "^2.3.21",
+    "vuetify-loader": "^1.6.0",
     "winston": "^3.3.3"
   },
   "devDependencies": {
-    "@mdi/font": "^5.8.55",
     "chai": "^4.2.0",
+    "deepmerge": "^4.2.2",
     "eslint": "^7.4.0",
     "eslint-config-standard": "^14.1.1",
     "eslint-loader": "^4.0.2",
@@ -62,7 +65,8 @@
     "husky": "^0.14.3",
     "mocha": "^8.0.1",
     "nodemon": "^2.0.4",
-    "supertest": "^4.0.2",
-    "vuetify": "^2.3.20"
+    "sass": "^1.30.0",
+    "sass-loader": "^10.1.0",
+    "supertest": "^4.0.2"
   }
 }

@@ -1,8 +1,6 @@
 FROM node:12.18.1
 LABEL maintainer="ezPAARSE Team <ezpaarse@couperin.org>"
 
-ENV NODE_ENV production
-
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 

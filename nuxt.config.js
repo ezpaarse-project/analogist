@@ -1,3 +1,5 @@
+const VuetifyLoaderPlugin = require('vuetify-loader/lib/plugin')
+
 module.exports = {
   ssr: false,
 
@@ -110,6 +112,7 @@ module.exports = {
   build: {
     analyze: true,
     extractCSS: true,
+    plugins: [new VuetifyLoaderPlugin()],
     extend (config, ctx) {
       if (ctx.isDev && ctx.isClient) {
         config.module.rules.push({
