@@ -37,7 +37,6 @@ app.use((err, req, res, next) => {
 
 // Import and Set Nuxt.js options
 const nuxtConfig = require('./nuxt.config.js')
-nuxtConfig.dev = isDev
 
 // Init Nuxt.js
 const nuxt = new Nuxt(nuxtConfig)
