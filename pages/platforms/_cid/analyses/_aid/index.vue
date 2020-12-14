@@ -101,7 +101,10 @@
 
       <template v-if="analysis">
         <v-card-text>
-          <div class="grey--text">
+          <div
+            v-if="analysis.updatedAt"
+            class="grey--text"
+          >
             {{ $t('analyses.updated') }} {{ updatedAt }} <span v-if="updatedBy">{{ $t('analyses.by') }} {{ updatedBy.fullName }}</span>
           </div>
 
@@ -332,7 +335,7 @@ export default {
       return this.$store.state.user && this.$store.state.user.isAuthorized
     },
     updatedAt () {
-      return this.$dateFns.formatDistanceToNow(this.analysis.updatedAt)
+      return this.$dateFns.formatDistanceToNow(new Date(this.analysis.updatedAt))
     },
     updatedBy () {
       try {
