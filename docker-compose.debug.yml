@@ -1,18 +1,34 @@
-version: '3'
+version: '2'
 services:
-  analogist:
-    image: node:12.18.1
+  front:
+    image: node:14.15.0
     volumes:
-      - .:/app
-      - ./uploads:/usr/src/app/app/uploads
-    working_dir: /app
+      - ./front:/usr/src/front
+    working_dir: /usr/src/front
     ports:
-      - "3000:3000"
+      - 8080:8080
     environment:
+      - API_URL=http://${ANALOGIST_DOMAIN}/api
+      - PORT=8080
+      - HOST=0.0.0.0
+    command: npm run dev
+    restart: "on-failure"
+
+  api:
+    image: node:14.15.0
+    volumes:
+      - ./api:/usr/src/api
+    working_dir: /usr/src/api
+    ports:
+      - 3000:3000
+    environment:
+      # les variables d'environnement pour l'accès au board trello par l'application
+      # exemple le board de prod : https://trello.com/b/wEaLnz8d/ezpaarse-analogist-suivi-des-plateformes
       - ANG_TRELLO_KEY
       - ANG_TRELLO_SECRET
       - ANG_TRELLO_BOARDID
-      - ANG_MONGO_HOST=db
+      - ANG_MONGO_HOST=mongo
+      # les variables d'envrionnement pour les badges
       - ANG_BADGE_HOST=opbadge
       - ANG_BADGE_ANALYSES_BRONZE_ID
       - ANG_BADGE_ANALYSES_BRONZE_NAME
@@ -21,30 +37,28 @@ services:
       - ANG_BADGE_ANALYSES_SILVER_NAME
       - ANG_BADGE_ANALYSES_SILVER_EVENT
       - ANG_BADGE_ISSUER
-      - ANG_SMTP_HOST=maildev
-      - ANG_SMTP_PORT=25
+      # les variables d'environnement pour les mails
+      - ANG_SMTP_HOST
+      - ANG_SMTP_PORT
       - ANG_NOTIFICATIONS_SENDER
       - ANG_NOTIFICATIONS_RECEIVERS
+      # les variables d'environnement pour que l'application puisse accéder à l'exterieur (ex: l'API trello)
       - http_proxy
       - https_proxy
       - no_proxy=localhost,127.0.0.1,opbadge
       - NODE_CONFIG
-    tty: true
     command: npm run dev
-
-  db:
-    image: mongo:3.6.5
-    volumes:
-      - ./data/db:/data/db
-    command: --smallfiles
+    restart: "on-failure"
 
   opbadge:
     image: ezpaarseproject/ezpaarse-badge:1.1.14
+    ports:
+      - 4000:4000
     environment:
       - http_proxy
       - https_proxy
       - OBF_CERT
-      - BADGE_MONGO_HOST=db
+      - BADGE_MONGO_HOST=mongo
       - BADGE_MONGO_PORT
       - BADGE_MONGO_DB
       - BADGE_LOGENTRY_CLIENT
@@ -52,8 +66,17 @@ services:
       - BADGE_AUTHORITY
     volumes:
       - ./ssl:/usr/src/app/app/ssl
-    ports:
-      - "4000:4000"
+    restart: on-failure
+
+  rp:
+    extends:
+      file: docker-compose.yml
+      service: rp
+
+  mongo:
+    extends:
+      file: docker-compose.yml
+      service: mongo
 
   maildev:
     image: djfarrelly/maildev

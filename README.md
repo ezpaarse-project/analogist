@@ -70,3 +70,9 @@ npm test
 npm run lint
 ```
 # LangsTools
+
+
+## env 
+
+ANALOGIST_DOMAIN=analogist-preprod.couperin.org
+HTTPS_PROTOCOL=true/false

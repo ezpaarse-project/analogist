@@ -1,0 +1,40 @@
+{
+  "name": "front",
+  "version": "2.0.0",
+  "description": "Analogist front",
+  "author": "ezTEAM",
+  "scripts": {
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "generate": "nuxt generate",
+    "start": "nuxt start",
+    "lint": "eslint .",
+    "precommit": "npm run lint"
+  },
+  "dependencies": {
+    "@mdi/font": "^5.8.55",
+    "@nuxtjs/auth": "^4.9.1",
+    "@nuxtjs/axios": "^5.12.3",
+    "@nuxtjs/proxy": "^2.0.1",
+    "date-fns": "^2.16.1",
+    "eslint-loader": "^4.0.2",
+    "file-saver": "^2.0.5",
+    "nuxt": "^2.14.11",
+    "nuxt-i18n": "^6.16.0",
+    "socket.io-client": "^3.0.4",
+    "vuedraggable": "^2.24.3",
+    "vuetify": "^2.3.21",
+    "vuetify-loader": "^1.6.0"
+  },
+  "devDependencies": {
+    "babel-eslint": "^10.1.0",
+    "deepmerge": "^4.2.2",
+    "eslint": "^7.15.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-vue": "^7.2.0",
+    "fibers": "^5.0.0",
+    "sass": "^1.30.0",
+    "sass-loader": "^10.1.0"
+  }
+}

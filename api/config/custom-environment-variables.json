@@ -1,0 +1,45 @@
+{
+  "port": "ANG_PORT",
+  "domain": "ANALOGIST_DOMAIN",
+  "https": "HTTPS_PROTOCOL",
+  "cookie": {
+    "secret": "ANG_COOKIE_SECRET",
+    "maxAge": "ANG_COOKIE_MAX_AGE"
+  },
+  "mongo": {
+    "host": "ANG_MONGO_HOST",
+    "port": "ANG_MONGO_PORT",
+    "db": "ANG_MONGO_DB"
+  },
+  "trello": {
+    "key": "ANG_TRELLO_KEY",
+    "secret": "ANG_TRELLO_SECRET",
+    "boardId": "ANG_TRELLO_BOARDID"
+  },
+  "smtp": {
+    "host": "ANG_SMTP_HOST",
+    "port": "ANG_SMTP_PORT"
+  },
+  "notifications": {
+    "sender": "ANG_NOTIFICATIONS_SENDER",
+    "receivers": "ANG_NOTIFICATIONS_RECEIVERS"
+  },
+  "history": {
+    "debounce_time": "ANG_HISTORY_DEBOUNCE"
+  },
+  "ezpaarse": "ANG_EZPAARSE_URL",
+  "badges": {
+    "host": "ANG_BADGE_HOST",
+    "issuer": "ANG_BADGE_ISSUER",
+    "analysesBronze": {
+      "badgeId": "ANG_BADGE_ANALYSES_BRONZE_ID",
+      "name": "ANG_BADGE_ANALYSES_BRONZE_NAME",
+      "eventName": "ANG_BADGE_ANALYSES_BRONZE_EVENT"
+    },
+    "analysesSilver": {
+      "badgeId": "ANG_BADGE_ANALYSES_SILVER_ID",
+      "name": "ANG_BADGE_ANALYSES_SILVER_NAME",
+      "eventName": "ANG_BADGE_ANALYSES_SILVER_EVENT"
+    }
+  }
+}

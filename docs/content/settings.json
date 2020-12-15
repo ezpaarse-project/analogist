@@ -1,0 +1,10 @@
+{
+  "title": "Analogist documentation",
+  "url": "",
+  "logo": {
+    "light": "/logo-light.svg",
+    "dark": "/logo-dark.svg"
+  },
+  "github": "ezpaarse-project/analogist",
+  "twitter": "@ezpaarse"
+}

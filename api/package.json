@@ -1,0 +1,51 @@
+{
+  "name": "api",
+  "version": "1.17.23",
+  "description": "Nuxt.js project",
+  "author": "Yannick Schurter <yannick.schurter@gmail.com>",
+  "private": true,
+  "engines": {
+    "node": ">=12.18.1"
+  },
+  "scripts": {
+    "dev": "cross-env NODE_ENV=development nodemon -e js server.js",
+    "start": "cross-env NODE_ENV=production node server.js",
+    "lint": "eslint .",
+    "precommit": "npm run lint",
+    "test": "mocha --exit",
+    "patch-version": "sed -i \"s#\\(image: ezpaarseproject/analogist:\\)\\([\\.a-z0-9]\\+\\)#\\1${npm_package_version}#g\" docker-compose.yml",
+    "version": "npm run patch-version && git add docker-compose.yml"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "config": "^3.3.1",
+    "connect-mongo": "^3.2.0",
+    "cors": "^2.8.5",
+    "cross-env": "^7.0.2",
+    "date-fns": "^2.16.1",
+    "deep-equal": "^2.0.3",
+    "es6-promise": "^4.2.8",
+    "express": "^4.17.1",
+    "express-session": "^1.17.1",
+    "grant-express": "^3.8.2",
+    "mjml": "^4.6.3",
+    "mongodb": "^3.5.9",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.2",
+    "nodemailer": "^6.4.10",
+    "nunjucks": "^3.2.1",
+    "request": "^2.88.2",
+    "socket.io": "^2.3.0",
+    "winston": "^3.3.3"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "eslint": "^7.15.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.22.1",
+    "husky": "^0.14.3",
+    "mocha": "^8.0.1",
+    "nodemon": "^2.0.4",
+    "supertest": "^4.0.2"
+  }
+}
