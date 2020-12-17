@@ -546,7 +546,7 @@ export default {
   methods: {
     formatDate (date) {
       if (!date) return '-'
-      return this.$dateFns.format(date, 'PPPP')
+      return this.$dateFns.format(new Date(date), 'PPPP')
     },
     eventPlatformName (cardID) {
       if (cardID) return this.cards.find(card => card.id === cardID).name || 'Name not found'
@@ -580,7 +580,7 @@ export default {
 
       const columns = [
         { title: 'Date de demande', getter: (a) => this.$dateFns.format(a.createdAt, 'PPPP') },
-        { title: 'Date d\'administration', getter: (a) => this.$dateFns.format(a.lastModfied, 'PPPP') },
+        { title: 'Date d\'administration', getter: (a) => this.$dateFns.format(a.lastModified, 'PPPP') },
         { title: 'Plateforme', getter: (a) => this.eventPlatformName(a.cardID) },
         { title: 'Etablissement', getter: (a) => a.form.establishment },
         { title: 'H', getter: (a) => a.certifications.humanCertified ? a.form.year : '-' },
