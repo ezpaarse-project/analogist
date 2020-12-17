@@ -33,3 +33,23 @@ stop: docker-compose stop ## stop analogist
 restart: docker-compose restart ## restart analogist
 
 update: git pull ## pull analogist from github
+
+install-api: ## install api dependencies
+	cd ./api; npm install
+
+install-front: ## install front dependencies
+	cd ./front; npm install
+
+install-doc: ## install documentation dependencies
+	cd ./docs; npm install
+
+install: install-api install-front install-doc ## install all dependencies
+
+build-doc: ## build documentation
+	cd ./docs; npm run build
+
+start-doc: ## start documentation
+	cd ./docs; npm run start
+
+dev-doc: ## run documentation in dev mode
+	cd ./docs; npm run dev

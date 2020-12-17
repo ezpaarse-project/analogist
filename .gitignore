@@ -22,3 +22,6 @@ uploads
 
 # env vars
 .env.sh
+
+# nginx sites-available
+sites-available
