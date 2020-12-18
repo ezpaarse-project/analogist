@@ -12,9 +12,6 @@ config: ## patch nginx.conf config file with analogist domain url
 	@if [ ! -d ./rp/sites-enabled/ ]; then mkdir ./rp/sites-enabled/; fi
 	@make config-nginx
 
-ssl-certs: ## generate ssl certificats for HTTPS
-	cd rp; docker-compose -f create-certs.yml up certbot
-
 build-front: ## build analogist web front
 	docker-compose build front
 
@@ -31,6 +28,12 @@ start: docker-compose up -d ## start analogist
 stop: docker-compose stop ## stop analogist
 
 restart: docker-compose restart ## restart analogist
+
+dev-start: docker-compose -f docker-compose.debug.yml up -d ## start analogist in dev mode
+
+dev-stop: docker-compose -f docker-compose.debug.yml stop ## stop analogist in dev mode
+
+dev-restart: docker-compose -f docker-compose.debug.yml restart ## restart analogist in dev mode
 
 update: git pull ## pull analogist from github
 

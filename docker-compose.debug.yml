@@ -69,6 +69,19 @@ services:
       - ./ssl:/usr/src/app/app/ssl
     restart: on-failure
 
+  doc:
+    image: node:14.15.0
+    volumes:
+      - ./docs:/usr/src/docs
+    working_dir: /usr/src/docs
+    ports:
+      - 45410:45410
+    environment:
+      - PORT=45410
+      - HOST=0.0.0.0
+    command: npm run dev
+    restart: "on-failure"
+
   rp:
     extends:
       file: docker-compose.yml

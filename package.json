@@ -1,0 +1,31 @@
+{
+  "name": "analogist",
+  "version": "1.17.23",
+  "description": "",
+  "private": true,
+  "scripts": {
+    "install:api": "cd api && npm install",
+    "install:front": "cd font && npm install",
+    "install:docs": "cd docs && npm install",
+    "install": "npm run install:api && npm run install:front && npm run install:docs",
+    "dev:api": "cd api && npm run dev",
+    "dev:front": "cd font && npm run dev",
+    "dev:docs": "cd docs && npm run dev",
+    "dev": "npm run dev:api && npm run dev:front && npm run dev:docs",
+    "start:api": "cd api && npm run start",
+    "start:front": "cd font && npm run start",
+    "start:docs": "cd docs && npm run start",
+    "start": "npm run start:api && npm run start:front && npm run start:docs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ezpaarse-project/analogist.git"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ezpaarse-project/analogist/issues"
+  },
+  "homepage": "https://github.com/ezpaarse-project/analogist",
+  "dependencies": {},
+  "devDependencies": {}
+}

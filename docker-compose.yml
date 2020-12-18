@@ -70,6 +70,19 @@ services:
       - ./ssl:/usr/src/app/app/ssl
     restart: on-failure
 
+  doc:
+    build:
+      context: ./docs
+      args:
+        - http_proxy
+        - https_proxy
+    ports:
+      - 45410:45410
+    environment:
+      - PORT=45410
+      - HOST=0.0.0.0
+    restart: unless-stopped
+
   rp:
     image: nginx
     ports:
@@ -92,3 +105,4 @@ services:
       - ./data/db:/data/db
     command: --smallfiles
     restart: on-failure
+    
