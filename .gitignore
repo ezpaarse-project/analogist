@@ -25,3 +25,6 @@ uploads
 
 # nginx sites-available
 sites-available
+
+# nginx sites-enabled
+sites-enabled

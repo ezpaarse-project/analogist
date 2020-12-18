@@ -77,6 +77,8 @@ export default {
       this.parsers = null;
       this.error = null;
 
+      this.domainName = this.domainName.replace(/(^\w+:|^)\/\//, '');
+
       try {
         const res = await this.$store.dispatch('CHECK_DOMAIN', this.domainName);
         this.parsers = res;

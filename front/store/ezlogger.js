@@ -5,7 +5,6 @@ import { getUnixTime } from 'date-fns';
 
 const defaultSettings = {
   preprod: true,
-  ezpaarseUrl: 'http://127.0.0.1:59599',
   proxySuffixes: [],
   headers: [
     { name: 'Double-Click-Removal', value: 'false' },
@@ -150,7 +149,6 @@ export default {
     setAutoRemoveNoise({ commit }, value) { commit('setAutoRemoveNoise', value); },
     setPatchHyphens({ commit }, value) { commit('setPatchHyphens', value); },
     setPreprod({ commit }, value) { commit('setPreprod', value); },
-    setEzpaarseUrl({ commit }, value) { commit('setEzpaarseUrl', value); },
     setForceParser({ commit }, value) { commit('setForceParser', value); },
   },
 
@@ -172,7 +170,6 @@ export default {
     setAutoRemoveNoise(state, value) { state.settings.autoRemoveNoise = value; },
     setPatchHyphens(state, value) { state.settings.patchHyphens = value; },
     setPreprod(state, value) { state.settings.preprod = value; },
-    setEzpaarseUrl(state, value) { state.settings.ezpaarseUrl = value; },
     setForceParser(state, value) { state.settings.forceParser = value; },
   },
 };

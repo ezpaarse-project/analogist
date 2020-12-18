@@ -8,7 +8,7 @@ services:
     ports:
       - 8080:8080
     environment:
-      - API_URL=http://${ANALOGIST_DOMAIN}/api
+      - API_URL=https://${ANALOGIST_DOMAIN}/api
       - PORT=8080
       - HOST=0.0.0.0
     command: npm run dev
@@ -46,6 +46,7 @@ services:
       - http_proxy
       - https_proxy
       - no_proxy=localhost,127.0.0.1,opbadge
+      - ANG_EZPAARSE_URL
       - NODE_CONFIG
     command: npm run dev
     restart: "on-failure"

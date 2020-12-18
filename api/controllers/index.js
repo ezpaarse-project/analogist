@@ -17,5 +17,6 @@ router.use('/trello', require('./trello'));
 router.use('/auth', require('./auth'));
 router.use('/badges', require('./badges'));
 router.use('/certifications', require('./certifications'));
+router.use('/ezlogger', require('./ezlogger'));
 
 module.exports = router;

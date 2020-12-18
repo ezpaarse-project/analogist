@@ -6,10 +6,10 @@ help:
 
 config-nginx: ## config nginx files
 	sed -e "s|{{ANALOGIST_DOMAIN}}|${ANALOGIST_DOMAIN}|" \
-			./rp/default.dist.conf > "./rp/sites-available/${ANALOGIST_DOMAIN}.conf"
+			./rp/default.dist.conf > "./rp/sites-enabled/${ANALOGIST_DOMAIN}.conf"
 
 config: ## patch nginx.conf config file with analogist domain url
-	@if [ ! -d ./rp/sites-available/ ]; then mkdir ./rp/sites-available/; fi
+	@if [ ! -d ./rp/sites-enabled/ ]; then mkdir ./rp/sites-enabled/; fi
 	@make config-nginx
 
 ssl-certs: ## generate ssl certificats for HTTPS

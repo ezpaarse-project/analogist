@@ -6,14 +6,13 @@ const trello = require('../lib/trello');
 const { sendMail, generateMail } = require('../lib/mailer');
 
 router.use('/connect/trello', (req, res, next) => {
-  console.log(req.headers['x-forwarded-host']);
   req.query.host = req.query.host || req.headers['x-forwarded-host'] || req.headers.host;
   next();
 });
 
 router.use(new Grant({
   server: {
-    protocol: config.https ? 'https' : 'http',
+    protocol: 'https',
     host: config.domain,
     callback: '/api/auth/callback',
     transport: 'session',

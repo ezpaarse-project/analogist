@@ -260,7 +260,7 @@ import { mapState, mapActions } from 'vuex';
 export default {
   name: 'Settings',
   transition: 'slide-x-transition',
-  asyncData({ env }) {
+  data() {
     return {
       connectionTest: {
         loading: false,
@@ -271,7 +271,7 @@ export default {
       parsers: [],
       parserSearch: '',
       loadingParsers: false,
-      ezpaarseInstance: env.ezpaarseUrl,
+      ezpaarseUrl: 'http://127.0.0.1:59599',
     };
   },
   async fetch({ store }) {
@@ -298,10 +298,6 @@ export default {
       get() { return this.$store.state.ezlogger.settings.preprod; },
       set(value) { return this.$store.commit('ezlogger/setPreprod', value); },
     },
-    ezpaarseUrl: {
-      get() { return this.$store.state.ezlogger.settings.ezpaarseUrl; },
-      set(value) { return this.$store.commit('ezlogger/setEzpaarseUrl', value); },
-    },
     forceParser: {
       get() { return this.$store.state.ezlogger.settings.forceParser; },
       set(value) { return this.$store.commit('ezlogger/setForceParser', value); },
@@ -312,10 +308,8 @@ export default {
       if ((!val && !this.forceParser) || this.parsers.length > 0) { return; }
       this.loadingParsers = true;
 
-      const ezpaarseUrl = this.getEzpaarseUrl();
-
       try {
-        const { data } = await this.$axios.get(`${ezpaarseUrl}/info/platforms`);
+        const { data } = await this.$axios.get('/ezlogger/platforms');
         if (!Array.isArray(data)) { throw new Error('invalid response'); }
         this.parsers = data;
       } catch (e) {
@@ -333,11 +327,7 @@ export default {
       'removeProxy',
       'saveSettings',
     ]),
-    getEzpaarseUrl() {
-      return this.preprod
-        ? this.ezpaarseInstance
-        : this.ezpaarseUrl;
-    },
+
     filterParsers(item, queryText) {
       const search = queryText.toLowerCase();
       if (!search) { return true; }
@@ -350,16 +340,14 @@ export default {
       return false;
     },
     testConnection() {
-      const ezpaarseUrl = this.getEzpaarseUrl();
-
-      if (!ezpaarseUrl || this.connectionTest.loading) { return; }
+      if (this.connectionTest.loading) { return; }
 
       this.connectionTest.loading = true;
       this.connectionTest.errorMsg = null;
       this.connectionTest.errorMeta = null;
       this.connectionTest.version = null;
 
-      this.$axios.get(`${ezpaarseUrl}/info/version`)
+      this.$axios.get('/ezlogger/version')
         .then((response) => {
           this.connectionTest.loading = false;
 

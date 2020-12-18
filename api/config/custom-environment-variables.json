@@ -1,7 +1,6 @@
 {
   "port": "ANG_PORT",
   "domain": "ANALOGIST_DOMAIN",
-  "https": "HTTPS_PROTOCOL",
   "cookie": {
     "secret": "ANG_COOKIE_SECRET",
     "maxAge": "ANG_COOKIE_MAX_AGE"

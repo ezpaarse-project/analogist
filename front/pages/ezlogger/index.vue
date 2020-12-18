@@ -308,12 +308,11 @@ const perPage = 20;
 export default {
   name: 'Ezlogger',
   transition: 'slide-x-transition',
-  asyncData({ env }) {
+  data() {
     return {
       processing: false,
       showExport: false,
       extensionUrl: 'https://github.com/ezpaarse-project/ezpaarse-logger-extension#installation',
-      ezpaarseInstance: env.ezpaarseUrl,
     };
   },
   head() {
@@ -404,12 +403,6 @@ export default {
     },
 
     analyze() {
-      const ezpaarseUrl = this.settings.preprod
-        ? this.ezpaarseInstance
-        : this.settings.ezpaarseUrl;
-
-      if (!ezpaarseUrl) { return; }
-
       const { requests } = this.$store.state.ezlogger;
       const pending = requests.slice();
       pending.forEach((req) => { req.status = 'processing'; });
@@ -432,7 +425,7 @@ export default {
         headers[h.name] = h.value;
       });
 
-      this.$axios.post(ezpaarseUrl, logs, { headers })
+      this.$axios.post('/ezlogger/', { logs, headers })
         .then((response) => {
           if (response.status !== 200) {
             throw new Error('Got status', response.status);

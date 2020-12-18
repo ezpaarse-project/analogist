@@ -1,12 +1,10 @@
 let axios = null;
-let ezpaarseUrl = 'http://localhost:59599';
 
 const api = {};
 
-api.setInstance = (instance, ezpaarse) => {
+api.setInstance = (instance) => {
   if (!axios) {
     axios = instance;
-    ezpaarseUrl = ezpaarse;
   }
   return axios;
 };
@@ -57,7 +55,7 @@ api.addUserToCard = (card, user) => axios.post(`/trello/cards/${card.id}/members
   return res.data;
 });
 
-api.checkDomain = (domain) => axios.get(`${ezpaarseUrl}/info/domains/${domain}`)
+api.checkDomain = (domain) => axios.get(`/ezlogger/domains/${domain}`)
   .then((res) => {
     if (typeof res.data === 'object') { return res.data; }
     throw new Error('Invalid Response');
