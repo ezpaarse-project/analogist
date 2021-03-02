@@ -559,39 +559,6 @@ export default {
         do {
           this.pendingChanges = false;
 
-          // remove white space
-          if (this.analysis.title) {
-            this.analysis.title = this.analysis.title.trim();
-          }
-          if (this.analysis.url) {
-            this.analysis.url = this.analysis.url.trim();
-          }
-          if (this.analysis.unitid) {
-            this.analysis.unitid = this.analysis.unitid.trim();
-          }
-          if (this.analysis.comment) {
-            this.analysis.comment = this.analysis.comment.trim();
-          }
-          if (this.analysis.identifiers && this.analysis.identifiers.length) {
-            this.analysis.identifiers = this.analysis.identifiers.map((identifier) => ({
-              type: identifier?.type?.trim(),
-              value: identifier?.value?.trim(),
-            })).filter((identifier) => identifier.type && identifier.value);
-          }
-          if (this.analysis.pathParams && this.analysis.pathParams.length) {
-            this.analysis.pathParams = this.analysis.pathParams.map((pathParam) => ({
-              value: pathParam?.value?.trim(),
-              comment: pathParam?.comment?.trim(),
-            }));
-          }
-          if (this.analysis.queryParams && this.analysis.queryParams.length) {
-            this.analysis.queryParams = this.analysis.queryParams.map((queryParam) => ({
-              name: queryParam?.name?.trim(),
-              value: queryParam?.value?.trim(),
-              comment: queryParam?.comment?.trim(),
-            })).filter((queryParam) => queryParam.name);
-          }
-
           // eslint-disable-next-line no-await-in-loop
           await this.$store.dispatch('SAVE_ANALYSIS', {
             cardID: this.card.id,
