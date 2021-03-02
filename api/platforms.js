@@ -190,6 +190,42 @@ router.patch('/:cid/comment', (req, res, next) => {
   )
 })
 
+const sanitizeAnalysis = (req, res, next) => {
+  if (req.body.title) {
+    req.body.title = req.body.title.trim()
+  }
+  if (req.body.url) {
+    req.body.url = req.body.url.trim()
+  }
+  if (req.body.unitid) {
+    req.body.unitid = req.body.unitid.trim()
+  }
+  if (req.body.comment) {
+    req.body.comment = req.body.comment.trim()
+  }
+  if (req.body.identifiers && req.body.identifiers.length) {
+    req.body.identifiers = req.body.identifiers.map((identifier) => ({
+      type: identifier.type ? identifier.type.trim() : null,
+      value: identifier.value ? identifier.value.trim() : null
+    })).filter((identifier) => identifier.type && identifier.value)
+  }
+  if (req.body.pathParams && req.body.pathParams.length) {
+    req.body.pathParams = req.body.pathParams.map((pathParam) => ({
+      value: pathParam.value ? pathParam.value.trim() : null,
+      comment: pathParam.comment ? pathParam.comment.trim() : null
+    })).filter((pathParams) => pathParams.type && pathParams.comment)
+  }
+  if (req.body.queryParams && req.body.queryParams.length) {
+    req.body.queryParams = req.body.queryParams.map((queryParam) => ({
+      name: queryParam.name ? queryParam.name.trim() : null,
+      value: queryParam.value ? queryParam.value.trim() : null,
+      comment: queryParam.comment ? queryParam.comment.trim() : null
+    })).filter((queryParam) => queryParam.name)
+  }
+
+  next()
+}
+
 /* POST new analysis. */
 router.post('/:cid/analyses', mw.updateHistory, (req, res, next) => {
   const analysis = req.body
@@ -216,7 +252,7 @@ router.post('/:cid/analyses', mw.updateHistory, (req, res, next) => {
 })
 
 /* PUT an existing analysis */
-router.put('/:cid/analyses/:aid', mw.updateHistory, (req, res, next) => {
+router.put('/:cid/analyses/:aid', sanitizeAnalysis, mw.updateHistory, (req, res, next) => {
   const analysis = req.body
 
   if (!ObjectID.isValid(req.params.aid)) { return res.status(400).end() }
