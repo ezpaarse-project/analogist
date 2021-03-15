@@ -541,7 +541,7 @@ export default {
       }).join('\n')
 
       const shortName = (/\[([\w\d]+)\]$/.exec(this.card && this.card.name) || [])[1]
-      const fileName = `${shortName || 'test'}.${this.$dateFns.format(new Date(), 'YYYY-MM-DD')}.csv`
+      const fileName = `${shortName || 'test'}.${this.$dateFns.format(new Date(), 'yyyy-MM-dd')}.csv`
 
       saveAs(new Blob([`${header}\n${lines}`], { type: 'text/csv;charset=utf-8' }), fileName)
     }
