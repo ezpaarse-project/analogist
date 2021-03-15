@@ -15,7 +15,7 @@ const store = () => new Vuex.Store({
     socket,
     certifications
   },
-  state: {
+  state: () => ({
     user: null,
     app: {},
     card: null,
@@ -36,7 +36,7 @@ const store = () => new Vuex.Store({
     lastVisitedAnalysis: null,
     trelloBoardMembers: [],
     lastVisitedPlatform: null
-  },
+  }),
   actions: {
     FETCH_PROFILE ({ commit }) {
       return api.getProfile().then(profile => commit('SET_USER', profile))

@@ -16,13 +16,13 @@ const defaultSettings = {
 export default {
   namespaced: true,
 
-  state: {
+  state: () => ({
     search: '',
     settings: {},
     requests: [],
     counter: 0,
     page: 1
-  },
+  }),
 
   actions: {
     setPage ({ commit }, page) {
