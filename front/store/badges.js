@@ -4,13 +4,13 @@ import api from './api';
 
 export default {
   namespaced: true,
-  state: {
+  state: () => ({
     badges: null,
     visibility: false,
     users: null,
     ping: null,
     metrics: null,
-  },
+  }),
   mutations: {
     SET_BADGES(state, badges) {
       Vue.set(state, 'badges', badges);

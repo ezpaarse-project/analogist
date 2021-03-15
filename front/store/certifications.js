@@ -4,9 +4,9 @@ import api from './api';
 
 export default {
   namespaced: true,
-  state: {
+  state: () => ({
     certificationsEvents: null,
-  },
+  }),
   mutations: {
     SET_CERTIFICATIONS_EVENTS(state, data) {
       Vue.set(state, 'certificationsEvents', data);

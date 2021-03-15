@@ -1,8 +1,8 @@
 export default {
   namespaced: true,
-  state: {
+  state: () => ({
     connect: false,
-  },
+  }),
   mutations: {
     SOCKET_CONNECT: (state, data) => {
       // eslint-disable-next-line no-param-reassign

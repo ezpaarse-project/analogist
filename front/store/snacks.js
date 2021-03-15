@@ -1,9 +1,9 @@
 export default {
   namespaced: true,
 
-  state: {
+  state: () => ({
     messages: [],
-  },
+  }),
 
   actions: {
     error({ commit }, text) {
