@@ -352,6 +352,7 @@
 <script>
 import { saveAs } from 'file-saver'
 import vuedraggable from 'vuedraggable'
+import Certification from '~/components/certifications/Certification'
 
 function escapeCSVstring (str) {
   if (/[";]/.test(str)) {
@@ -365,7 +366,8 @@ export default {
   name: 'Platform',
   transition: 'slide-x-transition',
   components: {
-    vuedraggable
+    vuedraggable,
+    Certification
   },
   async fetch ({ params, store, error }) {
     await store.dispatch('FETCH_TRELLO_LISTS')
