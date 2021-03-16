@@ -1,7 +1,7 @@
 version: '3'
 services:
   analogist:
-    image: ezpaarseproject/analogist:1.17.26
+    image: ezpaarseproject/analogist:1.17.27
     ports:
       - "3000:3000"
     environment:
