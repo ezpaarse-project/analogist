@@ -185,7 +185,16 @@
                   >
                     mdi-fingerprint
                   </v-icon>
-                  {{ analysis.unitid }}
+                  <a
+                    v-if="/^(10.[0-9]{4,})\/(.*)$/i.test(analysis.unitid)"
+                    :href="`${dxDoi}${analysis.unitid}`"
+                    class="white--text"
+                  >
+                    {{ analysis.unitid }}
+                  </a>
+                  <span v-else>
+                    {{ analysis.unitid }}
+                  </span>
                 </v-chip>
               </template>
               <span>{{ $t('analyses.unitid') }}</span>
@@ -226,7 +235,16 @@
                   :key="index"
                 >
                   <td v-text="id.type" />
-                  <td v-text="id.value" />
+                  <td v-if="id.type === 'doi'">
+                    <a
+                      :href="`${dxDoi}${id.value}`"
+                      v-text="id.value"
+                    />
+                  </td>
+                  <td
+                    v-else
+                    v-text="id.value"
+                  />
                 </tr>
               </tbody>
             </template>
@@ -315,6 +333,7 @@ export default {
     return {
       deleting: false,
       deleteDialog: false,
+      dxDoi: 'http://dx.doi.org/',
     };
   },
   async fetch({ params, store, error }) {
