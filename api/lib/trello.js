@@ -144,9 +144,11 @@ defineShorthand('put');
 defineShorthand('delete');
 
 function defineShorthand(method) {
-  trelloWrapper[method] = function (path, options, callback) {
-    return this.request(method, path, options, callback);
-  };
+  trelloWrapper[method] = (
+    path,
+    options,
+    callback,
+  ) => this.request(method, path, options, callback);
 }
 
 function parseJson(callback) {
@@ -154,6 +156,8 @@ function parseJson(callback) {
 
   return function (err, res, body) {
     if (err) { return callback(err); }
+
+    if (res && res.statusCode === 400) { return callback(res); }
 
     try {
       return callback(null, JSON.parse(body));

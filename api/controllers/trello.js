@@ -25,9 +25,12 @@ router.get('/cards/count', (req, res, next) => {
 
 /* GET trello card by ID */
 router.get('/cards/:cid', (req, res, next) => {
-  trello.getCard(req.params.cid)
-    .on('response', (response) => response.pipe(res))
-    .on('error', next);
+  trello.getCard(req.params.cid, (err, response) => {
+    if (err && err.statusCode === 400) { return res.status(400).end(); }
+    if (err) { return res.status(500).end(); }
+
+    return res.json(response).end();
+  });
 });
 
 /* PATCH the card of a platform */
