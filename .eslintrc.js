@@ -28,7 +28,7 @@ module.exports = {
     'prefer-arrow-callback': 2,
     'prefer-template': 1,
     'arrow-parens': 0, // allow paren-less arrow functions
-    'no-console': 2, // do not allow console.logs
+    'no-console': 0, // do not allow console.logs
     'no-multi-spaces': [2, {
       exceptions: {
         VariableDeclarator: true,
