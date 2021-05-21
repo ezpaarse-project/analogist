@@ -1,4 +1,6 @@
 const VuetifyLoaderPlugin = require('vuetify-loader/lib/plugin')
+const config = require('config')
+const pkg = require('./package.json')
 
 module.exports = {
   ssr: false,
@@ -41,7 +43,6 @@ module.exports = {
     { src: '~/plugins/axios.js' },
     { src: '~/plugins/dateFns.js' },
     { src: '~/plugins/ezlogger.js' },
-    { src: '~/plugins/storeInit.js' },
     { src: '~/plugins/socket.js' },
     { src: '~/plugins/vuetify.js' }
   ],
@@ -72,7 +73,23 @@ module.exports = {
   ** Auth configuration
   ** See https://auth.nuxtjs.org/
   */
-  auth: {},
+  auth: {
+    strategies: {
+      local: {
+        endpoints: {
+          logout: { url: '/api/auth/logout', method: 'get' },
+          user: { url: '/api/auth/loggedin', method: 'get', propertyName: '' }
+        },
+        tokenRequired: false
+      }
+    },
+    redirect: {
+      login: '/',
+      logout: '/',
+      home: '/',
+      callback: '/'
+    }
+  },
 
   i18n: {
     locales: [
@@ -103,7 +120,10 @@ module.exports = {
   },
 
   env: {
-    ezpaarseUrl: process.env.ANG_EZPAARSE_URL || 'http://dev.ezpaarse.org'
+    ezpaarseUrl: process.env.ANG_EZPAARSE_URL || 'http://dev.ezpaarse.org',
+    version: pkg.version,
+    boardId: process.env.ANG_TRELLO_BOARDID,
+    badgesEnabled: process.env.ANG_BADGES_ENABLED || config.badges.enabled
   },
 
   dev: process.env.NODE_ENV !== 'production',
