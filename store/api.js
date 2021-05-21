@@ -43,6 +43,10 @@ api.deleteAnalysis = function (cardID, analysisID) {
   return axios.delete(`/api/platforms/${cardID}/analyses/${analysisID}`).then(res => res.data)
 }
 
+api.getAnalysisHistory = function (analysisID) {
+  return axios.get(`/api/analyses/${analysisID}/history`)
+}
+
 api.updateComment = function (cardID, text) {
   return axios.patch(`/api/platforms/${cardID}/comment`, { text: text }).then(res => res.data)
 }
