@@ -23,10 +23,12 @@
 
         <v-spacer />
 
-        <v-tooltip bottom>
+        <v-tooltip
+          v-if="canEdit && !historySelected"
+          bottom
+        >
           <template v-slot:activator="{ on }">
             <v-btn
-              v-if="canEdit"
               icon
               :aria-label="$t('ui.edit')"
               :to="{ name: 'platforms-cid-analyses-aid-edit', params: { cid: $route.params.cid, aid: $route.params.aid } }"
@@ -36,6 +38,56 @@
             </v-btn>
           </template>
           <span v-text="$t('ui.edit')" />
+        </v-tooltip>
+
+        <v-tooltip
+          v-if="canEdit && isAdmin && historySelected"
+          bottom
+        >
+          <template v-slot:activator="{ on }">
+            <v-btn
+              icon
+              :aria-label="$t('ui.replace')"
+              :loading="saving"
+              @click="replaceAnalysis"
+              v-on="on"
+            >
+              <v-icon>mdi-file-replace</v-icon>
+            </v-btn>
+          </template>
+          <span v-text="$t('ui.replace')" />
+        </v-tooltip>
+
+        <v-tooltip
+          v-if="canEdit && isAdmin && historySelected"
+          bottom
+        >
+          <template v-slot:activator="{ on }">
+            <v-btn
+              icon
+              :aria-label="$t('ui.back')"
+              @click="historySelected = null"
+              v-on="on"
+            >
+              <v-icon>mdi-reload</v-icon>
+            </v-btn>
+          </template>
+          <span v-text="$t('ui.back')" />
+        </v-tooltip>
+
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on }">
+            <v-btn
+              v-if="canEdit && isAdmin"
+              icon
+              :aria-label="$t('ui.history')"
+              @click="historyDialog = !historyDialog"
+              v-on="on"
+            >
+              <v-icon>mdi-book-open-page-variant</v-icon>
+            </v-btn>
+          </template>
+          <span>{{ $t('ui.history') }}</span>
         </v-tooltip>
 
         <v-tooltip bottom>
@@ -83,12 +135,22 @@
           <v-card-actions>
             <v-spacer />
             <v-btn
+              v-if="!historySelected"
               color="error"
               :loading="deleting"
               @click.native="deleteAnalysis"
             >
               {{ $t('ui.delete') }}
             </v-btn>
+            <v-btn
+              v-if="historySelected"
+              color="error"
+              :loading="deleting"
+              @click.native="removeHistory(historySelected)"
+            >
+              {{ $t('ui.delete') }}
+            </v-btn>
+
             <v-btn
               color="secondary"
               @click.native="deleteDialog = false"
@@ -316,6 +378,68 @@
         {{ $t('analyses.notFound') }}
       </v-card-text>
     </v-card>
+
+    <v-dialog
+      v-model="historyDialog"
+      width="700"
+    >
+      <v-card>
+        <v-card-title class="headline lighten-2">
+          {{ $t('ui.history') }}
+        </v-card-title>
+
+        <v-data-table
+          :headers="historyHeaders"
+          :items="analysisHistory"
+          hide-default-footer
+        >
+          <template v-slot:[`item.updatedAt`]="{ item }">
+            {{ $dateFns.format(new Date(item.updatedAt), 'PPPPpp', { locale: $i18n.locale }) }}
+          </template>
+
+          <template v-slot:[`item.updatedBy`]="{ item }">
+            {{ getUser(item.updatedBy) }}
+          </template>
+
+          <template v-slot:[`item.actions`]="{ item }">
+            <v-btn
+              outlined
+              text
+              @click="viewHistory(item)"
+            >
+              <v-icon left>
+                mdi-eye
+              </v-icon>
+              {{ $t('history.view') }}
+            </v-btn>
+
+            <v-btn
+              outlined
+              text
+              @click="historySelected = item; deleteDialog = true"
+            >
+              <v-icon left>
+                mdi-delete
+              </v-icon>
+              {{ $t('history.delete') }}
+            </v-btn>
+          </template>
+        </v-data-table>
+
+        <v-divider />
+
+        <v-card-actions>
+          <v-spacer />
+          <v-btn
+            color="red"
+            text
+            @click="historyDialog = false"
+          >
+            Fermer
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </section>
 </template>
 
@@ -323,7 +447,7 @@
 export default {
   name: 'Analysis',
   transition: 'slide-x-transition',
-  async fetch ({ params, store, error }) {
+  async fetch ({ params, store, error, $auth }) {
     try {
       await store.dispatch('FETCH_CARD', params.cid)
     } catch (e) {
@@ -336,11 +460,21 @@ export default {
     store.dispatch('GET_ANALYSIS', params.aid)
     store.dispatch('SET_VISITED_PLATFORM', params.cid)
     store.dispatch('SET_VISITED_ANALYSIS', params.aid)
+
+    store.dispatch('SET_ANALYSIS_HISTORY_SELECTED', null)
+    store.dispatch('GET_ANALYSIS_HISTORY', params.aid)
+
+    const { user } = $auth.$state
+    try {
+      await store.dispatch('badges/getMembers', user)
+    } catch (e) { }
   },
-  data () {
+  asyncData ({ store }) {
     return {
       deleting: false,
       deleteDialog: false,
+      historyDialog: false,
+      saving: false,
       dxDoi: 'http://dx.doi.org/'
     }
   },
@@ -348,11 +482,27 @@ export default {
     card () {
       return this.$store.state.card
     },
+    historySelected: {
+      get () { return this.$store.state.historySelected },
+      set (newVal) { this.$store.dispatch('SET_ANALYSIS_HISTORY_SELECTED', newVal) }
+    },
     analysis () {
+      if (this.historySelected) {
+        return this.historySelected
+      }
       return this.$store.state.analysis
     },
+    user () {
+      return this.$auth.$state.user
+    },
+    users () {
+      return this.$store.state.badges.users
+    },
     canEdit () {
-      return this.$store.state.user && this.$store.state.user.isAuthorized
+      return this.user && this.user.isAuthorized
+    },
+    isAdmin () {
+      return this.user && this.user.role === 'admin'
     },
     updatedAt () {
       return this.$dateFns.formatDistanceToNow(new Date(this.analysis.updatedAt))
@@ -363,6 +513,31 @@ export default {
       } catch (e) {
         return null
       }
+    },
+    historyHeaders () {
+      return [
+        {
+          text: this.$t('history.date'),
+          align: 'start',
+          sortable: false,
+          value: 'updatedAt'
+        },
+        {
+          text: this.$t('history.user'),
+          align: 'start',
+          sortable: false,
+          value: 'updatedBy'
+        },
+        {
+          text: this.$t('history.actions'),
+          align: 'start',
+          value: 'actions',
+          sortable: false
+        }
+      ]
+    },
+    analysisHistory () {
+      return this.$store.state.analysisHistory
     }
   },
   methods: {
@@ -389,6 +564,78 @@ export default {
       }
 
       this.deleting = false
+    },
+
+    viewHistory (history) {
+      this.historySelected = history
+      this.historyDialog = false
+    },
+
+    getUser (userId) {
+      const user = this.users.find(({ id }) => id === userId)
+      return user ? user.fullName : '-'
+    },
+
+    async replaceAnalysis () {
+      try {
+        const tmpAnalysis = Object.assign({}, this.analysis)
+        delete tmpAnalysis.analysisId
+
+        await this.$store.dispatch('SAVE_ANALYSIS', {
+          cardID: this.card.id,
+          analysis: {
+            ...tmpAnalysis,
+            id: this.analysis.analysisId
+          }
+        })
+
+        await this.$store.dispatch('ADD_CARD_MEMBER', {
+          card: this.card,
+          user: {
+            id: this.analysis.updatedBy
+          }
+        })
+
+        try {
+          await this.$store.dispatch('FETCH_CARD', this.$route.params.cid)
+          await this.$store.dispatch('GET_ANALYSIS', this.analysis.analysisId)
+
+          this.$store.dispatch('GET_ANALYSIS_HISTORY', this.analysis.analysisId)
+        } catch (e) { console.error(e) }
+
+        this.historySelected = null
+
+        this.$store.dispatch('snacks/success', 'analyses.saved')
+      } catch (e) {
+        this.$store.dispatch('snacks/error', 'analyses.saveFailed')
+      }
+
+      this.saving = false
+    },
+
+    async removeHistory (history) {
+      if (!history) { return false }
+
+      try {
+        await this.$axios.delete(`/api/analyses/${history.analysisId}/history/${history._id}`)
+        this.$store.dispatch('snacks/success', this.$t('history.deleteSuccess'))
+
+        if (this.historySelected) {
+          this.historySelected = null
+        }
+
+        this.deleting = false
+        this.deleteDialog = false
+      } catch (e) {
+        this.$store.dispatch('snacks/error', this.$t('history.deleteError'))
+      }
+
+      try {
+        this.$store.dispatch('GET_ANALYSIS_HISTORY', history.analysisId)
+      } catch (e) {
+        console.error(e)
+      }
+      return true
     }
   },
   head () {
