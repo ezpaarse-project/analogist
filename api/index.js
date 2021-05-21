@@ -18,6 +18,7 @@ router.use(bodyParser.json())
 router.use(bodyParser.urlencoded({ extended: false }))
 
 router.use('/platforms', require('./platforms'))
+router.use('/analyses', require('./analyses'))
 router.use('/trello', require('./trello'))
 router.use('/auth', require('./auth'))
 router.use('/badges', require('./badges'))
