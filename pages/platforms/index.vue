@@ -252,7 +252,7 @@ export default {
       ]
     },
     canEdit () {
-      return this.$store.state.user && this.$store.state.user.isAuthorized
+      return this.$auth.$state.user && this.$auth.$state.user.isAuthorized
     },
     cards () {
       const search = this.searchText.toLowerCase()

@@ -361,10 +361,8 @@ function escapeCSVstring (str) {
 }
 
 export default {
-  async fetch ({ store, redirect, app }) {
-    try {
-      await store.dispatch('FETCH_PROFILE')
-    } catch (e) {
+  async fetch ({ store, redirect, $auth }) {
+    if (!$auth.state.user) {
       return redirect('/')
     }
 

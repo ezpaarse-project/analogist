@@ -171,10 +171,12 @@
 
 <script>
 export default {
-  async fetch ({ store, redirect, app }) {
-    try {
-      await store.dispatch('FETCH_PROFILE')
-    } catch (e) {
+  async fetch ({ store, redirect, app, $auth, env, error }) {
+    if (!env.badgesEnabled) {
+      return error({ statusCode: 404, message: 'Page not found' })
+    }
+
+    if (!$auth.state.user) {
       return redirect('/')
     }
 
@@ -214,7 +216,7 @@ export default {
       return this.$store.state.badges.badges
     },
     user () {
-      return this.$store.state.user
+      return this.$auth.$state.user
     },
     trelloBoardMembers () {
       return this.$store.state.trelloBoardMembers

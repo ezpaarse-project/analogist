@@ -154,11 +154,11 @@
 export default {
   name: 'New',
   transition: 'slide-x-transition',
-  async fetch ({ store, redirect }) {
+  async fetch ({ store, redirect, $auth }) {
     await store.dispatch('FETCH_TRELLO_LISTS')
 
-    if (!store.state.user || !store.state.user.isAuthorized) {
-      redirect('/')
+    if (!$auth.$state.user || !$auth.$state.user.isAuthorized) {
+      return redirect('/')
     }
   },
   data () {
@@ -178,7 +178,7 @@ export default {
       return this.$store.state.trelloLists
     },
     canEdit () {
-      return this.$store.state.user && this.$store.state.user.isAuthorized
+      return this.$auth.$state.user && this.$auth.$state.user.isAuthorized
     }
   },
   methods: {

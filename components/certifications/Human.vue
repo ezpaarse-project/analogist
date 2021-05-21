@@ -72,7 +72,7 @@ export default {
       return this.$store.state.card
     },
     user () {
-      return this.$store.state.user
+      return this.$auth.$state.user
     },
     platform () {
       return this.card && this.card.platform

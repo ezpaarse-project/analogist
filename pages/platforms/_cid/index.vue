@@ -418,7 +418,7 @@ export default {
       }
     },
     user () {
-      return this.$store.state.user
+      return this.$auth.$state.user
     },
     canEdit () {
       return this.user && this.user.isAuthorized
