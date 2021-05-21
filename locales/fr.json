@@ -4,10 +4,12 @@
     "search": "Recherche",
     "archive": "Archiver",
     "edit": "Éditer",
+    "history": "Historique",
     "delete": "Supprimer",
     "cancel": "Annuler",
     "areYouSure": "Êtes-vous sûr ?",
-    "close": "Fermer"
+    "close": "Fermer",
+    "replace": "Remplacer"
   },
   "drawer": {
     "home": "Accueil",
@@ -237,7 +239,7 @@
       "establishment": "Etablissement *",
       "comment": "Commentaire *",
       "totalEzpaarse": "Total rapport JR1 ezPAARSE *",
-      "totalEditor": "Total rapport JR1 Editeur *",
+      "totalEditor": "Total rapport JR1/TR_J3 Editeur *",
       "attachment": "Pièce jointe",
       "attachmentSize": "Taille max. 2 Mo",
       "requiredFields": "(*) champs obligatoires",
@@ -259,5 +261,14 @@
   },
   "others": "autres",
   "errorGeneric": "Une erreur inattendue est survenue",
-  "mustBeConnected": "Vous devez être connecté pour accéder aux informations"
+  "mustBeConnected": "Vous devez être connecté pour accéder aux informations",
+  "history": {
+    "deleteSuccess": "Historique supprimé avec succès",
+    "deleteError": "Impossible de supprimer l'historique",
+    "user": "Utilisateur",
+    "date": "Date",
+    "actions": "Actions",
+    "delete": "Supprimer",
+    "view": "Consulter"
+  }
 }
