@@ -53,7 +53,7 @@ export default {
   },
   computed: {
     updatedAt () {
-      return this.$dateFns.formatDistanceToNow(new Date(this.analysis.updatedAt))
+      return this.$dateFns.formatDistanceToNow(new Date(this.analysis.updatedAt), { addSuffix: true })
     },
     card () {
       return this.$store.state.card

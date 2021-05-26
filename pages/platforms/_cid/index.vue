@@ -430,7 +430,7 @@ export default {
       return this.$store.state.trelloLists
     },
     lastActivity () {
-      return this.$dateFns.formatDistanceToNow(new Date(this.card.lastActivity))
+      return this.$dateFns.formatDistanceToNow(new Date(this.card.lastActivity), { addSuffix: true })
     }
   },
   methods: {

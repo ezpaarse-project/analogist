@@ -505,7 +505,7 @@ export default {
       return this.user && this.user.role === 'admin'
     },
     updatedAt () {
-      return this.$dateFns.formatDistanceToNow(new Date(this.analysis.updatedAt))
+      return this.$dateFns.formatDistanceToNow(new Date(this.analysis.updatedAt), { addSuffix: true })
     },
     updatedBy () {
       try {
