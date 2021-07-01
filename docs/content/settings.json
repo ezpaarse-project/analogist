@@ -6,5 +6,6 @@
     "dark": "/logo-dark.svg"
   },
   "github": "ezpaarse-project/analogist",
+  "defaultBranch": "master",
   "twitter": "@ezpaarse"
 }

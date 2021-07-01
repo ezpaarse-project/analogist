@@ -138,18 +138,18 @@ const trelloWrapper = {
   },
 };
 
-defineShorthand('get');
-defineShorthand('post');
-defineShorthand('put');
-defineShorthand('delete');
-
 function defineShorthand(method) {
   trelloWrapper[method] = (
     path,
     options,
     callback,
-  ) => this.request(method, path, options, callback);
+  ) => trelloWrapper.request(method, path, options, callback);
 }
+
+defineShorthand('get');
+defineShorthand('post');
+defineShorthand('put');
+defineShorthand('delete');
 
 function parseJson(callback) {
   if (typeof callback !== 'function') { return; }

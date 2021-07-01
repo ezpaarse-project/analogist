@@ -1,11 +1,10 @@
-FROM node:14.15.0
+FROM node:14.15.5-alpine3.13
 LABEL maintainer="ezTEAM <ezpaarse@couperin.org>"
 
-RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
-COPY package.json /usr/src/app/
-RUN npm install && npm cache clean --force
-COPY . /usr/src/app
+COPY package*.json /usr/src/app/
+RUN npm ci --only=production
+COPY . .
 
 ENTRYPOINT ["npm", "start"]
