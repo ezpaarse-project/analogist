@@ -4,24 +4,13 @@
 help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
-config-nginx: ## config nginx files
-	sed -e "s|{{ANALOGIST_DOMAIN}}|${ANALOGIST_DOMAIN}|" \
-			./rp/default.dist.conf > "./rp/sites-enabled/${ANALOGIST_DOMAIN}.conf"
-
-config: ## patch nginx.conf config file with analogist domain url
-	@if [ ! -d ./rp/sites-enabled/ ]; then mkdir ./rp/sites-enabled/; fi
-	@make config-nginx
-
-build-front: ## build analogist web front
-	docker-compose build front
-
 build-api: ## build analogist api
 	docker-compose build api
 
 build-rp: ## build analogist reverse proxy
 	docker-compose build rp
 
-build: build-front build-api build-rp ## build analogist
+build: build-api build-rp ## build analogist
 
 start: docker-compose up -d ## start analogist
 
