@@ -18,7 +18,7 @@
         src="@/static/logo-white.svg"
         alt="Analogist logo"
       >
-      AnalogIST
+      AnalogISTaaa
     </v-toolbar-title>
   </v-app-bar>
 </template>

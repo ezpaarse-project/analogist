@@ -1,6 +1,6 @@
 ## Redirection to HTTPS
 server {
-  server_name {{ANALOGIST_DOMAIN}};
+  server_name ${ANALOGIST_DOMAIN};
 
   listen 80;
   listen [::]:80;
@@ -10,21 +10,21 @@ server {
   }
 
   location / {
-    return 301 https:/{{ANALOGIST_DOMAIN}}$request_uri; 
+    return 301 https://${ANALOGIST_DOMAIN}$request_uri; 
   }
 }
 
 ## HTTPS configuration
 server {
-  server_name {{ANALOGIST_DOMAIN}};
+  server_name ${ANALOGIST_DOMAIN};
 
   listen 443 ssl;
   listen [::]:443 ssl;
 
   ## Certificates
-  ssl_certificate /etc/nginx/sites-enabled/fullchain.pem;
-  ssl_certificate_key /etc/nginx/sites-enabled/privkey.pem;
-  ssl_trusted_certificate /etc/nginx/sites-enabled/fullchain.pem;
+  ssl_certificate /etc/nginx/ssl/${ANALOGIST_DOMAIN}.pem;
+  ssl_certificate_key /etc/nginx/ssl/${ANALOGIST_DOMAIN}-key.pem;
+  ssl_trusted_certificate /etc/nginx/ssl/${ANALOGIST_DOMAIN}.pem;
 
   ## Configuration
   proxy_set_header X-Forwarded-Host $host;
@@ -34,7 +34,7 @@ server {
   proxy_hide_header X-Powered-By;
 
   location / {
-    proxy_pass http://front:8080;
+    root /usr/share/nginx/html;
   }
 
   location /api {
@@ -42,7 +42,7 @@ server {
   }
 
   location /doc {
-    proxy_pass http://api:45410;
+    root /usr/share/nginx/html;
   }
 
   ## Diffie-Hellman
