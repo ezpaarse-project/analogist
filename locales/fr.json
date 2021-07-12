@@ -265,6 +265,7 @@
   "history": {
     "deleteSuccess": "Historique supprimé avec succès",
     "deleteError": "Impossible de supprimer l'historique",
+    "fetchError": "Impossible de récupérer l'historique",
     "user": "Utilisateur",
     "date": "Date",
     "actions": "Actions",

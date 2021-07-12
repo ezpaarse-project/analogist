@@ -266,6 +266,7 @@
   "history": {
     "deleteSuccess": "History successfully deleted",
     "deleteError": "Unable to delete history",
+    "fetchError": "Unable to fetch history",
     "user": "User",
     "date": "Date",
     "actions": "Actions",

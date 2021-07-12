@@ -601,7 +601,9 @@ export default {
           await this.$store.dispatch('GET_ANALYSIS', this.analysis.analysisId)
 
           this.$store.dispatch('GET_ANALYSIS_HISTORY', this.analysis.analysisId)
-        } catch (e) { console.error(e) }
+        } catch (e) {
+          this.$store.dispatch('snacks/error', this.$t('history.fetchError'))
+        }
 
         this.historySelected = null
 
@@ -633,7 +635,7 @@ export default {
       try {
         this.$store.dispatch('GET_ANALYSIS_HISTORY', history.analysisId)
       } catch (e) {
-        console.error(e)
+        this.$store.dispatch('snacks/error', this.$t('history.fetchError'))
       }
       return true
     }
