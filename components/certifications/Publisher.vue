@@ -45,7 +45,7 @@
           rel="noreferrer"
         >{{ $t('card.publisherVerified') }}</a></span>
         <span v-else> - <a
-          href="https://blog.ezpaarse.org/2020/01/tutoriels-procedure-de-certification-h-et-p-dans-analogist"
+          href="https://blog.ezpaarse.org/2021/05/tutoriels-nouvelle-procedure-facile-de-certification-h-et-p-dans-analogist/"
           target="_blank"
           rel="noreferrer"
         >{{ $t('certifications.notCertified') }}</a></span>
@@ -72,7 +72,7 @@ export default {
       return this.$store.state.card
     },
     user () {
-      return this.$store.state.user
+      return this.$auth.$state.user
     },
     platform () {
       return this.card && this.card.platform

@@ -418,7 +418,7 @@ export default {
       }
     },
     user () {
-      return this.$store.state.user
+      return this.$auth.$state.user
     },
     canEdit () {
       return this.user && this.user.isAuthorized
@@ -430,7 +430,7 @@ export default {
       return this.$store.state.trelloLists
     },
     lastActivity () {
-      return this.$dateFns.formatDistanceToNow(new Date(this.card.lastActivity))
+      return this.$dateFns.formatDistanceToNow(new Date(this.card.lastActivity), { addSuffix: true })
     }
   },
   methods: {

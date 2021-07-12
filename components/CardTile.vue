@@ -83,7 +83,7 @@ export default {
       return this.$store.state.displayAllCards
     },
     updatedAt () {
-      return this.$dateFns.formatDistanceToNow(new Date(this.card.lastActivity))
+      return this.$dateFns.formatDistanceToNow(new Date(this.card.lastActivity), { addSuffix: true })
     },
     nbAnalyses () {
       try {

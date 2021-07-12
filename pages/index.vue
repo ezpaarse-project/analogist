@@ -31,7 +31,10 @@
               <span><strong>{{ parsers }}</strong> {{ $t('home.parsers') }}</span>
             </v-chip>
 
-            <v-chip label>
+            <v-chip
+              v-if="badgesEnabled"
+              label
+            >
               <span><strong>{{ badges }}</strong> {{ $t('home.badges') }}</span>
             </v-chip>
           </div>
@@ -69,7 +72,7 @@
 export default {
   name: 'Analogist',
   transition: 'slide-x-transition',
-  async asyncData ({ $axios }) {
+  async asyncData ({ $axios, env }) {
     let badges
     let platforms
     let parsers
@@ -92,7 +95,8 @@ export default {
     return {
       badges,
       platforms,
-      parsers
+      parsers,
+      badgesEnabled: env.badgesEnabled
     }
   },
   head () {

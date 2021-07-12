@@ -157,10 +157,12 @@
 export default {
   name: 'Badges',
   transition: 'slide-x-transition',
-  async fetch ({ store, redirect, app }) {
-    try {
-      await store.dispatch('FETCH_PROFILE')
-    } catch (e) {
+  async fetch ({ store, redirect, app, $auth, env, error }) {
+    if (!env.badgesEnabled) {
+      return error({ statusCode: 404, message: 'Page not found' })
+    }
+
+    if (!$auth.state.user) {
       return redirect('/')
     }
 
@@ -171,7 +173,7 @@ export default {
     }
 
     try {
-      await store.dispatch('badges/getBadges', { id: store.state.user.id, locale: app.i18n.locale })
+      await store.dispatch('badges/getBadges', { id: $auth.$state.user.id, locale: app.i18n.locale })
     } catch (e) {
       await store.dispatch('snacks/error', 'badges.noMetrics')
     }
@@ -205,7 +207,7 @@ export default {
       return this.$store.state.badges.ping
     },
     user () {
-      return this.$store.state.user
+      return this.$auth.$state.user
     }
   },
   watch: {

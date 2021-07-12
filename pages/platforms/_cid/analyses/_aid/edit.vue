@@ -392,8 +392,8 @@ let changeTimeout
 export default {
   name: 'AnalysisEdit',
   transition: 'slide-x-transition',
-  async fetch ({ params, store, error, redirect }) {
-    if (!store.state.user || !store.state.user.isAuthorized) {
+  async fetch ({ params, store, error, redirect, $auth }) {
+    if (!$auth.$state.user || !$auth.$state.user.isAuthorized) {
       return redirect({
         name: 'platforms-cid-analyses-aid',
         params
@@ -430,7 +430,7 @@ export default {
       return this.$store.state.analysis
     },
     user () {
-      return this.$store.state.user
+      return this.$auth.$state.user
     },
     canSave () {
       return this.user && this.user.isAuthorized

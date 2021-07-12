@@ -173,79 +173,50 @@ describe('Routes', function () {
       })
   })
 
-  it(`GET    /api/platforms/${cardID}/history`, done => {
+  it('GET    /api/analyses/:aid/history', done => {
+    expect(analysisID).to.exist
+
     request(app)
-      .get(`/api/platforms/${cardID}/history`)
+      .get(`/api/analyses/${analysisID}/history`)
       .expect('Content-Type', /json/)
       .expect(200)
       .expect((res) => {
         const body = res.body
 
         expect(body).to.be.an('array').with.length(2)
-        expect(body[0]).to.have.property('analyses').that.is.an('array').with.length(1)
-        expect(body[1]).to.have.property('analyses').that.is.an('array').with.length(1)
 
-        expect(body[0]).to.have.property('date')
-        expect(body[1]).to.have.property('date')
+        expect(body[0]).to.have.property('analysisId')
+        expect(body[1]).to.have.property('analysisId')
 
-        const date1 = new Date(body[0].date)
-        const date2 = new Date(body[1].date)
+        expect(body[0]).to.have.property('updatedBy')
+        expect(body[1]).to.have.property('updatedBy')
+
+        const date1 = new Date(body[0].updatedAt)
+        const date2 = new Date(body[1].updatedAt)
         expect(date1.getTime()).to.be.above(date2.getTime())
 
-        expect(body[1].analyses[0]).to.have.property('foo', 'bar') // was inserted with foo:bar
-        expect(body[0].analyses[0]).to.have.property('bar', 'foo') // then updated with bar:foo
+        expect(body[0]).to.have.property('bar', 'foo') // then updated with bar:foo
+        expect(body[1]).to.have.property('foo', 'bar') // was inserted with foo:bar
 
-        historyID = body[1].id
+        historyID = body[1]._id
       })
       .end(done)
   })
 
-  it(`POST   /api/platforms/${cardID}/history/:id`, done => {
+  it('DELETE    /api/analyses/:aid/history/:hid', done => {
     request(app)
-      .post(`/api/platforms/${cardID}/history/${historyID}`)
+      .delete(`/api/analyses/${analysisID}/history/${historyID}`)
       .expect(204)
       .end((error) => {
         expect(error).to.not.exist
 
-        mongo.get('platforms').findOne({ cardID: cardID }, (err, doc) => {
+        mongo.get('history').findOne({ _id: historyID }, (err, doc) => {
           if (err) { throw err }
 
-          expect(doc).to.have.property('analyses').that.is.an('array').with.length(1)
-          expect(doc).to.have.property('history').that.is.an('array').with.length(3)
-
-          expect(doc.analyses[0]).to.have.property('foo', 'bar')
-
-          expect(doc.history[0]).to.have.property('analyses').that.is.an('array').with.length(0)
-          expect(doc.history[1]).to.have.property('analyses').that.is.an('array').with.length(1)
-          expect(doc.history[2]).to.have.property('analyses').that.is.an('array').with.length(1)
-
-          expect(doc.history[1].analyses[0]).to.have.property('bar', 'foo')
-          expect(doc.history[2].analyses[0]).to.have.property('foo', 'bar')
-
-          done()
+          expect(doc).to.be.null
         })
-      })
-  })
 
-  it(`DELETE /api/platforms/${cardID}/history/:id`, done => {
-    request(app)
-      .delete(`/api/platforms/${cardID}/history/${historyID}`)
-      .expect(204)
-      .end((error) => {
-        expect(error).to.not.exist
-
-        mongo.get('platforms').findOne({ cardID: cardID }, (err, doc) => {
-          if (err) { throw err }
-
-          expect(doc).to.have.property('history').that.is.an('array').with.length(2)
-
-          expect(doc.history[0]).to.have.property('analyses').that.is.an('array').with.length(0)
-          expect(doc.history[1]).to.have.property('analyses').that.is.an('array').with.length(1)
-
-          expect(doc.history[1].analyses[0]).to.have.property('bar', 'foo')
-
-          done()
-        })
+        done()
       })
   })
 })

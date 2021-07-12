@@ -4,10 +4,12 @@
     "search": "Search",
     "archive": "Archive",
     "edit": "Edit",
+    "history": "History",
     "delete": "Delete",
     "cancel": "Cancel",
     "areYouSure": "Are you sure?",
-    "close": "Close"
+    "close": "Close",
+    "replace": "Replace"
   },
   "drawer": {
     "home": "Home",
@@ -238,7 +240,7 @@
       "establishment": "Institution *",
       "comment": "Comment *",
       "totalEzpaarse": "Total JR1 report ezPAARSE *",
-      "totalEditor": "Total JR1 report Provider *",
+      "totalEditor": "Total JR1/TR_J3 report Provider *",
       "attachment": "Attachment",
       "attachmentSize": "Maximum size 2 MB",
       "requiredFields": "(*) Required Fields",
@@ -260,5 +262,15 @@
   },
   "others": "Others",
   "errorGeneric": "An unexpected error has occurred",
-  "mustBeConnected": "You must be logged in to access the information"
+  "mustBeConnected": "You must be logged in to access the information",
+  "history": {
+    "deleteSuccess": "History successfully deleted",
+    "deleteError": "Unable to delete history",
+    "fetchError": "Unable to fetch history",
+    "user": "User",
+    "date": "Date",
+    "actions": "Actions",
+    "delete": "Remove",
+    "view": "View"
+  }
 }

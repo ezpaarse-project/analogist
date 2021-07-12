@@ -156,14 +156,18 @@
 
 <script>
 export default {
-  async fetch ({ store, app }) {
+  async fetch ({ store, $auth, env, error }) {
+    if (!env.badgesEnabled) {
+      return error({ statusCode: 404, message: 'Page not found' })
+    }
+
     try {
       await store.dispatch('badges/getPing')
     } catch (e) {
       await store.dispatch('snacks/error', 'badges.pingError')
     }
 
-    const { user } = store.state
+    const { user } = $auth.$state
 
     try {
       await store.dispatch('badges/getMembers', user)
@@ -212,7 +216,7 @@ export default {
       return this.$store.state.badges.ping
     },
     user () {
-      return this.$store.state.user
+      return this.$auth.$state.user
     }
   }
 }

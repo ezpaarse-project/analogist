@@ -3,7 +3,7 @@
 const router   = require('express').Router()
 const ObjectID = require('mongodb').ObjectID
 const request  = require('request')
-const config  = require('config')
+const config   = require('config')
 const trello   = require('../lib/trello.js')
 const mongo    = require('../lib/mongo.js')
 const mw       = require('../lib/middlewares.js')
@@ -55,10 +55,6 @@ router.get('/', (req, res, next) => {
         docs[i].analyses = docs[i].analyses.length
       }
 
-      if (docs[i].history) {
-        delete docs[i].history
-      }
-
       try {
         const humanCertifications = await getHumanCertifications(docs[i].cardID)
         if (humanCertifications) {
@@ -89,10 +85,6 @@ router.get('/:cid', (req, res, next) => {
   mongo.get('platforms').findOne({ cardID: req.params.cid }, async (err, doc) => {
     if (err) { return next(err) }
     if (!doc) { return res.status(404).end() }
-
-    if (doc.history) {
-      delete doc.history
-    }
 
     try {
       const humanCertifications = await getHumanCertifications(doc.cardID)
@@ -157,16 +149,6 @@ router.get('/:cid/analyses', (req, res, next) => {
     if (!doc) { return res.status(404).end() }
 
     res.status(200).json(doc.analyses || [])
-  })
-})
-
-/* GET the history of a platform. */
-router.get('/:cid/history', (req, res, next) => {
-  mongo.get('platforms').findOne({ cardID: req.params.cid }, { projection: { history: 1 } }, (err, doc) => {
-    if (err) { return next(err) }
-    if (!doc) { return res.status(404).end() }
-
-    res.status(200).json(doc.history || [])
   })
 })
 
@@ -269,27 +251,29 @@ router.put('/:cid/analyses/:aid', sanitizeAnalysis, mw.updateHistory, (req, res,
     (err, result) => {
       if (err) { return next(err) }
 
-      if (analysis.url && analysis.url.length > 0) {
-        mongo.get('metrics').findOneAndUpdate(
-          { userId: req.session.profile.id },
-          {
-            $addToSet: { analyses: analysis.id },
-            $set: { lastModified: new Date() }
-          },
-          { upsert: true },
-          (err, result) => {
-            // eslint-disable-next-line
-            if (err) console.error(err)
+      if (config.badges.enabled) {
+        if (analysis.url && analysis.url.length > 0) {
+          mongo.get('metrics').findOneAndUpdate(
+            { userId: req.session.profile.id },
+            {
+              $addToSet: { analyses: analysis.id },
+              $set: { lastModified: new Date() }
+            },
+            { upsert: true },
+            (err, result) => {
+              // eslint-disable-next-line
+              if (err) console.error(err)
 
-            badges.emit(config.badges.analysesBronze, req.session.profile, true)
-              // eslint-disable-next-line no-console
-              .catch((err) => console.error(err))
+              badges.emit(config.badges.analysesBronze, req.session.profile, true)
+                // eslint-disable-next-line no-console
+                .catch((err) => console.error(err))
 
-            badges.emit(config.badges.analysesSilver, req.session.profile, true)
-              // eslint-disable-next-line no-console
-              .catch((err) => console.error(err))
-          }
-        )
+              badges.emit(config.badges.analysesSilver, req.session.profile, true)
+                // eslint-disable-next-line no-console
+                .catch((err) => console.error(err))
+            }
+          )
+        }
       }
 
       res.status(200).json(result.value)
@@ -347,55 +331,6 @@ router.delete('/:cid/analyses/:aid', mw.updateHistory, (req, res, next) => {
     (err, result) => {
       if (err) { return next(err) }
       res.status(204).end()
-    }
-  )
-})
-
-/* DELETE an entry in the history */
-router.delete('/:cid/history/:hid', (req, res, next) => {
-  if (!ObjectID.isValid(req.params.hid)) { return res.status(400).end() }
-
-  mongo.get('platforms').findOneAndUpdate(
-    { cardID: req.params.cid },
-    { $pull: { history: { id: new ObjectID(req.params.hid) } } },
-    (err, result) => {
-      if (err) { return next(err) }
-      res.status(204).end()
-    }
-  )
-})
-
-/* POST an entry in the history, ie. restore the analyses to this point */
-router.post('/:cid/history/:hid', (req, res, next) => {
-  if (!ObjectID.isValid(req.params.hid)) { return res.status(400).end() }
-
-  mongo.get('platforms').findOne(
-    { cardID: req.params.cid, 'history.id': new ObjectID(req.params.hid) },
-    { projection: { 'history.$': 1, analyses: 1 } },
-    (err, platform) => {
-      if (err) { return next(err) }
-      if (!platform) { return res.status(404).end() }
-
-      if (!Array.isArray(platform.history) || !platform.history[0]) {
-        return res.status(500).end()
-      }
-
-      mongo.get('platforms').findOneAndUpdate(
-        { _id: platform._id },
-        {
-          $set: { analyses: platform.history[0].analyses },
-          $push: {
-            history: {
-              $position: 0,
-              $each: [{ id: new ObjectID(), date: new Date(), analyses: platform.analyses }]
-            }
-          }
-        },
-        (err) => {
-          if (err) { return next(err) }
-          res.status(204).end()
-        }
-      )
     }
   )
 })

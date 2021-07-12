@@ -191,6 +191,7 @@
       </v-list-item>
 
       <v-list-group
+        v-if="badgesEnabled"
         no-action
         append-icon="mdi-chevron-down"
         :value="$nuxt.$route.name.indexOf('badges') !== -1"
@@ -262,7 +263,7 @@
         </v-list-item>
 
         <v-list-item
-          v-if="user && user.role === 'admin'"
+          v-if="user && user.role === 'admin' && badgesEnabled"
           router
           :to="{ path: '/admin/emit' }"
           ripple
@@ -370,7 +371,10 @@ export default {
         { icon: 'mdi-comment-text-outline', href: 'http://blog.ezpaarse.org/', title: 'Blog' },
         { icon: 'mdi-youtube', href: 'https://www.youtube.com/channel/UCcR-0UE9WjYiwS4fMG2T4tQ', title: 'Youtube' }
       ],
-      becomeMemberDialog: false
+      becomeMemberDialog: false,
+      appVersion: this.$nuxt.context.env.version,
+      badgesEnabled: this.$nuxt.context.env.badgesEnabled,
+      trelloLink: `https://trello.com/b/${this.$nuxt.context.env.boardId}`
     }
   },
   computed: {
@@ -378,14 +382,8 @@ export default {
       get () { return this.$store.state.drawer },
       set (newVal) { this.$store.dispatch('SET_DRAWER', newVal) }
     },
-    appVersion () {
-      return this.$store.state.app.version
-    },
-    trelloLink () {
-      return `https://trello.com/b/${this.$store.state.app.boardId}`
-    },
     user () {
-      return this.$store.state.user
+      return this.$auth.$state.user
     },
     loginUrl () {
       return `/api/auth/connect/trello?callback=/api/auth/callback${this.$route.fullPath}`
@@ -394,12 +392,12 @@ export default {
       return this.$route.query.page
     },
     canEdit () {
-      return this.$store.state.user && this.$store.state.user.isAuthorized
+      return this.$auth.$state.user && this.$auth.$state.user.isAuthorized
     }
   },
   methods: {
-    logout () {
-      this.$store.dispatch('LOGOUT')
+    async logout () {
+      await this.$auth.logout()
     },
     newUserRequest () {
       this.$store.dispatch('BECOME_MEMBER')

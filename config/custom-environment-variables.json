@@ -23,10 +23,11 @@
     "receivers": "ANG_NOTIFICATIONS_RECEIVERS"
   },
   "history": {
-    "debounce_time": "ANG_HISTORY_DEBOUNCE"
+    "debounceTime": "ANG_HISTORY_DEBOUNCE"
   },
   "ezpaarse": "ANG_EZPAARSE_URL",
   "badges": {
+    "enabled": "ANG_BADGES_ENABLED",
     "host": "ANG_BADGE_HOST",
     "issuer": "ANG_BADGE_ISSUER",
     "analysesBronze": {

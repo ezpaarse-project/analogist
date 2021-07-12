@@ -16,12 +16,13 @@ const store = () => new Vuex.Store({
     certifications
   },
   state: () => ({
-    user: null,
     app: {},
     card: null,
     platform: null,
     analyses: null,
     analysis: null,
+    analysisHistory: [],
+    historySelected: null,
     cards: [],
     trelloLists: [],
     displayAllCards: false,
@@ -38,14 +39,8 @@ const store = () => new Vuex.Store({
     lastVisitedPlatform: null
   }),
   actions: {
-    FETCH_PROFILE ({ commit }) {
-      return api.getProfile().then(profile => commit('SET_USER', profile))
-    },
     FETCH_APP_INFO ({ commit }) {
       return api.info().then(info => commit('SET_APP_INFO', info))
-    },
-    LOGOUT ({ commit }) {
-      return api.logout().then(() => { commit('SET_USER', null) })
     },
     FETCH_CARDS ({ commit }) {
       return api.getExtendedCards().then(items => commit('SET_CARDS', items))
@@ -64,6 +59,12 @@ const store = () => new Vuex.Store({
     GET_ANALYSIS ({ commit, state }, analysisID) {
       const analysis = (state.analyses || []).find(a => a.id === analysisID)
       return commit('SET_ANALYSIS', analysis)
+    },
+    GET_ANALYSIS_HISTORY ({ commit }, analysisID) {
+      return api.getAnalysisHistory(analysisID).then(({ data }) => commit('SET_ANALYSIS_HISTORY', Array.isArray(data) ? data : []))
+    },
+    SET_ANALYSIS_HISTORY_SELECTED ({ commit }, historySelected) {
+      commit('SET_ANALYSIS_HISTORY_SELECTED', historySelected)
     },
     REORDER_ANALYSES ({ commit, state }, { cardID, list }) {
       const order = {}
@@ -153,9 +154,6 @@ const store = () => new Vuex.Store({
     SET_DRAWER (state, bool) {
       Vue.set(state, 'drawer', bool)
     },
-    SET_USER (state, user) {
-      Vue.set(state, 'user', user)
-    },
     SET_CARDS (state, items) {
       Vue.set(state, 'cards', items)
     },
@@ -170,6 +168,12 @@ const store = () => new Vuex.Store({
     },
     SET_ANALYSES (state, analyses) {
       Vue.set(state, 'analyses', analyses)
+    },
+    SET_ANALYSIS_HISTORY (state, analysisHistory) {
+      Vue.set(state, 'analysisHistory', analysisHistory)
+    },
+    SET_ANALYSIS_HISTORY_SELECTED (state, historySelected) {
+      Vue.set(state, 'historySelected', historySelected)
     },
     SET_PLATFORM (state, platform) {
       Vue.set(state, 'platform', platform)

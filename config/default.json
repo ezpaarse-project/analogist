@@ -27,6 +27,7 @@
   },
   "ezpaarse": "http://dev.ezpaarse.org",
   "badges": {
+    "enabled": false,
     "host": "opbadge",
     "port": "4000",
     "analysesBronze": {
