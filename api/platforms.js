@@ -322,8 +322,6 @@ router.patch('/:cid/analyses/order', mw.updateHistory, (req, res, next) => {
 router.delete('/:cid/analyses/:aid', mw.updateHistory, (req, res, next) => {
   if (!ObjectID.isValid(req.params.aid)) { return res.status(400).end() }
 
-  console.log(req.params.aid)
-
   mongo.get('platforms').findOneAndUpdate(
     { cardID: req.params.cid },
     {
