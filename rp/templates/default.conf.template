@@ -41,10 +41,6 @@ server {
     proxy_pass http://api:3000;
   }
 
-  location /doc {
-    root /usr/share/nginx/html;
-  }
-
   ## Diffie-Hellman
   ssl_ecdh_curve secp384r1;
 
