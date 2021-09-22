@@ -77,10 +77,12 @@ export default {
     let platforms
     let parsers
 
-    try {
-      const { data: count } = await $axios.get('/api/badges/metrics/count')
-      badges = count
-    } catch (e) { badges = 0 }
+    if (env.badgesEnabled) {
+      try {
+        const { data: count } = await $axios.get('/api/badges/metrics/count')
+        badges = count
+      } catch (e) { badges = 0 }
+    }
 
     try {
       const { data: count } = await $axios.get('/api/trello/cards/count')
