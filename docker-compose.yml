@@ -2,6 +2,8 @@ version: '3'
 services:
   analogist:
     image: ezpaarseproject/analogist:2.0.1
+    build:
+      context: ./
     ports:
       - "3000:3000"
     environment:
@@ -20,6 +22,7 @@ services:
       - ANG_BADGE_ANALYSES_SILVER_NAME
       - ANG_BADGE_ANALYSES_SILVER_EVENT
       - ANG_BADGE_ISSUER
+      - ANG_BADGES_ENABLED
       # les variables d'environnement pour les mails
       - ANG_SMTP_HOST
       - ANG_SMTP_PORT

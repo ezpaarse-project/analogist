@@ -24,18 +24,45 @@
               >
             </p>
             <v-chip label>
-              <span><strong>{{ platforms }}</strong> {{ $t('home.identifiedPlatforms') }}</span>
+              <span>
+                <v-progress-circular
+                  v-if="!metricsLoaded"
+                  indeterminate
+                  size="16"
+                  width="2"
+                  color="primary"
+                />
+                <strong v-else>{{ platforms }}</strong> {{ $t('home.identifiedPlatforms') }}
+              </span>
             </v-chip>
 
             <v-chip label>
-              <span><strong>{{ parsers }}</strong> {{ $t('home.parsers') }}</span>
+              <span>
+                <v-progress-circular
+                  v-if="!metricsLoaded"
+                  indeterminate
+                  size="16"
+                  width="2"
+                  color="primary"
+                />
+                <strong v-else>{{ parsers }}</strong> {{ $t('home.parsers') }}
+              </span>
             </v-chip>
 
             <v-chip
               v-if="badgesEnabled"
               label
             >
-              <span><strong>{{ badges }}</strong> {{ $t('home.badges') }}</span>
+              <span>
+                <v-progress-circular
+                  v-if="!metricsLoaded"
+                  indeterminate
+                  size="16"
+                  width="2"
+                  color="primary"
+                />
+                <strong v-else>{{ badges }}</strong> {{ $t('home.badges') }}
+              </span>
             </v-chip>
           </div>
 
@@ -72,33 +99,38 @@
 export default {
   name: 'Analogist',
   transition: 'slide-x-transition',
-  async asyncData ({ $axios, env }) {
-    let badges
-    let platforms
-    let parsers
-
-    if (env.badgesEnabled) {
-      try {
-        const { data: count } = await $axios.get('/api/badges/metrics/count')
-        badges = count
-      } catch (e) { badges = 0 }
-    }
-
-    try {
-      const { data: count } = await $axios.get('/api/trello/cards/count')
-      platforms = count
-    } catch (err) { platforms = 0 }
-
-    try {
-      const { data: count } = await $axios.get('api/platforms/count')
-      parsers = count
-    } catch (error) { parsers = 0 }
-
+  async asyncData ({ env }) {
     return {
-      badges,
-      platforms,
-      parsers,
+      badges: -1,
+      platforms: -1,
+      parsers: -1,
+      metricsLoaded: false,
       badgesEnabled: env.badgesEnabled
+    }
+  },
+  mounted () {
+    this.metrics()
+  },
+  methods: {
+    async metrics () {
+      if (this.badgesEnabled) {
+        try {
+          const { data: count } = await this.$axios.get('/api/badges/metrics/count', { timeout: 2000 })
+          this.badges = count
+        } catch (e) { this.badges = 0 }
+      }
+
+      try {
+        const { data: count } = await this.$axios.get('/api/trello/cards/count', { timeout: 2000 })
+        this.platforms = count
+      } catch (err) { this.platforms = 0 }
+
+      try {
+        const { data: count } = await this.$axios.get('api/platforms/count', { timeout: 2000 })
+        this.parsers = count
+      } catch (error) { this.parsers = 0 }
+
+      this.metricsLoaded = true
     }
   },
   head () {

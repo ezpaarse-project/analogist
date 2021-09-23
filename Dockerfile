@@ -1,7 +1,6 @@
 FROM node:12.18.1
 LABEL maintainer="ezPAARSE Team <ezpaarse@couperin.org>"
 
-RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
 COPY package.json /usr/src/app/
