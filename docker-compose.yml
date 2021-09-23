@@ -4,10 +4,6 @@ services:
     image: ezpaarseproject/analogist:2.0.3
     build:
       context: ./
-      args:
-        - ANG_EZPAARSE_URL
-        - ANG_TRELLO_BOARDID
-        - ANG_BADGES_ENABLED
     ports:
       - "3000:3000"
     environment:
