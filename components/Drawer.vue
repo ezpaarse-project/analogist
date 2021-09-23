@@ -372,9 +372,9 @@ export default {
         { icon: 'mdi-youtube', href: 'https://www.youtube.com/channel/UCcR-0UE9WjYiwS4fMG2T4tQ', title: 'Youtube' }
       ],
       becomeMemberDialog: false,
-      appVersion: this.$nuxt.context.env.version,
-      badgesEnabled: this.$nuxt.context.env.badgesEnabled,
-      trelloLink: `https://trello.com/b/${this.$nuxt.context.env.boardId}`
+      appVersion: this.$nuxt.context.$config.version,
+      badgesEnabled: this.$nuxt.context.$config.badgesEnabled,
+      trelloLink: `https://trello.com/b/${this.$nuxt.context.$config.boardId}`
     }
   },
   computed: {

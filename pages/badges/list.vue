@@ -156,8 +156,8 @@
 
 <script>
 export default {
-  async fetch ({ store, $auth, env, error }) {
-    if (!env.badgesEnabled) {
+  async fetch ({ store, $auth, $config, error }) {
+    if (!$config.badgesEnabled) {
       return error({ statusCode: 404, message: 'Page not found' })
     }
 

@@ -1,5 +1,4 @@
 const VuetifyLoaderPlugin = require('vuetify-loader/lib/plugin')
-const config = require('config')
 const pkg = require('./package.json')
 
 module.exports = {
@@ -119,11 +118,11 @@ module.exports = {
     }
   },
 
-  env: {
+  publicRuntimeConfig: {
     ezpaarseUrl: process.env.ANG_EZPAARSE_URL || 'http://dev.ezpaarse.org',
     version: pkg.version,
-    boardId: process.env.ANG_TRELLO_BOARDID || config.trello.boardId,
-    badgesEnabled: process.env.ANG_BADGES_ENABLED || config.badges.enabled
+    boardId: process.env.ANG_TRELLO_BOARDID,
+    badgesEnabled: process.env.ANG_BADGES_ENABLED
   },
 
   dev: process.env.NODE_ENV !== 'production',

@@ -262,7 +262,7 @@ export default {
   async fetch ({ store }) {
     await store.dispatch('ezlogger/loadSettings')
   },
-  asyncData ({ env }) {
+  asyncData ({ $config }) {
     return {
       connectionTest: {
         loading: false,
@@ -273,7 +273,7 @@ export default {
       parsers: [],
       parserSearch: '',
       loadingParsers: false,
-      ezpaarseInstance: env.ezpaarseUrl
+      ezpaarseInstance: $config.ezpaarseUrl
     }
   },
   computed: {

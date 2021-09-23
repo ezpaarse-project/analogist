@@ -308,12 +308,12 @@ const perPage = 20
 export default {
   name: 'Ezlogger',
   transition: 'slide-x-transition',
-  asyncData ({ env }) {
+  asyncData ({ $config }) {
     return {
       processing: false,
       showExport: false,
       extensionUrl: 'https://github.com/ezpaarse-project/ezpaarse-logger-extension#installation',
-      ezpaarseInstance: env.ezpaarseUrl
+      ezpaarseInstance: $config.ezpaarseUrl
     }
   },
   computed: {

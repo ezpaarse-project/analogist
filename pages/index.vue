@@ -77,7 +77,9 @@
             >
               <p
                 class="text-xs-justify"
-                v-html="$t('home.whatIsEzPaarse', { parsers })"
+                v-html="$t('home.whatIsEzPaarse', {
+                  parsers
+                })"
               />
               <p
                 class="text-xs-justify"
@@ -99,13 +101,13 @@
 export default {
   name: 'Analogist',
   transition: 'slide-x-transition',
-  async asyncData ({ env }) {
+  async asyncData ({ $config }) {
     return {
-      badges: -1,
-      platforms: -1,
-      parsers: -1,
+      badges: 0,
+      platforms: 0,
+      parsers: 0,
       metricsLoaded: false,
-      badgesEnabled: env.badgesEnabled
+      badgesEnabled: $config.badgesEnabled
     }
   },
   mounted () {
