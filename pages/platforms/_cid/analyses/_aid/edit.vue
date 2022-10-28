@@ -1,21 +1,16 @@
 <template>
   <section>
-    <v-layout
-      row
-      justify-space-between
+    <v-btn
+      text
+      router
+      exact
+      :to="{ name: 'platforms-cid-analyses-aid', params: { cid: $route.params.cid, aid: $route.params.aid } }"
+      class="mb-2 body-2"
     >
-      <v-btn
-        text
-        router
-        exact
-        :to="{ name: 'platforms-cid-analyses-aid', params: { cid: $route.params.cid, aid: $route.params.aid } }"
-        class="mb-2 body-2"
-      >
-        <v-icon left>
-          mdi-arrow-left
-        </v-icon>{{ $t('ui.back') }}
-      </v-btn>
-    </v-layout>
+      <v-icon left>
+        mdi-arrow-left
+      </v-icon>{{ $t('ui.back') }}
+    </v-btn>
 
     <v-card>
       <v-toolbar
