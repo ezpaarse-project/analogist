@@ -195,7 +195,7 @@ const sanitizeAnalysis = (req, res, next) => {
     req.body.pathParams = req.body.pathParams.map(pathParam => ({
       value: pathParam.value ? pathParam.value.trim() : null,
       comment: pathParam.comment ? pathParam.comment.trim() : null
-    })).filter(pathParams => pathParams.type && pathParams.comment)
+    })).filter(pathParams => pathParams.value)
   }
   if (req.body.queryParams && req.body.queryParams.length) {
     req.body.queryParams = req.body.queryParams.map(queryParam => ({
@@ -217,7 +217,7 @@ router.post('/:cid/analyses', mw.updateHistory, (req, res, next) => {
   analysis.id = new ObjectID()
   analysis.updatedAt = new Date()
   analysis.updatedBy = req.session.profile.id
-
+  console.log(JSON.stringify(analysis, null, 2))
   mongo.get('platforms').findOneAndUpdate(
     { cardID: req.params.cid },
     {
@@ -236,6 +236,7 @@ router.post('/:cid/analyses', mw.updateHistory, (req, res, next) => {
 /* PUT an existing analysis */
 router.put('/:cid/analyses/:aid', sanitizeAnalysis, mw.updateHistory, (req, res, next) => {
   const analysis = req.body
+  console.log(JSON.stringify(analysis, null, 2))
 
   if (!ObjectID.isValid(req.params.aid)) { return res.status(400).end() }
   if (typeof analysis !== 'object') { return res.status(400).end() }
