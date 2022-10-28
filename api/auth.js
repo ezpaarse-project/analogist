@@ -2,7 +2,7 @@
 
 const config = require('config')
 const router = require('express').Router()
-const Grant  = require('grant-express')
+const grant  = require('grant')
 const mw     = require('../lib/middlewares')
 const trello = require('../lib/trello')
 const { sendMail, generateMail } = require('../lib/mailer')
@@ -12,13 +12,12 @@ router.use('/connect/trello', (req, res, next) => {
   next()
 })
 
-router.use(new Grant({
-  server: {
-    protocol: 'http',
-    host: `localhost:${config.port}`,
+router.use(grant.express({
+  defaults: {
+    origin: `http://localhost:${config.port}`,
     callback: '/api/auth/callback',
     transport: 'session',
-    path: '/api/auth'
+    prefix: '/api/auth/connect'
   },
   trello: {
     key: config.trello.key,
@@ -36,12 +35,12 @@ router.use(new Grant({
  * The request is then redirected to the path after /callback/
  */
 router.use('/callback', (req, res, next) => {
-  if (req.query.error) {
+  const response = req?.session?.grant?.response
+
+  if (response?.error) {
     delete req.session
     return res.redirect(req.path)
   }
-
-  const response = req.session.grant && req.session.grant.response
 
   if (!response) {
     return res.redirect(req.path)

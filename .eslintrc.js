@@ -4,19 +4,13 @@ module.exports = {
     browser: true,
     node: true
   },
-  extends: [
-    'standard',
-    'plugin:vue/recommended'
-  ],
-  // required to lint *.vue files
-  plugins: [
-    'html',
-    'vue'
-  ],
   parserOptions: {
-    ecmaVersion: 2020
+    ecmaVersion: '2020'
   },
-  // add your custom rules here
+  extends: [
+    '@nuxtjs',
+    'plugin:nuxt/recommended'
+  ],
   rules: {
     // // allow async-await
     // 'generator-star-spacing': 0,

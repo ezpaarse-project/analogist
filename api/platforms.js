@@ -247,7 +247,7 @@ router.put('/:cid/analyses/:aid', sanitizeAnalysis, mw.updateHistory, (req, res,
   mongo.get('platforms').findOneAndUpdate(
     { cardID: req.params.cid, 'analyses.id': analysis.id },
     { $set: { 'analyses.$': analysis, lastModified: new Date() } },
-    { returnOriginal: false },
+    { returnDocument: 'after' },
     (err, result) => {
       if (err) { return next(err) }
 
@@ -308,7 +308,7 @@ router.patch('/:cid/analyses/order', mw.updateHistory, (req, res, next) => {
     mongo.get('platforms').findOneAndUpdate(
       { cardID: req.params.cid },
       { $set: changes },
-      { returnOriginal: false },
+      { returnDocument: 'after' },
       (err, result) => {
         if (err) { return next(err) }
 

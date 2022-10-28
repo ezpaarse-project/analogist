@@ -1,8 +1,13 @@
-const VuetifyLoaderPlugin = require('vuetify-loader/lib/plugin')
+/* eslint-disable nuxt/no-cjs-in-config */
 const pkg = require('./package.json')
 
 module.exports = {
+  dev: process.env.NODE_ENV !== 'production',
   ssr: false,
+  telemetry: false,
+
+  // Auto import components: https://go.nuxtjs.dev/config-components
+  components: true,
 
   head: {
     title: 'AnalogIST',
@@ -17,15 +22,11 @@ module.exports = {
     ]
   },
 
-  telemetry: false,
-
   loading: { color: '#FFFFFF' },
   loadingIndicator: {
     name: 'folding-cube',
     color: '#E10D1A'
   },
-
-  components: true,
 
   router: {
     middleware: ['ssr-cookie']
@@ -42,14 +43,16 @@ module.exports = {
     { src: '~/plugins/axios.js' },
     { src: '~/plugins/dateFns.js' },
     { src: '~/plugins/ezlogger.js' },
-    { src: '~/plugins/socket.js' },
-    { src: '~/plugins/vuetify.js' }
+    { src: '~/plugins/socket.js' }
   ],
 
-  /*
-  ** Nuxt.js dev-modules
-  */
-  buildModules: [],
+  // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
+  buildModules: [
+    // https://go.nuxtjs.dev/eslint
+    '@nuxtjs/eslint-module',
+    // https://go.nuxtjs.dev/vuetify
+    '@nuxtjs/vuetify'
+  ],
 
   /*
   ** Nuxt.js modules
@@ -65,6 +68,8 @@ module.exports = {
   ** See https://axios.nuxtjs.org/options
   */
   axios: {
+    // Workaround to avoid enforcing hard-coded localhost:3000: https://github.com/nuxt-community/axios-module/issues/308
+    baseURL: '/',
     proxy: true
   },
 
@@ -118,6 +123,21 @@ module.exports = {
     }
   },
 
+  // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
+  vuetify: {
+    theme: {
+      dark: false,
+      themes: {
+        dark: {
+          primary: '#FF1744'
+        },
+        light: {
+          primary: '#FF1744'
+        }
+      }
+    }
+  },
+
   publicRuntimeConfig: {
     ezpaarseUrl: process.env.ANG_EZPAARSE_URL || 'http://dev.ezpaarse.org',
     version: pkg.version,
@@ -125,24 +145,7 @@ module.exports = {
     badgesEnabled: process.env.ANG_BADGES_ENABLED
   },
 
-  dev: process.env.NODE_ENV !== 'production',
-
-  /*
-  ** Build configuration
-  */
+  // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-    analyze: true,
-    extractCSS: true,
-    plugins: [new VuetifyLoaderPlugin()],
-    extend (config, ctx) {
-      if (ctx.isDev && ctx.isClient) {
-        config.module.rules.push({
-          enforce: 'pre',
-          test: /\.(js|vue)$/,
-          loader: 'eslint-loader',
-          exclude: /(node_modules)/
-        })
-      }
-    }
   }
 }

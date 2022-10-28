@@ -7,7 +7,7 @@ const logger = require('morgan')
 const config = require('config')
 
 const session    = require('express-session')
-const MongoStore = require('connect-mongo')(session)
+const MongoStore = require('connect-mongo')
 
 process.env.PORT = config.port
 
@@ -20,8 +20,8 @@ app.use(session({
   secret: config.cookie.secret,
   cookie: { maxAge: config.cookie.maxAge },
   unset: 'destroy',
-  store: new MongoStore({
-    url: `mongodb://${config.mongo.host}:${config.mongo.port}/${config.mongo.db}`
+  store: MongoStore.create({
+    mongoUrl: `mongodb://${config.mongo.host}:${config.mongo.port}/${config.mongo.db}`
   })
 }))
 
@@ -39,7 +39,11 @@ app.use((err, req, res, next) => {
 const nuxtConfig = require('./nuxt.config.js')
 
 // Init Nuxt.js
-const nuxt = new Nuxt(nuxtConfig)
+const nuxt = new Nuxt({
+  ...nuxtConfig,
+  // workaround: tell nuxt that we are running in production and we don't need buildModules
+  _start: !nuxtConfig.dev
+})
 app.use(nuxt.render)
 
 // Build only in dev mode
