@@ -38,7 +38,7 @@
         <v-spacer />
 
         <v-tooltip bottom>
-          <template v-slot:activator="{ on }">
+          <template #activator="{ on }">
             <v-btn
               icon
               :loading="processing"
@@ -52,7 +52,7 @@
           <span>{{ $t('ezLogger.analyze') }}</span>
         </v-tooltip>
         <v-tooltip bottom>
-          <template v-slot:activator="{ on }">
+          <template #activator="{ on }">
             <v-btn
               icon
               :aria-label="$t('ezLogger.clearAll')"
@@ -65,7 +65,7 @@
           <span>{{ $t('ezLogger.clearAll') }}</span>
         </v-tooltip>
         <v-tooltip bottom>
-          <template v-slot:activator="{ on }">
+          <template #activator="{ on }">
             <v-btn
               icon
               :aria-label="$t('ezLogger.export')"
@@ -78,7 +78,7 @@
           <span>{{ $t('ezLogger.export') }}</span>
         </v-tooltip>
         <v-tooltip bottom>
-          <template v-slot:activator="{ on }">
+          <template #activator="{ on }">
             <v-btn
               icon
               :aria-label="$t('ezLogger.filter')"
@@ -91,7 +91,7 @@
           <span>{{ $t('ezLogger.filter') }}</span>
         </v-tooltip>
         <v-tooltip bottom>
-          <template v-slot:activator="{ on }">
+          <template #activator="{ on }">
             <v-btn
               icon
               router
@@ -179,7 +179,7 @@
                 v-if="req.type"
                 bottom
               >
-                <template v-slot:activator="{ on }">
+                <template #activator="{ on }">
                   <v-chip
                     small
                     label
@@ -196,7 +196,7 @@
                 v-if="req.statusCode"
                 bottom
               >
-                <template v-slot:activator="{ on }">
+                <template #activator="{ on }">
                   <v-chip
                     small
                     label
@@ -213,7 +213,7 @@
                 v-if="req.ec && req.ec.rtype"
                 bottom
               >
-                <template v-slot:activator="{ on }">
+                <template #activator="{ on }">
                   <v-chip
                     small
                     label
@@ -230,7 +230,7 @@
                 v-if="req.ec && req.ec.mime"
                 bottom
               >
-                <template v-slot:activator="{ on }">
+                <template #activator="{ on }">
                   <v-chip
                     small
                     label
@@ -253,10 +253,8 @@
         class="text-center"
       >
         <p>{{ $t('ezLogger.waitingForTraffic') }}</p>
-        <p
-          class="muted"
-          v-html="$t('ezLogger.getTheExtension', { url: extensionUrl })"
-        />
+        <!-- eslint-disable-next-line vue/no-v-html -->
+        <p class="muted" v-html="$t('ezLogger.getTheExtension', { url: extensionUrl })" />
       </v-card-text>
     </v-card>
 
@@ -265,10 +263,9 @@
       max-width="500px"
     >
       <v-card>
-        <v-card-title
-          class="headline"
-          v-text="$t('ezLogger.export')"
-        />
+        <v-card-title class="headline">
+          {{ $t('ezLogger.export') }}
+        </v-card-title>
 
         <v-card-text>
           <p class="text-justify">
@@ -314,6 +311,11 @@ export default {
       showExport: false,
       extensionUrl: 'https://github.com/ezpaarse-project/ezpaarse-logger-extension#installation',
       ezpaarseInstance: $config.ezpaarseUrl
+    }
+  },
+  head () {
+    return {
+      title: 'ezLogger'
     }
   },
   computed: {
@@ -372,10 +374,10 @@ export default {
     },
 
     exportAsFile () {
-      const dateFormat  = 'dd/LLL/yyyy:HH:mm:ss xxx'
+      const dateFormat = 'dd/LLL/yyyy:HH:mm:ss xxx'
       const textContent = this.requests
         .sort((a, b) => a.timeStamp > b.timeStamp ? 1 : -1)
-        .map(req => {
+        .map((req) => {
           // 127.0.0.1 - ezlogger [14/Mar/2014:09:39:18 -0700] “GET http://www.somedb.com:80/index.html HTTP/1.1” 200 1234
           return `127.0.0.1 - ezlogger [${this.$dateFns.format(new Date(req.startDate * 1000), dateFormat, { locale: 'en' })}] "${req.method} ${req.url} HTTP/1.1" ${req.statusCode} ${req.contentLength || 0}`
         }).join('\r\n')
@@ -386,7 +388,7 @@ export default {
     toLogLines (requests) {
       return requests
         .sort((a, b) => a.timeStamp > b.timeStamp ? 1 : -1)
-        .map(req => {
+        .map((req) => {
           return [
             req.startDate,
             'ezlogger',
@@ -408,7 +410,7 @@ export default {
 
       const requests = this.$store.state.ezlogger.requests
       const pending = requests.slice()
-      pending.forEach(req => { req.status = 'processing' })
+      pending.forEach((req) => { req.status = 'processing' })
 
       if (pending.length === 0) { return }
 
@@ -424,12 +426,12 @@ export default {
         headers['Force-Parser'] = this.settings.forceParser
       }
 
-      this.settings.headers.forEach(h => {
+      this.settings.headers.forEach((h) => {
         headers[h.name] = h.value
       })
 
       this.$axios.post(ezpaarseUrl, logs, { headers })
-        .then(response => {
+        .then((response) => {
           if (response.status !== 200) {
             throw new Error('Got status', response.status)
           }
@@ -437,24 +439,19 @@ export default {
           const ecs = response.data || []
           const ecMap = {}
 
-          ecs.forEach(ec => {
+          ecs.forEach((ec) => {
             if (ec.ezid) { ecMap[ec.ezid] = ec }
           })
 
-          pending.forEach(req => {
+          pending.forEach((req) => {
             req.ec = ecMap[req.id] || null
             req.status = req.ec ? 'analyzed' : 'rejected'
           })
         })
         .catch(() => {
           this.processing = false
-          pending.forEach(req => { req.status = 'error' })
+          pending.forEach((req) => { req.status = 'error' })
         })
-    }
-  },
-  head () {
-    return {
-      title: 'ezLogger'
     }
   }
 }

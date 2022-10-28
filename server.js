@@ -1,13 +1,13 @@
 /* eslint no-console: 0 */
 
+const http = require('http')
 const config = require('config')
-const http   = require('http')
-const mongo  = require('./lib/mongo')
+const mongo = require('./lib/mongo')
 
-const port     = normalizePort(config.port || '3000')
+const port = normalizePort(config.port || '3000')
 const mongoUrl = `mongodb://${config.mongo.host}:${config.mongo.port}/${config.mongo.db}`
 
-mongo.connect(mongoUrl, err => {
+mongo.connect(mongoUrl, (err) => {
   if (err) {
     console.error(`Couldn't connect to ${mongoUrl}`)
     process.exit(1)
@@ -60,9 +60,11 @@ function onError (error) {
     case 'EACCES':
       console.error(`${bind} requires elevated privileges`)
       process.exit(1)
+      break
     case 'EADDRINUSE':
       console.error(`${bind} is already in use`)
       process.exit(1)
+      break
     default:
       throw error
   }

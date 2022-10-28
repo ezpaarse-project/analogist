@@ -12,7 +12,7 @@
         <v-spacer />
 
         <v-tooltip bottom>
-          <template v-slot:activator="{ on }">
+          <template #activator="{ on }">
             <v-btn
               v-if="canEdit"
               icon
@@ -28,7 +28,7 @@
         </v-tooltip>
 
         <v-tooltip bottom>
-          <template v-slot:activator="{ on }">
+          <template #activator="{ on }">
             <v-btn
               icon
               text
@@ -112,7 +112,7 @@
                 clearable
                 @input="checkPage"
               >
-                <template v-slot:item="{ item }">
+                <template #item="{ item }">
                   {{ item.name }}
                   <v-list-item-avatar
                     v-if="item.id === 'humanCertified'"
@@ -183,13 +183,18 @@ function escapeCSVstring (str) {
 export default {
   name: 'Platforms',
   transition: 'slide-x-transition',
+  data () {
+    return {
+      displayAll: false
+    }
+  },
   async fetch ({ store }) {
     await store.dispatch('FETCH_TRELLO_LISTS')
     await store.dispatch('FETCH_CARDS')
   },
-  data () {
+  head () {
     return {
-      displayAll: false
+      title: 'Platforms'
     }
   },
   computed: {
@@ -260,12 +265,12 @@ export default {
       const certifications = this.searchCertifications
 
       return this.$store.state.cards
-        .filter(card => {
+        .filter((card) => {
           if (!card.name.toLowerCase().includes(search)) {
             return false
           }
 
-          if (lists.length && lists.indexOf(card.idList) === -1) {
+          if (lists.length && !lists.includes(card.idList)) {
             return false
           }
 
@@ -274,13 +279,15 @@ export default {
           }
 
           if (certifications.length) {
-            return certifications.some(certification => {
+            return certifications.some((certification) => {
               if (card.platform) {
                 const humanCertifications = card.platform.humanCertifications[0]
                 const publisherCertifications = card.platform.publisherCertifications[0]
                 return (humanCertifications && humanCertifications.certifications[certification]) ||
                        (publisherCertifications && publisherCertifications.certifications[certification])
               }
+
+              return false
             })
           }
 
@@ -303,7 +310,7 @@ export default {
     },
     generateCSV () {
       const columns = [
-        { title: 'Plateforme', getter: (a) => a.name },
+        { title: 'Plateforme', getter: a => a.name },
         {
           title: 'H',
           getter: (a) => {
@@ -325,7 +332,7 @@ export default {
       ]
 
       const certifiedPlatforms = []
-      this.cards.forEach(card => {
+      this.cards.forEach((card) => {
         if (card.platform) {
           if (card.platform.humanCertifications.length > 0 || card.platform.publisherCertifications.length > 0) {
             certifiedPlatforms.push(card)
@@ -335,18 +342,13 @@ export default {
 
       const header = columns.map(col => escapeCSVstring(col.title)).join(';')
 
-      const lines = certifiedPlatforms.map(event => {
+      const lines = certifiedPlatforms.map((event) => {
         return columns.map(col => escapeCSVstring(col.getter(event))).join(';')
       }).join('\n')
 
       const fileName = `${this.$t('certifications.certifiedPlatforms')}.csv`
 
       return saveAs(new Blob([`${header}\n${lines}`], { type: 'text/csv;charset=utf-8' }), fileName)
-    }
-  },
-  head () {
-    return {
-      title: 'Platforms'
     }
   }
 }

@@ -154,13 +154,6 @@
 export default {
   name: 'New',
   transition: 'slide-x-transition',
-  async fetch ({ store, redirect, $auth }) {
-    await store.dispatch('FETCH_TRELLO_LISTS')
-
-    if (!$auth.$state.user || !$auth.$state.user.isAuthorized) {
-      return redirect('/')
-    }
-  },
   data () {
     return {
       step: 1,
@@ -171,6 +164,18 @@ export default {
         shortName: '',
         idList: null
       }
+    }
+  },
+  async fetch ({ store, redirect, $auth }) {
+    await store.dispatch('FETCH_TRELLO_LISTS')
+
+    if (!$auth.$state.user || !$auth.$state.user.isAuthorized) {
+      return redirect('/')
+    }
+  },
+  head () {
+    return {
+      title: 'Nouvelle plateforme'
     }
   },
   computed: {
@@ -207,11 +212,6 @@ export default {
       }
 
       this.creating = false
-    }
-  },
-  head () {
-    return {
-      title: 'Nouvelle plateforme'
     }
   }
 }

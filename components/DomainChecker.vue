@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/no-v-html -->
 <template>
   <form @submit.prevent="checkDomain(domainInput)">
     <v-layout

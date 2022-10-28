@@ -48,7 +48,7 @@ api.getAnalysisHistory = function (analysisID) {
 }
 
 api.updateComment = function (cardID, text) {
-  return axios.patch(`/api/platforms/${cardID}/comment`, { text: text }).then(res => res.data)
+  return axios.patch(`/api/platforms/${cardID}/comment`, { text }).then(res => res.data)
 }
 
 api.updateCard = function (cardID, changes) {
@@ -94,7 +94,7 @@ api.moveCard = function (card, listID) {
 api.addUserToCard = function (card, user) {
   return axios.post(`/api/trello/cards/${card.id}/members`, {
     id: user.id
-  }).then(res => {
+  }).then((res) => {
     card.idMembers.push(user.id)
     card.members.push(user)
     return res.data
@@ -103,11 +103,11 @@ api.addUserToCard = function (card, user) {
 
 api.checkDomain = function (domain) {
   return axios.get(`${ezpaarseUrl}/info/domains/${domain}`)
-    .then(res => {
+    .then((res) => {
       if (typeof res.data === 'object') { return res.data }
       throw new Error('Invalid Response')
     })
-    .catch(err => {
+    .catch((err) => {
       if (err.response && err.response.status === 404) { return null }
       throw err
     })
@@ -117,14 +117,14 @@ api.checkDomain = function (domain) {
  * Get trello cards and extend them with their platform data
  */
 api.getExtendedCards = function () {
-  return api.getCards().then(cards => {
+  return api.getCards().then((cards) => {
     if (!Array.isArray(cards)) {
       cards = []
     }
 
-    return api.getPlatforms().then(platforms => {
+    return api.getPlatforms().then((platforms) => {
       const platformsMap = new Map()
-      platforms.forEach(p => {
+      platforms.forEach((p) => {
         platformsMap.set(p.cardID, p)
       })
 
@@ -137,10 +137,10 @@ api.getExtendedCards = function () {
  * Get a specific trello card and extend it with its platform data
  */
 api.getExtendedCard = function (cardID) {
-  return api.getCard(cardID).then(card => {
-    return api.getPlatform(cardID).then(platform => {
+  return api.getCard(cardID).then((card) => {
+    return api.getPlatform(cardID).then((platform) => {
       return extendCard(card, platform)
-    }).catch(err => {
+    }).catch((err) => {
       return err.response && err.response.status === 404 ? extendCard(card) : err
     })
   })
@@ -157,9 +157,9 @@ function extendCard (card, platform) {
   }
 
   // eslint-disable-next-line no-control-regex
-  const regexGithub = new RegExp('code[^\n]+source[^\n]+\n(https?://[^ $\n]+)', 'i')
+  const regexGithub = /code[^\n]+source[^\n]+\n(https?:\/\/[^ $\n]+)/i
   // eslint-disable-next-line no-control-regex
-  const regexHome   = new RegExp('page[^\n]+accueil[^\n]+\n(https?://[^ $\n]+)', 'i')
+  const regexHome = /page[^\n]+accueil[^\n]+\n(https?:\/\/[^ $\n]+)/i
 
   let match = regexGithub.exec(card.desc)
   if (match) { card.githubUrl = match[1] }

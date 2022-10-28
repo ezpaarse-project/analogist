@@ -27,7 +27,7 @@
     </v-list-item-avatar>
 
     <v-list-item-content :class="visited ? 'primary--text' : ''">
-      <v-list-item-title v-text="analysis.title" />
+      <v-list-item-title>{{ analysis.title }}</v-list-item-title>
       <v-list-item-subtitle>{{ analysis.rtype || '-' }} / {{ analysis.mime || '-' }}</v-list-item-subtitle>
     </v-list-item-content>
 

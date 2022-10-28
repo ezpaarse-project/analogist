@@ -5,10 +5,10 @@
 process.env.NODE_ENV = 'production'
 
 const request = require('supertest')
-const expect  = require('chai').expect
+const expect = require('chai').expect
 
-const config  = require('config')
-const mongo   = require('../lib/mongo')
+const config = require('config')
+const mongo = require('../lib/mongo')
 let app
 
 config.bypass = true
@@ -26,7 +26,7 @@ let historyID
 describe('Routes', function () {
   this.timeout(5000)
 
-  before(done => {
+  before((done) => {
     mongo.connect(mongoUrl, (err) => {
       if (err) { throw err }
 
@@ -35,21 +35,21 @@ describe('Routes', function () {
     })
   })
 
-  it(`GET    /api/platforms/${cardID}`, done => {
+  it(`GET    /api/platforms/${cardID}`, (done) => {
     request(app)
       .get(`/api/platforms/${cardID}`)
       .expect(404)
       .end(done)
   })
 
-  it(`GET    /api/platforms/${cardID}/analyses`, done => {
+  it(`GET    /api/platforms/${cardID}/analyses`, (done) => {
     request(app)
       .get(`/api/platforms/${cardID}/analyses`)
       .expect(404)
       .end(done)
   })
 
-  it(`POST   /api/platforms/${cardID}/analyses`, done => {
+  it(`POST   /api/platforms/${cardID}/analyses`, (done) => {
     request(app)
       .post(`/api/platforms/${cardID}/analyses`)
       .send({ foo: 'bar' })
@@ -67,7 +67,7 @@ describe('Routes', function () {
       .end((error) => {
         expect(error).to.not.exist
 
-        mongo.get('platforms').findOne({ cardID: cardID }, (err, doc) => {
+        mongo.get('platforms').findOne({ cardID }, (err, doc) => {
           if (err) { throw err }
 
           expect(doc).to.exist
@@ -84,7 +84,7 @@ describe('Routes', function () {
       })
   })
 
-  it(`PUT    /api/platforms/${cardID}/analyses/:id`, done => {
+  it(`PUT    /api/platforms/${cardID}/analyses/:id`, (done) => {
     expect(analysisID).to.exist
 
     request(app)
@@ -106,7 +106,7 @@ describe('Routes', function () {
       .end((error) => {
         expect(error).to.not.exist
 
-        mongo.get('platforms').findOne({ cardID: cardID }, (err, doc) => {
+        mongo.get('platforms').findOne({ cardID }, (err, doc) => {
           if (err) { throw err }
 
           expect(doc).to.exist
@@ -123,7 +123,7 @@ describe('Routes', function () {
       })
   })
 
-  it(`GET    /api/platforms/${cardID}`, done => {
+  it(`GET    /api/platforms/${cardID}`, (done) => {
     request(app)
       .get(`/api/platforms/${cardID}`)
       .expect('Content-Type', /json/)
@@ -139,7 +139,7 @@ describe('Routes', function () {
       .end(done)
   })
 
-  it(`GET    /api/platforms/${cardID}/analyses`, done => {
+  it(`GET    /api/platforms/${cardID}/analyses`, (done) => {
     request(app)
       .get(`/api/platforms/${cardID}/analyses`)
       .expect('Content-Type', /json/)
@@ -153,7 +153,7 @@ describe('Routes', function () {
       .end(done)
   })
 
-  it(`DELETE /api/platforms/${cardID}/analyses/:id`, done => {
+  it(`DELETE /api/platforms/${cardID}/analyses/:id`, (done) => {
     expect(analysisID).to.exist
 
     request(app)
@@ -162,7 +162,7 @@ describe('Routes', function () {
       .end((error) => {
         expect(error).to.not.exist
 
-        mongo.get('platforms').findOne({ cardID: cardID }, (err, doc) => {
+        mongo.get('platforms').findOne({ cardID }, (err, doc) => {
           if (err) { throw err }
 
           expect(doc).to.exist
@@ -173,7 +173,7 @@ describe('Routes', function () {
       })
   })
 
-  it('GET    /api/analyses/:aid/history', done => {
+  it('GET    /api/analyses/:aid/history', (done) => {
     expect(analysisID).to.exist
 
     request(app)
@@ -203,7 +203,7 @@ describe('Routes', function () {
       .end(done)
   })
 
-  it('DELETE    /api/analyses/:aid/history/:hid', done => {
+  it('DELETE    /api/analyses/:aid/history/:hid', (done) => {
     request(app)
       .delete(`/api/analyses/${analysisID}/history/${historyID}`)
       .expect(204)

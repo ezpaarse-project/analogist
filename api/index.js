@@ -1,7 +1,7 @@
-const router     = require('express').Router()
+const router = require('express').Router()
 const bodyParser = require('body-parser')
-const config     = require('config')
-const pkg        = require('../package.json')
+const config = require('config')
+const pkg = require('../package.json')
 
 const apiInfo = JSON.stringify({
   name: pkg.name,

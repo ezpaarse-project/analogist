@@ -1,13 +1,13 @@
 'use strict'
 
-const router   = require('express').Router()
+const router = require('express').Router()
 const ObjectID = require('mongodb').ObjectID
-const request  = require('request')
-const config   = require('config')
-const trello   = require('../lib/trello.js')
-const mongo    = require('../lib/mongo.js')
-const mw       = require('../lib/middlewares.js')
-const badges   = require('../lib/badges.js')
+const request = require('request')
+const config = require('config')
+const trello = require('../lib/trello.js')
+const mongo = require('../lib/mongo.js')
+const mw = require('../lib/middlewares.js')
+const badges = require('../lib/badges.js')
 
 /**
  * Require authorization for all post/put/patch/delete routes
@@ -39,7 +39,7 @@ const getPublisherCertifications = (cardID) => {
     .toArray()
 }
 
-router.get('/count', async (req, res, next) => {
+router.get('/count', (req, res, next) => {
   request.get(`${config.ezpaarse}/api/info/platforms/count`)
     .on('response', response => response.pipe(res))
     .on('error', next)
@@ -186,23 +186,23 @@ const sanitizeAnalysis = (req, res, next) => {
     req.body.comment = req.body.comment.trim()
   }
   if (req.body.identifiers && req.body.identifiers.length) {
-    req.body.identifiers = req.body.identifiers.map((identifier) => ({
+    req.body.identifiers = req.body.identifiers.map(identifier => ({
       type: identifier.type ? identifier.type.trim() : null,
       value: identifier.value ? identifier.value.trim() : null
-    })).filter((identifier) => identifier.type && identifier.value)
+    })).filter(identifier => identifier.type && identifier.value)
   }
   if (req.body.pathParams && req.body.pathParams.length) {
-    req.body.pathParams = req.body.pathParams.map((pathParam) => ({
+    req.body.pathParams = req.body.pathParams.map(pathParam => ({
       value: pathParam.value ? pathParam.value.trim() : null,
       comment: pathParam.comment ? pathParam.comment.trim() : null
-    })).filter((pathParams) => pathParams.type && pathParams.comment)
+    })).filter(pathParams => pathParams.type && pathParams.comment)
   }
   if (req.body.queryParams && req.body.queryParams.length) {
-    req.body.queryParams = req.body.queryParams.map((queryParam) => ({
+    req.body.queryParams = req.body.queryParams.map(queryParam => ({
       name: queryParam.name ? queryParam.name.trim() : null,
       value: queryParam.value ? queryParam.value.trim() : null,
       comment: queryParam.comment ? queryParam.comment.trim() : null
-    })).filter((queryParam) => queryParam.name)
+    })).filter(queryParam => queryParam.name)
   }
 
   next()
@@ -266,11 +266,11 @@ router.put('/:cid/analyses/:aid', sanitizeAnalysis, mw.updateHistory, (req, res,
 
               badges.emit(config.badges.analysesBronze, req.session.profile, true)
                 // eslint-disable-next-line no-console
-                .catch((err) => console.error(err))
+                .catch(err => console.error(err))
 
               badges.emit(config.badges.analysesSilver, req.session.profile, true)
                 // eslint-disable-next-line no-console
-                .catch((err) => console.error(err))
+                .catch(err => console.error(err))
             }
           )
         }

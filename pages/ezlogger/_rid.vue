@@ -34,7 +34,7 @@
           hide-details
           :value="request.url"
         >
-          <template v-slot:prepend>
+          <template #prepend>
             <v-progress-circular
               v-if="request.status === 'processing'"
               indeterminate
@@ -70,7 +70,7 @@
             slot="append-outer"
             left
           >
-            <template v-slot:activator="{ on }">
+            <template #activator="{ on }">
               <v-icon
                 v-on="on"
                 @click="copyUrl"
@@ -88,7 +88,7 @@
           v-if="request.method"
           bottom
         >
-          <template v-slot:activator="{ on }">
+          <template #activator="{ on }">
             <v-chip
               label
               color="blue"
@@ -104,7 +104,7 @@
           v-if="request.type"
           bottom
         >
-          <template v-slot:activator="{ on }">
+          <template #activator="{ on }">
             <v-chip
               label
               color="blue"
@@ -120,7 +120,7 @@
           v-if="request.statusCode"
           bottom
         >
-          <template v-slot:activator="{ on }">
+          <template #activator="{ on }">
             <v-chip
               label
               color="blue"
@@ -136,7 +136,7 @@
           v-if="request.ec && request.ec.rtype"
           bottom
         >
-          <template v-slot:activator="{ on }">
+          <template #activator="{ on }">
             <v-chip
               label
               color="green"
@@ -152,7 +152,7 @@
           v-if="request.ec && request.ec.mime"
           bottom
         >
-          <template v-slot:activator="{ on }">
+          <template #activator="{ on }">
             <v-chip
               label
               color="green"
@@ -186,7 +186,7 @@
         hide-default-footer
         disable-pagination
       >
-        <template v-slot:item="{ item }">
+        <template #item="{ item }">
           <tr>
             <th class="text-left">
               {{ item.name }}
@@ -224,6 +224,11 @@ export default {
       search: ''
     }
   },
+  head () {
+    return {
+      title: 'ezLogger'
+    }
+  },
 
   computed: {
     ecProps () {
@@ -249,11 +254,6 @@ export default {
         return this.$store.dispatch('snacks/error', 'ezLogger.urlCopyFailed')
       }
       this.$store.dispatch('snacks/success', 'ezLogger.urlCopySuccess')
-    }
-  },
-  head () {
-    return {
-      title: 'ezLogger'
     }
   }
 }

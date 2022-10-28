@@ -61,7 +61,7 @@
           multiple
           class="mx-1 filterFields"
         >
-          <template v-slot:item="{ item }">
+          <template #item="{ item }">
             {{ item.name }}
             <v-list-item-avatar
               v-if="item.id === 'humanCertified'"
@@ -86,7 +86,7 @@
           v-if="certificationsEvents.length"
           bottom
         >
-          <template v-slot:activator="{ on }">
+          <template #activator="{ on }">
             <v-btn
               class="mx-1"
               fab
@@ -104,10 +104,9 @@
         </v-tooltip>
       </v-toolbar>
 
-      <v-card-text
-        v-if="!certificationsEvents.length"
-        v-text="$t('certifications.noCertifications')"
-      />
+      <v-card-text v-if="!certificationsEvents.length">
+        {{ $t('certifications.noCertifications') }}
+      </v-card-text>
 
       <v-expansion-panels
         v-if="certificationsEvents.length"
@@ -304,7 +303,7 @@
                     v-model="denialDialog"
                     max-width="600"
                   >
-                    <template v-slot:activator="{ on }">
+                    <template #activator="{ on }">
                       <v-btn
                         tile
                         dark
@@ -318,10 +317,9 @@
                       </v-btn>
                     </template>
                     <v-card>
-                      <v-card-title
-                        class="text-center"
-                        v-text="$t('certifications.form.rejectExplanations')"
-                      />
+                      <v-card-title class="text-center">
+                        {{ $t('certifications.form.rejectExplanations') }}
+                      </v-card-title>
                       <v-card-text class="text-center py-3">
                         <v-textarea
                           v-model="refusalExplanations"
@@ -335,8 +333,9 @@
                           color="green darken-1"
                           dark
                           @click="refuse(item)"
-                          v-text="$t('certifications.send')"
-                        />
+                        >
+                          {{ $t('certifications.send') }}
+                        </v-btn>
                       </v-card-actions>
                     </v-card>
                   </v-dialog>
@@ -361,23 +360,6 @@ function escapeCSVstring (str) {
 }
 
 export default {
-  async fetch ({ store, redirect, $auth }) {
-    if (!$auth.state.user) {
-      return redirect('/')
-    }
-
-    try {
-      await store.dispatch('FETCH_CARDS')
-    } catch (e) {
-      await store.dispatch('snacks/error', 'errorGeneric')
-    }
-
-    try {
-      await store.dispatch('certifications/GET_CERTIFICATIONS_EVENTS')
-    } catch (e) {
-      await store.dispatch('snacks/error', 'errorGeneric')
-    }
-  },
   data () {
     return {
       refusalExplanations: '',
@@ -425,6 +407,23 @@ export default {
       }
     }
   },
+  async fetch ({ store, redirect, $auth }) {
+    if (!$auth.state.user) {
+      return redirect('/')
+    }
+
+    try {
+      await store.dispatch('FETCH_CARDS')
+    } catch (e) {
+      await store.dispatch('snacks/error', 'errorGeneric')
+    }
+
+    try {
+      await store.dispatch('certifications/GET_CERTIFICATIONS_EVENTS')
+    } catch (e) {
+      await store.dispatch('snacks/error', 'errorGeneric')
+    }
+  },
   computed: {
     cards () {
       return this.$store.state.cards
@@ -433,13 +432,13 @@ export default {
       const certifications = this.searchCertifications
 
       return this.$store.state.certifications.certificationsEvents
-        .filter(event => {
+        .filter((event) => {
           if (!event.status || (event.status && event.status !== this.searchStatusOrder)) {
             return false
           }
 
           if (certifications.length) {
-            return certifications.some(certification => {
+            return certifications.some((certification) => {
               return event && event.certifications[certification] && event.status === this.searchStatusOrder
             })
           }
@@ -543,11 +542,11 @@ export default {
   },
   methods: {
     formatDate (date) {
-      if (!date) return '-'
+      if (!date) { return '-' }
       return this.$dateFns.format(new Date(date), 'PPPP')
     },
     eventPlatformName (cardID) {
-      if (cardID) return this.cards.find(card => card.id === cardID).name || 'Name not found'
+      if (cardID) { return this.cards.find(card => card.id === cardID).name || 'Name not found' }
     },
     difference ({ editor, ezpaarse }) {
       return Number.parseFloat((((editor - ezpaarse) / editor) * 100), 10).toFixed(2)
@@ -556,7 +555,7 @@ export default {
       this.$store.dispatch('certifications/ACCEPT', {
         id: item._id,
         cardName: this.eventPlatformName(item.cardID)
-      }).then(async (res) => {
+      }).then((res) => {
         this.$store.dispatch('certifications/GET_CERTIFICATIONS_EVENTS')
           .catch(() => this.$store.dispatch('snacks/error', 'errorGeneric'))
       }).catch(() => this.$store.dispatch('snacks/error', 'errorGeneric'))
@@ -566,7 +565,7 @@ export default {
         id: item._id,
         cardName: this.eventPlatformName(item.cardID),
         comment: this.refusalExplanations
-      }).then(async (res) => {
+      }).then((res) => {
         this.$store.dispatch('certifications/GET_CERTIFICATIONS_EVENTS')
           .catch(() => this.$store.dispatch('snacks/error', 'errorGeneric'))
       }).catch(() => this.$store.dispatch('snacks/error', 'errorGeneric'))
@@ -577,21 +576,21 @@ export default {
       if (!this.certificationsEvents) { return }
 
       const columns = [
-        { title: 'Date de demande', getter: (a) => this.$dateFns.format(a.createdAt, 'PPPP') },
-        { title: 'Date d\'administration', getter: (a) => this.$dateFns.format(a.lastModified, 'PPPP') },
-        { title: 'Plateforme', getter: (a) => this.eventPlatformName(a.cardID) },
-        { title: 'Etablissement', getter: (a) => a.form.establishment },
-        { title: 'H', getter: (a) => a.certifications.humanCertified ? a.form.year : '-' },
-        { title: 'P', getter: (a) => a.certifications.publisherCertified ? a.form.year : '-' },
-        { title: 'ezPAARSE', getter: (a) => a.form.values && a.form.values.ezpaarse ? a.form.values.ezpaarse : '-' },
-        { title: 'Editeur', getter: (a) => a.form.values && a.form.values.editor ? a.form.values.editor : '-' },
-        { title: 'Difference', getter: (a) => a.form.values ? `${this.difference(a.form.values)}%` : '-' },
-        { title: 'Commentaire', getter: (a) => escapeCSVstring(a.form.comment.replace(/(\r\n|\n|\r)/gm, ' ').trim()) }
+        { title: 'Date de demande', getter: a => this.$dateFns.format(a.createdAt, 'PPPP') },
+        { title: 'Date d\'administration', getter: a => this.$dateFns.format(a.lastModified, 'PPPP') },
+        { title: 'Plateforme', getter: a => this.eventPlatformName(a.cardID) },
+        { title: 'Etablissement', getter: a => a.form.establishment },
+        { title: 'H', getter: a => a.certifications.humanCertified ? a.form.year : '-' },
+        { title: 'P', getter: a => a.certifications.publisherCertified ? a.form.year : '-' },
+        { title: 'ezPAARSE', getter: a => a.form.values && a.form.values.ezpaarse ? a.form.values.ezpaarse : '-' },
+        { title: 'Editeur', getter: a => a.form.values && a.form.values.editor ? a.form.values.editor : '-' },
+        { title: 'Difference', getter: a => a.form.values ? `${this.difference(a.form.values)}%` : '-' },
+        { title: 'Commentaire', getter: a => escapeCSVstring(a.form.comment.replace(/(\r\n|\n|\r)/gm, ' ').trim()) }
       ]
 
       const header = columns.map(col => escapeCSVstring(col.title)).join(';')
 
-      const lines = this.certificationsEvents.map(event => {
+      const lines = this.certificationsEvents.map((event) => {
         return columns.map(col => escapeCSVstring(col.getter(event))).join(';')
       }).join('\n')
 

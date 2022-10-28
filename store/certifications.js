@@ -1,4 +1,4 @@
-import Vue from 'vue'
+import { set } from 'vue'
 import api from './api'
 
 export default {
@@ -8,7 +8,7 @@ export default {
   }),
   mutations: {
     SET_CERTIFICATIONS_EVENTS (state, data) {
-      Vue.set(state, 'certificationsEvents', data)
+      set(state, 'certificationsEvents', data)
     }
   },
   actions: {

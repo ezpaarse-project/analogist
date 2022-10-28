@@ -40,9 +40,9 @@
         v-if="badge.issued_on"
         offset-y
       >
-        <template v-slot:activator="{ on: menu }">
+        <template #activator="{ on: menu }">
           <v-tooltip bottom>
-            <template v-slot:activator="{ on: tooltip }">
+            <template #activator="{ on: tooltip }">
               <v-btn
                 class="black--text"
                 icon
@@ -74,7 +74,7 @@
             <v-icon>mdi-linkedin</v-icon> Linkedin
           </v-list-item>
           <v-tooltip bottom>
-            <template v-slot:activator="{ on }">
+            <template #activator="{ on }">
               <v-list-item
                 v-on="on"
                 @click="copyEmbedObject"

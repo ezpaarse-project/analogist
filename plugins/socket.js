@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import io from 'socket.io-client'
+import { io } from 'socket.io-client'
 
 const socket = io(window.location.host)
 
@@ -24,5 +24,5 @@ export default ({ app, store }) => {
     store.dispatch('socket/SOCKET_CONNECT', false)
   })
 
-  if (!app.socket) app.socket = socket
+  if (!app.socket) { app.socket = socket }
 }

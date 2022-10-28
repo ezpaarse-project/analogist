@@ -52,8 +52,8 @@
                   </span>
                 </v-list-item-avatar>
                 <v-list-item-content>
-                  <v-list-item-title v-text="item.member.fullName" />
-                  <v-list-item-subtitle v-text="item.member.username" />
+                  <v-list-item-title>{{ item.member.fullName }}</v-list-item-title>
+                  <v-list-item-subtitle>{{ item.member.username }}</v-list-item-subtitle>
                 </v-list-item-content>
               </template>
             </v-autocomplete>
@@ -83,20 +83,18 @@
                 slot="item"
                 slot-scope="{ item }"
               >
-                <template>
-                  <v-list-item-avatar :class="{ 'isOwn': item.issued_on }">
-                    <img
-                      :src="item.image"
-                      alt="badge"
-                    >
-                  </v-list-item-avatar>
-                  <v-list-item-content :class="{ 'isOwn': item.issued_on }">
-                    <v-list-item-title v-text="item.name" />
-                    <v-list-item-subtitle v-if="item.issued_on">
-                      {{ issuedOn(item.issued_on) }}
-                    </v-list-item-subtitle>
-                  </v-list-item-content>
-                </template>
+                <v-list-item-avatar :class="{ 'isOwn': item.issued_on }">
+                  <img
+                    :src="item.image"
+                    alt="badge"
+                  >
+                </v-list-item-avatar>
+                <v-list-item-content :class="{ 'isOwn': item.issued_on }">
+                  <v-list-item-title>{{ item.name }}</v-list-item-title>
+                  <v-list-item-subtitle v-if="item.issued_on">
+                    {{ issuedOn(item.issued_on) }}
+                  </v-list-item-subtitle>
+                </v-list-item-content>
               </template>
             </v-autocomplete>
           </v-flex>
@@ -171,6 +169,14 @@
 
 <script>
 export default {
+  data () {
+    return {
+      currentBoardMember: null,
+      currentBadge: null,
+      email: null,
+      loading: false
+    }
+  },
   async fetch ({ store, redirect, app, $auth, $config, error }) {
     if (!$config.badgesEnabled) {
       return error({ statusCode: 404, message: 'Page not found' })
@@ -198,14 +204,6 @@ export default {
       } catch (e) {
         await store.dispatch('snacks/error', 'badges.noMetrics')
       }
-    }
-  },
-  data () {
-    return {
-      currentBoardMember: null,
-      currentBadge: null,
-      email: null,
-      loading: false
     }
   },
   computed: {

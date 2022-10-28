@@ -40,10 +40,9 @@
           </v-icon>
         </v-list-item-avatar>
         <v-list-item-content>
-          <v-list-item-title
-            class="subtitle-2 font-weight-regular"
-            v-text="$t('drawer.login')"
-          />
+          <v-list-item-title class="subtitle-2 font-weight-regular">
+            {{ $t('drawer.login') }}
+          </v-list-item-title>
         </v-list-item-content>
       </v-list-item>
 
@@ -65,30 +64,29 @@
           />
         </v-list-item-avatar>
         <v-list-item-content>
-          <v-list-item-title
-            class="subtitle-2 font-weight-regular"
-            v-text="user.fullName"
-          />
+          <v-list-item-title class="subtitle-2 font-weight-regular">
+            {{ user.fullName }}
+          </v-list-item-title>
           <v-list-item-subtitle v-if="!canEdit">
             <v-dialog
               v-model="becomeMemberDialog"
               max-width="600"
             >
-              <template v-slot:activator="{ on }">
+              <template #activator="{ on }">
                 <v-btn
                   x-small
                   color="blue darken-1"
                   dark
                   v-on="on"
-                  v-text="$t('drawer.newUserButton')"
-                />
+                >
+                  {{ $t('drawer.newUserButton') }}
+                </v-btn>
               </template>
               <v-card>
                 <v-card-text class="text-center py-3">
-                  <p
-                    class="headline"
-                    v-text="$t('drawer.newUser')"
-                  />
+                  <p class="headline">
+                    {{ $t('drawer.newUser') }}
+                  </p>
                   <p>
                     {{ $t('drawer.newUserText') }}
                   </p>
@@ -96,8 +94,9 @@
                     color="green darken-1"
                     dark
                     @click="newUserRequest"
-                    v-text="$t('drawer.becomeMember')"
-                  />
+                  >
+                    {{ $t('drawer.becomeMember') }}
+                  </v-btn>
                 </v-card-text>
               </v-card>
             </v-dialog>
@@ -105,7 +104,7 @@
         </v-list-item-content>
         <v-list-item-icon>
           <v-tooltip right>
-            <template v-slot:activator="{ on }">
+            <template #activator="{ on }">
               <v-btn
                 text
                 icon
@@ -135,10 +134,9 @@
           <v-icon>mdi-home</v-icon>
         </v-list-item-icon>
         <v-list-item-content>
-          <v-list-item-title
-            class="subtitle-2 font-weight-regular"
-            v-text="$t('drawer.home')"
-          />
+          <v-list-item-title class="subtitle-2 font-weight-regular">
+            {{ $t('drawer.home') }}
+          </v-list-item-title>
         </v-list-item-content>
       </v-list-item>
 
@@ -151,10 +149,9 @@
           <v-icon>mdi-file-powerpoint-box</v-icon>
         </v-list-item-icon>
         <v-list-item-content>
-          <v-list-item-title
-            class="subtitle-2 font-weight-regular"
-            v-text="$t('drawer.platforms')"
-          />
+          <v-list-item-title class="subtitle-2 font-weight-regular">
+            {{ $t('drawer.platforms') }}
+          </v-list-item-title>
         </v-list-item-content>
       </v-list-item>
 
@@ -167,10 +164,9 @@
           <v-icon>mdi-trello</v-icon>
         </v-list-item-icon>
         <v-list-item-content>
-          <v-list-item-title
-            class="subtitle-2 font-weight-regular"
-            v-text="$t('drawer.trelloBoard')"
-          />
+          <v-list-item-title class="subtitle-2 font-weight-regular">
+            {{ $t('drawer.trelloBoard') }}
+          </v-list-item-title>
         </v-list-item-content>
       </v-list-item>
 
@@ -183,10 +179,9 @@
           <v-icon>mdi-file-find</v-icon>
         </v-list-item-icon>
         <v-list-item-content>
-          <v-list-item-title
-            class="subtitle-2 font-weight-regular"
-            v-text="$t('drawer.ezLogger')"
-          />
+          <v-list-item-title class="subtitle-2 font-weight-regular">
+            {{ $t('drawer.ezLogger') }}
+          </v-list-item-title>
         </v-list-item-content>
       </v-list-item>
 
@@ -196,7 +191,7 @@
         append-icon="mdi-chevron-down"
         :value="$nuxt.$route.name.indexOf('badges') !== -1"
       >
-        <template v-slot:activator>
+        <template #activator>
           <v-list-item-icon>
             <logo-open-badge />
           </v-list-item-icon>
@@ -239,7 +234,7 @@
         append-icon="mdi-chevron-down"
         :value="$nuxt.$route.name.indexOf('admin') !== -1"
       >
-        <template v-slot:activator>
+        <template #activator>
           <v-list-item-icon>
             <v-icon>mdi-cog</v-icon>
           </v-list-item-icon>
@@ -282,7 +277,7 @@
         append-icon="mdi-chevron-down"
         prepend-icon="mdi-translate"
       >
-        <template v-slot:activator>
+        <template #activator>
           <v-list-item-title class="subtitle-2 font-weight-regular">
             {{ $t('drawer.language') }}
           </v-list-item-title>
@@ -293,10 +288,9 @@
           :key="locale.code"
           @click="$i18n.setLocale(locale.code)"
         >
-          <v-list-item-title
-            class="body-2"
-            v-text="locale.name"
-          />
+          <v-list-item-title class="body-2">
+            {{ locale.name }}
+          </v-list-item-title>
           <v-list-item-icon>
             <img
               width="24"
@@ -308,10 +302,10 @@
       </v-list-group>
     </v-list>
 
-    <template v-slot:append>
+    <template #append>
       <div class="pa-2 text-center">
         <v-tooltip top>
-          <template v-slot:activator="{ on }">
+          <template #activator="{ on }">
             <v-btn
               small
               text

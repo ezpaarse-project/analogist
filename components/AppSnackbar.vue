@@ -8,7 +8,7 @@
     :timeout="currentMessage.timeout"
   >
     {{ $t(currentMessage.text) }}
-    <template v-slot:action>
+    <template #action>
       <v-btn
         dark
         text

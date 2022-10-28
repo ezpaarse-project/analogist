@@ -2,8 +2,8 @@
 
 const config = require('config')
 const router = require('express').Router()
-const grant  = require('grant')
-const mw     = require('../lib/middlewares')
+const grant = require('grant')
+const mw = require('../lib/middlewares')
 const trello = require('../lib/trello')
 const { sendMail, generateMail } = require('../lib/mailer')
 
@@ -75,7 +75,7 @@ router.post('/membership', mw.updateUserProfile, (req, res, next) => {
   trello.getBoard((err, board) => {
     if (err) { return res.status(500).end() }
 
-    const sender  = config.notifications.sender
+    const sender = config.notifications.sender
     let receivers = config.notifications.receivers
 
     if (typeof receivers === 'string') { receivers = receivers.split(',') }

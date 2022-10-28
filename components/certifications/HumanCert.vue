@@ -12,7 +12,7 @@
           open-on-hover
           offset-y
         >
-          <template v-slot:activator="{ on }">
+          <template #activator="{ on }">
             <v-btn
               small
               class="dateLbl white--text"

@@ -133,7 +133,7 @@
         </a>
 
         <v-tooltip bottom>
-          <template v-slot:activator="{ on }">
+          <template #activator="{ on }">
             <v-btn
               text
               icon
@@ -157,6 +157,14 @@
 export default {
   name: 'Badges',
   transition: 'slide-x-transition',
+  data () {
+    return {
+      modal: false,
+      currentBadge: null,
+      linkedInModal: false,
+      visible: false
+    }
+  },
   async fetch ({ store, redirect, app, $auth, $config, error }) {
     if (!$config.badgesEnabled) {
       return error({ statusCode: 404, message: 'Page not found' })
@@ -178,12 +186,9 @@ export default {
       await store.dispatch('snacks/error', 'badges.noMetrics')
     }
   },
-  data () {
+  head () {
     return {
-      modal: false,
-      currentBadge: null,
-      linkedInModal: false,
-      visible: false
+      title: 'Badges'
     }
   },
   computed: {
@@ -193,8 +198,8 @@ export default {
     badgesOwned () {
       let badgesOwend = 0
       if (this.$store.state.badges.badges) {
-        this.$store.state.badges.badges.forEach(badge => {
-          if (badge.issued_on) badgesOwend += 1
+        this.$store.state.badges.badges.forEach((badge) => {
+          if (badge.issued_on) { badgesOwend += 1 }
         })
       }
       return badgesOwend
@@ -212,7 +217,7 @@ export default {
   },
   watch: {
     user: function () {
-      if (!this.user) return this.$router.push('/badges/list')
+      if (!this.user) { return this.$router.push('/badges/list') }
     }
   },
   methods: {
@@ -226,11 +231,6 @@ export default {
     closeLinkedInCard () {
       this.linkedInModal = false
       this.currentBadge = null
-    }
-  },
-  head () {
-    return {
-      title: 'Badges'
     }
   }
 }

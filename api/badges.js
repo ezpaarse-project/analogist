@@ -1,10 +1,10 @@
 'use strict'
 
-const config  = require('config')
-const router  = require('express').Router()
+const config = require('config')
+const router = require('express').Router()
 const request = require('request')
-const badges  = require('../lib/badges')
-const cors    = require('cors')
+const cors = require('cors')
+const badges = require('../lib/badges')
 
 const url = `http://${config.badges.host}:${config.badges.port}`
 
@@ -38,7 +38,7 @@ router.get('/:type/:uuid/:language', (req, res, next) => {
     headers: {
       angHost: `${req.protocol}://${req.get('x-forwarded-host') || req.connection.remoteAddress}`
     }
-  }).on('response', response => {
+  }).on('response', (response) => {
     res.charset = 'UTF-8'
     res.type('html')
     return response.pipe(res)

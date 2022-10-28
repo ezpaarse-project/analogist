@@ -45,18 +45,18 @@
               show-expand
               class="elevation-1"
             >
-              <template v-slot:item.badge.image="{ item }">
+              <template #[`item.badge.image`]="{ item }">
                 <img
                   :src="item.badge.image"
                   class="badgeImage"
                   alt="badge"
                 >
               </template>
-              <template v-slot:item.badge.name="{ item }">
+              <template #[`item.badge.name`]="{ item }">
                 <span v-if="$i18n.locale === 'fr'">{{ item.badge.name }}</span>
                 <span v-else>{{ item.badge.alt_language[$i18n.locale].name }}</span>
               </template>
-              <template v-slot:expanded-item="{ headers: tableHeaders, item }">
+              <template #expanded-item="{ headers: tableHeaders, item }">
                 <td :colspan="tableHeaders.length">
                   <v-layout
                     v-if="user"
@@ -81,7 +81,7 @@
                           </v-list-item-avatar>
 
                           <v-list-item-content>
-                            <v-list-item-title v-text="u.fullName" />
+                            <v-list-item-title>{{ u.fullName }}</v-list-item-title>
                             <v-list-item-subtitle>{{ $dateFns.format(new Date(u.issuedOn) * 1000, 'PPPP') }}</v-list-item-subtitle>
                           </v-list-item-content>
                         </v-list-item>
@@ -95,17 +95,19 @@
                     wrap
                     justify-center
                   >
+                    <!-- eslint-disable-next-line vue/no-v-html -->
                     <p v-html="$t('mustBeConnected')" />
                   </v-layout>
                 </td>
               </template>
-              <template v-slot:no-results>
+              <template #no-results>
                 <v-alert
                   :value="true"
                   color="info"
                   icon="mdi-alert-circle"
-                  v-text="$t('badges.searchNotFound', { search })"
-                />
+                >
+                  {{ $t('badges.searchNotFound', { search }) }}
+                </v-alert>
               </template>
             </v-data-table>
 
@@ -134,7 +136,7 @@
         </a>
 
         <v-tooltip bottom>
-          <template v-slot:activator="{ on }">
+          <template #activator="{ on }">
             <v-btn
               text
               icon
@@ -156,29 +158,6 @@
 
 <script>
 export default {
-  async fetch ({ store, $auth, $config, error }) {
-    if (!$config.badgesEnabled) {
-      return error({ statusCode: 404, message: 'Page not found' })
-    }
-
-    try {
-      await store.dispatch('badges/getPing')
-    } catch (e) {
-      await store.dispatch('snacks/error', 'badges.pingError')
-    }
-
-    const { user } = $auth.$state
-
-    try {
-      await store.dispatch('badges/getMembers', user)
-    } catch (e) { }
-
-    try {
-      await store.dispatch('badges/getMetrics', (user && user.role === 'admin'))
-    } catch (e) {
-      await store.dispatch('snacks/error', 'badges.noMetrics')
-    }
-  },
   data () {
     return {
       search: '',
@@ -206,6 +185,29 @@ export default {
         }
       ],
       expanded: []
+    }
+  },
+  async fetch ({ store, $auth, $config, error }) {
+    if (!$config.badgesEnabled) {
+      return error({ statusCode: 404, message: 'Page not found' })
+    }
+
+    try {
+      await store.dispatch('badges/getPing')
+    } catch (e) {
+      await store.dispatch('snacks/error', 'badges.pingError')
+    }
+
+    const { user } = $auth.$state
+
+    try {
+      await store.dispatch('badges/getMembers', user)
+    } catch (e) { }
+
+    try {
+      await store.dispatch('badges/getMetrics', (user && user.role === 'admin'))
+    } catch (e) {
+      await store.dispatch('snacks/error', 'badges.noMetrics')
     }
   },
   computed: {

@@ -128,10 +128,10 @@
           hide-details
           solo
         >
-          <template v-slot:item="{ item }">
+          <template #item="{ item }">
             <v-list-item-content>
-              <v-list-item-title v-text="item.longname" />
-              <v-list-item-subtitle v-text="item.name" />
+              <v-list-item-title>{{ item.longname }}</v-list-item-title>
+              <v-list-item-subtitle>{{ item.name }}</v-list-item-subtitle>
             </v-list-item-content>
           </template>
         </v-autocomplete>
@@ -166,7 +166,7 @@
         hide-default-footer
         hide-default-header
       >
-        <template v-slot:item="{ item, index }">
+        <template #item="{ item, index }">
           <tr>
             <td>
               <v-text-field
@@ -222,7 +222,7 @@
         hide-default-footer
         hide-default-header
       >
-        <template v-slot:body="{ items }">
+        <template #body="{ items }">
           <tr
             v-for="(item, index) in items"
             :key="index"
@@ -259,9 +259,6 @@ import { mapState, mapActions } from 'vuex'
 export default {
   name: 'Settings',
   transition: 'slide-x-transition',
-  async fetch ({ store }) {
-    await store.dispatch('ezlogger/loadSettings')
-  },
   asyncData ({ $config }) {
     return {
       connectionTest: {
@@ -274,6 +271,14 @@ export default {
       parserSearch: '',
       loadingParsers: false,
       ezpaarseInstance: $config.ezpaarseUrl
+    }
+  },
+  async fetch ({ store }) {
+    await store.dispatch('ezlogger/loadSettings')
+  },
+  head () {
+    return {
+      title: 'ezLogger'
     }
   },
   computed: {
@@ -310,7 +315,7 @@ export default {
 
       try {
         const { data } = await this.$axios.get(`${ezpaarseUrl}/info/platforms`)
-        if (!Array.isArray(data)) { throw new Error('invalid response') }
+        if (!Array.isArray(data)) { throw new TypeError('invalid response') }
         this.parsers = data
       } catch (e) {
         this.$store.dispatch('snacks/error', 'ezLoggerSettings.failedToFetchParsers')
@@ -354,7 +359,7 @@ export default {
       this.connectionTest.version = null
 
       this.$axios.get(`${ezpaarseUrl}/info/version`)
-        .then(response => {
+        .then((response) => {
           this.connectionTest.loading = false
 
           if (response.status !== 200) {
@@ -381,7 +386,7 @@ export default {
           }
 
           this.connectionTest.version = body
-        }).catch(err => {
+        }).catch((err) => {
           this.connectionTest.loading = false
 
           if (err.response) {
@@ -396,11 +401,6 @@ export default {
             this.connectionTest.errorMsg = 'error_generic'
           }
         })
-    }
-  },
-  head () {
-    return {
-      title: 'ezLogger'
     }
   }
 }

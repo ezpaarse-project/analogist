@@ -2,11 +2,11 @@
 
 const { Nuxt, Builder } = require('nuxt')
 
-const app    = require('express')()
+const app = require('express')()
 const logger = require('morgan')
 const config = require('config')
 
-const session    = require('express-session')
+const session = require('express-session')
 const MongoStore = require('connect-mongo')
 
 process.env.PORT = config.port
@@ -49,7 +49,7 @@ app.use(nuxt.render)
 // Build only in dev mode
 if (nuxtConfig.dev) {
   new Builder(nuxt).build()
-    .catch(error => {
+    .catch((error) => {
       console.error(error)
       process.exit(1)
     })

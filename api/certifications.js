@@ -1,13 +1,13 @@
 'use strict'
 
-const router    = require('express').Router()
-const config    = require('config')
-const multer    = require('multer')
-const path      = require('path')
-const fs        = require('fs')
-const ObjectId  = require('mongodb').ObjectID
-const mongo     = require('../lib/mongo.js')
-const mw        = require('../lib/middlewares.js')
+const path = require('path')
+const fs = require('fs')
+const router = require('express').Router()
+const config = require('config')
+const multer = require('multer')
+const ObjectId = require('mongodb').ObjectID
+const mongo = require('../lib/mongo.js')
+const mw = require('../lib/middlewares.js')
 const { sendMail, generateMail } = require('../lib/mailer')
 
 const upload = multer({
@@ -41,7 +41,7 @@ router.post('/:cid', upload.single('attachment'), (req, res, next) => {
   const { body: data } = req
   const { file: attachment } = req
 
-  if (!data) return res.status(500).json({ status: 'error' })
+  if (!data) { return res.status(500).json({ status: 'error' }) }
 
   const form = JSON.parse(data.form)
   if (attachment) {
@@ -65,7 +65,7 @@ router.post('/:cid', upload.single('attachment'), (req, res, next) => {
       lastModified: new Date()
     },
     async (err, doc) => {
-      if (err) return res.status(500).json({ status: 'error' })
+      if (err) { return res.status(500).json({ status: 'error' }) }
 
       if (form.object === 'delete') {
         try {
@@ -105,7 +105,7 @@ router.post('/:cid', upload.single('attachment'), (req, res, next) => {
 router.get('/download/:attachment', (req, res, next) => {
   const { attachment } = req.params
 
-  if (!attachment) return res.status(404).end()
+  if (!attachment) { return res.status(404).end() }
 
   return fs.createReadStream(path.resolve(__dirname, '..', 'uploads', attachment)).pipe(res)
 })
@@ -114,7 +114,7 @@ router.post('/:id/accept', (req, res, next) => {
   const { id } = req.params
   const { body: data } = req
 
-  if (!id || !ObjectId.isValid(id) || !data) return res.status(400).json({ status: 'error' })
+  if (!id || !ObjectId.isValid(id) || !data) { return res.status(400).json({ status: 'error' }) }
 
   return mongo.get('certifications').findOneAndUpdate(
     { _id: new ObjectId(id), status: 'waiting' },
@@ -151,7 +151,7 @@ router.post('/:id/refuse', (req, res, next) => {
   const { id } = req.params
   const { body: data } = req
 
-  if (!id || !ObjectId.isValid(id) || !data) return res.status(400).json({ status: 'error' })
+  if (!id || !ObjectId.isValid(id) || !data) { return res.status(400).json({ status: 'error' }) }
 
   return mongo.get('certifications').findOneAndUpdate(
     { _id: new ObjectId(id), status: 'waiting' },

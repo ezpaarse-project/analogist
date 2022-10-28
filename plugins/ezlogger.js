@@ -1,7 +1,7 @@
 export default ({ store }) => {
   store.dispatch('ezlogger/loadSettings')
 
-  document.addEventListener('ezlogger-request', event => {
+  document.addEventListener('ezlogger-request', (event) => {
     if (!store) { return }
 
     let info

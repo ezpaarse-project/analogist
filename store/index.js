@@ -1,5 +1,5 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import { set } from 'vue'
+import { Store } from 'vuex'
 import api from './api'
 import ezlogger from './ezlogger'
 import badges from './badges'
@@ -7,7 +7,7 @@ import snacks from './snacks'
 import socket from './socket'
 import certifications from './certifications'
 
-const store = () => new Vuex.Store({
+const store = () => new Store({
   modules: {
     ezlogger,
     badges,
@@ -47,7 +47,7 @@ const store = () => new Vuex.Store({
     },
     FETCH_CARD ({ commit }, cardID) {
       return api.getExtendedCard(cardID)
-        .then(card => {
+        .then((card) => {
           commit('SET_CARD', card)
           commit('SET_PLATFORM', card.platform)
           commit('SET_ANALYSES', (card.platform && card.platform.analyses) || [])
@@ -71,7 +71,7 @@ const store = () => new Vuex.Store({
 
       list.forEach((analysis, i) => {
         order[analysis.id] = i + 1
-        Vue.set(analysis, 'order', i + 1)
+        set(analysis, 'order', i + 1)
       })
 
       commit('SET_ANALYSES', list)
@@ -149,70 +149,70 @@ const store = () => new Vuex.Store({
   },
   mutations: {
     SET_SEARCH_PAGE (state, page) {
-      Vue.set(state, 'searchPage', page)
+      set(state, 'searchPage', page)
     },
     SET_DRAWER (state, bool) {
-      Vue.set(state, 'drawer', bool)
+      set(state, 'drawer', bool)
     },
     SET_CARDS (state, items) {
-      Vue.set(state, 'cards', items)
+      set(state, 'cards', items)
     },
     SET_TRELLO_LISTS (state, items) {
-      Vue.set(state, 'trelloLists', items)
+      set(state, 'trelloLists', items)
     },
     SET_APP_INFO (state, appInfo) {
-      Vue.set(state, 'app', appInfo)
+      set(state, 'app', appInfo)
     },
     SET_ANALYSIS (state, analysis) {
-      Vue.set(state, 'analysis', analysis)
+      set(state, 'analysis', analysis)
     },
     SET_ANALYSES (state, analyses) {
-      Vue.set(state, 'analyses', analyses)
+      set(state, 'analyses', analyses)
     },
     SET_ANALYSIS_HISTORY (state, analysisHistory) {
-      Vue.set(state, 'analysisHistory', analysisHistory)
+      set(state, 'analysisHistory', analysisHistory)
     },
     SET_ANALYSIS_HISTORY_SELECTED (state, historySelected) {
-      Vue.set(state, 'historySelected', historySelected)
+      set(state, 'historySelected', historySelected)
     },
     SET_PLATFORM (state, platform) {
-      Vue.set(state, 'platform', platform)
+      set(state, 'platform', platform)
     },
     SET_CARD (state, card) {
-      Vue.set(state, 'card', card)
+      set(state, 'card', card)
     },
     SET_SEARCH_TEXT (state, searchText) {
-      Vue.set(state, 'searchText', searchText)
+      set(state, 'searchText', searchText)
     },
     SET_SEARCH_LISTS (state, searchLists) {
-      Vue.set(state, 'searchLists', searchLists)
+      set(state, 'searchLists', searchLists)
     },
     SET_SEARCH_CERTIFICATIONS (state, searchCertifications) {
-      Vue.set(state, 'searchCertifications', searchCertifications)
+      set(state, 'searchCertifications', searchCertifications)
     },
     SET_SEARCH_DATE_ORDER (state, searchDateOrder) {
-      Vue.set(state, 'searchDateOrder', searchDateOrder)
+      set(state, 'searchDateOrder', searchDateOrder)
     },
     SET_SEARCH_STATUS_ORDER (state, searchStatusOrder) {
-      Vue.set(state, 'searchStatusOrder', searchStatusOrder)
+      set(state, 'searchStatusOrder', searchStatusOrder)
     },
     SET_SEARCH_YEARS_ORDER (state, searchYearsOrder) {
-      Vue.set(state, 'searchYearsOrder', searchYearsOrder)
+      set(state, 'searchYearsOrder', searchYearsOrder)
     },
     REMOVE_ANALYSIS (state, analysisID) {
-      Vue.set(state, 'analyses', state.analyses.filter(a => a.id !== analysisID))
+      set(state, 'analyses', state.analyses.filter(a => a.id !== analysisID))
     },
     SET_VISITED_ANALYSIS (state, analysisID) {
-      Vue.set(state, 'lastVisitedAnalysis', analysisID)
+      set(state, 'lastVisitedAnalysis', analysisID)
     },
     SET_TRELLO_BOARD_MEMBERS (state, trelloBoardMembers) {
-      Vue.set(state, 'trelloBoardMembers', trelloBoardMembers)
+      set(state, 'trelloBoardMembers', trelloBoardMembers)
     },
     SET_VISITED_PLATFORM (state, cardID) {
-      Vue.set(state, 'lastVisitedPlatform', cardID)
+      set(state, 'lastVisitedPlatform', cardID)
     },
     DISPLAY_ALL_CARDS (state, value) {
-      Vue.set(state, 'displayAllCards', value)
+      set(state, 'displayAllCards', value)
     }
   }
 })

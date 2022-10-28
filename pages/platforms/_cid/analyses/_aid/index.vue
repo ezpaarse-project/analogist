@@ -27,7 +27,7 @@
           v-if="canEdit && !historySelected"
           bottom
         >
-          <template v-slot:activator="{ on }">
+          <template #activator="{ on }">
             <v-btn
               icon
               :aria-label="$t('ui.edit')"
@@ -44,7 +44,7 @@
           v-if="canEdit && isAdmin && historySelected"
           bottom
         >
-          <template v-slot:activator="{ on }">
+          <template #activator="{ on }">
             <v-btn
               icon
               :aria-label="$t('ui.replace')"
@@ -62,7 +62,7 @@
           v-if="canEdit && isAdmin && historySelected"
           bottom
         >
-          <template v-slot:activator="{ on }">
+          <template #activator="{ on }">
             <v-btn
               icon
               :aria-label="$t('ui.back')"
@@ -76,7 +76,7 @@
         </v-tooltip>
 
         <v-tooltip bottom>
-          <template v-slot:activator="{ on }">
+          <template #activator="{ on }">
             <v-btn
               v-if="canEdit && isAdmin"
               icon
@@ -91,7 +91,7 @@
         </v-tooltip>
 
         <v-tooltip bottom>
-          <template v-slot:activator="{ on }">
+          <template #activator="{ on }">
             <v-btn
               icon
               :aria-label="$t('analyses.testWithEzlogger')"
@@ -105,7 +105,7 @@
         </v-tooltip>
 
         <v-tooltip bottom>
-          <template v-slot:activator="{ on }">
+          <template #activator="{ on }">
             <v-btn
               v-if="canEdit"
               icon
@@ -184,7 +184,7 @@
 
           <v-layout>
             <v-tooltip bottom>
-              <template v-slot:activator="{ on }">
+              <template #activator="{ on }">
                 <v-chip
                   v-if="analysis.rtype"
                   label
@@ -205,7 +205,7 @@
             </v-tooltip>
 
             <v-tooltip bottom>
-              <template v-slot:activator="{ on }">
+              <template #activator="{ on }">
                 <v-chip
                   v-if="analysis.mime"
                   label
@@ -226,7 +226,7 @@
             </v-tooltip>
 
             <v-tooltip bottom>
-              <template v-slot:activator="{ on }">
+              <template #activator="{ on }">
                 <v-chip
                   v-if="analysis.unitid"
                   label
@@ -274,7 +274,7 @@
           </v-subheader>
 
           <v-simple-table>
-            <template v-slot:default>
+            <template #default>
               <thead>
                 <tr class="text-left">
                   <th class="font-weight-regular">
@@ -314,7 +314,7 @@
           </v-subheader>
 
           <v-simple-table>
-            <template v-slot:default>
+            <template #default>
               <thead>
                 <tr class="text-left">
                   <th class="font-weight-regular">
@@ -345,7 +345,7 @@
           </v-subheader>
 
           <v-simple-table>
-            <template v-slot:default>
+            <template #default>
               <thead>
                 <tr class="text-left">
                   <th class="font-weight-regular">
@@ -393,15 +393,15 @@
           :items="analysisHistory"
           hide-default-footer
         >
-          <template v-slot:[`item.updatedAt`]="{ item }">
+          <template #[`item.updatedAt`]="{ item }">
             {{ $dateFns.format(new Date(item.updatedAt), 'PPPPpp', { locale: $i18n.locale }) }}
           </template>
 
-          <template v-slot:[`item.updatedBy`]="{ item }">
+          <template #[`item.updatedBy`]="{ item }">
             {{ getUser(item.updatedBy) }}
           </template>
 
-          <template v-slot:[`item.actions`]="{ item }">
+          <template #[`item.actions`]="{ item }">
             <v-btn
               outlined
               text
@@ -447,12 +447,21 @@
 export default {
   name: 'Analysis',
   transition: 'slide-x-transition',
+  asyncData ({ store }) {
+    return {
+      deleting: false,
+      deleteDialog: false,
+      historyDialog: false,
+      saving: false,
+      dxDoi: 'http://dx.doi.org/'
+    }
+  },
   async fetch ({ params, store, error, $auth }) {
     try {
       await store.dispatch('FETCH_CARD', params.cid)
     } catch (e) {
       const statusCode = e.response && e.response.status
-      const message    = e.response && e.response.statusText
+      const message = e.response && e.response.statusText
 
       return error({ statusCode, message: statusCode === 404 ? 'Carte introuvable' : message })
     }
@@ -469,13 +478,9 @@ export default {
       await store.dispatch('badges/getMembers', user)
     } catch (e) { }
   },
-  asyncData ({ store }) {
+  head () {
     return {
-      deleting: false,
-      deleteDialog: false,
-      historyDialog: false,
-      saving: false,
-      dxDoi: 'http://dx.doi.org/'
+      title: `Analyses: ${this.card.name}`
     }
   },
   computed: {
@@ -638,11 +643,6 @@ export default {
         this.$store.dispatch('snacks/error', this.$t('history.fetchError'))
       }
       return true
-    }
-  },
-  head () {
-    return {
-      title: `Analyses: ${this.card.name}`
     }
   }
 }

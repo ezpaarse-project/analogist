@@ -1,4 +1,4 @@
-import Vue from 'vue'
+import { set } from 'vue'
 import api from './api'
 
 export default {
@@ -12,19 +12,19 @@ export default {
   }),
   mutations: {
     SET_BADGES (state, badges) {
-      Vue.set(state, 'badges', badges)
+      set(state, 'badges', badges)
     },
     SET_PING (state, ping) {
-      Vue.set(state, 'ping', ping)
+      set(state, 'ping', ping)
     },
     SET_METRICS (state, metrics) {
-      Vue.set(state, 'metrics', metrics)
+      set(state, 'metrics', metrics)
     },
     SET_VISIBILITY (state, visibility) {
-      Vue.set(state, 'visibility', visibility)
+      set(state, 'visibility', visibility)
     },
     SET_USERS (state, users) {
-      Vue.set(state, 'users', users)
+      set(state, 'users', users)
     }
   },
   actions: {
@@ -43,7 +43,7 @@ export default {
     },
     getPing ({ commit }) {
       return api.getPing().then((res) => {
-        if (res.status === 'success') commit('SET_PING', (res.data === 'pong'))
+        if (res.status === 'success') { commit('SET_PING', (res.data === 'pong')) }
       }).catch((response) => {
         // eslint-disable-next-line
         console.log(response)
@@ -97,7 +97,7 @@ export default {
     },
     setVisiblity ({ commit }, visibility) {
       return api.setVisiblity({ visibility }).then((res) => {
-        if (res.status === 'success') commit('SET_VISIBILITY', visibility)
+        if (res.status === 'success') { commit('SET_VISIBILITY', visibility) }
       }).catch((response) => {
         // eslint-disable-next-line
         console.log(response)

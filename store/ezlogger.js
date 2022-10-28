@@ -1,4 +1,4 @@
-import Vue from 'vue'
+import { set } from 'vue'
 import { getUnixTime } from 'date-fns'
 
 const defaultSettings = {
@@ -36,7 +36,7 @@ export default {
     addRequest ({ commit, state }, req) {
       if (state.settings.autoRemoveNoise && isNoisy(req)) { return }
 
-      state.settings.proxySuffixes.forEach(suffix => {
+      state.settings.proxySuffixes.forEach((suffix) => {
         if (!suffix || !suffix.str) { return }
 
         const reg = new RegExp(`^([a-z]+://[^/]+?)\\.?${regEscape(suffix.str)}(/|$)`, 'i')
@@ -45,9 +45,9 @@ export default {
 
       req.lengthHeader = (req.responseHeaders || []).find(header => /^content-length$/.test(header.name))
 
-      getPossibleUrls(req.url, state.settings.patchHyphens).forEach(url => {
+      getPossibleUrls(req.url, state.settings.patchHyphens).forEach((url) => {
         commit('addRequest', {
-          url: url,
+          url,
           method: req.method,
           type: req.type,
           statusCode: req.statusCode,
@@ -117,7 +117,7 @@ export default {
     setRequests (state, requests) { state.requests = requests },
     addRequest (state, req) { state.requests.unshift(req) },
     removeOldestRequest (state) { state.requests.pop() },
-    clearRequests (state) { Vue.set(state, 'requests', []) },
+    clearRequests (state) { set(state, 'requests', []) },
 
     addHeader (state) { state.settings.headers.push({}) },
     addProxy (state) { state.settings.proxySuffixes.push({}) },
@@ -150,7 +150,7 @@ function isNoisy (req) {
 function getPossibleUrls (url, patchHyphens) {
   if (!patchHyphens) { return [url] }
 
-  const reg = new RegExp('^([a-z]+://)([^/]+)(.*)', 'i')
+  const reg = /^([a-z]+:\/\/)([^/]+)(.*)/i
   const match = reg.exec(url)
 
   if (!match) { return [url] }
@@ -163,7 +163,7 @@ function getPossibleUrls (url, patchHyphens) {
   for (let i = 1; i < parts.length; i++) {
     const newDomains = []
 
-    domains.forEach(d => {
+    domains.forEach((d) => {
       newDomains.push(`${d}.${parts[i]}`)
       newDomains.push(`${d}-${parts[i]}`)
     })

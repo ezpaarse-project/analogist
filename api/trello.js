@@ -2,7 +2,7 @@
 
 const router = require('express').Router()
 const trello = require('../lib/trello.js')
-const mw     = require('../lib/middlewares.js')
+const mw = require('../lib/middlewares.js')
 
 router.patch('*', mw.authorize)
 router.post('*', mw.authorize)

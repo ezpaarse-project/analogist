@@ -59,16 +59,16 @@ export default {
       default: () => ({})
     }
   },
-  computed: {
-    dark () {
-      return this.$store.state.dark
-    }
-  },
   head () {
     return {
       htmlAttrs: {
         lang: this.$i18n.locale
       }
+    }
+  },
+  computed: {
+    dark () {
+      return this.$store.state.dark
     }
   }
 }

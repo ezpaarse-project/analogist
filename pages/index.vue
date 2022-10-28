@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/no-v-html -->
 <template>
   <section>
     <v-card>
@@ -77,9 +78,7 @@
             >
               <p
                 class="text-xs-justify"
-                v-html="$t('home.whatIsEzPaarse', {
-                  parsers
-                })"
+                v-html="$t('home.whatIsEzPaarse', { parsers })"
               />
               <p
                 class="text-xs-justify"
@@ -101,13 +100,18 @@
 export default {
   name: 'Analogist',
   transition: 'slide-x-transition',
-  async asyncData ({ $config }) {
+  asyncData ({ $config }) {
     return {
       badges: 0,
       platforms: 0,
       parsers: 0,
       metricsLoaded: false,
       badgesEnabled: $config.badgesEnabled
+    }
+  },
+  head () {
+    return {
+      title: 'Analogist'
     }
   },
   mounted () {
@@ -133,11 +137,6 @@ export default {
       } catch (error) { this.parsers = 0 }
 
       this.metricsLoaded = true
-    }
-  },
-  head () {
-    return {
-      title: 'Analogist'
     }
   }
 }

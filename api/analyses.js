@@ -1,9 +1,9 @@
 'use strict'
 
-const router   = require('express').Router()
+const router = require('express').Router()
 const ObjectID = require('mongodb').ObjectID
-const mongo    = require('../lib/mongo.js')
-const mw       = require('../lib/middlewares.js')
+const mongo = require('../lib/mongo.js')
+const mw = require('../lib/middlewares.js')
 
 /**
  * Require authorization for all post/put/patch/delete routes

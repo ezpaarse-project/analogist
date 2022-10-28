@@ -11,7 +11,7 @@
           v-if="card.closed"
           right
         >
-          <template v-slot:activator="{ on }">
+          <template #activator="{ on }">
             <span v-on="on">
               <v-icon
                 size="24"
@@ -36,7 +36,7 @@
       </v-list-item-subtitle>
       <span>
         <v-tooltip left>
-          <template v-slot:activator="{ on }">
+          <template #activator="{ on }">
             <v-list-item-avatar
               v-if="humanCertified"
               class="cert-icon"
@@ -52,7 +52,7 @@
       </span>
       <span>
         <v-tooltip left>
-          <template v-slot:activator="{ on }">
+          <template #activator="{ on }">
             <v-list-item-avatar
               v-if="publisherCertified"
               class="cert-icon"

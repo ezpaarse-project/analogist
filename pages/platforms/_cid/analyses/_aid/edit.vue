@@ -81,9 +81,9 @@
                 @input="handleChange"
                 @click:append="clearRtype"
               >
-                <template v-slot:item="{ item }">
+                <template #item="{ item }">
                   <v-list-item-content>
-                    <v-list-item-title v-text="item.code" />
+                    <v-list-item-title>{{ item.code }}</v-list-item-title>
                     <v-list-item-subtitle>
                       {{ item[`description_${$i18n.locale}`] || item.description }}
                     </v-list-item-subtitle>
@@ -110,9 +110,9 @@
                 @input="handleChange"
                 @click:append="clearMime"
               >
-                <template v-slot:item="{ item }">
+                <template #item="{ item }">
                   <v-list-item-content>
-                    <v-list-item-title v-text="item.code" />
+                    <v-list-item-title>{{ item.code }}</v-list-item-title>
                     <v-list-item-subtitle>
                       {{ item[`description_${$i18n.locale}`] || item.description }}
                     </v-list-item-subtitle>
@@ -164,7 +164,7 @@
             :items="analysis.identifiers"
             hide-default-footer
           >
-            <template v-slot:header>
+            <template #header>
               <tr>
                 <th class="text-center font-weight-regular">
                   {{ $t('analyses.type') }}
@@ -176,7 +176,7 @@
               </tr>
             </template>
 
-            <template v-slot:item="{ item, index }">
+            <template #item="{ item, index }">
               <tr>
                 <td>
                   <v-autocomplete
@@ -192,9 +192,9 @@
                     hide-details
                     @input="handleChange"
                   >
-                    <template v-slot:item="{ item: currentItem }">
+                    <template #item="{ item: currentItem }">
                       <v-list-item-content>
-                        <v-list-item-title v-text="currentItem.code" />
+                        <v-list-item-title>{{ currentItem.code }}</v-list-item-title>
                         <v-list-item-subtitle>
                           {{ currentItem[`description_${$i18n.locale}`] || currentItem.description }}
                         </v-list-item-subtitle>
@@ -245,7 +245,7 @@
             :items="analysis.pathParams"
             hide-default-footer
           >
-            <template v-slot:header>
+            <template #header>
               <tr>
                 <th class="text-center font-weight-regular">
                   {{ $t('analyses.value') }}
@@ -257,7 +257,7 @@
               </tr>
             </template>
 
-            <template v-slot:item="{ item, index }">
+            <template #item="{ item, index }">
               <tr>
                 <td>
                   <v-text-field
@@ -314,7 +314,7 @@
             :items="analysis.queryParams"
             hide-default-footer
           >
-            <template v-slot:header>
+            <template #header>
               <tr>
                 <th class="text-center font-weight-regular">
                   {{ $t('analyses.name') }}
@@ -329,7 +329,7 @@
               </tr>
             </template>
 
-            <template v-slot:item="{ item, index }">
+            <template #item="{ item, index }">
               <tr>
                 <td>
                   <v-text-field
@@ -391,7 +391,28 @@ let changeTimeout
 
 export default {
   name: 'AnalysisEdit',
+  beforeRouteLeave (to, from, next) {
+    clearTimeout(changeTimeout)
+    if (!this.dirty && !this.saving) { return next() }
+
+    this.$once('saved', next)
+
+    if (this.dirty && this.saving) {
+      this.pendingChanges = true
+    } else {
+      this.save()
+    }
+  },
   transition: 'slide-x-transition',
+  async asyncData () {
+    return {
+      tmp: '',
+      pendingChanges: false,
+      dirty: false,
+      saving: false,
+      fields: await api.getFields()
+    }
+  },
   async fetch ({ params, store, error, redirect, $auth }) {
     if (!$auth.$state.user || !$auth.$state.user.isAuthorized) {
       return redirect({
@@ -404,7 +425,7 @@ export default {
       await store.dispatch('FETCH_CARD', params.cid)
     } catch (e) {
       const statusCode = e.response && e.response.status
-      const message    = e.response && e.response.statusText
+      const message = e.response && e.response.statusText
 
       return error({ statusCode, message: statusCode === 404 ? 'Carte introuvable' : message })
     }
@@ -413,13 +434,9 @@ export default {
     store.dispatch('SET_VISITED_PLATFORM', params.cid)
     store.dispatch('SET_VISITED_ANALYSIS', params.aid)
   },
-  async asyncData () {
+  head () {
     return {
-      tmp: '',
-      pendingChanges: false,
-      dirty: false,
-      saving: false,
-      fields: await api.getFields()
+      title: `Analyses: ${this.card.name}`
     }
   },
   computed: {
@@ -504,11 +521,11 @@ export default {
       const link = document.createElement('a')
       link.href = this.analysis.url
 
-      link.pathname.split('/').forEach(param => {
+      link.pathname.split('/').forEach((param) => {
         if (param) { this.analysis.pathParams.push({ value: param }) }
       })
 
-      link.search.substring(1).split('&').forEach(param => {
+      link.search.substring(1).split('&').forEach((param) => {
         if (!param) { return }
 
         const parts = param.split('=')
@@ -536,7 +553,7 @@ export default {
           })
         } while (this.pendingChanges)
 
-        if (this.card.idMembers.indexOf(this.user.id) === -1) {
+        if (!this.card.idMembers.includes(this.user.id)) {
           await this.$store.dispatch('ADD_CARD_MEMBER', {
             card: this.card,
             user: this.user
@@ -552,23 +569,6 @@ export default {
         this.pendingChanges = false
         this.$store.dispatch('snacks/error', 'analyses.saveFailed')
       }
-    }
-  },
-  head () {
-    return {
-      title: `Analyses: ${this.card.name}`
-    }
-  },
-  beforeRouteLeave (to, from, next) {
-    clearTimeout(changeTimeout)
-    if (!this.dirty && !this.saving) { return next() }
-
-    this.$once('saved', next)
-
-    if (this.dirty && this.saving) {
-      this.pendingChanges = true
-    } else {
-      this.save()
     }
   }
 }

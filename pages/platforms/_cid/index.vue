@@ -26,7 +26,7 @@
             v-if="card.closed"
             right
           >
-            <template v-slot:activator="{ on }">
+            <template #activator="{ on }">
               <span v-on="on">
                 <v-icon
                   size="24"
@@ -46,7 +46,7 @@
         <v-spacer />
 
         <v-tooltip bottom>
-          <template v-slot:activator="{ on }">
+          <template #activator="{ on }">
             <v-btn
               v-if="canEdit"
               icon
@@ -63,7 +63,7 @@
           left
           bottom
         >
-          <template v-slot:activator="{ on }">
+          <template #activator="{ on }">
             <v-btn
               color="primary"
               small
@@ -86,7 +86,7 @@
                   <v-icon>mdi-account-multiple</v-icon>
                 </v-list-item-avatar>
                 <v-list-item-content>
-                  <v-list-item-title v-text="$t('card.contributors')" />
+                  <v-list-item-title>{{ $t('card.contributors') }}</v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
               <v-list-item
@@ -99,7 +99,7 @@
                   <v-icon>mdi-github</v-icon>
                 </v-list-item-avatar>
                 <v-list-item-content>
-                  <v-list-item-title v-text="$t('card.github')" />
+                  <v-list-item-title>{{ $t('card.github') }}</v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
               <v-list-item
@@ -112,7 +112,7 @@
                   <v-icon>mdi-home</v-icon>
                 </v-list-item-avatar>
                 <v-list-item-content>
-                  <v-list-item-title v-text="$t('card.homepage')" />
+                  <v-list-item-title>{{ $t('card.homepage') }}</v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
               <v-list-item
@@ -125,7 +125,7 @@
                   <v-icon>mdi-trello</v-icon>
                 </v-list-item-avatar>
                 <v-list-item-content>
-                  <v-list-item-title v-text="$t('card.trello')" />
+                  <v-list-item-title>{{ $t('card.trello') }}</v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
             </v-list-item-group>
@@ -138,7 +138,7 @@
                   <v-icon>mdi-upload</v-icon>
                 </v-list-item-avatar>
                 <v-list-item-content>
-                  <v-list-item-title v-text="$t('analyses.export')" />
+                  <v-list-item-title>{{ $t('analyses.export') }}</v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
               <v-list-item @click="exportToEzlogger">
@@ -146,7 +146,7 @@
                   <v-icon>mdi-file-find</v-icon>
                 </v-list-item-avatar>
                 <v-list-item-content>
-                  <v-list-item-title v-text="$t('analyses.testWithEzlogger')" />
+                  <v-list-item-title>{{ $t('analyses.testWithEzlogger') }}</v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
               <v-list-item
@@ -157,7 +157,7 @@
                   <v-icon>mdi-archive-arrow-down</v-icon>
                 </v-list-item-avatar>
                 <v-list-item-content>
-                  <v-list-item-title v-text="$t('card.archive')" />
+                  <v-list-item-title>{{ $t('card.archive') }}</v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
               <v-list-item
@@ -168,7 +168,7 @@
                   <v-icon>mdi-archive-arrow-up</v-icon>
                 </v-list-item-avatar>
                 <v-list-item-content>
-                  <v-list-item-title v-text="$t('card.unarchive')" />
+                  <v-list-item-title>{{ $t('card.unarchive') }}</v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
             </v-list-item-group>
@@ -221,16 +221,12 @@
         </v-layout>
       </v-card-text>
 
-      <template>
-        <v-divider />
-        <v-subheader>Certifications</v-subheader>
+      <v-divider />
+      <v-subheader>Certifications</v-subheader>
 
-        <v-list>
-          <Certification />
-        </v-list>
-
-        <v-divider />
-      </template>
+      <v-list>
+        <CertificationList />
+      </v-list>
 
       <v-divider />
 
@@ -340,7 +336,7 @@
               </v-avatar>
             </v-list-item-avatar>
             <v-list-item-content>
-              <v-list-item-title v-text="member.fullName" />
+              <v-list-item-title>{{ member.fullName }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </v-list>
@@ -352,7 +348,7 @@
 <script>
 import { saveAs } from 'file-saver'
 import vuedraggable from 'vuedraggable'
-import Certification from '~/components/certifications/Certification'
+import CertificationList from '~/components/certifications/CertificationList'
 
 function escapeCSVstring (str) {
   if (/[";]/.test(str)) {
@@ -364,10 +360,18 @@ function escapeCSVstring (str) {
 
 export default {
   name: 'Platform',
-  transition: 'slide-x-transition',
   components: {
     vuedraggable,
-    Certification
+    CertificationList
+  },
+  transition: 'slide-x-transition',
+  data () {
+    return {
+      membersDialog: false,
+      deleteDialog: false,
+      deletingCard: false,
+      movingCard: false
+    }
   },
   async fetch ({ params, store, error }) {
     await store.dispatch('FETCH_TRELLO_LISTS')
@@ -376,7 +380,7 @@ export default {
       await store.dispatch('FETCH_CARD', params.cid)
     } catch (e) {
       const statusCode = e.response && e.response.status
-      const message    = e.response && e.response.statusText
+      const message = e.response && e.response.statusText
 
       return error({ statusCode, message: statusCode === 404 ? 'Carte introuvable' : message })
     }
@@ -389,12 +393,9 @@ export default {
 
     store.dispatch('SET_VISITED_PLATFORM', params.cid)
   },
-  data () {
+  head () {
     return {
-      membersDialog: false,
-      deleteDialog: false,
-      deletingCard: false,
-      movingCard: false
+      title: `Platform: ${this.card.name}`
     }
   },
   computed: {
@@ -453,7 +454,7 @@ export default {
       try {
         const analysis = await this.$store.dispatch('SAVE_ANALYSIS', { cardID: this.card.id, analysis: {} })
 
-        if (this.card.idMembers.indexOf(this.user.id) === -1) {
+        if (!this.card.idMembers.includes(this.user.id)) {
           await this.$store.dispatch('ADD_CARD_MEMBER', {
             card: this.card,
             user: this.user
@@ -498,7 +499,7 @@ export default {
       if (!this.analyses) { return }
 
       this.$store.dispatch('ezlogger/clearRequests')
-      this.analyses.forEach(analysis => {
+      this.analyses.forEach((analysis) => {
         if (analysis.url) {
           this.$store.dispatch('ezlogger/addRequestFromUrl', analysis.url)
         }
@@ -517,10 +518,10 @@ export default {
       ]
 
       // Add a column for each identifier
-      this.analyses.forEach(analysis => {
+      this.analyses.forEach((analysis) => {
         if (!analysis.identifiers) { return }
 
-        analysis.identifiers.forEach(id => {
+        analysis.identifiers.forEach((id) => {
           if (!id.type) { return }
           if (columns.find(c => c.title === `out-${id.type}`)) { return }
 
@@ -538,7 +539,7 @@ export default {
 
       const header = columns.map(col => escapeCSVstring(col.title)).join(';')
 
-      const lines = this.analyses.map(analysis => {
+      const lines = this.analyses.map((analysis) => {
         return columns.map(col => escapeCSVstring(col.getter(analysis))).join(';')
       }).join('\n')
 
@@ -546,11 +547,6 @@ export default {
       const fileName = `${shortName || 'test'}.${this.$dateFns.format(new Date(), 'yyyy-MM-dd')}.csv`
 
       saveAs(new Blob([`${header}\n${lines}`], { type: 'text/csv;charset=utf-8' }), fileName)
-    }
-  },
-  head () {
-    return {
-      title: `Platform: ${this.card.name}`
     }
   }
 }

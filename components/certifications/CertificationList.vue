@@ -1,10 +1,10 @@
 <template>
   <span>
-    <Human
+    <HumanCert
       :years="years"
       @openDialog="openDialog"
     />
-    <Publisher
+    <PublisherCert
       :years="years"
       @openDialog="openDialog"
     />
@@ -164,13 +164,13 @@
 </template>
 
 <script>
-import Human from '~/components/certifications/Human'
-import Publisher from '~/components/certifications/Publisher'
+import HumanCert from '~/components/certifications/HumanCert'
+import PublisherCert from '~/components/certifications/PublisherCert'
 
 export default {
   components: {
-    Human,
-    Publisher
+    HumanCert,
+    PublisherCert
   },
   data () {
     return {
