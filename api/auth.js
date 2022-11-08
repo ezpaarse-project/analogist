@@ -8,13 +8,16 @@ const trello = require('../lib/trello')
 const { sendMail, generateMail } = require('../lib/mailer')
 
 router.use('/connect/trello', (req, res, next) => {
-  req.query.host = req.query.host || req.headers['x-forwarded-host'] || req.headers.host
+  res.locals.grant = {
+    dynamic: {
+      origin: `${req.protocol}://${req.query.host || req.hostname}`
+    }
+  }
   next()
 })
 
 router.use(grant.express({
   defaults: {
-    origin: `http://localhost:${config.port}`,
     callback: '/api/auth/callback',
     transport: 'session',
     prefix: '/api/auth/connect'
@@ -24,6 +27,7 @@ router.use(grant.express({
     secret: config.trello.secret,
     expiration: 'never',
     scope: ['read', 'write', 'account'],
+    dynamic: ['origin'],
     custom_params: {
       name: 'AnalogIST'
     }
