@@ -12,7 +12,7 @@ const MongoStore = require('connect-mongo')
 process.env.PORT = config.port
 
 const isDev = app.get('env') !== 'production'
-if (isDev) { app.use(logger('dev')) }
+app.use(logger(isDev ? 'dev' : 'combined'))
 
 // To use X-Forwarded-Host as req.hostname
 app.enable('trust proxy')
