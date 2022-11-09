@@ -14,6 +14,9 @@ process.env.PORT = config.port
 const isDev = app.get('env') !== 'production'
 if (isDev) { app.use(logger('dev')) }
 
+// To use X-Forwarded-Host as req.hostname
+app.enable('trust proxy')
+
 app.use(session({
   resave: false,
   saveUninitialized: false,
