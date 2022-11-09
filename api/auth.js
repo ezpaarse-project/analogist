@@ -53,11 +53,11 @@ router.use('/callback', (req, res, next) => {
 
   if (response?.error) {
     delete req.session
-    return res.redirect(req.path)
+    return res.status(502).end()
   }
 
   if (!response) {
-    return res.redirect(req.path)
+    return res.status(502).end()
   }
 
   req.session.oauth = {
