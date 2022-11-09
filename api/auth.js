@@ -3,9 +3,13 @@
 const config = require('config')
 const router = require('express').Router()
 const grant = require('grant')
+const HttpsProxyAgent = require('https-proxy-agent')
+
 const mw = require('../lib/middlewares')
 const trello = require('../lib/trello')
 const { sendMail, generateMail } = require('../lib/mailer')
+
+const httpsAgent = process.env.https_proxy && new HttpsProxyAgent(process.env.https_proxy)
 
 router.use('/connect/trello', (req, res, next) => {
   res.locals.grant = {
@@ -17,19 +21,25 @@ router.use('/connect/trello', (req, res, next) => {
 })
 
 router.use(grant.express({
-  defaults: {
-    callback: '/api/auth/callback',
-    transport: 'session',
-    prefix: '/api/auth/connect'
+  request: {
+    timeout: 5000,
+    agent: httpsAgent
   },
-  trello: {
-    key: config.trello.key,
-    secret: config.trello.secret,
-    expiration: 'never',
-    scope: ['read', 'write', 'account'],
-    dynamic: ['origin'],
-    custom_params: {
-      name: 'AnalogIST'
+  config: {
+    defaults: {
+      callback: '/api/auth/callback',
+      transport: 'session',
+      prefix: '/api/auth/connect'
+    },
+    trello: {
+      key: config.trello.key,
+      secret: config.trello.secret,
+      expiration: 'never',
+      scope: ['read', 'write', 'account'],
+      dynamic: ['origin'],
+      custom_params: {
+        name: 'AnalogIST'
+      }
     }
   }
 }))
