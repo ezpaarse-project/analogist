@@ -9,7 +9,9 @@
     "cancel": "Cancel",
     "areYouSure": "Are you sure?",
     "close": "Close",
-    "replace": "Replace"
+    "replace": "Replace",
+    "save": "Save",
+    "add": "Add"
   },
   "drawer": {
     "home": "Home",

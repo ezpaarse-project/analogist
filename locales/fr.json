@@ -9,7 +9,9 @@
     "cancel": "Annuler",
     "areYouSure": "Êtes-vous sûr ?",
     "close": "Fermer",
-    "replace": "Remplacer"
+    "replace": "Remplacer",
+    "save": "Sauvegarder",
+    "add": "Ajouter"
   },
   "drawer": {
     "home": "Accueil",

@@ -1,18 +1,33 @@
 <template>
   <section>
-    <v-btn
-      v-if="lastVisitedPlatform"
-      class="mb-2 body-2"
-      text
-      router
-      exact
-      :aria-label="$t('ezLogger.backToPlatform')"
-      :to="{ name: 'platforms-cid', params: { cid: lastVisitedPlatform } }"
-    >
-      <v-icon left>
-        mdi-arrow-left
-      </v-icon>{{ $t('ezLogger.backToPlatform') }}
-    </v-btn>
+    <div class="d-flex mb-3">
+      <v-btn
+        v-if="lastVisitedPlatform"
+        class="mb-2 body-2"
+        text
+        router
+        exact
+        :aria-label="$t('ezLogger.backToPlatform')"
+        :to="{ name: 'platforms-cid', params: { cid: lastVisitedPlatform } }"
+      >
+        <v-icon left>
+          mdi-arrow-left
+        </v-icon>{{ $t('ezLogger.backToPlatform') }}
+      </v-btn>
+
+      <v-spacer />
+
+      <v-btn
+        outlined
+        :aria-label="$t('ezLogger.settings')"
+        @click="showSettings = true"
+      >
+        <v-icon left>
+          mdi-cog
+        </v-icon>
+        {{ $t('ezLogger.settings') }}
+      </v-btn>
+    </div>
 
     <v-card>
       <v-toolbar
@@ -89,21 +104,6 @@
             </v-btn>
           </template>
           <span>{{ $t('ezLogger.filter') }}</span>
-        </v-tooltip>
-        <v-tooltip bottom>
-          <template #activator="{ on }">
-            <v-btn
-              icon
-              router
-              exact
-              :to="{ name: 'ezlogger-settings' }"
-              :aria-label="$t('ezLogger.settings')"
-              v-on="on"
-            >
-              <v-icon>mdi-cog</v-icon>
-            </v-btn>
-          </template>
-          <span>{{ $t('ezLogger.settings') }}</span>
         </v-tooltip>
       </v-toolbar>
 
@@ -258,6 +258,8 @@
       </v-card-text>
     </v-card>
 
+    <EzLoggerSettings v-model="showSettings" />
+
     <v-dialog
       v-model="showExport"
       max-width="500px"
@@ -299,14 +301,19 @@
 
 <script>
 import { saveAs } from 'file-saver'
+import EzLoggerSettings from '../../components/EzLoggerSettings.vue'
 
 const perPage = 20
 
 export default {
   name: 'Ezlogger',
+  components: {
+    EzLoggerSettings
+  },
   transition: 'slide-x-transition',
   asyncData ({ $config }) {
     return {
+      showSettings: false,
       processing: false,
       showExport: false,
       extensionUrl: 'https://github.com/ezpaarse-project/ezpaarse-logger-extension#installation',
