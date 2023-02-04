@@ -18,6 +18,44 @@
       <v-spacer />
 
       <v-btn
+        class="mr-2"
+        outlined
+        :loading="processing"
+        :aria-label="$t('ezLogger.analyze')"
+        @click="analyze"
+      >
+        <v-icon left>
+          mdi-file-find
+        </v-icon>
+        {{ $t('ezLogger.analyze') }}
+      </v-btn>
+
+      <v-btn
+        class="mr-2"
+        outlined
+        :aria-label="$t('ezLogger.clearAll')"
+        @click="clearRequests"
+      >
+        <v-icon left>
+          mdi-notification-clear-all
+        </v-icon>
+        {{ $t('ezLogger.clearAll') }}
+      </v-btn>
+
+      <v-btn
+        class="mr-2"
+        outlined
+        :aria-label="$t('ezLogger.filter')"
+        @click="filterRequests"
+      >
+        <v-icon left>
+          mdi-filter-variant
+        </v-icon>
+        {{ $t('ezLogger.filter') }}
+      </v-btn>
+
+      <v-btn
+        class="mr-2"
         outlined
         :aria-label="$t('ezLogger.settings')"
         @click="showSettings = true"
@@ -31,80 +69,34 @@
 
     <v-card>
       <v-toolbar
-        class="secondary"
-        dense
-        dark
         flat
-        extended
       >
         <v-toolbar-title>{{ $t('ezLogger.title') }}</v-toolbar-title>
 
+        <v-spacer />
+
         <v-text-field
-          slot="extension"
           v-model="search"
-          prepend-icon="mdi-magnify"
+          prepend-inner-icon="mdi-magnify"
           :label="$t('ui.search')"
+          hide-details
           single-line
-          class="mx-3"
-          flat
+          solo
+          dense
           @input="updatePage"
         />
 
-        <v-spacer />
-
-        <v-tooltip bottom>
-          <template #activator="{ on }">
-            <v-btn
-              icon
-              :loading="processing"
-              :aria-label="$t('ezLogger.analyze')"
-              v-on="on"
-              @click="analyze"
-            >
-              <v-icon>mdi-file-find</v-icon>
-            </v-btn>
-          </template>
-          <span>{{ $t('ezLogger.analyze') }}</span>
-        </v-tooltip>
-        <v-tooltip bottom>
-          <template #activator="{ on }">
-            <v-btn
-              icon
-              :aria-label="$t('ezLogger.clearAll')"
-              v-on="on"
-              @click="clearRequests"
-            >
-              <v-icon>mdi-notification-clear-all</v-icon>
-            </v-btn>
-          </template>
-          <span>{{ $t('ezLogger.clearAll') }}</span>
-        </v-tooltip>
-        <v-tooltip bottom>
-          <template #activator="{ on }">
-            <v-btn
-              icon
-              :aria-label="$t('ezLogger.export')"
-              v-on="on"
-              @click="showExport = true"
-            >
-              <v-icon>mdi-upload</v-icon>
-            </v-btn>
-          </template>
-          <span>{{ $t('ezLogger.export') }}</span>
-        </v-tooltip>
-        <v-tooltip bottom>
-          <template #activator="{ on }">
-            <v-btn
-              icon
-              :aria-label="$t('ezLogger.filter')"
-              v-on="on"
-              @click="filterRequests"
-            >
-              <v-icon>mdi-filter-variant</v-icon>
-            </v-btn>
-          </template>
-          <span>{{ $t('ezLogger.filter') }}</span>
-        </v-tooltip>
+        <v-btn
+          :aria-label="$t('ezLogger.export')"
+          class="ml-3"
+          outlined
+          @click="showExport = true"
+        >
+          <v-icon left>
+            mdi-upload
+          </v-icon>
+          {{ $t('ezLogger.export') }}
+        </v-btn>
       </v-toolbar>
 
       <v-card-text>
@@ -135,10 +127,7 @@
         <v-list-item
           v-for="(req, index) in paginatedRequests"
           :key="index"
-          router
-          exact
-          :to="{ name: 'ezlogger-rid', params: { rid: req.id } }"
-          ripple
+          @click="showDetail(req)"
         >
           <v-list-item-avatar>
             <v-progress-circular
@@ -258,6 +247,7 @@
       </v-card-text>
     </v-card>
 
+    <EzLoggerDetailDialog ref="detailDialog" v-model="showDetails" />
     <EzLoggerSettings v-model="showSettings" />
 
     <v-dialog
@@ -302,22 +292,27 @@
 <script>
 import { saveAs } from 'file-saver'
 import EzLoggerSettings from '../../components/EzLoggerSettings.vue'
+import EzLoggerDetailDialog from '../../components/EzLoggerDetailDialog.vue'
 
 const perPage = 20
 
 export default {
   name: 'Ezlogger',
   components: {
-    EzLoggerSettings
+    EzLoggerSettings,
+    EzLoggerDetailDialog
   },
   transition: 'slide-x-transition',
   asyncData ({ $config }) {
     return {
+      showDetails: false,
       showSettings: false,
       processing: false,
       showExport: false,
       extensionUrl: 'https://github.com/ezpaarse-project/ezpaarse-logger-extension#installation',
-      ezpaarseInstance: $config.ezpaarseUrl
+      ezpaarseInstance: $config.ezpaarseUrl,
+      writeStream: null,
+      readStream: null
     }
   },
   head () {
@@ -362,6 +357,10 @@ export default {
     }
   },
   methods: {
+    showDetail (req) {
+      this.$refs.detailDialog.showDetail(req)
+    },
+
     clearRequests () {
       this.$store.dispatch('ezlogger/clearRequests')
       this.$store.dispatch('ezlogger/setPage', 1)
@@ -407,6 +406,36 @@ export default {
           ].join(' ')
         }).join('\r\n')
     },
+
+    // connectToEzpaarse () {
+    //   const ezpaarseUrl = this.settings.preprod
+    //     ? this.ezpaarseInstance
+    //     : this.settings.ezpaarseUrl
+
+    //   if (!ezpaarseUrl) { return }
+
+    //   const requests = this.$store.state.ezlogger.requests
+    //   const pending = requests.slice()
+    //   pending.forEach((req) => { req.status = 'processing' })
+
+    //   if (pending.length === 0) { return }
+
+    //   this.processing = true
+
+    //   const logs = this.toLogLines(pending)
+    //   const headers = {
+    //     Accept: 'application/json',
+    //     'Log-Format-EZproxy': '%{timestamp}<[0-9]+> %u %m %U %s %{size}<[0-9\\-]+> %{ezid}<[0-9]+>'
+    //   }
+
+    //   if (this.settings.forceParser) {
+    //     headers['Force-Parser'] = this.settings.forceParser
+    //   }
+
+    //   this.settings.headers.forEach((h) => {
+    //     headers[h.name] = h.value
+    //   })
+    // },
 
     analyze () {
       const ezpaarseUrl = this.settings.preprod

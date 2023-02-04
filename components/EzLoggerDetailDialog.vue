@@ -1,28 +1,22 @@
 <template>
-  <section>
-    <v-btn
-      text
-      router
-      exact
-      :to="{ name: 'ezlogger' }"
-      class="mb-2 body-2"
-    >
-      <v-icon left>
-        mdi-arrow-left
-      </v-icon>{{ $t('ui.back') }}
-    </v-btn>
-
+  <v-dialog
+    :value="value"
+    max-width="900px"
+    @input="setVisible($event)"
+  >
     <v-card>
-      <v-toolbar
-        class="secondary"
-        dense
-        dark
-        flat
-      >
-        <v-toolbar-title>
-          {{ $t('ezLogger.requestDetails') }}
-        </v-toolbar-title>
-      </v-toolbar>
+      <v-card-title>
+        <span class="text-h5" v-text="$t('ezLogger.requestDetails')" />
+
+        <v-spacer />
+
+        <v-btn
+          text
+          @click="setVisible(false)"
+        >
+          {{ $t('ui.close') }}
+        </v-btn>
+      </v-card-title>
 
       <v-card-text>
         <v-text-field
@@ -205,31 +199,23 @@
         </template>
       </v-data-table>
     </v-card>
-  </section>
+  </v-dialog>
 </template>
 
 <script>
 export default {
-  name: 'Request',
-  transition: 'slide-x-transition',
-  asyncData ({ store, params, redirect }) {
-    const request = store.state.ezlogger.requests.find(req => req.id === params.rid)
-
-    if (!request) {
-      return redirect({ name: 'ezlogger' })
+  props: {
+    value: {
+      type: Boolean,
+      default: () => false
     }
-
+  },
+  data () {
     return {
-      request,
+      request: {},
       search: ''
     }
   },
-  head () {
-    return {
-      title: 'ezLogger'
-    }
-  },
-
   computed: {
     ecProps () {
       const search = this.search.toLowerCase()
@@ -246,6 +232,17 @@ export default {
   },
 
   methods: {
+    showDetail (req) {
+      if (req) {
+        this.request = req
+        this.setVisible(true)
+      }
+    },
+
+    setVisible (value) {
+      this.$emit('input', value)
+    },
+
     copyUrl () {
       try {
         document.getElementById('url-input').select()
