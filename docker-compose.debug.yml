@@ -39,23 +39,6 @@ services:
       - ./data/db:/data/db
     command: --smallfiles
 
-  opbadge:
-    image: ezpaarseproject/ezpaarse-badge:1.1.14
-    environment:
-      - http_proxy
-      - https_proxy
-      - OBF_CERT
-      - BADGE_MONGO_HOST=db
-      - BADGE_MONGO_PORT
-      - BADGE_MONGO_DB
-      - BADGE_LOGENTRY_CLIENT
-      - BADGE_LOGENTRY_ISSUER
-      - BADGE_AUTHORITY
-    volumes:
-      - ./ssl:/usr/src/app/app/ssl
-    ports:
-      - "4000:4000"
-
   maildev:
     image: djfarrelly/maildev
     ports:
