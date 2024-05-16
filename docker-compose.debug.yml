@@ -7,7 +7,7 @@ services:
       - ./uploads:/usr/src/app/app/uploads
     working_dir: /app
     ports:
-      - "3000:3000"
+      - 80:3000
     environment:
       - ANG_TRELLO_KEY
       - ANG_TRELLO_SECRET

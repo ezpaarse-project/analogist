@@ -43,6 +43,13 @@ Generate your [**certificate signing request token**](https://openbadgefactory.c
 $ docker-compose -f docker-compose.conf.yml up
 ```
 
+### Trello connection
+
+To connect Analogist to Trello, you need to create power key.
+You need an account that belongs to the trello table
+ https://trello.com/power-ups/admin/
+
+
 ## Build Setup
 
 ``` bash

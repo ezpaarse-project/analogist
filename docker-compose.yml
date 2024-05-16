@@ -5,7 +5,7 @@ services:
     build:
       context: ./
     ports:
-      - "3000:3000"
+      - 80:3000
     environment:
       # les variables d'environnement pour l'accès au board trello par l'application
       # exemple le board de prod : https://trello.com/b/wEaLnz8d/ezpaarse-analogist-suivi-des-plateformes
