@@ -1,7 +1,7 @@
 version: '3'
 services:
   analogist:
-    image: ezpaarseproject/analogist:2.2.0
+    image: ezpaarseproject/analogist:2.2.1
     build:
       context: ./
     ports:
