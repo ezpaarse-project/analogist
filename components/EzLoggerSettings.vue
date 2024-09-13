@@ -46,7 +46,7 @@
                 :label="$t('ezLoggerSettings.customUrl')"
               />
               <p class="black--text">
-                {{ $t('ezLoggerSettings.nationalInstanceDesc') }}
+                {{ $t('ezLoggerSettings.nationalInstanceDesc', { ezpaarseURL: ezpaarseInstance }) }}
               </p>
             </v-expansion-panel-content>
 

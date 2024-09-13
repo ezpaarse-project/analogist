@@ -13,7 +13,7 @@ services:
       - ANG_TRELLO_SECRET
       - ANG_TRELLO_BOARDID
       - ANG_MONGO_HOST=db
-      # les variables d'envrionnement pour les badges
+      # les variables d'environnement pour les badges
       - ANG_BADGE_HOST=opbadge
       - ANG_BADGE_ANALYSES_BRONZE_ID
       - ANG_BADGE_ANALYSES_BRONZE_NAME

@@ -139,7 +139,7 @@ module.exports = {
   },
 
   publicRuntimeConfig: {
-    ezpaarseUrl: process.env.ANG_EZPAARSE_URL || 'http://dev.ezpaarse.org',
+    ezpaarseUrl: process.env.ANG_EZPAARSE_URL || 'https://preprod.ezpaarse.org',
     version: pkg.version,
     boardId: process.env.ANG_TRELLO_BOARDID,
     badgesEnabled: process.env.ANG_BADGES_ENABLED
