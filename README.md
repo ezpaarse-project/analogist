@@ -19,8 +19,13 @@ You can also use **environment variables**, following [this mapping file](https:
 ```bash
 # Trello interactions
 export ANG_TRELLO_BOARDID=
-export ANG_TRELLO_KEY=
 export ANG_TRELLO_SECRET=
+# API KEY used to request Trello
+export ANG_TRELLO_KEY=
+# Token used to request Trello, should at least have the scope `read`
+# You can generate a token with the account used to manage ANG_TRELLO_KEY :
+# https://trello.com/1/authorize?expiration=never&scope=read&response_type=token&key=$ANG_TRELLO_KEY
+export ANG_TRELLO_TOKEN=
 
 # Mailing
 export ANG_NOTIFICATIONS_RECEIVERS=

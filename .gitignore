@@ -21,3 +21,4 @@ uploads
 
 # env vars
 .env.sh
+config/local.json
