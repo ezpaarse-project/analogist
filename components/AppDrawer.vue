@@ -349,7 +349,13 @@
           rel="noopener noreferrer"
         >
           <v-img
-            :src="require('@/static/logo-inist.png')"
+            v-if="$vuetify.theme.dark "
+            :src="require('@/static/inist-dark.png')"
+            style="max-width: 120px; max-height: 120px;"
+          />
+          <v-img
+            v-else
+            :src="require('@/static/inist-light.png')"
             style="max-width: 120px; max-height: 120px;"
           />
         </a>
