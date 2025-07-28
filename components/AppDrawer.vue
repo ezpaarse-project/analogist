@@ -351,11 +351,13 @@
           <v-img
             v-if="$vuetify.theme.dark "
             :src="require('@/static/inist-dark.png')"
+            alt="Inist CNRS"
             style="max-width: 120px; max-height: 120px;"
           />
           <v-img
             v-else
             :src="require('@/static/inist-light.png')"
+            alt="Inist CNRS"
             style="max-width: 120px; max-height: 120px;"
           />
         </a>
