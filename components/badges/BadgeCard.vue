@@ -63,13 +63,6 @@
           >
             <v-icon>mdi-facebook</v-icon> Facebook
           </v-list-item>
-          <v-list-item
-            :href="`https://twitter.com/intent/tweet?size=medium&count=none&text=${$i18n.locale === 'fr' ? badge.name : badge.alt_language[$i18n.locale].name}%20${viewUrl}&hashtags=AnalogIST,ezMESURE,ezTEAM,openbadge&via=ezpaarse`"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <v-icon>mdi-twitter</v-icon> Twitter
-          </v-list-item>
           <v-list-item @click="linkedIn">
             <v-icon>mdi-linkedin</v-icon> Linkedin
           </v-list-item>
