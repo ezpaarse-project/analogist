@@ -11,6 +11,7 @@ services:
     environment:
       - ANG_TRELLO_KEY
       - ANG_TRELLO_SECRET
+      - ANG_TRELLO_TOKEN
       - ANG_TRELLO_BOARDID
       - ANG_MONGO_HOST=db
       - ANG_SMTP_HOST=maildev

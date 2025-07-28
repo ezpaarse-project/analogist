@@ -1,7 +1,7 @@
 version: '3'
 services:
   analogist:
-    image: ezpaarseproject/analogist:2.2.1
+    image: ezpaarseproject/analogist:2.3.0
     build:
       context: ./
     ports:
@@ -11,6 +11,7 @@ services:
       # exemple le board de prod : https://trello.com/b/wEaLnz8d/ezpaarse-analogist-suivi-des-plateformes
       - ANG_TRELLO_KEY
       - ANG_TRELLO_SECRET
+      - ANG_TRELLO_TOKEN
       - ANG_TRELLO_BOARDID
       - ANG_MONGO_HOST=db
       # les variables d'environnement pour les badges

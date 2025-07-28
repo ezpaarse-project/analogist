@@ -12,6 +12,7 @@
   "trello": {
     "key": "",
     "secret": "",
+    "token": "",
     "boardId": ""
   },
   "smtp": {
