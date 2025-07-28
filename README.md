@@ -1,7 +1,7 @@
 # AnalogIST
 
 AnalogIST is the platform that gathers all analyses made for ezPAARSE.
-http://ang.couperin.org/
+https://analyses.ezpaarse.org/
 
 ## Requirements
 
@@ -26,21 +26,6 @@ export ANG_TRELLO_SECRET=
 export ANG_NOTIFICATIONS_RECEIVERS=
 export ANG_NOTIFICATIONS_SENDER=
 export ANG_SMTP_HOST=
-
-# Badges
-export ANG_BADGE_ANALYSES_BRONZE_ID=
-export ANG_BADGE_ANALYSES_BRONZE_NAME="Analyste Bronze"
-export ANG_BADGE_ANALYSES_BRONZE_EVENT="analyse"
-export ANG_BADGE_ANALYSES_SILVER_ID=
-export ANG_BADGE_ANALYSES_SILVER_NAME="Analyste Argent"
-export ANG_BADGE_ANALYSES_SILVER_EVENT="analyse"
-```
-
-### Badges
-
-Generate your [**certificate signing request token**](https://openbadgefactory.com/) in **Admin tools &rarr; API key**, use your certificate in **OBF_CERT** (environment variable) and run this command :
-```
-$ docker-compose -f docker-compose.conf.yml up
 ```
 
 ### Trello connection
@@ -65,7 +50,6 @@ npm start
 ```
 
 For detailed explanation on how things work, checkout the [Nuxt.js docs](https://github.com/nuxt/nuxt.js).
-
 
 ## Development
 
