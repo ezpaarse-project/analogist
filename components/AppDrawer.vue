@@ -342,6 +342,18 @@
           </v-icon>
         </v-btn>
       </div>
+      <div class="drawer-image">
+        <a
+          href="https://inist.fr"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <v-img
+            :src="require('@/static/logo-inist.png')"
+            style="max-width: 120px; max-height: 120px;"
+          />
+        </a>
+      </div>
     </template>
   </v-navigation-drawer>
 </template>
@@ -361,7 +373,6 @@ export default {
       links: [
         { icon: 'mdi-home-variant', href: 'http://www.ezpaarse.org/', title: 'ezPAARSE' },
         { icon: 'mdi-email', href: 'mailto:ezpaarse@couperin.org', title: 'Contact' },
-        { icon: 'mdi-twitter', href: 'https://twitter.com/ezpaarse', title: 'Twitter' },
         { icon: 'mdi-comment-text-outline', href: 'http://blog.ezpaarse.org/', title: 'Blog' },
         { icon: 'mdi-youtube', href: 'https://www.youtube.com/channel/UCcR-0UE9WjYiwS4fMG2T4tQ', title: 'Youtube' }
       ],
@@ -405,4 +416,10 @@ export default {
 
 <style scoped>
 a { color: inherit; }
+
+.drawer-image {
+  display: flex;
+  justify-content: center;
+  padding: 16px;
+}
 </style>
