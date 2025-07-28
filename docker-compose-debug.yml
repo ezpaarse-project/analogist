@@ -13,23 +13,11 @@ services:
       - ANG_TRELLO_SECRET
       - ANG_TRELLO_BOARDID
       - ANG_MONGO_HOST=db
-      - ANG_BADGE_HOST=opbadge
-      - ANG_BADGE_ANALYSES_BRONZE_ID
-      - ANG_BADGE_ANALYSES_BRONZE_NAME
-      - ANG_BADGE_ANALYSES_BRONZE_EVENT
-      - ANG_BADGE_ANALYSES_SILVER_ID
-      - ANG_BADGE_ANALYSES_SILVER_NAME
-      - ANG_BADGE_ANALYSES_SILVER_EVENT
-      - ANG_BADGE_ISSUER
       - ANG_SMTP_HOST=maildev
       - ANG_SMTP_PORT=25
       - ANG_NOTIFICATIONS_SENDER
       - ANG_NOTIFICATIONS_RECEIVERS
-      - http_proxy
-      - https_proxy
-      - no_proxy=localhost,127.0.0.1,opbadge
       - NODE_CONFIG
-      - ANG_BADGES_ENABLED
     tty: true
     command: npm run dev
 
