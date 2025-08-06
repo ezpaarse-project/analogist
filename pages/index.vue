@@ -88,6 +88,10 @@
                 class="text-xs-justify"
                 v-html="$t('home.goodAnalyses')"
               />
+              <p
+                class="text-xs-justify"
+                v-html="$t('home.readmetrics')"
+              />
             </v-flex>
           </v-layout>
         </v-container>
