@@ -23,6 +23,22 @@
           {{ link.icon }}
         </v-icon>
       </v-btn>
+      <v-tooltip bottom>
+        <template #activator="{ on }">
+          <v-btn
+            class="mx-2"
+            icon
+            target="_blank"
+            href="mailto:ezteam@couperin.org"
+            v-on="on"
+          >
+            <v-icon dark>
+              mdi-email
+            </v-icon>
+          </v-btn>
+        </template>
+        <span v-text="'ezteam@couperin.org'" />
+      </v-tooltip>
     </v-list>
 
     <v-divider />
@@ -380,7 +396,6 @@ export default {
       ],
       links: [
         { icon: 'mdi-home-variant', href: 'http://www.ezpaarse.org/', title: 'ezPAARSE' },
-        { icon: 'mdi-email', href: 'mailto:ezpaarse@couperin.org', title: 'Contact' },
         { icon: 'mdi-comment-text-outline', href: 'http://blog.ezpaarse.org/', title: 'Blog' },
         { icon: 'mdi-youtube', href: 'https://www.youtube.com/channel/UCcR-0UE9WjYiwS4fMG2T4tQ', title: 'Youtube' }
       ],
