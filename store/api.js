@@ -102,7 +102,7 @@ api.addUserToCard = function (card, user) {
 }
 
 api.checkDomain = function (domain) {
-  return axios.get(`${ezpaarseUrl}/info/domains/${domain}`)
+  return axios.get(`${ezpaarseUrl}/api/info/domains/${domain}`)
     .then((res) => {
       if (typeof res.data === 'object') { return res.data }
       throw new Error('Invalid Response')
