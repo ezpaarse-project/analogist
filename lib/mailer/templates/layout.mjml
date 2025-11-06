@@ -17,7 +17,7 @@
       <mj-column>
         <mj-image
           width="150px"
-          href="http://analyses.ezpaarse.org/"
+          href="https://analyses.ezpaarse.org/"
           src="cid:logo_analogist_white.png"
         />
       </mj-column>
@@ -38,7 +38,7 @@
             <mj-image
               align="left"
               width="150px"
-              href="http://analyses.ezpaarse.org/"
+              href="https://analyses.ezpaarse.org/"
               src="cid:analogist_logo.png"
             />
           </mj-column>

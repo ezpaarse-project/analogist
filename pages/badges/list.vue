@@ -141,7 +141,7 @@
               text
               icon
               aria-label="Informations"
-              href="https://blog.ezpaarse.org/2018/06/communication-les-badges-ezpaarse/"
+              href="https://blog.readmetrics.org/2018/06/communication-les-badges-ezpaarse/"
               target="_blank"
               rel="noreferrer"
               v-on="on"

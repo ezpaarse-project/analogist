@@ -395,8 +395,8 @@ export default {
         { name: 'English', value: 'en' }
       ],
       links: [
-        { icon: 'mdi-home-variant', href: 'http://www.ezpaarse.org/', title: 'ezPAARSE' },
-        { icon: 'mdi-comment-text-outline', href: 'http://blog.ezpaarse.org/', title: 'Blog' },
+        { icon: 'mdi-home-variant', href: 'https://www.readmetrics.org/', title: 'readmetrics' },
+        { icon: 'mdi-comment-text-outline', href: 'https://blog.readmetrics.org/', title: 'Blog' },
         { icon: 'mdi-youtube', href: 'https://www.youtube.com/channel/UCcR-0UE9WjYiwS4fMG2T4tQ', title: 'Youtube' }
       ],
       becomeMemberDialog: false,

@@ -40,12 +40,12 @@
           </v-list>
         </v-menu>
         <span v-if="publisherCertified"> - <a
-          href="https://blog.ezpaarse.org/2017/06/certification-h-et-p-des-plateformes-traitees-dans-ezpaarse/"
+          href="https://blog.readmetrics.org/2017/06/certification-h-et-p-des-plateformes-traitees-dans-ezpaarse/"
           target="_blank"
           rel="noreferrer"
         >{{ $t('card.publisherVerified') }}</a></span>
         <span v-else> - <a
-          href="https://blog.ezpaarse.org/2021/05/tutoriels-nouvelle-procedure-facile-de-certification-h-et-p-dans-analogist/"
+          href="https://blog.readmetrics.org/2021/05/tutoriels-nouvelle-procedure-facile-de-certification-h-et-p-dans-analogist/"
           target="_blank"
           rel="noreferrer"
         >{{ $t('certifications.notCertified') }}</a></span>
