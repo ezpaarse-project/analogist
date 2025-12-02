@@ -136,7 +136,7 @@ export default {
       } catch (err) { this.platforms = 0 }
 
       try {
-        const { data: count } = await this.$axios.get('api/platforms/count', { timeout: 10000 })
+        const { data: count } = await this.$axios.get('api/platforms/count', { timeout: 2000 })
         this.parsers = count
       } catch (error) { this.parsers = 0 }
 
