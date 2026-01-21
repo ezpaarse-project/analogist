@@ -23,10 +23,11 @@ services:
     command: npm run dev
 
   db:
-    image: mongo:3.6.5
+    image: mongo:6.0.27
     volumes:
       - ./data/db:/data/db
-    command: --smallfiles
+    command: mongod
+    restart: on-failure
 
   maildev:
     image: djfarrelly/maildev
