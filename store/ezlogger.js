@@ -45,24 +45,25 @@ export default {
 
       req.lengthHeader = (req.responseHeaders || []).find(header => /^content-length$/.test(header.name))
 
-      getPossibleUrls(req.url, state.settings.patchHyphens).forEach((url) => {
-        commit('addRequest', {
-          url,
-          method: req.method,
-          type: req.type,
-          statusCode: req.statusCode,
-          timeStamp: req.timeStamp,
-          startDate: getUnixTime(req.timeStamp),
-          status: 'pending',
-          id: ++state.counter,
-          ec: null,
-          contentLength: req.lengthHeader ? req.lengthHeader.value : null
-        })
+      const id = state.counter += 1
 
-        if (state.requests.length > state.settings.captureLimit) {
-          commit('removeOldestRequest')
-        }
+      commit('addRequest', {
+        url: req.url,
+        alternativeUrls: state.settings.patchHyphens ? getAlternativeUrls(req.url) : undefined,
+        method: req.method,
+        type: req.type,
+        statusCode: req.statusCode,
+        timeStamp: req.timeStamp,
+        startDate: getUnixTime(req.timeStamp),
+        status: 'pending',
+        id,
+        ec: null,
+        contentLength: req.lengthHeader ? req.lengthHeader.value : null
       })
+
+      if (state.requests.length > state.settings.captureLimit) {
+        commit('removeOldestRequest')
+      }
     },
 
     addRequestFromUrl ({ dispatch }, url) {
@@ -147,29 +148,33 @@ function isNoisy (req) {
   return false
 }
 
-function getPossibleUrls (url, patchHyphens) {
-  if (!patchHyphens) { return [url] }
+function getAlternativeUrls (url) {
+  let hostname
+  let parsedUrl
 
-  const reg = /^([a-z]+:\/\/)([^/]+)(.*)/i
-  const match = reg.exec(url)
-
-  if (!match) { return [url] }
-
-  const parts = match[2].split('-')
-  if (parts.length <= 1) { return [url] }
-
-  let domains = [parts[0]]
-
-  for (let i = 1; i < parts.length; i++) {
-    const newDomains = []
-
-    domains.forEach((d) => {
-      newDomains.push(`${d}.${parts[i]}`)
-      newDomains.push(`${d}-${parts[i]}`)
-    })
-
-    domains = newDomains
+  try {
+    parsedUrl = new URL(url)
+    hostname = parsedUrl.hostname
+  } catch {
+    return []
   }
 
-  return domains.map(d => `${match[1]}${d}${match[3]}`)
+  if (typeof hostname !== 'string' || !hostname.includes('-')) {
+    return []
+  }
+
+  const [firstPart, ...parts] = hostname.split('-')
+
+  return parts
+    .reduce(
+      (domains, part) => domains.flatMap(d => [`${d}.${part}`, `${d}-${part}`]),
+      [firstPart]
+    )
+    .filter(domain => (
+      domain !== hostname
+    ))
+    .map((domain) => {
+      parsedUrl.hostname = domain
+      return parsedUrl.toString()
+    })
 }

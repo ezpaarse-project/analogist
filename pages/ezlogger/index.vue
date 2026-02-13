@@ -394,48 +394,21 @@ export default {
     toLogLines (requests) {
       return requests
         .sort((a, b) => a.timeStamp > b.timeStamp ? 1 : -1)
-        .map((req) => {
-          return [
+        .flatMap((req) => {
+          const urls = [req.url, ...(req.alternativeUrls ?? [])]
+
+          return urls.map(url => [
             req.startDate,
             'ezlogger',
             req.method,
-            req.url,
+            url,
             req.statusCode,
             req.contentLength || '-',
             req.id
-          ].join(' ')
-        }).join('\r\n')
+          ].join(' '))
+        })
+        .join('\r\n')
     },
-
-    // connectToEzpaarse () {
-    //   const ezpaarseUrl = this.settings.preprod
-    //     ? this.ezpaarseInstance
-    //     : this.settings.ezpaarseUrl
-
-    //   if (!ezpaarseUrl) { return }
-
-    //   const requests = this.$store.state.ezlogger.requests
-    //   const pending = requests.slice()
-    //   pending.forEach((req) => { req.status = 'processing' })
-
-    //   if (pending.length === 0) { return }
-
-    //   this.processing = true
-
-    //   const logs = this.toLogLines(pending)
-    //   const headers = {
-    //     Accept: 'application/json',
-    //     'Log-Format-EZproxy': '%{timestamp}<[0-9]+> %u %m %U %s %{size}<[0-9\\-]+> %{ezid}<[0-9]+>'
-    //   }
-
-    //   if (this.settings.forceParser) {
-    //     headers['Force-Parser'] = this.settings.forceParser
-    //   }
-
-    //   this.settings.headers.forEach((h) => {
-    //     headers[h.name] = h.value
-    //   })
-    // },
 
     analyze () {
       const ezpaarseUrl = this.settings.preprod
