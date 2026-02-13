@@ -64,7 +64,7 @@
               <v-alert
                 color="success white--text"
                 class="my-2"
-                :value="connectionTest.version"
+                :value="!!connectionTest.version"
               >
                 <div>{{ $t('ezLoggerSettings.connectionSuccessful') }}</div>
                 <div>{{ $t('ezLoggerSettings.version', { version: connectionTest.version }) }}</div>
