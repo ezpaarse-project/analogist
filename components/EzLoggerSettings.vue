@@ -303,7 +303,7 @@ export default {
       const ezpaarseUrl = this.getEzpaarseUrl()
 
       try {
-        const { data } = await this.$axios.get(`${ezpaarseUrl}/info/platforms`)
+        const { data } = await this.$axios.get(`${ezpaarseUrl}/api/info/platforms`)
         if (!Array.isArray(data)) { throw new TypeError('invalid response') }
         this.parsers = data
       } catch (e) {
@@ -354,7 +354,7 @@ export default {
       this.connectionTest.errorMeta = null
       this.connectionTest.version = null
 
-      this.$axios.get(`${ezpaarseUrl}/info/version`)
+      this.$axios.get(`${ezpaarseUrl}/api/info/version`)
         .then((response) => {
           this.connectionTest.loading = false
 
