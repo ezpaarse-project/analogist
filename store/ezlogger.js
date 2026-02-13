@@ -149,15 +149,9 @@ function isNoisy (req) {
 }
 
 function getAlternativeUrls (url) {
-  let hostname
-  let parsedUrl
+  const reg = /^([a-z]+:\/\/)([^/]+)(.*)/i
 
-  try {
-    parsedUrl = new URL(url)
-    hostname = parsedUrl.hostname
-  } catch {
-    return []
-  }
+  const [, scheme, hostname, path] = reg.exec(url) ?? {}
 
   if (typeof hostname !== 'string' || !hostname.includes('-')) {
     return []
@@ -170,11 +164,6 @@ function getAlternativeUrls (url) {
       (domains, part) => domains.flatMap(d => [`${d}.${part}`, `${d}-${part}`]),
       [firstPart]
     )
-    .filter(domain => (
-      domain !== hostname
-    ))
-    .map((domain) => {
-      parsedUrl.hostname = domain
-      return parsedUrl.toString()
-    })
+    .filter(domain => domain !== hostname)
+    .map(domain => `${scheme}${domain}${path}`)
 }
