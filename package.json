@@ -41,6 +41,7 @@
     "nunjucks": "^3.2.3",
     "nuxt": "^2.15.8",
     "nuxt-i18n": "^6.28.1",
+    "nuxt-webfontloader": "^1.1.0",
     "request": "^2.88.2",
     "socket.io": "^4.5.3",
     "socket.io-client": "^4.5.3",

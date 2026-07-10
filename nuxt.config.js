@@ -17,8 +17,7 @@ module.exports = {
       { hid: 'description', name: 'description', content: 'Analyses for ezPAARSE' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Roboto' }
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
     ]
   },
 
@@ -58,6 +57,7 @@ module.exports = {
   ** Nuxt.js modules
   */
   modules: [
+    'nuxt-webfontloader',
     '@nuxtjs/axios',
     '@nuxtjs/auth',
     'nuxt-i18n'
