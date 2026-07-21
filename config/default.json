@@ -26,7 +26,7 @@
   "history": {
     "debounceTime": 900
   },
-  "ezpaarse": "https://preprod.ezpaarse.org",
+  "ezpaarse": "https://demo.ezpaarse.org",
   "badges": {
     "enabled": false,
     "host": "opbadge",
