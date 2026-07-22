@@ -151,7 +151,7 @@ function isNoisy (req) {
 function getAlternativeUrls (url) {
   const reg = /^([a-z]+:\/\/)([^/]+)(.*)/i
 
-  const [, scheme, hostname, path] = reg.exec(url) ?? {}
+  const [, scheme, hostname, path] = reg.exec(url) ?? []
 
   if (typeof hostname !== 'string' || !hostname.includes('-')) {
     return []
