@@ -14,7 +14,7 @@ const httpsAgent = process.env.https_proxy && new HttpsProxyAgent(process.env.ht
 router.use('/connect/trello', (req, res, next) => {
   res.locals.grant = {
     dynamic: {
-      origin: `${req.protocol}://${req.query.host || req.hostname}`
+      origin: `${req.protocol}://${req.query.host || req.host}`
     }
   }
   next()
