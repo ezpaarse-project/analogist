@@ -8,9 +8,9 @@
     "node": ">=8.0.0"
   },
   "scripts": {
-    "dev": "cross-env NODE_OPTIONS=--openssl-legacy-provider NODE_ENV=development nodemon -w server.js -w app.js -w nuxt.config.js -w api/ -w lib/ -w store/ -e js server.js",
-    "build": "cross-env NODE_OPTIONS=--openssl-legacy-provider nuxt build",
-    "start": "cross-env NODE_ENV=production node server.js",
+    "dev": "NODE_OPTIONS=--openssl-legacy-provider NODE_ENV=development nodemon -w server.js -w app.js -w nuxt.config.js -w api/ -w lib/ -w store/ -e js server.js",
+    "build": "NODE_OPTIONS=--openssl-legacy-provider nuxt build",
+    "start": "NODE_ENV=production node server.js",
     "precommit": "npm run lint",
     "test": "mocha --exit",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
@@ -25,7 +25,6 @@
     "config": "^5.0.1",
     "connect-mongo": "^4.6.0",
     "cors": "^2.8.5",
-    "cross-env": "^7.0.3",
     "date-fns": "^2.29.3",
     "deep-equal": "^2.0.5",
     "express": "^5.3.0",
