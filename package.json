@@ -22,7 +22,7 @@
     "@nuxtjs/auth": "^4.9.1",
     "@nuxtjs/axios": "^5.13.6",
     "body-parser": "^1.20.1",
-    "config": "^3.3.8",
+    "config": "^5.0.1",
     "connect-mongo": "^4.6.0",
     "cors": "^2.8.5",
     "cross-env": "^7.0.3",

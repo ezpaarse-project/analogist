@@ -1,4 +1,4 @@
-FROM node:18.12.0-alpine3.16 AS builder
+FROM node:26.12.1-alpine3.24 AS builder
 LABEL maintainer="ezPAARSE Team <ezteam@couperin.org>"
 
 WORKDIR /app
@@ -12,7 +12,7 @@ COPY . /app
 RUN npm run build
 RUN rm -rf node_modules && npm ci --omit=dev
 
-FROM node:18.12.0-alpine3.16
+FROM node:26.12.1-alpine3.24
 LABEL maintainer="ezPAARSE Team <ezteam@couperin.org>"
 
 WORKDIR /usr/src/app
