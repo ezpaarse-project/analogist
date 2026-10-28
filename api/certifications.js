@@ -25,8 +25,8 @@ const upload = multer({
   })
 })
 
-router.patch('*', mw.authorize)
-router.post('*', mw.authorize)
+router.patch('*all', mw.authorize)
+router.post('*all', mw.authorize)
 
 router.get('/', (req, res, next) => {
   return mongo.get('certifications').find().toArray((err, docs) => {

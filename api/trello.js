@@ -4,8 +4,8 @@ const router = require('express').Router()
 const trello = require('../lib/trello.js')
 const mw = require('../lib/middlewares.js')
 
-router.patch('*', mw.authorize)
-router.post('*', mw.authorize)
+router.patch('*all', mw.authorize)
+router.post('*all', mw.authorize)
 
 /* GET trello cards */
 router.get('/cards', (req, res, next) => {
@@ -21,7 +21,7 @@ router.get('/cards/count', (req, res, next) => {
 
     const cards = data.filter(({ closed }) => !closed)
 
-    return res.send(`${cards.length}`)
+    return res.status(200).send(`${cards.length}`)
   })
 })
 

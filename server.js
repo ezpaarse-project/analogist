@@ -24,9 +24,13 @@ function startApp () {
   const server = http.createServer(app)
 
   // Listen on provided port, on all network interfaces.
-  server.listen(config.port)
-  server.on('error', onError)
-  server.on('listening', onListening)
+  server.listen(config.port, (error) => {
+    if (error) {
+      onError(error)
+    } else {
+      onListening()
+    }
+  })
 
   /**
    * Event listener for HTTP server "listening" event.

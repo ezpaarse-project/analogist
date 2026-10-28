@@ -68,7 +68,7 @@ router.use('/callback', (req, res, next) => {
   delete req.session.grant
   next()
 }, mw.updateUserProfile, (req, res) => {
-  res.redirect(req.path)
+  res.redirect(302, req.path)
 })
 
 /* Get the Trello profile of the user currently connected */

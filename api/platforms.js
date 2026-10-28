@@ -12,10 +12,10 @@ const badges = require('../lib/badges.js')
 /**
  * Require authorization for all post/put/patch/delete routes
  */
-router.post('*', mw.authorize)
-router.put('*', mw.authorize)
-router.patch('*', mw.authorize)
-router.delete('*', mw.authorize)
+router.post('*all', mw.authorize)
+router.put('*all', mw.authorize)
+router.patch('*all', mw.authorize)
+router.delete('*all', mw.authorize)
 
 /* GET rtype/mime/rid fields. */
 router.get('/fields.json', (req, res, next) => {
