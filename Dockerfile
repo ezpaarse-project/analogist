@@ -3,9 +3,9 @@ LABEL maintainer="ezPAARSE Team <ezteam@couperin.org>"
 
 WORKDIR /app
 
-COPY package.json .
+COPY package*.json .
 
-RUN npm install
+RUN npm ci
 
 COPY . /app
 
@@ -21,4 +21,4 @@ COPY --from=builder /app .
 ENV HOST 0.0.0.0
 EXPOSE 3000
 
-CMD [ "npm", "start" ]
+CMD ["npm", "start"]
